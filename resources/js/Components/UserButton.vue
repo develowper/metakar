@@ -1,0 +1,161 @@
+<template>
+    <div class="flex items-center ">
+        <div v-if=" !$page.props.auth.user">
+            <div class="group flex relative dropdown text-start">
+                <!-- Dropdown toggle button -->
+                <button @click="chevronShow=!chevronShow" @mouseover="chevronRotate=true;chevronShow=true"
+                        @mouseleave="chevronRotate=false"
+                        class="relative z-10 flex items-center p-2 text-sm text-gray-600 bg-white border border-transparent rounded-md focus:border-blue-500 focus:ring-opacity-40 dark:focus:ring-opacity-40 focus:ring-blue-300 dark:focus:ring-blue-400 focus:ring dark:text-white dark:bg-gray-800 focus:outline-none">
+                    <span :class=" chevronRotate?'rotate-90':'' " class="transition duration-500"><ChevronDownIcon
+                        class="h-5 w-5"/> </span>
+                    <span class="mx-1">Jane Doe</span>
+                </button>
+
+                <!-- Dropdown menu -->
+                <ul v-if="  chevronShow" @mouseover="chevronRotate=true" @mouseleave="chevronRotate=false"
+                    class="flex-col    bg-white  border shadow-xl rounded-lg transform scale-0 group-hover:scale-100  absolute end-0 top-10
+                    transition duration-200 ease-in-out origin-top    ">
+
+                    <Link href="#"
+                          class="flex px-6   py-4  justify-around      text-sm text-gray-600 transition-colors duration-200 transform dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white">
+                        <Image classes=" flex-shrink-0  object-cover mx-1 rounded-full w-9 h-9"
+                               src="https://images.unsplash.com/photo-1523779917675-b6ed3a42a561?ixid=MnwxMjA3fDB8MHxzZWFyY2h8N3x8d29tYW4lMjBibHVlfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=face&w=500&q=200"
+                               alt="jane avatar"
+                               type="user"/>
+
+                        <div class="flex-col  mx-1  ">
+                            <h1 class="    text-sm font-semibold text-gray-700 dark:text-gray-200">Jane Doe</h1>
+                            <div class="   text-sm text-gray-500 dark:text-gray-400 ">janedoe@exampl.com</div>
+                        </div>
+                    </Link>
+
+                    <hr class="border-gray-200 dark:border-gray-700  ">
+
+                    <Link :href="route('dashboard')"
+                          class="flex px-4 py-4 text-sm text-gray-600 capitalize transition-colors duration-200 transform dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white">
+                        {{ __('dashboard') }}
+                    </Link>
+
+
+                    <hr class="border-gray-200 dark:border-gray-700 ">
+
+                    <Link :href="route('logout')" class="flex ">
+                        <button class=" p-4 m-3  w-full  hover:scale-110 focus:outline-none     px-4 py-2 rounded font-bold cursor-pointer
+        hover:bg-red-700 hover:text-red-100  bg-red-100 text-red-700  border duration-200 ease-in-out border-red-600 transition">
+                            {{ __('signout') }}
+                        </button>
+                    </Link>
+
+                </ul>
+            </div>
+
+        </div>
+        <Link :href="profileLink( )"
+              class="flex mx-1  border-2 text-white  border-transparent   font-medium
+            focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-300 ease-in-out border-primary-500 p-2 rounded-lg bg-primary-500 rounded-lg hover:bg-primary-400">
+            <UserIcon class=" h-5 w-5"/>
+
+        </Link>
+
+
+    </div>
+</template>
+
+<script>
+import {Link} from '@inertiajs/vue3';
+import {UserIcon, ChevronDownIcon} from "@heroicons/vue/24/outline";
+import Image from "@/Components/Image.vue";
+
+export default {
+
+    data() {
+        return {chevronRotate: false, chevronShow: false}
+    },
+    components: {Link, UserIcon, ChevronDownIcon, Image},
+    props: {},
+    setup(props) {
+
+
+    },
+    computed: {
+        selectable_locale() {
+            if (this.$page.locale == 'fa') {
+                return 'en';
+            }
+            if (this.$page.locale == 'en') {
+                return 'ar';
+            }
+            return 'fa'
+        },
+
+    },
+    watch: {},
+    methods: {
+
+        profileLink() {
+            if (this.$page.props.auth.user)
+                return route('dashboard');
+            else return route('login');
+        },
+    }
+}
+
+</script>
+<style lang="scss">
+
+li > ul {
+    transform: translatex(100%) scale(0)
+}
+
+li:hover {
+    > ul {
+        transform: translatex(101%) scale(1);
+    }
+}
+
+//.dropdown {
+//    > button {
+//        transform: rotate(0deg);
+//
+//        &:hover {
+//            svg {
+//                transition: all 500ms;
+//                transform: rotate(90deg)
+//            }
+//        }
+//    }
+//
+//    ul {
+//        &:hover {
+//            svg {
+//                transition: all 500ms;
+//                transform: rotate(90deg)
+//            }
+//        }
+//    }
+//
+//}
+
+
+/* Below styles fake what can be achieved with the tailwind config
+   you need to add the group-hover variant to scale and define your custom
+   min width style.
+     See https://codesandbox.io/s/tailwindcss-multilevel-dropdown-y91j7?file=/index.html
+     for implementation with config file
+*/
+//.group:hover .group-hover\:scale-100 {
+//    transform: scale(1)
+//}
+//
+//.group:hover .group-hover\:-rotate-180 {
+//    transform: rotate(180deg)
+//}
+//
+//.scale-0 {
+//    transform: scale(0)
+//}
+//
+.min-w {
+    min-width: 20rem !important;
+}
+</style>
