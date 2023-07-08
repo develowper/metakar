@@ -32,5 +32,6 @@ class AppServiceProvider extends ServiceProvider
 //            Variable::MODELS[Business::class] => Business::class,
 
         ]);
+        Schema::defaultStringLength(191);
     }
 }
