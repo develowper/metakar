@@ -1,7 +1,7 @@
 import './bootstrap';
 import '../css/app.css';
 import '../scss/app.scss';
-
+import 'tw-elements';
 import {createApp, h} from 'vue';
 import {createInertiaApp} from '@inertiajs/vue3';
 import {resolvePageComponent} from 'laravel-vite-plugin/inertia-helpers';
@@ -24,6 +24,6 @@ createInertiaApp({
         return window.Vue;
     },
     progress: {
-        color: '#4B1111',
+        color: '#aa1111',
     },
 });

@@ -24,6 +24,8 @@ export default {
         }, log: (str) => {
             console.log(str);
         },
-
+        asPrice(price) {
+            return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        },
     },
 }

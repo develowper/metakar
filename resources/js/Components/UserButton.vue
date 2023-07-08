@@ -1,6 +1,6 @@
 <template>
     <div class="flex items-center ">
-        <div v-if=" !$page.props.auth.user">
+        <div v-if="  $page.props.auth.user">
             <div class="group flex relative dropdown text-start">
                 <!-- Dropdown toggle button -->
                 <button @click="chevronShow=!chevronShow" @mouseover="chevronRotate=true;chevronShow=true"
@@ -14,7 +14,7 @@
                 <!-- Dropdown menu -->
                 <ul v-if="  chevronShow" @mouseover="chevronRotate=true" @mouseleave="chevronRotate=false"
                     class="flex-col    bg-white  border shadow-xl rounded-lg transform scale-0 group-hover:scale-100  absolute end-0 top-10
-                    transition duration-200 ease-in-out origin-top    ">
+                    transition duration-200 ease-in-out origin-top overflow-hidden   ">
 
                     <Link href="#"
                           class="flex px-6   py-4  justify-around      text-sm text-gray-600 transition-colors duration-200 transform dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white">
@@ -31,7 +31,7 @@
 
                     <hr class="border-gray-200 dark:border-gray-700  ">
 
-                    <Link :href="route('dashboard')"
+                    <Link :href="route('panel.index')"
                           class="flex px-4 py-4 text-sm text-gray-600 capitalize transition-colors duration-200 transform dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white">
                         {{ __('dashboard') }}
                     </Link>
@@ -40,9 +40,10 @@
                     <hr class="border-gray-200 dark:border-gray-700 ">
 
                     <Link :href="route('logout')" class="flex ">
-                        <button class=" p-4 m-3  w-full  hover:scale-110 focus:outline-none     px-4 py-2 rounded font-bold cursor-pointer
-        hover:bg-red-700 hover:text-red-100  bg-red-100 text-red-700  border duration-200 ease-in-out border-red-600 transition">
+                        <button class="flex items-center justify-center p-4 m-3  w-full  hover:scale-110 focus:outline-none     px-4 py-2 rounded font-bold cursor-pointer
+        hover:bg-red-700 hover:text-red-100  bg-red-100 text-red-500  border duration-200 ease-in-out border-red-600 transition">
                             {{ __('signout') }}
+                            <ArrowRightOnRectangleIcon class="h-5 w-5 text-red-500  "/>
                         </button>
                     </Link>
 
@@ -63,7 +64,7 @@
 
 <script>
 import {Link} from '@inertiajs/vue3';
-import {UserIcon, ChevronDownIcon} from "@heroicons/vue/24/outline";
+import {UserIcon, ChevronDownIcon, ArrowRightOnRectangleIcon} from "@heroicons/vue/24/outline";
 import Image from "@/Components/Image.vue";
 
 export default {
@@ -71,7 +72,7 @@ export default {
     data() {
         return {chevronRotate: false, chevronShow: false}
     },
-    components: {Link, UserIcon, ChevronDownIcon, Image},
+    components: {Link, UserIcon, ChevronDownIcon, Image, ArrowRightOnRectangleIcon},
     props: {},
     setup(props) {
 
@@ -94,14 +95,14 @@ export default {
 
         profileLink() {
             if (this.$page.props.auth.user)
-                return route('dashboard');
-            else return route('login');
+                return this.route('panel.index');
+            else return this.route('login');
         },
     }
 }
 
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 
 li > ul {
     transform: translatex(100%) scale(0)

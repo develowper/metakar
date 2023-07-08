@@ -7,10 +7,12 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\ExchangeController;
 use App\Http\Controllers\MainController;
+use App\Http\Controllers\PanelController;
 use App\Http\Controllers\PodcastController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\VideoController;
 use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -26,7 +28,7 @@ use Inertia\Inertia;
 */
 
 Route::get('test', function () {
-    return asset('assets');
+
 });
 Route::get('/', function () {
     return Inertia::render('Main', [
@@ -37,12 +39,38 @@ Route::get('/', function () {
     ]);
 })->name('/');
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::middleware(['auth', 'verified'])->prefix('panel')->group(function () {
+
+
+    Route::get('', [PanelController::class, 'index'])->name('panel.index');
+
+
+    PanelController::makeInertiaRoute('get', 'business/create', 'panel.business.new', 'Panel/Business/Create');
+    PanelController::makeInertiaRoute('get', 'business/index', 'panel.business.index', 'Panel/Business/Index');
+    PanelController::makeInertiaRoute('get', 'article/index', 'panel.article.index', 'Panel/Business/Index');
+    PanelController::makeInertiaRoute('get', 'article/new', 'panel.article.new', 'Panel/Business/Create');
+    PanelController::makeInertiaRoute('get', 'site/index', 'panel.site.index', 'Panel/Site/Index');
+    PanelController::makeInertiaRoute('get', 'site/new', 'panel.site.new', 'Panel/Site/Create');
+    PanelController::makeInertiaRoute('get', 'text/index', 'panel.text.index', 'Panel/Text/Index');
+    PanelController::makeInertiaRoute('get', 'text/new', 'panel.text.new', 'Panel/Text/Create');
+    PanelController::makeInertiaRoute('get', 'image/index', 'panel.image.index', 'Panel/Image/Index');
+    PanelController::makeInertiaRoute('get', 'image/new', 'panel.image.new', 'Panel/Image/Create');
+    PanelController::makeInertiaRoute('get', 'video/index', 'panel.video.index', 'Panel/Video/Index');
+    PanelController::makeInertiaRoute('get', 'video/new', 'panel.video.new', 'Panel/Video/Create');
+    PanelController::makeInertiaRoute('get', 'podcast/index', 'panel.podcast.index', 'Panel/Podcast/Index');
+    PanelController::makeInertiaRoute('get', 'podcast/new', 'panel.podcast.new', 'Panel/Podcast/Create');
+    PanelController::makeInertiaRoute('get', 'auction/index', 'panel.auction.index', 'Panel/Auction/Index');
+    PanelController::makeInertiaRoute('get', 'auction/new', 'panel.auction.new', 'Panel/Auction/Create');
+    PanelController::makeInertiaRoute('get', 'ticket/index', 'panel.ticket.index', 'Panel/Ticket/Index');
+    PanelController::makeInertiaRoute('get', 'ticket/new', 'panel.ticket.new', 'Panel/Ticket/Create');
+    PanelController::makeInertiaRoute('get', 'transaction/index', 'panel.financial.transaction.index', 'Panel/Financial/Transaction/Index');
+
+
+});
 
 
 Route::middleware('auth')->group(function () {
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

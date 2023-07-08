@@ -43,22 +43,26 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
-        $loginCol = filter_var($this->email, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+        $loginCol = filter_var($this->login, FILTER_VALIDATE_EMAIL) ? 'email' : 'phone';
 
-        $errorMessage = __('auth.failed');
+        $errorMessage = __('error_auth');
         if (!Auth::attemptWhen(
             [
                 $loginCol => $this->login,
                 'password' => $this->password,
 //                 fn (Builder $query) => $query->has('activeSubscription'),
-            ], function (User $user) {
-
+            ], function (User $user) use ($errorMessage) {
+            if ($user->is_blocked) {
+                $errorMessage = __('user_is_blocked');
+                return false;
+            }
+            return true;
         }, $this->boolean('remember'))
         ) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
-                'login' => __('auth.failed'),
+                'login' => $errorMessage,
             ]);
         }
 

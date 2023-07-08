@@ -4,6 +4,7 @@
             <title>{{__('home')}}</title>
 
         </template>
+
         <div class="relative    bg-gradient-to-t from-pink-300 via-purple-300 to-indigo-400">
             <!--Hero-->
             <div class="py-24    container    mx-auto    ">
@@ -76,6 +77,8 @@
                     </g>
                 </svg>
             </div>
+
+
         </div>
     </Scaffold>
 </template>

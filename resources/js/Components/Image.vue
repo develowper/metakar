@@ -1,6 +1,6 @@
 <template>
 
-    <img :src="src" :alt="alt" :class="classes+(loading?' animate-pulse bg-gray-200':' ')"
+    <img :src="src" :alt="alt" :class="classes+(loading?' animate-pulse bg-gray-200 ':' ')"
          @load="loading=!loading"
          @error="imageError ">
 </template>
@@ -14,7 +14,7 @@ export default {
     data() {
         return {
             loading: true,
-            retry: 2,
+            retry: 1,
         }
     },
     components: {UserIcon},

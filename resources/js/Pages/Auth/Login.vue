@@ -15,7 +15,7 @@ defineProps({
 });
 let showPassword = ref(false);
 const form = useForm({
-    email: '',
+    login: '',
     password: '',
     remember: false,
 });
@@ -57,7 +57,7 @@ const submit = () => {
 
                 </TextInput>
 
-                <InputError class="mt-2" :message="form.errors.email"/>
+                <InputError class="mt-2" :message="form.errors.login"/>
             </div>
 
             <div class="mt-4">
