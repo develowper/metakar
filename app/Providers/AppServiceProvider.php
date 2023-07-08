@@ -6,6 +6,7 @@ use App\Http\Helpers\Variable;
 use App\Models\Business;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
