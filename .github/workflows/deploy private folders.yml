@@ -11,7 +11,7 @@ jobs:
       - name: Sync files
         uses: SamKirkland/FTP-Deploy-Action@4.3.3
         with:
-          server: ftp.qr-image-creator.com
+          server: ftp.metakar.ir
           protocol: ftps
           port: 21
           username: metakar
