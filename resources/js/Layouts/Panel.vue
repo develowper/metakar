@@ -619,7 +619,7 @@ import {
 import Image from '../Components/Image.vue';
 import {useRemember} from '@inertiajs/vue3';
 import {router} from '@inertiajs/vue3';
-import {Sidenav, initTE, Carousel, Datepicker, Select, Timepicker, Dropdown, Ripple} from "tw-elements";
+import {initTE, Sidenav,} from "tw-elements";
 
 export default {
 
@@ -635,14 +635,15 @@ export default {
             activeTabe: false,
             isNotificationsPanelOpen: false,
             isOpen: {'business': false, 'article': false,},
-            user: this.$page.props.auth.user
+            user: this.$page.props.auth.user,
         }
     },
     props: [],
     created() {
     },
     mounted() {
-        initTE({Sidenav, Carousel, Datepicker, Select, Timepicker, Dropdown, Ripple});
+
+        initTE({Sidenav,});
 
         // let data = localStorage.getItem("menuStatus",);
         // if (data)
@@ -691,19 +692,7 @@ export default {
         delay(time) {
             return new Promise(resolve => setTimeout(resolve, time));
         },
-        toggleMenu(el) {
 
-            el.firstChild.lastChild.style.cssText = "-webkit-transition: all 0.3s ease-in-out;"
-            el.firstChild.lastChild.classList.toggle('rotate-180');
-
-            // el.lastChild.classList.toggle('opacity-0');
-
-            el.lastChild.classList.toggle('hidden');
-
-            // el.lastChild.style.display = el.lastChild.style.display == 'none' ? 'block' : 'none';
-
-
-        },
         menuIsActive(link) {
             return this.route().current(`${link}`);
         },

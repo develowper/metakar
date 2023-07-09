@@ -17,11 +17,13 @@
             <!-- Content -->
             <div class="mt-2">
                 <!-- State cards -->
-                <div class="grid grid-cols-1 gap-8 p-4 lg:grid-cols-2 xl:grid-cols-4">
+                <div class="grid grid-cols-1 gap-8 p-4 lg:grid-cols-2 xl:grid-cols-3">
+
                     <!-- wallet card -->
-                    <div class="flex shadow-sm items-center justify-between p-4 bg-white  rounded-lg dark:bg-darker">
+                    <div :class="cardShadow"
+                         class="flex   items-center justify-between p-4 bg-white  rounded-lg dark:bg-darker ">
                         <div>
-                            <h6 class="text-xs font-medium  py-2 tracking-wider text-gray-500 uppercase dark:text-primary-light">
+                            <h6 class="text-xs font-bold   py-2 tracking-wider text-gray-500 uppercase dark:text-primary-light">
                                 {{ __('wallet') }}
                             </h6>
                             <span class="text-xl font-semibold"> {{ asPrice(user.wallet) }} {{ __('currency') }}</span>
@@ -33,75 +35,35 @@
                         </div>
 
                     </div>
-
-                    <!-- Users card -->
-                    <div class="flex items-center justify-between p-4 bg-white rounded-md dark:bg-darker">
-                        <div>
-                            <h6 class="text-xs font-medium leading-none tracking-wider text-gray-500 uppercase dark:text-primary-light">
-                                Users
+                    <!-- ticket card -->
+                    <Link :href="route('panel.ticket.index')" :class="cardShadow"
+                          class="flex hover:scale-[101%] transition duration-300 cursor-pointer  shadow-sm items-center justify-around   p-4 bg-white  rounded-lg dark:bg-darker">
+                        <div class="flex flex-col grow">
+                            <h6 class="text-xs font-bold   py-2 tracking-wider text-gray-500 uppercase dark:text-primary-light">
+                                {{ __('tickets') }}
                             </h6>
-                            <span class="text-xl font-semibold">50,021</span>
-                            <span
-                                class="inline-block px-2 py-px ml-2 text-xs text-green-500 bg-green-100 rounded-md">
-                      +2.6%
-                    </span>
-                        </div>
-                        <div>
-                    <span>
-                      <svg class="w-12 h-12 text-gray-300 dark:text-primary-dark" xmlns="http://www.w3.org/2000/svg"
-                           fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
-                      </svg>
-                    </span>
-                        </div>
-                    </div>
 
-                    <!-- Orders card -->
-                    <div class="flex items-center justify-between p-4 bg-white rounded-md dark:bg-darker">
-                        <div>
-                            <h6 class="text-xs font-medium leading-none tracking-wider text-gray-500 uppercase dark:text-primary-light">
-                                Orders
-                            </h6>
-                            <span class="text-xl font-semibold">45,021</span>
-                            <span
-                                class="inline-block px-2 py-px ml-2 text-xs text-green-500 bg-green-100 rounded-md">
-                      +3.1%
-                    </span>
-                        </div>
-                        <div>
-                    <span>
-                      <svg class="w-12 h-12 text-gray-300 dark:text-primary-dark" xmlns="http://www.w3.org/2000/svg"
-                           fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
-                      </svg>
-                    </span>
-                        </div>
-                    </div>
+                            <div class="justify-center flex  ">
+                                <span v-for="t,idx in tickets" class="align-middle flex  flex-col text-center  ">
+                                        <span
+                                            :class="idx==0?'text-red-500':idx==1?'text-primary-500':'text-green-500'"
+                                            class="  text-xl font-semibold "> {{ t.value }}</span>
+                                        <span
+                                            :class="idx==0?'bg-red-100 text-red-500':idx==1?'bg-primary-100 text-primary-500':'bg-green-100 text-green-500'"
+                                            class="   mx-1 px-2 py-1    text-xs  rounded-md">
+                                   {{ t.title }}
+                                        </span>
+                                </span>
+                            </div>
 
-                    <!-- Tickets card -->
-                    <div class="flex items-center justify-between p-4 bg-white rounded-md dark:bg-darker">
-                        <div>
-                            <h6 class="text-xs font-medium leading-none tracking-wider text-gray-500 uppercase dark:text-primary-light">
-                                Tickets
-                            </h6>
-                            <span class="text-xl font-semibold">20,516</span>
-                            <span
-                                class="inline-block px-2 py-px ml-2 text-xs text-green-500 bg-green-100 rounded-md">
-                      +3.1%
-                    </span>
                         </div>
-                        <div>
-                    <span>
-                      <svg class="w-12 h-12 text-gray-300 dark:text-primary-dark" xmlns="http://www.w3.org/2000/svg"
-                           fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"></path>
-                      </svg>
-                    </span>
+                        <div class="flex">
+                            <TicketIcon class="w-12 h-12 text-primary-300 dark:text-pink-50 "/>
                         </div>
-                    </div>
+
+                    </Link>
+
+
                 </div>
 
                 <!-- Charts -->
@@ -277,11 +239,14 @@ export default {
             isMobileMainMenuOpen: false,
             isMobileSubMenuOpen: false,
             isOn: false,
-            user: this.$page.props.auth.user
+            user: this.$page.props.auth.user,
+            tickets: this.$page.props.tickets,
+            cardShadow: 'shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)]',
         }
     },
-    components: {Panel, Scaffold, CurrencyDollarIcon,  TicketIcon,},
+    components: {Panel, Scaffold, CurrencyDollarIcon, TicketIcon, Head, Link},
     mounted() {
+
 
     }
 

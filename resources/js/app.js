@@ -8,6 +8,7 @@ import {resolvePageComponent} from 'laravel-vite-plugin/inertia-helpers';
 import {ZiggyVue} from '../../vendor/tightenco/ziggy/dist/vue.m';
 import Mixins from "@/vue-mixins";
 import LoadScript from 'vue-plugin-load-script';
+import './scripts';
 
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
 
@@ -15,6 +16,7 @@ createInertiaApp({
     title: (title) => `${title} - ${appName}`,
     resolve: (name) => resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob('./Pages/**/*.vue')),
     setup({el, App, props, plugin}) {
+
         window.Vue = createApp({render: () => h(App, props)})
             .use(plugin)
             .use(ZiggyVue, Ziggy)
@@ -27,3 +29,6 @@ createInertiaApp({
         color: '#aa1111',
     },
 });
+
+
+

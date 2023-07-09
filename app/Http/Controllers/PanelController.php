@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Helpers\Variable;
 use App\Models\Ticket;
 use App\Models\Transaction;
 use App\Models\User;
@@ -49,9 +50,12 @@ class PanelController extends Controller
             ];
         } else {
             $component = 'Panel/Index';
+            $tickets = Ticket::select('status', DB::raw('COUNT(*) AS count'))->where('user_id', optional($user)->id)->groupBy('status')->get();
             $params = [
                 'transactions' => Transaction::select('type', DB::raw('COUNT(*) AS count'))->where('user_id', optional($user)->id)->groupBy('type')->get(),
-                'tickets' => Ticket::select('status', DB::raw('COUNT(*) AS count'))->where('user_id', optional($user)->id)->groupBy('status')->get(),
+                'tickets' => array_map(function ($el) {
+                    return ['title' => $el, 'value' => $tickets[$el] ?? 0];
+                }, Variable::TICKET_STATUSES),
 
             ];
         }
