@@ -23,5 +23,4 @@ jobs:
             **/.git*/**
             **/node_modules/**
             vendor/**
-            public/**
             server.php
