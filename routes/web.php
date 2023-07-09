@@ -10,6 +10,7 @@ use App\Http\Controllers\MainController;
 use App\Http\Controllers\PanelController;
 use App\Http\Controllers\PodcastController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SiteController;
 use App\Http\Controllers\VideoController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Auth;
@@ -86,6 +87,7 @@ Route::get('/prices', [MainController::class, 'pricesPage'])->name('page.prices'
 Route::get('/help', [MainController::class, 'helpPage'])->name('page.help');
 Route::get('/contact_us', [MainController::class, 'contactUsPage'])->name('page.contact_us');
 Route::get('/exchange', [ExchangeController::class, 'index'])->name('exchange.index');
+Route::get('/sites', [SiteController::class, 'index'])->name('site.index');
 
 
 Route::get('language/{language}', function ($language) {

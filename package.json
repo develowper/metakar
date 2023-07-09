@@ -24,6 +24,7 @@
     "dependencies": {
         "@heroicons/vue": "^2.0.18",
         "chart.js": "^4.3.0",
+        "dns": "^0.2.2",
         "tw-elements": "^1.0.0-beta2",
         "vue-plugin-load-script": "^2.1.1"
     }

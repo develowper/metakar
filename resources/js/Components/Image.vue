@@ -1,6 +1,6 @@
 <template>
 
-    <img :src="src" :alt="alt" :class="classes+(loading?' animate-pulse bg-gray-200 ':' ')"
+    <img :src="src" :alt="alt" :class="classes+(loading?' animate-pulse bg-gray-300 ':' ')"
          @load="loading=!loading"
          @error="imageError ">
 </template>

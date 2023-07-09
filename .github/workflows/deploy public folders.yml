@@ -28,3 +28,4 @@ jobs:
             index.php
             .htaccess
             uploads
+            build/**

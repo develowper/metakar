@@ -452,7 +452,7 @@
                             <!-- Notification button -->
                             <div class="relative mx-1" data-te-dropdown-ref>
                                 <button
-                                    class="flex p-1 items-center whitespace-nowrap rounded bg-primary  rounded-full text-primary-500 bg-primary-50 hover:text-primary hover:bg-primary-100    text-xs font-medium   leading-normal     transition duration-150 ease-in-out   hover:shadow-lg focus:bg-primary-200 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-primary-200 active:shadow-lg motion-reduce:transition-none dark:shadow-lg dark:hover:shadow-lg dark:focus:shadow-lg"
+                                    class="flex p-2 items-center whitespace-nowrap rounded bg-primary  rounded-full text-primary-500 bg-primary-50 hover:text-primary hover:bg-primary-100    text-xs font-medium   leading-normal     transition duration-150 ease-in-out   hover:shadow-lg focus:bg-primary-200 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-primary-200 active:shadow-lg motion-reduce:transition-none dark:shadow-lg dark:hover:shadow-lg dark:focus:shadow-lg"
                                     type="button"
                                     id="dropdownNotidicationSetting"
                                     data-te-dropdown-toggle-ref
@@ -487,7 +487,7 @@
                             <!-- Settings button -->
                             <div class="relative mx-1" data-te-dropdown-ref>
                                 <button
-                                    class="flex p-1 items-center whitespace-nowrap rounded bg-primary  rounded-full text-primary-500 bg-primary-50 hover:text-primary hover:bg-primary-100    text-xs font-medium   leading-normal     transition duration-150 ease-in-out   hover:shadow-lg focus:bg-primary-200 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-primary-200 active:shadow-lg motion-reduce:transition-none dark:shadow-lg dark:hover:shadow-lg dark:focus:shadow-lg"
+                                    class="flex p-2 items-center whitespace-nowrap rounded bg-primary  rounded-full text-primary-500 bg-primary-50 hover:text-primary hover:bg-primary-100    text-xs font-medium   leading-normal     transition duration-150 ease-in-out   hover:shadow-lg focus:bg-primary-200 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-primary-200 active:shadow-lg motion-reduce:transition-none dark:shadow-lg dark:hover:shadow-lg dark:focus:shadow-lg"
                                     type="button"
                                     id="dropdownMenuSetting"
                                     data-te-dropdown-toggle-ref
@@ -524,11 +524,11 @@
                                     aria-expanded="false"
                                     data-te-ripple-init
                                     data-te-ripple-color="light"
-                                    class=" flex transition-colors duration-200 rounded-full text-primary-500 bg-primary-50 hover:text-primary hover:bg-primary-100 dark:hover:text-light dark:hover:bg-primary-dark dark:bg-dark focus:outline-none focus:bg-primary-100 dark:focus:bg-primary-dark focus:ring-primary-darker">
+                                    class=" flex p-2 transition-colors duration-200 rounded-full text-primary-500 bg-primary-50 hover:text-primary hover:bg-primary-100 dark:hover:text-light dark:hover:bg-primary-dark dark:bg-dark focus:outline-none focus:bg-primary-100 dark:focus:bg-primary-dark focus:ring-primary-darker">
 
                                     <span class="sr-only">User menu</span>
                                     <Image
-                                        classes="  hover:shadow-lg  object-cover   rounded-full w-8 h-8  "
+                                        classes="   hover:shadow-lg  object-cover   rounded-full w-8 h-8  "
                                         src="https://images.unsplash.com/photo-1523779917675-b6ed3a42a561?ixid=MnwxMjA3fDB8MHxzZWFyY2h8N3x8d29tYW4lMjBibHVlfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=face&w=500&q=200"
                                         alt="jane avatar"
                                         type="user"/>
@@ -619,7 +619,7 @@ import {
 import Image from '../Components/Image.vue';
 import {useRemember} from '@inertiajs/vue3';
 import {router} from '@inertiajs/vue3';
-import {initTE, Sidenav,} from "tw-elements";
+import {initTE, Dropdown, Sidenav} from "tw-elements";
 
 export default {
 
@@ -642,8 +642,11 @@ export default {
     created() {
     },
     mounted() {
-
-        initTE({Sidenav,});
+        if (!window.Dropdown) {
+            window.Dropdown = Dropdown;
+            initTE({Dropdown});
+        }
+        initTE({Sidenav});
 
         // let data = localStorage.getItem("menuStatus",);
         // if (data)

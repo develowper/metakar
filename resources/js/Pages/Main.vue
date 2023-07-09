@@ -7,11 +7,11 @@
 
         <div class="relative    bg-gradient-to-t from-pink-300 via-purple-300 to-indigo-400">
             <!--Hero-->
-            <div class="py-24    container    mx-auto    ">
-                <div class="  px-3    flex   flex-col md:flex-row items-center">
+            <div class="py-24         mx-auto    ">
+                <div class="  px-3  sm:px-1  flex   flex-col md:flex-row items-center">
                     <!--                    Right Col-->
                     <div class="  md:w-2/5 py-6 text-center">
-                        <img class="md:w-full w-1/3   mx-auto  z-50   " :src="heroImage"/>
+                        <img class="w-full xs:w-3/4 sm:w-3/4   mx-auto  z-50   " :src="heroImage"/>
                     </div>
                     <!--Left Col-->
                     <div

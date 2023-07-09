@@ -2,5 +2,6 @@ import {Sidenav, initTE, Carousel, Datepicker, Select, Timepicker, Dropdown, Rip
 
 
 document.addEventListener("DOMContentLoaded", function (event) {
-    initTE({Dropdown});
+
+
 });

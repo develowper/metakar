@@ -2,7 +2,9 @@ import {defineConfig} from 'vite';
 import laravel from 'laravel-vite-plugin';
 import vue from '@vitejs/plugin-vue';
 import manifestSRI from 'vite-plugin-manifest-sri';
+import dns from 'dns';
 
+dns.setDefaultResultOrder('verbatim')
 export default defineConfig({
     plugins: [
         // manifestSRI(),
@@ -21,6 +23,8 @@ export default defineConfig({
         }),
     ],
     server: {
+        host: "localhost",
+        port: 3000,
         // cors: false,
         // proxy: {
         //     // string shorthand: http://localhost:5173/foo -> http://localhost:4567/foo
