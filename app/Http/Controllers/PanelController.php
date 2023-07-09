@@ -49,6 +49,7 @@ class PanelController extends Controller
 
             ];
         } else {
+
             $component = 'Panel/Index';
             $tickets = Ticket::select('status', DB::raw('COUNT(*) AS count'))->where('user_id', optional($user)->id)->groupBy('status')->get();
             $params = [
