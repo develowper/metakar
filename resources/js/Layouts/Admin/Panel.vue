@@ -574,6 +574,7 @@ import {
     CurrencyDollarIcon,
 } from "@heroicons/vue/24/outline";
 import Image from '@/Components/Image.vue';
+
 import {useRemember} from '@inertiajs/vue3';
 import {router} from '@inertiajs/vue3';
 import {Sidenav, initTE, Carousel, Datepicker, Select, Timepicker} from "tw-elements";
