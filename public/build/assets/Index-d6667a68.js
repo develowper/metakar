@@ -1,1 +1,0 @@
-import{_ as o}from"./_plugin-vue_export-helper-c27b6911.js";import{o as e,f as r}from"./app-ee34ed33.js";const t={};function n(s,a,c,p,_,d){return e(),r("div",null,"dashboard")}const l=o(t,[["render",n]]);export{l as default};

@@ -1,1 +1,0 @@
-import{_ as s}from"./_plugin-vue_export-helper-c27b6911.js";import{o as n,f as c}from"./app-ee34ed33.js";const o="/build/assets/logo-e4cc3e59.png",r={components:{Logo:o},data(){return{Logo:o}}},a=["src","alt"];function p(t,_,i,l,e,m){return n(),c("img",{src:e.Logo,alt:t.__("app_name")},null,8,a)}const u=s(r,[["render",p]]);export{u as A};
