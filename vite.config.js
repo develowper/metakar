@@ -21,7 +21,7 @@ export default defineConfig({
         }),
     ],
     server: {
-        cors: false,
+        // cors: false,
         // proxy: {
         //     // string shorthand: http://localhost:5173/foo -> http://localhost:4567/foo
         //     '/foo': 'http://localhost:4567',
