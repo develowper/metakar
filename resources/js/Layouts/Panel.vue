@@ -410,9 +410,9 @@
                 <!-- Navbar -->
                 <header class="relative bg-white dark:bg-darker">
                     <div class="flex items-center justify-between p-2 border-b dark:border-primary-darker">
-                        <!--   Menu toggle button -->
+                        <!--   Sidenav toggle button -->
                         <button data-te-sidenav-toggle-ref data-te-target="#sidenav-1"
-                                class="block border-0 bg-transparent px-2.5 text-gray-500 hover:no-underline hover:shadow-none focus:no-underline focus:shadow-none focus:outline-none focus:ring-0 xl:hidden"
+                                class="block border-0 bg-transparent px-2.5 text-gray-500 hover:no-underline hover:shadow-none focus:no-underline focus:shadow-none focus:outline-none focus:ring-0 "
                                 aria-controls="#sidenav-1" aria-haspopup="true" aria-expanded="false">
                 <span class="[&amp;>svg]:w-7 text-primary-500">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-7 w-7">
@@ -430,7 +430,7 @@
                         </Link>
 
 
-                        <!-- Desktop Right buttons -->
+                        <!-- Left Right buttons -->
                         <nav aria-label="Secondary" class="p-1    flex  items-center">
                             <!-- Toggle dark theme button -->
                             <button v-if="false" aria-hidden="true" class="relative focus:outline-none"
