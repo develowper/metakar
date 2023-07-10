@@ -16,7 +16,9 @@ return new class extends Migration {
             $table->increments('id');
             $table->string('name', 100);
             $table->string('slug', 100)->unique();
+            $table->boolean('is_active')->default(true);
             $table->integer('parent_id')->unsigned()->nullable();
+            $table->smallInteger('type')->unsigned()->nullable();
             $table->timestamps();
 
             $table->foreign('parent_id')->references('id')->on('categories')->onDelete('no action');

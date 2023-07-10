@@ -1,6 +1,6 @@
 <template>
     <div class="flex items-center ">
-        <div v-if="  $page.props.auth.user">
+        <div v-if=" user">
             <div class="group flex relative dropdown text-start">
                 <!-- Dropdown toggle button -->
                 <button @click="chevronShow=!chevronShow" @mouseover="chevronRotate=true;chevronShow=true"
@@ -8,7 +8,7 @@
                         class="relative z-10 flex items-center p-2 text-sm text-gray-600 bg-white border border-transparent rounded-md focus:border-blue-500 focus:ring-opacity-40 dark:focus:ring-opacity-40 focus:ring-blue-300 dark:focus:ring-blue-400 focus:ring dark:text-white dark:bg-gray-800 focus:outline-none">
                     <span :class=" chevronRotate?'rotate-90':'' " class="transition duration-500"><ChevronDownIcon
                         class="h-5 w-5"/> </span>
-                    <span class="mx-1">Jane Doe</span>
+                    <span class="mx-1"> {{ user.phone || user.email }}</span>
                 </button>
 
                 <!-- Dropdown menu -->
@@ -24,8 +24,10 @@
                                type="user"/>
 
                         <div class="flex-col  mx-1  ">
-                            <h1 class="    text-sm font-semibold text-gray-700 dark:text-gray-200">Jane Doe</h1>
-                            <div class="   text-sm text-gray-500 dark:text-gray-400 ">janedoe@exampl.com</div>
+                            <h1 class="    text-sm font-semibold text-gray-700 dark:text-gray-200">
+                                {{ user.fullname }}</h1>
+                            <div class="   text-sm text-gray-500 dark:text-gray-400 ">{{ user.phone || user.email }}
+                            </div>
                         </div>
                     </Link>
 
@@ -51,7 +53,7 @@
             </div>
 
         </div>
-        <Link :href="profileLink( )"
+        <Link v-else :href="profileLink( )"
               class="flex mx-1  border-2 text-white  border-transparent   font-medium
             focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-300 ease-in-out border-primary-500 p-2 rounded-lg bg-primary-500 rounded-lg hover:bg-primary-400">
             <UserIcon class=" h-5 w-5"/>
@@ -70,7 +72,7 @@ import Image from "@/Components/Image.vue";
 export default {
 
     data() {
-        return {chevronRotate: false, chevronShow: false}
+        return {chevronRotate: false, chevronShow: false, user: this.$page.props.auth.user}
     },
     components: {Link, UserIcon, ChevronDownIcon, Image, ArrowRightOnRectangleIcon},
     props: {},

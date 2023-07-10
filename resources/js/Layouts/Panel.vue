@@ -10,26 +10,30 @@
                 Loading.....
             </div>
 
+
             <!-- Sidebar -->
             <aside
 
-                class="  flex-shrink-0 shadow-lg hidden w-60 bg-white
-                dark:border-primary      md:block">
-
+                class="  overflow-x-hidden  ">
 
                 <!-- Sidenav -->
-                <nav
-                    id="sidenav-2"
-                    class="fixed start-0 top-0 z-[1035] h-screen w-60 -translate-x-full overflow-hidden bg-white  data-[te-sidenav-hidden='false']:translate-x-0 dark:bg-zinc-800"
-                    data-te-sidenav-init
-                    data-te-sidenav-hidden="false"
-                    data-te-sidenav-mode="side"
-                    data-te-sidenav-right="true"
-                    data-te-sidenav-content="#content">
-                    <ul class="relative m-0 list-none   text-primary-500" data-te-sidenav-menu-ref>
+                <nav id="sidenav-1"
+                     class="fixed start-0 top-0 z-[1035] h-screen w-60 -translate-x-full overflow-hidden bg-white shadow-[0_4px_12px_0_rgba(0,0,0,0.07),_0_2px_4px_rgba(0,0,0,0.05)] dark:bg-zinc-800 md:data-[te-sidenav-hidden='false']:translate-x-0"
+                     data-te-sidenav-init
+                     data-te-sidenav-mode-breakpoint-over="0"
+                     data-te-sidenav-mode-breakpoint-side="md"
+                     data-te-sidenav-hidden="false"
+                     data-te-sidenav-color="dark"
+                     data-te-sidenav-right="true"
+                     data-te-sidenav-content="#content"
+                     data-te-sidenav-scroll-container="#scrollContainer">
+
+
+                    <ul id="scrollContainer" class="relative m-0 list-none    text-primary-500"
+                        data-te-sidenav-menu-ref>
                         <li class="relative">
                             <Link :href="route('panel.index')"
-                                  class="py-4 flex    text-center outline-none transition duration-300 ease-linear hover:bg-slate-200 hover:text-inherit hover:outline-none focus:bg-slate-50 focus:text-inherit focus:outline-none active:bg-slate-50 active:text-inherit active:outline-none data-[te-sidenav-state-active]:text-inherit data-[te-sidenav-state-focus]:outline-none motion-reduce:transition-none dark:text-gray-300 dark:hover:bg-white/10 dark:focus:bg-white/10 dark:active:bg-white/10"
+                                  class="py-6 flex    text-center outline-none transition duration-300 ease-linear hover:bg-slate-200 hover:text-inherit hover:outline-none focus:bg-slate-50 focus:text-inherit focus:outline-none active:bg-slate-50 active:text-inherit active:outline-none data-[te-sidenav-state-active]:text-inherit data-[te-sidenav-state-focus]:outline-none motion-reduce:transition-none dark:text-gray-300 dark:hover:bg-white/10 dark:focus:bg-white/10 dark:active:bg-white/10"
                                   :class="{'bg-primary-100 text-primary-500':menuIsActive ( 'panel.index' )}"
                             >
                                 <span class="w-full"> {{ __('dashboard') }}</span>
@@ -402,19 +406,19 @@
 
             </aside>
             <!--Panel Main Side-->
-            <div class="flex-1 h-full overflow-x-hidden overflow-y-auto">
+            <div id="content" class="flex-1 h-full overflow-x-hidden overflow-y-auto">
                 <!-- Navbar -->
                 <header class="relative bg-white dark:bg-darker">
                     <div class="flex items-center justify-between p-2 border-b dark:border-primary-darker">
-                        <!-- Mobile menu button -->
-                        <button @click="isMobileMainMenuOpen = !isMobileMainMenuOpen"
-                                class="p-1 transition-colors duration-200 rounded-md text-primary-lighter bg-primary-50 hover:text-primary hover:bg-primary-100 dark:hover:text-light dark:hover:bg-primary-dark dark:bg-dark md:hidden focus:outline-none focus:ring">
-                            <span class="sr-only">Open main manu</span>
-                            <span aria-hidden="true">
-                  <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                       stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M4 6h16M4 12h16M4 18h16"></path>
+                        <!--   Menu toggle button -->
+                        <button data-te-sidenav-toggle-ref data-te-target="#sidenav-1"
+                                class="block border-0 bg-transparent px-2.5 text-gray-500 hover:no-underline hover:shadow-none focus:no-underline focus:shadow-none focus:outline-none focus:ring-0 xl:hidden"
+                                aria-controls="#sidenav-1" aria-haspopup="true" aria-expanded="false">
+                <span class="[&amp;>svg]:w-7 text-primary-500">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-7 w-7">
+                    <path fill-rule="evenodd"
+                          d="M3 6.75A.75.75 0 013.75 6h16.5a.75.75 0 010 1.5H3.75A.75.75 0 013 6.75zM3 12a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75A.75.75 0 013 12zm0 5.25a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75a.75.75 0 01-.75-.75z"
+                          clip-rule="evenodd"></path>
                   </svg>
                 </span>
                         </button>
@@ -562,13 +566,7 @@
                         </nav>
 
                     </div>
-                    <!-- Mobile main manu -->
-                    <div class="border-b md:hidden dark:border-primary-darker" v-show="isMobileMainMenuOpen"
-                         @click="isMobileMainMenuOpen = false" style="display: none;">
-                        <nav aria-label="Main" class="px-2 py-4 space-y-2">
 
-                        </nav>
-                    </div>
                 </header>
 
                 <!-- Main content -->
@@ -647,14 +645,33 @@ export default {
             initTE({Dropdown});
         }
         initTE({Sidenav});
+        const sidenav = document.getElementById("sidenav-1");
+        const sidenavInstance = Sidenav.getInstance(sidenav);
 
-        // let data = localStorage.getItem("menuStatus",);
-        // if (data)
-        //     try {
-        //         this.isOpen = JSON.parse(data);
-        //     } catch (error) {
-        //         localStorage.removeItem("menuStatus",);
-        //     }
+        let innerWidth = null;
+
+        const setMode = (e) => {
+            // Check necessary for Android devices
+            if (window.innerWidth === innerWidth) {
+                return;
+            }
+
+            innerWidth = window.innerWidth;
+
+            if (window.innerWidth < sidenavInstance.getBreakpoint("md")) {
+                sidenavInstance.changeMode("over");
+                sidenavInstance.hide();
+            } else {
+                sidenavInstance.changeMode("side");
+                sidenavInstance.show();
+            }
+        };
+
+        if (window.innerWidth < sidenavInstance.getBreakpoint("md")) {
+            setMode();
+        }
+
+        window.addEventListener("resize", setMode);
 
 
         // loadScript("https://cdn.jsdelivr.net/gh/alpine-collective/alpine-magic-helpers@0.5.x/dist/component.min.js")
