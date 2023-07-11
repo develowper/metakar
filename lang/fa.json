@@ -52,5 +52,18 @@
     "change_password": "تغییر رمزعبور",
     "currency": "تومان",
     "new_site": "سایت جدید",
+    "industry_mining": "صنعت\u200Cو\u200Cمعدن",
+    "estate": "املاک",
+    "trading": "بازرگانی",
+    "business": "کسب\u200Cو\u200Cکار",
+    "it": "سایت\u200Cو\u200Cرایانه",
+    "tutorial": "آموزش",
+    "car": "خودرو",
+    "personal_stuff": "لوازم\u200Cشخصی",
+    "home_stuff": "لوازم\u200Cخانه",
+    "employment": "استخدام",
+    "agriculture": "کشاورزی",
+    "wearing": "پوشاک",
+    "travel_entertainment": "سفر\u200Cو\u200Cتفریح",
     "": ""
 }

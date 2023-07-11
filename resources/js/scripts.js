@@ -1,7 +1,10 @@
-import {Sidenav, initTE, Carousel, Datepicker, Select, Timepicker, Dropdown, Ripple} from "tw-elements";
+import {Sidenav, initTE, Carousel, Datepicker, Select, Timepicker, Dropdown, Ripple, Toast} from "tw-elements";
 
 
 document.addEventListener("DOMContentLoaded", function (event) {
+
+
+    tailwindElements();
 
     try {
         if (
@@ -21,3 +24,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
 
 });
+
+const tailwindElements = () => {
+    // initTE({Toast});
+}

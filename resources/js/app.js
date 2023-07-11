@@ -9,7 +9,9 @@ import {ZiggyVue} from '../../vendor/tightenco/ziggy/dist/vue.m';
 import Mixins from "@/vue-mixins";
 import LoadScript from 'vue-plugin-load-script';
 import './scripts';
+import mitt from 'mitt';
 
+const emitter = mitt();
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
 
 createInertiaApp({
@@ -18,11 +20,13 @@ createInertiaApp({
     setup({el, App, props, plugin}) {
 
         window.Vue = createApp({render: () => h(App, props)})
+            // .component('Toast', Toast)
             .use(plugin)
             .use(ZiggyVue, Ziggy)
             .use(LoadScript)
-            .mixin(Mixins)
-            .mount(el);
+            .mixin(Mixins);
+        window.Vue.config.globalProperties.emitter = emitter;
+        window.Vue.mount(el);
         return window.Vue;
     },
     progress: {

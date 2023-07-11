@@ -1,7 +1,25 @@
-import {usePage} from "@inertiajs/vue3";
+import {usePage,} from "@inertiajs/vue3";
+import {inject, ref, defineEmits} from 'vue'
+
 
 export default {
+    // emits: ['showToast'],
+    // setup(props, ctx) {
+    //     ctx.emit('showToast')
+    // },
+
+    data() {
+        return {}
+    },
+    mounted() {
+        // console.log(inject('toast'));
+
+    },
     methods: {
+        showToast(type, message) {
+            this.emitter.emit('showToast', {type, message});
+
+        },
         /**
          * Translate the given key.
          */
@@ -28,4 +46,6 @@ export default {
             return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         },
     },
+
+
 }

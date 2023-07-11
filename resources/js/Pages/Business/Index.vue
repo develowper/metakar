@@ -203,7 +203,7 @@
 
 <script>
 import Scaffold from "@/Layouts/Scaffold.vue";
-import Panel from "@/Layouts/Panel.vue";
+import Panel from "@/Layouts/Panel/User.vue";
 import {Head, Link} from "@inertiajs/vue3";
 import {loadScript} from "vue-plugin-load-script";
 

@@ -32,7 +32,7 @@ class PanelController extends Controller
         $user = auth()->user();
         $role = optional($user)->role;
         if ($role == 'go') {
-            $component = 'Panel/God/Index';
+            $component = 'Panel/God';
             $params = [
                 'users' => User::select('role', DB::raw('COUNT(*) AS count'))->groupBy('role')->get(),
                 'transactions' => Transaction::select('type', DB::raw('COUNT(*) AS count'))->groupBy('type')->get(),
@@ -41,7 +41,7 @@ class PanelController extends Controller
             ];
 
         } elseif ($role == 'ad') {
-            $component = 'Panel/Admin/Index';
+            $component = 'Panel/Admin';
             $params = [
                 'users' => User::select('role', DB::raw('COUNT(*) AS count'))->groupBy('role')->get(),
                 'transactions' => Transaction::select('type', DB::raw('COUNT(*) AS count'))->groupBy('type')->get(),
@@ -50,7 +50,7 @@ class PanelController extends Controller
             ];
         } else {
 
-            $component = 'Panel/Index';
+            $component = 'Panel/User';
             $tickets = Ticket::select('status', DB::raw('COUNT(*) AS count'))->where('user_id', optional($user)->id)->groupBy('status')->get();
             $params = [
                 'transactions' => Transaction::select('type', DB::raw('COUNT(*) AS count'))->where('user_id', optional($user)->id)->groupBy('type')->get(),

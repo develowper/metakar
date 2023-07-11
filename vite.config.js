@@ -2,9 +2,7 @@ import {defineConfig} from 'vite';
 import laravel from 'laravel-vite-plugin';
 import vue from '@vitejs/plugin-vue';
 import manifestSRI from 'vite-plugin-manifest-sri';
-import dns from 'dns';
 
-dns.setDefaultResultOrder('verbatim')
 export default defineConfig({
     plugins: [
         // manifestSRI(),
