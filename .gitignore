@@ -9,6 +9,7 @@
 .env
 .env.backup
 .env.example
+.gitattributes
 .env.production
 .phpunit.result.cache
 Homestead.json

@@ -13,8 +13,9 @@ import {
     Input,
     Alert,
 } from "tw-elements";
+import axios, {isCancel, AxiosError} from 'axios';
 
-
+window.axios = axios.create();
 document.addEventListener("DOMContentLoaded", function (event) {
 
 

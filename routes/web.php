@@ -28,7 +28,7 @@ use Inertia\Inertia;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Route::get('storage')->name('storage');
 Route::get('test', function () {
 
 });
@@ -80,7 +80,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::post('site/create', [SiteController::class, 'create'])->name('site.create')->middleware('can:create,App\Models\User,App\Models\Site,""');
-    Route::post('site/search', [SiteController::class, 'search'])->name('site.search');
+    Route::get('site/search', [SiteController::class, 'search'])->name('site.search');
 });
 
 Route::get('/podcasts', [PodcastController::class, 'index'])->name('podcast.index');
