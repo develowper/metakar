@@ -391,11 +391,8 @@ export default {
     },
     methods: {
         getData() {
-            this.form.img = this.$refs.imageCropper.getCroppedData();
-            this.form.lang = this.$refs.langSelector.selected;
-            this.form.category_id = this.$refs.categorySelector.selected;
-            this.form.clearErrors();
-            this.form.get(route('site.create'), {
+
+            this.form.get(route('site.index'), {
                 preserveScroll: false,
                 onFinish: (data) => {
                 },

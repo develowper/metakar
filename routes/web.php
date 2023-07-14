@@ -80,6 +80,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::post('site/create', [SiteController::class, 'create'])->name('site.create')->middleware('can:create,App\Models\User,App\Models\Site,""');
+    Route::post('site/search', [SiteController::class, 'search'])->name('site.search');
 });
 
 Route::get('/podcasts', [PodcastController::class, 'index'])->name('podcast.index');

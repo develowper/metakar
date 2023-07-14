@@ -20,6 +20,23 @@ class SiteController extends Controller
 
     }
 
+    public function search(Request $request)
+    {
+        $user = $request->user();
+        $search = $request->search;
+        $page = $request->page ?: 1;
+        $paginate = $request->paginate ?: 24;
+
+        $query = Site::query();
+        if ($user->role == 'us')
+            $query = $query->where('owner_id', $user->id);
+
+        if ($search)
+            $query = $query->orWhere('name', 'like', "%$search%")->orWhere('link', 'like', "%$search%");
+
+        $query->paginate();
+    }
+
     public function create(Request $request)
     {
 
