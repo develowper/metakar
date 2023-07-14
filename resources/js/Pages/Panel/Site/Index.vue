@@ -14,10 +14,10 @@
                 <h1 class="text-2xl font-semibold">{{ __('sites_list') }}</h1>
             </div>
             <!-- Content -->
-            <div class="mt-2">
+            <div class="px-2  md:px-4">
 
-                <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-                    <div class="flex items-center justify-between py-4 bg-white dark:bg-gray-800">
+                <div class="relative overflow-x-auto shadow-lg  rounded-lg">
+                    <div class="flex items-center justify-between py-4 bg-white dark:bg-gray-800 p-4">
                         <div>
                             <button id="dropdownActionButton" data-dropdown-toggle="dropdownAction"
                                     class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-3 py-1.5 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
@@ -370,7 +370,7 @@
 <script>
 import Scaffold from "@/Layouts/Scaffold.vue";
 import Panel from "@/Layouts/Panel/User.vue";
-import {Head, Link} from "@inertiajs/vue3";
+import {Head, Link, useForm} from "@inertiajs/vue3";
 import {ChevronDownIcon, HomeIcon} from "@heroicons/vue/24/outline";
 import {
     Bars2Icon,
@@ -378,12 +378,36 @@ import {
 } from "@heroicons/vue/24/outline";
 
 export default {
+    data() {
+        return {
+            form: useForm(),
+        }
+    },
     components: {
         Head, Link, HomeIcon, ChevronDownIcon, Panel, Bars2Icon
     },
     mounted() {
 
-    }
+    },
+    methods: {
+        getData() {
+            this.form.img = this.$refs.imageCropper.getCroppedData();
+            this.form.lang = this.$refs.langSelector.selected;
+            this.form.category_id = this.$refs.categorySelector.selected;
+            this.form.clearErrors();
+            this.form.get(route('site.create'), {
+                preserveScroll: false,
+                onFinish: (data) => {
+                },
+                onSuccess: (data) => {
+                    this.showAlert(this.$page.props.flash.status, this.$page.props.flash.message);
+                    this.form.reset();
+
+                },
+                onError: () => this.showToast('danger', Object.values(this.form.errors).join("<br/>"))
+            });
+        },
+    },
 
 }
 </script>
