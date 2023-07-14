@@ -34,7 +34,7 @@ class SiteController extends Controller
         if ($search)
             $query = $query->orWhere('name', 'like', "%$search%")->orWhere('link', 'like', "%$search%");
 
-        $query->paginate();
+        return $query->paginate();
     }
 
     public function create(Request $request)

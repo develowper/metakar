@@ -389,7 +389,7 @@ export default {
     Head, Link, HomeIcon, ChevronDownIcon, Panel, Bars2Icon
   },
   mounted() {
-    console.log('hi')
+
     this.getData();
   },
   methods: {
