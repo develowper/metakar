@@ -23,5 +23,8 @@ export default {
     components: {
         Head, Link, Navbar, Footer
     },
+    mounted() {
+        window.tailwindElements();
+    }
 }
 </script>

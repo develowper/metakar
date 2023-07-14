@@ -1,14 +1,16 @@
 <template>
 
-    <div class="   ">
+    <div class="  ">
 
-        <div class="   w-100   ">
+        <div class="">
 
             <label :for="id"
                    class=" text-center d-none"> </label>
             <!--<div :style="'width:'+(cropRatio*height)+'rem;height:'+height+'rem'"-->
-            <div :style="'height:'+height+'rem; ' "
-                 class="  uploader-container w-100  " :id="'container-' + this.id"
+            <div v-show="!doc"
+                 :style="'height:'+height+'rem; ' "
+                 class="  flex justify-center  items-center  uploader-container w-100 rounded-lg p-3 "
+                 :id="'container-' + this.id"
                  style="border:dashed"
                  role="form" @mouseover="uploader.classList.add('hover');"
                  @dragover.prevent="uploader.classList.add('hover');"
@@ -17,11 +19,10 @@
                  @drop.prevent="uploader.classList.remove('hover');filePreview($event  ) "
                  @click="openFileChooser($event,id+'-file')">
 
-                <div>
-                    <div class=" p-2  small text-center ">
+                <div class="  ">
+                    <div class=" p-2  small text-center     ">
                         {{ label }}
                     </div>
-                    <div class="text-center text-dark ">فرمت .jpg</div>
                 </div>
 
                 <input v-show="false" :id="id+'-file'" class="col-12    " accept=".png, .jpg, .jpeg" type="file"
@@ -32,31 +33,35 @@
 
             </div>
             <div v-show="doc" class="    rounded-lg  w-100" style="overflow-x: auto">
-                <img v-show="doc" :id="'img-'+id" class=" mw-100     "
+                <img v-show="doc" :id="'img-'+id" class="     "
                      @error="errorImage()"
                      @load="  uploadContainer.classList.add('d-none');initCropper()"
                      :src="doc"
+                     :style="'height:'+height+'rem; ' "
                      alt=""/>
-                <div class="btn-group my-1 w-100  " role="group">
-                    <div v-if="mode=='edit'" class="btn p-2 bg-danger text-white m-0"
-                         title="حذف تصویر" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                <div class="flex my-1 w-100   " role="group">
+                    <div v-if="mode=='edit'"
+                         class="text-center cursor-pointer hover:bg-danger-600  p-2 bg-danger text-white grow "
+                         :title="__('remove')"
                          @click="clearImage() ;">
-                        <i class="fa fa-window-close text-white" aria-hidden="true"></i>
+                        <XMarkIcon class="w-4 h-4  mx-auto text-white bg-danger text-white"/>
                     </div>
-                    <div v-if="mode=='edit'" class="btn p-2 bg-success text-white m-0"
-                         title="آپلود تصویر" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                    <div v-if="mode=='edit'" class="cursor-pointer hover:bg-success-600  p-2 bg-success text-white grow"
+                         :title="__('upload')"
                          @click="uploadImage()">
-                        <i class="fa fa-upload text-white" aria-hidden="true"></i>
+                        <CheckIcon class="w-4 h-4  mx-auto text-white bg-success text-white"/>
                     </div>
-                    <div v-if="mode!='edit'" class="btn btn-block p-2 bg-success text-white m-0"
-                         title="برش تصویر" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                    <div v-if="false && mode!='edit'"
+                         class="cursor-pointer hover:bg-success-600 p-2 bg-success text-white grow rounded-s-lg"
+                         :title="__('crop')"
                          @click="cropImage()">
-                        <i class="fa fa-2x fa-crop-alt text-white" aria-hidden="true"></i>
+                        <CheckIcon class="w-4 h-4   mx-auto text-white bg-success text-white"/>
                     </div>
-                    <div v-if="mode!='edit'" class="btn btn-block p-2 bg-danger text-white m-0"
-                         title="حذف تصویر" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                    <div v-if="mode!='edit'"
+                         class="  cursor-pointer hover:bg-danger-600 p-2 bg-danger text-white grow rounded-lg"
+                         :title="__('remove')"
                          @click="refresh()">
-                        <i class="fa fa-2x fa-recycle text-white" aria-hidden="true"></i>
+                        <XMarkIcon class="w-4 h-4  mx-auto text-white bg-danger text-white"/>
                     </div>
                 </div>
             </div>
@@ -92,13 +97,14 @@ let canvas;
 
 
 import Cropper from 'cropperjs';
-
+import Tooltip from "@/Components/Tooltip.vue";
+import {XMarkIcon, CheckIcon,} from "@heroicons/vue/24/solid";
 
 export default {
 
 
     props: ['link', 'id', 'type', 'height', 'required', 'preload', 'label', 'mode', 'forId', 'callback', 'images', 'limit', 'cropRatio'],
-    components: {},
+    components: {Tooltip, XMarkIcon, CheckIcon},
     data() {
         return {
             componentKey: 1,
@@ -434,7 +440,7 @@ export default {
 </script>
 
 <style type="text/css" lang="scss">
-@import "~cropperjs/dist/cropper.css";
+@import "cropperjs/dist/cropper.min.css";
 
 $color: #6f42c1;
 .uploader-container {

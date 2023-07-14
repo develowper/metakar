@@ -12,6 +12,7 @@ use App\Http\Controllers\PodcastController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SiteController;
 use App\Http\Controllers\VideoController;
+use App\Models\Site;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -51,7 +52,9 @@ Route::middleware(['auth', 'verified'])->prefix('panel')->group(function () {
     PanelController::makeInertiaRoute('get', 'article/index', 'panel.article.index', 'Panel/Business/Index');
     PanelController::makeInertiaRoute('get', 'article/new', 'panel.article.new', 'Panel/Business/Create');
     PanelController::makeInertiaRoute('get', 'site/index', 'panel.site.index', 'Panel/Site/Index');
-    PanelController::makeInertiaRoute('get', 'site/new', 'panel.site.new', 'Panel/Site/Create');
+    PanelController::makeInertiaRoute('get', 'site/new', 'panel.site.new', 'Panel/Site/Create', [
+        'categories' => Site::categories('parents'),
+    ]);
     PanelController::makeInertiaRoute('get', 'text/index', 'panel.text.index', 'Panel/Text/Index');
     PanelController::makeInertiaRoute('get', 'text/new', 'panel.text.new', 'Panel/Text/Create');
     PanelController::makeInertiaRoute('get', 'image/index', 'panel.image.index', 'Panel/Image/Index');
@@ -75,6 +78,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::post('site/create', [SiteController::class, 'create'])->name('site.create')->middleware('can:create,App\Models\User,App\Models\Site,""');
 });
 
 Route::get('/podcasts', [PodcastController::class, 'index'])->name('podcast.index');

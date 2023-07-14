@@ -20,6 +20,10 @@ export default {
             this.emitter.emit('showToast', {type, message});
 
         },
+        showAlert(type, message) {
+            this.emitter.emit('showAlert', {type, message});
+
+        },
         /**
          * Translate the given key.
          */

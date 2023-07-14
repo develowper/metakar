@@ -3,6 +3,8 @@
         <Head>
             <slot name="header"/>
         </Head>
+        <Alert v-show="$page.props.flash.status" ref="alert"/>
+
         <Toast ref="toast"/>
         <div class="  flex h-screen antialiased text-gray-900 bg-gray-100 dark:bg-dark dark:text-light">
             <!-- Loading screen -->
@@ -142,7 +144,7 @@
                                     <span class="sr-only">User menu</span>
                                     <Image
                                         classes="   hover:shadow-lg  object-cover   rounded-full w-8 h-8  "
-                                        src="https://images.unsplash.com/photo-1523779917675-b6ed3a42a561?ixid=MnwxMjA3fDB8MHxzZWFyY2h8N3x8d29tYW4lMjBibHVlfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=face&w=500&q=200"
+                                        src="https://www.kindpng.com/free/profile-picture"
                                         alt="jane avatar"
                                         type="user"/>
                                 </button>
@@ -216,12 +218,14 @@ import {Dropdown, initTE, Sidenav} from "tw-elements";
 import {provide, onMounted, getCurrentInstance} from "vue";
 import {router} from '@inertiajs/vue3'
 import mitt from 'mitt'
+import Alert from "@/Components/Alert.vue";
 
 export const emitter = mitt()
 let self;
 
 export default {
     components: {
+        Alert,
         Head, Link, Navbar, Footer, Toast, Bars3Icon, BellAlertIcon, Cog6ToothIcon, Image, ArrowRightOnRectangleIcon
     },
 
@@ -235,14 +239,10 @@ export default {
         }
     },
     mounted() {
+        window.tailwindElements();
 
-        if (!window.Dropdown) {
-            window.Dropdown = Dropdown;
-            initTE({Dropdown});
-        }
         initTE({Sidenav});
-        const sidenav = document.getElementById("sidenav-1");
-        const sidenavInstance = Sidenav.getInstance(sidenav);
+
 
         let innerWidth = null;
 
@@ -254,16 +254,16 @@ export default {
 
             innerWidth = window.innerWidth;
 
-            if (window.innerWidth < sidenavInstance.getBreakpoint("md")) {
-                sidenavInstance.changeMode("over");
-                sidenavInstance.hide();
+            if (window.innerWidth < window.Sidenav.getBreakpoint("md")) {
+                window.Sidenav.changeMode("over");
+                window.Sidenav.hide();
             } else {
-                sidenavInstance.changeMode("side");
-                sidenavInstance.show();
+                window.Sidenav.changeMode("side");
+                window.Sidenav.show();
             }
         };
 
-        if (window.innerWidth < sidenavInstance.getBreakpoint("md")) {
+        if (window.innerWidth < window.Sidenav.getBreakpoint("md")) {
             setMode();
         }
 
@@ -272,6 +272,11 @@ export default {
 
         this.emitter.on('showToast', (e) => {
             this.$refs.toast.show(e.type, e.message);
+        });
+
+        this.emitter.on('showAlert', (e) => {
+            if (this.$refs.alert)
+                this.$refs.alert.show(e.type, e.message);
         });
 
     },

@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Http\Helpers\Variable;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Tightenco\Ziggy\Ziggy;
@@ -36,10 +37,11 @@ class HandleInertiaRequests extends Middleware
                 'user' => $request->user(),
             ],
             'location' => $request->url(),
-            'user' => optional(auth()->user())->only(['id', 'fullname', 'username',]),
+//            'user' => optional(auth()->user())->only(['id', 'fullname', 'username',]),
             'locale' => function () {
                 return app()->getLocale();
             },
+            'langs' => Variable::LANGS,
             'images' => asset('assets/images') . '/',
             'language' => function () {
                 if (!file_exists(lang_path('/' . app()->getLocale() . '.json'))) {
@@ -55,6 +57,10 @@ class HandleInertiaRequests extends Middleware
                     'location' => $request->url(),
                 ]);
             },
+            'flash' => [
+                'message' => fn() => $request->session()->get('flash_message'),
+                'status' => fn() => $request->session()->get('flash_status'),
+            ],
         ]);
     }
 }

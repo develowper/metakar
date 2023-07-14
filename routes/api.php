@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BotController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -13,7 +14,13 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::post('senderror', [\App\Http\Controllers\Controller::class, 'sendError']);
+Route::post('/bot/getupdates', [BotController::class, 'getupdates']);
+Route::post('/bot/sendmessage', [BotController::class, 'sendmessage']);
+Route::get('/bot/getme', [BotController::class, 'myInfo']);
+
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+

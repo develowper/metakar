@@ -2,7 +2,7 @@
     <!--    Toast-->
     <div
         :class="`bg-${color}-100 text-${color}-700`"
-        class="   fixed bottom-0 start-64 pointer-events-auto mx-auto mb-4 hidden w-96 max-w-full rounded-lg   bg-clip-padding text-sm   shadow-lg shadow-black/5 data-[te-toast-show]:block data-[te-toast-hide]:hidden"
+        class=" z-[9999] fixed bottom-0 start-64 pointer-events-auto mx-auto mb-4 hidden w-96 max-w-full rounded-lg   bg-clip-padding text-sm   shadow-lg shadow-black/5 data-[te-toast-show]:block data-[te-toast-hide]:hidden"
         id="toast"
         role="alert"
         aria-live="assertive"
@@ -12,18 +12,18 @@
         data-te-toast-init
         data-te-class-fadeIn="animate-[fade-in_3s_both]"
     >
-        <div :class="`border-${color}-200 bg-${color}-100 text-${color}-700`"
-             class="flex items-center justify-between rounded-t-lg border-b-2  bg-clip-padding px-4 pb-2 pt-2.5  ">
+        <div :class="`border-b-2 border-${color}-700 bg-${type}-200 text-${type}`"
+             class="flex items-center justify-between rounded-t-lg   bg-clip-padding px-4 pb-2 pt-2.5  ">
             <p :class="`text-${color}-700`" class="flex items-center font-bold  ">
-                <ExclamationCircleIcon :class="`text-${color}-700`" class="h-4 w-4" v-if="type=='info'"/>
+                <ExclamationCircleIcon :class="`text-${type}`" class="h-4 w-4" v-if="type=='info'"/>
 
-                <CheckCircleIcon :class="`text-${color}-700`" class="h-4 w-4" v-if="type=='success'"/>
-                <ExclamationTriangleIcon :class="`text-${color}-700`" class="h-4 w-4" v-if="type=='warning'"/>
+                <CheckCircleIcon :class="`text-${type}`" class="h-4 w-4" v-if="type=='success'"/>
+                <ExclamationTriangleIcon :class="`text-${type}`" class="h-4 w-4" v-if="type=='warning'"/>
                 <XCircleIcon :class="`text-${color}-700`" class="h-4 w-4" v-if="type=='danger'"/>
 
             </p>
             <div class="flex items-center">
-                <p class="text-xs " :class="`text-${color}-700`"></p>
+                <p class="text-xs " :class="`text-${type}`"></p>
                 <button
                     type="button"
                     class="ml-2 box-content rounded-none border-none opacity-80 hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none"
@@ -47,9 +47,9 @@
                 </button>
             </div>
         </div>
-        <div
-            class="break-words rounded-b-lg   px-4 py-4  " :class="`text-${color}-700 bg-${color}-100`">
-            {{ message }}
+
+        <div v-html="message"
+             class="  rounded-b-lg   px-4 py-2  " :class="`text-${type} border-2 border-t-${color}-900`">
         </div>
     </div>
 
@@ -75,8 +75,8 @@ export default {
 
 
     mounted() {
-        initTE({Toast});
-        this.toast = Toast.getInstance(document.getElementById('toast'))
+        // initTE({Toast});
+        // this.toast = Toast.getInstance(document.getElementById('toast'))
     },
     // watch: {
     //     type: {
@@ -92,7 +92,8 @@ export default {
             this.message = message;
             this.color = this.type == 'danger' ? 'red' : this.type == 'success' ? 'green' : this.type == 'warning' ? 'warning' : 'primary';
 
-            this.toast.show();
+            window.Toast.show();
+            // this.toast.show();
 
         },
         success(text) {

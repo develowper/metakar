@@ -14,6 +14,26 @@ class Variable
     const MODELS = [User::class => 1, Business::class => 2, Site::class => 3,];
     const ROLES = ['us', 'ad', 'go',];
     const  TICKET_STATUSES = ['در حال بررسی', 'بسته شده', 'پاسخ داده شده'];
+    const CATEGORIES = [
+        ['name' => 'industry_mining',],
+        ['name' => 'estate',],
+        ['name' => 'trading',],
+        ['name' => 'business',],
+        ['name' => 'it',],
+        ['name' => 'tutorial',],
+        ['name' => 'car',],
+        ['name' => 'personal_stuff',],
+        ['name' => 'home_stuff',],
+        ['name' => 'employment',],
+        ['name' => 'agriculture',],
+        ['name' => 'wearing',],
+        ['name' => 'travel_entertainment',],
+
+    ];
+    const SITE_IMAGE_LIMIT_MB = 4;
+    const SITE_ALLOWED_MIMES = ['jpeg', 'jpg', 'png'];
+    const LOGS = [72534783];
+    const IMAGE_FOLDERS = [Site::class => 'sites'];
 
     static function getAdmins()
     {
@@ -26,5 +46,6 @@ class Variable
             ],
         ];
     }
+
 
 }

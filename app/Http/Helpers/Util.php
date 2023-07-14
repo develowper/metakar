@@ -5,11 +5,33 @@ namespace App\Http\Helpers;
 use Illuminate\Http\File;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class Util
 {
 
+    static function createImage($img, $type, $name)
+    {
+
+        $image_parts = explode(";base64,", $img);
+        $image_type_aux = explode("image/", $image_parts[0]);
+        $image_type = $image_type_aux[1];
+        $image_base64 = base64_decode($image_parts[1]);
+
+        if (!Storage::exists("public/$type")) {
+            Storage::makeDirectory("public/$type");
+        }
+        $source = imagecreatefromstring($image_base64);
+//        imagetruecolortopalette($source, false, 16);
+        $imageSave = imagejpeg($source, storage_path("app/public/$type/$name.jpg"), 80);
+        imagedestroy($source);
+        return $imageSave;
+        return "/storage/$type/$name.jpg";
+//        file_put_contents(storage_path("app/public/$type_id/$image->id.jpg"), $image_base64);
+
+
+    }
 
     static function validate_base64($base64data, array $allowedMime)
     {

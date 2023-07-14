@@ -23,7 +23,7 @@ return new class extends Migration {
             $table->string('password', 200);
             $table->string('telegram_id', 50)->nullable();
             $table->enum('role', \App\Http\Helpers\Variable::ROLES)->default(\App\Http\Helpers\Variable::ROLES[0]);
-            $table->boolean('is_active')->default(false);
+            $table->boolean('is_active')->default(true);
             $table->boolean('is_blocked')->default(false);
             $table->integer('notifications')->unsigned()->default(0);
             $table->integer('wallet')->default(0);

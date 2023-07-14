@@ -3,7 +3,8 @@
 namespace App\Http\Helpers;
 
 
-use App\User;
+use App\Models\Category;
+use App\Models\User;
 use DateTimeZone;
 use   Illuminate\Support\Facades\Http;
 use Morilog\Jalali\Jalalian;
@@ -46,7 +47,7 @@ class Telegram
         $response = json_decode($res->body());
         $response->url = $url;
         $response->photo = $photo;
-//        self::sendMessage(Helper::$logs[0], json_encode($response));
+//        self::sendMessage(Variable::$logs[0], json_encode($response));
         return $response;
     }
 
@@ -78,7 +79,7 @@ class Telegram
 
     static function logAdmins($msg, $mode = null)
     {
-        foreach (Helper::$logs as $log)
+        foreach (Variable::LOGS as $log)
             self::sendMessage($log, $msg, $mode);
 
     }
@@ -90,21 +91,10 @@ class Telegram
 
         $res = Http::asForm()->post($url, $datas);
         if ($res->status() != 200)
-            self::sendMessage(Helper::$logs[0], $res->body() . PHP_EOL . print_r($datas, true));
+            self::sendMessage(Variable::LOGS[0], $res->body() . PHP_EOL . print_r($datas, true));
         return json_decode($res->body());
 
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $datas);
-        $res = curl_exec($ch);
-//        self::sendMessage(Helper::$logs[0], $res);
-        if (curl_error($ch)) {
-            self::sendMessage(Helper::$logs[0], curl_error($ch));
-            return (curl_error($ch));
-        } else {
-            return json_decode($res);
-        }
+
     }
 
     public
@@ -908,7 +898,8 @@ class Telegram
                 default :
                     $msg = $data;
             }
-//            self::sendMessage($to, $msg, null);
+            if ($to)
+                self::sendMessage($to, $msg, null);
             self::logAdmins($msg, null);
 
         } catch (\Exception $e) {
