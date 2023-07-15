@@ -18,6 +18,7 @@ use App\Models\Site;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 /*
@@ -31,8 +32,8 @@ use Inertia\Inertia;
 |
 */
 Route::get('test', function () {
-
-    return Telegram::log(null, 'site_created', Site::find(2));
+    Storage::makeDirectory("public/sites", 0755);
+//    return Telegram::log(null, 'site_created', Site::find(2));
 });
 
 Route::get('storage')->name('storage');
