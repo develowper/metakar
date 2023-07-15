@@ -2,10 +2,11 @@
 
 namespace App\Http\Helpers;
 
-use Illuminate\Http\File;
+
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 
 class Util
@@ -20,7 +21,7 @@ class Util
         $image_base64 = base64_decode($image_parts[1]);
 
         if (!Storage::exists("public/$type")) {
-            Storage::makeDirectory("public/$type");
+            File::makeDirectory(Storage::path("public/$type"), $mode = 0755,);
         }
         $source = imagecreatefromstring($image_base64);
 //        imagetruecolortopalette($source, false, 16);
