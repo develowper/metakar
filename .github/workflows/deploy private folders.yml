@@ -27,3 +27,4 @@ jobs:
             .env
             **/.**
             public/build/**
+            public/hot
