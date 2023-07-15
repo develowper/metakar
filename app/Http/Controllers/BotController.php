@@ -19,7 +19,7 @@ use PhpParser\Node\Stmt\Else_;
 
 class BotController extends Controller
 {
-    protected $logs;
+    protected $logs, $user;
 
     public function __construct()
     {
