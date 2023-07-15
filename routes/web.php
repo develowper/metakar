@@ -32,7 +32,7 @@ use Inertia\Inertia;
 */
 Route::get('test', function () {
 
-    return Telegram::log(null, 'site_created', Site::find(1));
+//    return Telegram::log(null, 'site_created', Site::find(1));
 });
 
 Route::get('storage')->name('storage');
