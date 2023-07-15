@@ -32,16 +32,12 @@ use Inertia\Inertia;
 */
 Route::get('test', function () {
 
-    return Category::findOrNew(2)->name;
+    return Telegram::log(null, 'site_created', Site::find(1));
 });
 
 Route::get('storage')->name('storage');
 Route::get('storage/sites')->name('storage.sites');
-Route::get('test', function () {
-    return Inertia::render('Main', [
-        'data' => dd(Telegram::log(null, 'site_created', Site::find(1)))
-    ]);
-});
+
 Route::get('/', function () {
     return Inertia::render('Main', [
         'canLogin' => Route::has('login'),

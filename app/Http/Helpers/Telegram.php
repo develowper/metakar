@@ -459,7 +459,7 @@ class Telegram
                     $msg .= " 🚥 " . "دسته بندی: " . __(Category::findOrNew($data->category_id)->name) . PHP_EOL;
                     $msg .= " 🔖 " . "تگ ها:" . PHP_EOL . $data->tags . PHP_EOL;
                     $msg .= " 📜 " . "توضیحات:" . PHP_EOL . $data->tags . PHP_EOL;
-                    $msg .= " 🖼 " . "تصویر:" . PHP_EOL . route('storage.site') . "/$data->id.jpg" . PHP_EOL;
+                    $msg .= " 🖼 " . "تصویر:" . PHP_EOL . route('storage.sites') . "/$data->id.jpg" . PHP_EOL;
 
 
                 case 'contact_created':
@@ -919,10 +919,11 @@ class Telegram
             }
             if ($to)
                 return self::sendMessage($to, $msg, null);
+
             return self::logAdmins($msg, null);
 
         } catch (\Exception $e) {
-            return self::sendMessage($to, $e->getMessage(), null);
+            return self::sendMessage(Variable::LOGS[0], $e->getMessage(), null);
 
         }
     }
