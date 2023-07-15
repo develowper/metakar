@@ -89,7 +89,7 @@ class Telegram
 
     static function creator($method, $datas = [])
     {
-//        if (!str_contains(url('/'), '.com') && !str_contains(url('/'), '.ir')) return;
+        if (!str_contains(url('/'), '.com') && !str_contains(url('/'), '.ir')) return;
         $url = "https://api.telegram.org/bot" . env('TELEGRAM_BOT_TOKEN', '') . "/" . $method;
 
         $res = Http::asForm()->post($url, $datas);
@@ -461,7 +461,7 @@ class Telegram
                     $msg .= " 📜 " . "توضیحات:" . PHP_EOL . $data->tags . PHP_EOL;
                     $msg .= " 🖼 " . "تصویر:" . PHP_EOL . route('storage.sites') . "/$data->id.jpg" . PHP_EOL;
 
-
+                    break;
                 case 'contact_created':
                     $contact = new Contact();
                     $contact = $data;
