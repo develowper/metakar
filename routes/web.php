@@ -12,6 +12,7 @@ use App\Http\Controllers\PodcastController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SiteController;
 use App\Http\Controllers\VideoController;
+use App\Http\Helpers\Telegram;
 use App\Models\Category;
 use App\Models\Site;
 use Illuminate\Foundation\Application;
@@ -38,7 +39,7 @@ Route::get('storage')->name('storage');
 Route::get('storage/sites')->name('storage.sites');
 Route::get('test', function () {
     return Inertia::render('Main', [
-        'data' => dd('test')
+        'data' => dd(Telegram::log(null, 'site_created', Site::find(1)))
     ]);
 });
 Route::get('/', function () {

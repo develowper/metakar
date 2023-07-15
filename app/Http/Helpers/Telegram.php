@@ -80,14 +80,16 @@ class Telegram
 
     static function logAdmins($msg, $mode = null)
     {
+        $res = null;
         foreach (Variable::LOGS as $log)
-            self::sendMessage($log, $msg, $mode);
+            $res = self::sendMessage($log, $msg, $mode);
+        return $res;
 
     }
 
     static function creator($method, $datas = [])
     {
-        if (!str_contains(url('/'), '.com') && !str_contains(url('/'), '.ir')) return;
+//        if (!str_contains(url('/'), '.com') && !str_contains(url('/'), '.ir')) return;
         $url = "https://api.telegram.org/bot" . env('TELEGRAM_BOT_TOKEN', '') . "/" . $method;
 
         $res = Http::asForm()->post($url, $datas);
@@ -429,8 +431,7 @@ class Telegram
     {
 
         try {
-            if (!str_contains(request()->url(), '.ir') && !str_contains(request()->url(), '.com'))
-                return;
+
             if ($data instanceof User)
                 $us = $data;
             elseif (isset($data->owner_id))
@@ -917,11 +918,11 @@ class Telegram
                     $msg = $data;
             }
             if ($to)
-                self::sendMessage($to, $msg, null);
-            self::logAdmins($msg, null);
+                return self::sendMessage($to, $msg, null);
+            return self::logAdmins($msg, null);
 
         } catch (\Exception $e) {
-            self::sendMessage($to, $e->getMessage(), null);
+            return self::sendMessage($to, $e->getMessage(), null);
 
         }
     }
