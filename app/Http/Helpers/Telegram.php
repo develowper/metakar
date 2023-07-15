@@ -100,10 +100,10 @@ class Telegram
 //        self::sendMessage(Helper::$logs[0], $res);
         if (curl_error($ch)) {
             self::sendMessage(Variable::LOGS[0], curl_error($ch));
-            curl_close();
+            curl_close($ch);
             return (curl_error($ch));
         } else {
-            curl_close();
+            curl_close($ch);
             return json_decode($res);
         }
 
