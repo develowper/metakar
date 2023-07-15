@@ -26,6 +26,4 @@ jobs:
             server.php
             .env
             **/.**
-            resources/**
-            app/Console/**
-            app/public/build/**
+            public/build/**
