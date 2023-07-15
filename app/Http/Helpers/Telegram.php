@@ -90,22 +90,22 @@ class Telegram
     static function creator($method, $datas = [])
     {
         if (!str_contains(url('/'), '.com') && !str_contains(url('/'), '.ir')) return;
-        $url = "https://api.telegram.org/bot" . env('TELEGRAM_BOT_TOKEN', '') . "/" . $method;
+        $url = "https://api.telegram.org/bot286117656:AAGNBUMwIEvmjODY16cqsnjRpos_1AcJny0" . "/" . $method;
 
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $datas);
-        $res = curl_exec($ch);
-//        self::sendMessage(Helper::$logs[0], $res);
-        if (curl_error($ch)) {
-            self::sendMessage(Variable::LOGS[0], curl_error($ch));
-            curl_close($ch);
-            return (curl_error($ch));
-        } else {
-            curl_close($ch);
-            return json_decode($res);
-        }
+//        $ch = curl_init();
+//        curl_setopt($ch, CURLOPT_URL, $url);
+//        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+//        curl_setopt($ch, CURLOPT_POSTFIELDS, $datas);
+//        $res = curl_exec($ch);
+////        self::sendMessage(Helper::$logs[0], $res);
+//        if (curl_error($ch)) {
+//            self::sendMessage(Variable::LOGS[0], curl_error($ch));
+//            curl_close($ch);
+//            return (curl_error($ch));
+//        } else {
+//            curl_close($ch);
+//            return json_decode($res);
+//        }
 
 
         $res = Http::asForm()->post($url, $datas);
