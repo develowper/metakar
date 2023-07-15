@@ -12,6 +12,7 @@ use App\Http\Controllers\PodcastController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SiteController;
 use App\Http\Controllers\VideoController;
+use App\Models\Category;
 use App\Models\Site;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Auth;
@@ -28,9 +29,17 @@ use Inertia\Inertia;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('storage')->name('storage');
 Route::get('test', function () {
 
+    return Category::findOrNew(2)->name;
+});
+
+Route::get('storage')->name('storage');
+Route::get('storage/sites')->name('storage.sites');
+Route::get('test', function () {
+    return Inertia::render('Main', [
+        'data' => dd('test')
+    ]);
 });
 Route::get('/', function () {
     return Inertia::render('Main', [

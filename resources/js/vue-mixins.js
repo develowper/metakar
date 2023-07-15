@@ -49,6 +49,9 @@ export default {
         asPrice(price) {
             return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         },
+        cropText(str, len, trailing = "...") {
+            return str && str.length >= len ? `${str.substring(0, len)}${trailing}` : str
+        }
     },
 
 

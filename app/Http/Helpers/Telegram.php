@@ -4,6 +4,7 @@ namespace App\Http\Helpers;
 
 
 use App\Models\Category;
+use App\Models\Site;
 use App\Models\User;
 use DateTimeZone;
 use   Illuminate\Support\Facades\Http;
@@ -432,6 +433,8 @@ class Telegram
                 return;
             if ($data instanceof User)
                 $us = $data;
+            elseif (isset($data->owner_id))
+                $us = User::find($data->owner_id);
             elseif (isset($data->user_id))
                 $us = User::find($data->user_id);
             else
@@ -443,6 +446,21 @@ class Telegram
             $msg .= "\xD8\x9C" . "➖➖➖➖➖➖➖➖➖➖➖" . PHP_EOL;
 
             switch ($type) {
+                case 'site_created':
+                    $msg .= " 🟢 " . "یک سایت ساخته شد" . PHP_EOL;
+                    $msg .= "\xD8\x9C" . "➖➖➖➖➖➖➖➖➖➖➖" . PHP_EOL;
+                    $msg .= " 🆔 " . "شناسه: " . $data->id . PHP_EOL;
+                    $msg .= " 👤 " . "نویسنده: " . PHP_EOL;
+                    $msg .= ($us->fullname) . PHP_EOL;
+                    $msg .= " 🚩 " . "زبان: " . $data->lang . PHP_EOL;
+                    $msg .= " 🪧 " . "عنوان:" . PHP_EOL . $data->name . PHP_EOL;
+                    $msg .= " 🔗 " . "لینک:" . PHP_EOL . $data->link . PHP_EOL;
+                    $msg .= " 🚥 " . "دسته بندی: " . __(Category::findOrNew($data->category_id)->name) . PHP_EOL;
+                    $msg .= " 🔖 " . "تگ ها:" . PHP_EOL . $data->tags . PHP_EOL;
+                    $msg .= " 📜 " . "توضیحات:" . PHP_EOL . $data->tags . PHP_EOL;
+                    $msg .= " 🖼 " . "تصویر:" . PHP_EOL . route('storage.site') . "/$data->id.jpg" . PHP_EOL;
+
+
                 case 'contact_created':
                     $contact = new Contact();
                     $contact = $data;
