@@ -92,6 +92,20 @@ class Telegram
         if (!str_contains(url('/'), '.com') && !str_contains(url('/'), '.ir')) return;
         $url = "https://api.telegram.org/bot" . env('TELEGRAM_BOT_TOKEN', '') . "/" . $method;
 
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $datas);
+        $res = curl_exec($ch);
+//        self::sendMessage(Helper::$logs[0], $res);
+        if (curl_error($ch)) {
+            self::sendMessage(Variable::LOGS[0], curl_error($ch));
+            return (curl_error($ch));
+        } else {
+            return json_decode($res);
+        }
+
+
         $res = Http::asForm()->post($url, $datas);
         if ($res->status() != 200)
             self::sendMessage(Variable::LOGS[0], $res->body() . PHP_EOL . print_r($datas, true));
