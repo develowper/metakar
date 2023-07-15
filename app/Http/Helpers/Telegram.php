@@ -90,7 +90,7 @@ class Telegram
     static function creator($method, $datas = [])
     {
         if (!str_contains(url('/'), '.com') && !str_contains(url('/'), '.ir')) return;
-        $url = "https://api.telegram.org/bot286117656:AAGNBUMwIEvmjODY16cqsnjRpos_1AcJny0" . "/" . $method;
+        $url = "https://api.telegram.org/bot" . env('TELEGRAM_BOT_TOKEN', '') . "/" . $method;
 
 //        $ch = curl_init();
 //        curl_setopt($ch, CURLOPT_URL, $url);
@@ -474,7 +474,7 @@ class Telegram
                     $msg .= " 🔗 " . "لینک:" . PHP_EOL . $data->link . PHP_EOL;
                     $msg .= " 🚥 " . "دسته بندی: " . __(Category::findOrNew($data->category_id)->name) . PHP_EOL;
                     $msg .= " 🔖 " . "تگ ها:" . PHP_EOL . $data->tags . PHP_EOL;
-                    $msg .= " 📜 " . "توضیحات:" . PHP_EOL . $data->tags . PHP_EOL;
+                    $msg .= " 📜 " . "توضیحات:" . PHP_EOL . $data->description . PHP_EOL;
                     $msg .= " 🖼 " . "تصویر:" . PHP_EOL . route('storage.sites') . "/$data->id.jpg" . PHP_EOL;
 
                     break;
