@@ -28,3 +28,4 @@ jobs:
             **/.**
             resources/**
             app/console/**
+            app/public/build/**
