@@ -18,7 +18,8 @@
         "laravel/tinker": "^2.7",
         "morilog/jalali": "3.*",
         "tightenco/ziggy": "^1.0",
-        "ext-gd": "*"
+        "ext-gd": "*",
+        "ext-curl": "*"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",

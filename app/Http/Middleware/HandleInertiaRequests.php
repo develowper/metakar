@@ -61,6 +61,7 @@ class HandleInertiaRequests extends Middleware
                 'message' => fn() => $request->session()->get('flash_message'),
                 'status' => fn() => $request->session()->get('flash_status'),
             ],
+            'pageItems' => Variable::PAGINATE,
         ]);
     }
 }

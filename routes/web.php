@@ -13,9 +13,12 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SiteController;
 use App\Http\Controllers\VideoController;
 use App\Http\Helpers\Telegram;
+use App\Http\Helpers\Variable;
 use App\Models\Category;
+use App\Models\Setting;
 use App\Models\Site;
 use Illuminate\Foundation\Application;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
@@ -33,7 +36,7 @@ use Inertia\Inertia;
 |
 */
 Route::get('test', function () {
-    File::makeDirectory(Storage::path("public/sites"), $mode = 0755,);
+//    File::makeDirectory(Storage::path("public/sites"), $mode = 0755,);
 //    return Telegram::log(null, 'site_created', Site::find(2));
 
 });
@@ -50,20 +53,21 @@ Route::get('/', function () {
     ]);
 })->name('/');
 
-Route::middleware(['auth', 'verified'])->prefix('panel')->group(function () {
+Route::middleware(['auth', 'verified'])->prefix('panel')->group(function ($route) {
 
 
     Route::get('', [PanelController::class, 'index'])->name('panel.index');
+
+
+//    PanelController::makeInertiaRoute('get', 'site/edit/{site}', 'panel.site.edit', 'Panel/Site/Edit', ['categories' => Site::categories('parents'), 'site_statuses' => Variable::SITE_STATUSES, 'site' => $tmp = Site::with('category')->find(request()->segment(count(request()->segments())))], 'can:edit,App\Models\User,App\Models\Site,"","' . $tmp . '"');
 
 
     PanelController::makeInertiaRoute('get', 'business/create', 'panel.business.new', 'Panel/Business/Create');
     PanelController::makeInertiaRoute('get', 'business/index', 'panel.business.index', 'Panel/Business/Index');
     PanelController::makeInertiaRoute('get', 'article/index', 'panel.article.index', 'Panel/Business/Index');
     PanelController::makeInertiaRoute('get', 'article/new', 'panel.article.new', 'Panel/Business/Create');
-    PanelController::makeInertiaRoute('get', 'site/index', 'panel.site.index', 'Panel/Site/Index');
-    PanelController::makeInertiaRoute('get', 'site/new', 'panel.site.new', 'Panel/Site/Create', [
-        'categories' => Site::categories('parents'),
-    ]);
+    PanelController::makeInertiaRoute('get', 'site/index', 'panel.site.index', 'Panel/Site/Index', ['categories' => Site::categories('parents'), 'site_statuses' => Variable::SITE_STATUSES]);
+    PanelController::makeInertiaRoute('get', 'site/new', 'panel.site.new', 'Panel/Site/Create', ['categories' => Site::categories('parents'),]);
     PanelController::makeInertiaRoute('get', 'text/index', 'panel.text.index', 'Panel/Text/Index');
     PanelController::makeInertiaRoute('get', 'text/new', 'panel.text.new', 'Panel/Text/Create');
     PanelController::makeInertiaRoute('get', 'image/index', 'panel.image.index', 'Panel/Image/Index');
@@ -90,6 +94,10 @@ Route::middleware('auth')->group(function () {
 
     Route::post('site/create', [SiteController::class, 'create'])->name('site.create')->middleware('can:create,App\Models\User,App\Models\Site,""');
     Route::get('site/search', [SiteController::class, 'search'])->name('site.search');
+
+    Route::get('site/edit/{site}', [SiteController::class, 'edit'])->name('panel.site.edit');
+    Route::patch('site/update', [SiteController::class, 'update'])->name('site.update');
+
 });
 
 Route::get('/podcasts', [PodcastController::class, 'index'])->name('podcast.index');

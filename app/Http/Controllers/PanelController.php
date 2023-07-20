@@ -18,12 +18,12 @@ class PanelController extends Controller
 
     }
 
-    public static function makeInertiaRoute(string $method, string $route, string $name, string $component, array $params = [])
+    public static function makeInertiaRoute(string $method, string $route, string $name, string $component, array $params = [], $middleware = [])
     {
         return Route::match([$method], $route, function () use ($component, $params) {
 
             return Inertia::render($component, $params);
-        })->name($name);
+        })->name($name)->middleware($middleware);
     }
 
     protected function index(Request $request)

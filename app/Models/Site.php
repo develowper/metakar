@@ -9,6 +9,7 @@ class Site extends Model
 {
     use HasFactory;
 
+
     protected $fillable = [
         'name',
         'slug',
@@ -18,7 +19,22 @@ class Site extends Model
         'category_id',
         'description',
         'owner_id',
+        'views',
+        'status',
+        'charge',
+        'view_fee',
+        'is_active',
+        'is_blocked',
     ];
+    protected $casts = [
+        'is_active' => 'boolean',
+        'is_blocked' => 'boolean',
+    ];
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class, 'category_id');
+    }
 
     public static function categories(string $type = 'parents')
     {

@@ -76,17 +76,54 @@ class UserPolicy
         else return false;
     }
 
-    /**
-     * Determine whether the user can update the model.
-     *
-     * @param \App\Models\User $user
-     * @param \App\Models\User $model
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function update(User $user, User $model)
+    public function edit(User $user, $item, $abort = true, $data = null)
     {
-        //
+
+        if ($user->is_blocked) {
+            return abort(403, __("user_is_blocked"));
+        }
+
+        switch (true) {
+            case $item instanceof User   :
+                if (in_array($user->role, ['ad',]))
+                    return true;
+                break;
+            case $item instanceof Site :
+                return $user->role == 'us' && optional($item)->owner_id == $user->id || in_array($user->role, ['ad',]);
+                break;
+        }
+        if ($abort)
+            return abort(403, __("access_denied"));
+        else return false;
     }
+
+    public function update(User $user, $item, $abort = true, $data = null)
+    {
+        if (!$user->is_active) {
+            return abort(403, __("user_is_inactive"));
+        }
+        if ($user->is_blocked) {
+            return abort(403, __("user_is_blocked"));
+        }
+
+        if ($item && $item->is_blocked) {
+            return abort(403, __("item_is_blocked"));
+        }
+
+        switch ($item) {
+            case $item instanceof User  :
+                if (in_array($user->role, ['ad',]))
+                    return true;
+                break;
+            case $item instanceof Site  :
+                return $user->role == 'us' && optional($item)->owner_id == $user->id || in_array($user->role, ['ad',]);
+                break;
+        }
+        if ($abort)
+            return abort(403, __("access_denied"));
+        else return false;
+    }
+
 
     /**
      * Determine whether the user can delete the model.

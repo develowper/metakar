@@ -3,6 +3,7 @@
 namespace App\Http\Helpers;
 
 use App\Models\Business;
+use App\Models\Setting;
 use App\Models\Site;
 use App\Models\User;
 use Carbon\Carbon;
@@ -30,10 +31,21 @@ class Variable
         ['name' => 'travel_entertainment',],
 
     ];
+
+
     const SITE_IMAGE_LIMIT_MB = 4;
     const SITE_ALLOWED_MIMES = ['jpeg', 'jpg', 'png'];
     const LOGS = [72534783];
+    const PAGINATE = [24, 50, 100];
     const IMAGE_FOLDERS = [Site::class => 'sites'];
+    const SITE_STATUSES = [
+        ["name" => 'need_charge', "color" => 'orange'],
+        ["name" => 'ready', "color" => 'primary'],
+        ["name" => 'viewing', "color" => 'success'],
+        ["name" => 'inactive', "color" => 'danger'],
+        ["name" => 'blocked', "color" => 'gray'],
+        ["name" => 'reviewing', "color" => 'gray'],
+    ];
 
     static function getAdmins()
     {
@@ -45,6 +57,11 @@ class Variable
                 'role' => 'us', 'email' => 'jafar.hasannejhad@gmail.com', 'password' => Hash::make('o9132258738'), 'email_verified_at' => Carbon::now(), 'phone_verified_at' => Carbon::now(), 'ref_id' => 'metakar'
             ],
         ];
+    }
+
+    static function SITE_MIN_VIEW_FEE()
+    {
+        return Setting::firstOrNew(['key' => 'site_min_view_fee'])->value ?? 100;
     }
 
 

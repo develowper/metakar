@@ -1,125 +1,145 @@
 <template>
 
-    <ul class="justify-content-center pagination">
+  <ul class="flex items-center text-gray-500   border  p-0 rounded-lg">
 
-        <!--first/previouse-->
+    <!--disabled first/previous -->
 
-        <template v-if=" paginator.current_page===1">
-            <li class="page-item disabled ">
-                <span class="page-link link-first  " aria-hidden="true">&laquo;</span>
-            </li>
-            <li class="page-item disabled">
-                <span class="page-link  " aria-hidden="true">&lsaquo;</span>
-            </li>
-        </template>
+    <template v-if=" pagination.current_page===1">
+      <li class="   border-gray-300 p-2  rounded-r bg-gray-100   cursor-pointer">
 
-        <template v-else-if=" paginator.current_page > 1">
-            <li class="page-item">
-                <a class="page-link link-first" aria-label="First" @click="$root.$emit('paginate_click',{'page':1})">
-                    <span aria-hidden="true">&laquo;</span>
-                </a>
-            </li>
+        <ChevronDoubleRightIcon class="w-4 h-4"/>
 
-            <li class="page-item">
-                <a class="page-link" aria-label="Previous"
-                   @click="$root.$emit('paginate_click',{'page':paginator.current_page-1})">
-                    <span aria-hidden="true">&lsaquo;</span>
-                </a>
-            </li>
-        </template>
+      </li>
+      <li class="   border-gray-300 p-2      bg-gray-100    cursor-pointer bg-gray-100 ">
+        <ChevronRightIcon class="w-4 h-4"/>
+      </li>
+    </template>
+    <!--first/previous -->
+    <template v-else-if=" pagination.current_page > 1">
+      <li @click=" $emit('paginationChanged',{'page': 1})"
+          class="   border-gray-300 p-2  rounded-r bg-gray-100  hover:bg-gray-200 cursor-pointer">
+        <ChevronDoubleRightIcon class="w-4 h-4"/>
+      </li>
 
-        <!--links-->
+      <li class="  border-gray-300 p-2  rounded bg-gray-100  hover:bg-gray-200 cursor-pointer"
+          @click=" $emit('paginationChanged',{'page':pagination.current_page-1})">
+        <ChevronRightIcon class="w-4 h-4"/>
+      </li>
+    </template>
 
-        <li v-for="i in this.range(this.from,this.to)" class="page-item "
-            :class="{' active' :  paginator.current_page===i }">
-            <a class="page-link" @click="$root.$emit('paginate_click',{'page':i})">
-                {{ i }}
-            </a>
-        </li>
+    <!--links-->
 
-        <!-- next/last -->
+    <li v-for="i in this.range(this.from,this.to)"
+        class="  border-gray-300   p-1 px-2    hover:bg-gray-200 cursor-pointer "
+        :class="( pagination.current_page==i ?'bg-white':'bg-gray-100')+(i==from?' border-r border-l':' border-l ') "
+        @click=" $emit('paginationChanged',{'page':i})">
+      {{ i }}
+    </li>
 
-        <template v-if="paginator.current_page < paginator.last_page">
-            <li class="page-item">
-                <a class="page-link" aria-label="Next"
-                   @click="$root.$emit('paginate_click',{'page':paginator.current_page+1})">
-                    <span aria-hidden="true">&rsaquo;</span>
-                </a>
-            </li>
+    <!-- next/last -->
 
-            <li class="page-item">
-                <a class="page-link link-last" aria-label="Last"
-                   @click="$root.$emit('paginate_click',{'page':paginator.last_page})">
-                    <span aria-hidden="true">{{ paginator.last_page }}</span>
-                </a>
-            </li>
-        </template>
-        <!--disable next/last-->
-        <template v-else-if="paginator.current_page >= paginator.last_page">
-            <li class="page-item disabled">
-                <a class="page-link" aria-label="Next">
-                    <span aria-hidden="true">&rsaquo;</span>
-                </a>
-            </li>
+    <template v-if="pagination.current_page < pagination.last_page">
+      <li class="border-l border-gray-300 p-2    bg-gray-100  hover:bg-gray-300 cursor-pointer"
+          @click=" $emit('paginationChanged',{'page':pagination.current_page+1})">
+        <ChevronLeftIcon class="w-4 h-4"/>
+      </li>
 
-            <li class="page-item disabled">
-                <a class="page-link link-last " aria-label="Last">
-                    <span aria-hidden="true">{{ paginator.last_page }}</span>
-                </a>
-            </li>
-        </template>
+      <li class="  border-gray-300 p-1 px-2 rounded-l   bg-gray-100  hover:bg-gray-300 cursor-pointer"
+          @click=" $emit('paginationChanged',{'page':pagination.last_page})">
+        {{ pagination.last_page }}
+      </li>
+    </template>
+    <!--disable next/last-->
+    <template v-else-if="pagination.current_page >= pagination.last_page">
+      <li class="  border-gray-300 p-2    bg-gray-100  hover:bg-gray-100 cursor-pointer bg-gray-100 ">
+        <ChevronLeftIcon class="w-4 h-4"/>
 
-    </ul>
+      </li>
+
+      <li class="  border-gray-300 p-1 px-2  rounded-l bg-gray-100  hover:bg-gray-100 cursor-pointer bg-gray-100 ">
+        {{ pagination.last_page }}
+
+      </li>
+    </template>
+
+  </ul>
 
 </template>
 
 <script>
-import  {Link} from '@inertiajs/vue3';
+import {Link} from '@inertiajs/vue3';
+import {
+  ChevronDoubleLeftIcon,
+  ChevronDoubleRightIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+
+} from "@heroicons/vue/24/outline";
 
 export default {
-    components: {Link},
-    data() {
-        return {
-            paginator: {},
-            interval: 3,
-            from: 0,
-            to: -1,
-        }
-    },
-    props: [],
-    mounted() {
+  components: {
+    Link,
+    ChevronDoubleLeftIcon,
+    ChevronDoubleRightIcon,
+    ChevronLeftIcon,
+    ChevronRightIcon,
+  },
+  data() {
+    return {
 
-
-    },
-    created() {
-        this.setEvents();
-    },
-
-    methods: {
-        setEvents() {
-            this.$root.$on('paginationChange', (paginator) => {
-                this.paginator = paginator;
-                this.from = this.paginator.current_page - this.interval;
-                if (this.from < 1)
-                    this.from = 1;
-                this.to = this.paginator.current_page + this.interval;
-                if (this.to > this.paginator.last_page)
-                    this.to = this.paginator.last_page;
-
-//                    console.log(this.from, this.to);
-
-            });
-        },
-        range(from, to) {
-            let array = [],
-                j = 0;
-            for (let i = from; i <= to; i++) {
-                array[j] = i;
-                j++;
-            }
-            return array;
-        }
+      interval: 3,
+      from: 0,
+      to: -1,
     }
+  },
+  props: ['pagination'],
+  watch: {
+    pagination(data) {
+      this.setEvents();
+    }
+  },
+  mounted() {
+
+
+  },
+  emits: ['paginationChanged'],
+  created() {
+    this.setEvents();
+  },
+
+  methods: {
+    setEvents() {
+//       this.$parent.$on('paginationChangedChange', (pagination) => {
+//         this.pagination = pagination;
+//         this.from = this.pagination.current_page - this.interval;
+//         if (this.from < 1)
+//           this.from = 1;
+//         this.to = this.pagination.current_page + this.interval;
+//         if (this.to > this.pagination.last_page)
+//           this.to = this.pagination.last_page;
+//
+// //                    console.log(this.from, this.to);
+//
+//       });
+      this.from = this.pagination.current_page - this.interval;
+      if (this.from < 1)
+        this.from = 1;
+      this.to = this.pagination.current_page + this.interval;
+      if (this.to > this.pagination.last_page)
+        this.to = this.pagination.last_page;
+
+      // console.log(this.pagination.current_page);
+    },
+    range(from, to) {
+      let array = [],
+          j = 0;
+      for (let i = from; i <= to; i++) {
+        array[j] = i;
+        j++;
+      }
+      return array;
+    }
+  }
 }
 
 </script>

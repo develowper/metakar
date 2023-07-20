@@ -1,8 +1,8 @@
 <template>
 
-    <img :src="src" :alt="alt" :class="classes+(loading?' animate-pulse bg-gray-300 ':' ')"
-         @load="loading=!loading"
-         @error="imageError ">
+  <img :src="src" :alt="alt" :class="classes+(loading?'   bg-gray-300 ':' ')"
+       @loadstart="loading=true" @loadeddata="loading=false" @load="loading=false;"
+       @error="imageError  ">
 </template>
 
 <script>
@@ -11,34 +11,36 @@ import {UserIcon} from "@heroicons/vue/24/outline";
 let self;
 
 export default {
-    data() {
-        return {
-            loading: true,
-            retry: 1,
-        }
-    },
-    components: {UserIcon},
-    mounted() {
-        self = this;
-    },
-    watch: {
-        loading() {
-
-        }
-    },
-    props: ['type', 'src', 'alt', 'classes'],
-    methods: {
-        imageError: (e) => {
-
-            self.loading = false;
-            if (self.retry < 0) return;
-            self.loading = true;
-            if (self.type == 'user')
-                e.target.src = "/assets/images/def-user.png";
-            else
-                e.target.src = "/assets/images/noimage.png";
-            self.retry--;
-        }
+  data() {
+    return {
+      loading: true,
+      retry: 1,
+      url: this.src,
     }
+  },
+  components: {UserIcon},
+  created() {
+
+  }, mounted() {
+  },
+  watch: {
+    loading() {
+
+    }
+  },
+  props: ['type', 'src', 'alt', 'classes'],
+  methods: {
+    imageError() {
+
+      this.loading = false;
+      if (this.retry < 0) return;
+      this.loading = true;
+      if (this.type == 'user')
+        this.url = "/assets/images/def-user.png";
+      else
+        this.url = "/assets/images/noimage.png";
+      this.retry--;
+    }
+  }
 }
 </script>

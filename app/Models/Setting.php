@@ -11,6 +11,12 @@ class Setting extends Model
 
     protected $table = 'settings';
 
+    protected $fillable = [
+        'key',
+        'value',
+        'created_at',
+    ];
+
     public static function getValue(string $key)
     {
 

@@ -12,13 +12,14 @@ import {
     Popover,
     Input,
     Alert,
+    Modal,
 } from "tw-elements";
 import axios, {isCancel, AxiosError} from 'axios';
 
 window.axios = axios.create();
-document.addEventListener("DOMContentLoaded", function (event) {
+window.onload = (event) => {
 
-
+    // window.tailwindElements();
     try {
         if (
             localStorage.theme === "dark" ||
@@ -36,7 +37,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     }
 
 
-});
+}
 
 window.tailwindElements = () => {
 
@@ -57,19 +58,45 @@ window.tailwindElements = () => {
     window.Alert = Alert;
     window.Toast = Toast;
     window.Sidenav = Sidenav;
-    initTE({Popover, Tooltip, Ripple, Input, Select, Alert, Toast, Sidenav});
+    window.Modal = Modal;
+    initTE({Popover, Tooltip, Ripple, Input, Select, Alert, Toast, Sidenav, Modal,});
     document.querySelectorAll("[data-te-input-notch-ref]").forEach(el => el.setAttribute("dir", "ltr"))
-    // document.querySelectorAll("[data-te-input-notch-leading-ref]").forEach(el => el.classList.add('hidden'))
-    // document.querySelectorAll("[data-te-input-notch-middle-ref]").forEach(el => el.classList.add('hidden'))
-    // document.querySelectorAll("[data-te-input-notch-trailing-ref]").forEach(el => el.classList.add('hidden'))
     document.querySelectorAll("[data-te-input-notch-ref]").forEach(el => el.innerHTML = '')
 
 
     window.Alert = Alert.getInstance(document.getElementById('alert'));
     window.Toast = Toast.getInstance(document.getElementById('toast'));
+    window.Modal = new Modal(document.getElementById('modal'));
 
 
     window.Sidenav = Sidenav.getInstance(document.getElementById("sidenav-1"));
     // }
+    initSidenav();
+}
 
+window.initSidenav = () => {
+
+    let innerWidth = null;
+    const setMode = (e) => {
+        // Check necessary for Android devices
+        if (window.innerWidth === innerWidth) {
+            return;
+        }
+
+        innerWidth = window.innerWidth;
+
+        if (window.innerWidth < window.Sidenav.getBreakpoint("md")) {
+            window.Sidenav.changeMode("over");
+            window.Sidenav.hide();
+        } else {
+            window.Sidenav.changeMode("side");
+            window.Sidenav.show();
+        }
+    };
+
+    if (window.innerWidth < window.Sidenav.getBreakpoint("md")) {
+        setMode();
+    }
+
+    window.addEventListener("resize", setMode);
 }

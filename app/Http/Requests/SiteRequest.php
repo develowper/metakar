@@ -28,6 +28,12 @@ class SiteRequest extends FormRequest
     public function rules()
     {
         $types = Category::pluck('id');
+
+        if ($this->cmnd)
+            return [
+                'charge' => ['required_if:cmnd,charge', 'numeric', 'gt:0'],
+                'view_fee' => ['required_if:cmnd,view-fee', 'numeric', 'gt:0'],
+            ];
         return [
             'lang' => ['required', Rule::in(Variable::LANGS)],
             'name' => ['required', 'max:100'],
@@ -42,6 +48,13 @@ class SiteRequest extends FormRequest
 
     public function messages()
     {
+        if ($this->cmnd)
+            return [
+                'charge.numeric' => sprintf(__("validator.invalid"), __('charge_amount')),
+                'charge.gt' => sprintf(__("validator.invalid"), __('charge_amount')),
+                'charge.required_if' => sprintf(__("validator.invalid"), __('charge_amount')),
+
+            ];
         return [
             'lang.required' => sprintf(__("validator.required"), __('lang')),
             'lang.in' => sprintf(__("validator.invalid"), __('lang')),
