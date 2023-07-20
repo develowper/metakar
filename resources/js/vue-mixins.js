@@ -60,6 +60,7 @@ export default {
             console.log(str);
         },
         asPrice(price) {
+            if (!price) return 0;
             return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         },
         cropText(str, len, trailing = "...") {
