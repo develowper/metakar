@@ -333,14 +333,14 @@
                     class="  absolute z-[1000]   m-0 hidden   list-none overflow-hidden rounded-lg border-none bg-white bg-clip-padding text-center text-base shadow-lg dark:bg-neutral-700 [&[data-te-dropdown-show]]:block"
                     tabindex="-1" role="menu" aria-orientation="vertical" aria-label="User menu"
                     aria-labelledby="dropdownStatusSetting">
-                  <li v-if="d.status!='blocked'" role="menuitem"
-                      @click="edit({'idx':idx,'id':d.id,'cmnd':'charge'})"
-                      class="   cursor-pointer   text-sm text-blue-500 transition-colors hover:bg-gray-100 dark:text-light dark:hover:bg-primary">
-                    <div class="flex   items-center  px-6 py-2 justify-center ">
-                      {{ __('charge') }}
-                    </div>
-                    <hr class="border-gray-200 dark:border-gray-700 ">
-                  </li>
+<!--                  <li v-if="d.status!='blocked'" role="menuitem"-->
+                  <!--                      @click="edit({'idx':idx,'id':d.id,'cmnd':'charge'})"-->
+                  <!--                      class="   cursor-pointer   text-sm text-blue-500 transition-colors hover:bg-gray-100 dark:text-light dark:hover:bg-primary">-->
+                  <!--                    <div class="flex   items-center  px-6 py-2 justify-center ">-->
+                  <!--                      {{ __('charge') }}-->
+                  <!--                    </div>-->
+                  <!--                    <hr class="border-gray-200 dark:border-gray-700 ">-->
+                  <!--                  </li>-->
                   <li v-if="d.status=='viewing'" role="menuitem"
                       @click="edit({'idx':idx,'id':d.id,'cmnd':'stop-view'})"
                       class="   cursor-pointer   text-sm text-red-700 transition-colors hover:bg-gray-100 dark:text-light dark:hover:bg-primary">
