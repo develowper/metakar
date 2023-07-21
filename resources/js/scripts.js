@@ -74,10 +74,11 @@ window.tailwindElements = () => {
     if (modalEl)
         window.Modal = new Modal(modalEl);
 
-    if (sideNavEl)
+    if (sideNavEl) {
         window.Sidenav = Sidenav.getInstance(sideNavEl);
+        initSidenav();
+    }
     // }
-    initSidenav();
 }
 
 window.initSidenav = () => {
