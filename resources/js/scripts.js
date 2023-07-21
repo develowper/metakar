@@ -63,13 +63,19 @@ window.tailwindElements = () => {
     document.querySelectorAll("[data-te-input-notch-ref]").forEach(el => el.setAttribute("dir", "ltr"))
     document.querySelectorAll("[data-te-input-notch-ref]").forEach(el => el.innerHTML = '')
 
+    const alertEl = document.getElementById('alert');
+    const toastEl = document.getElementById('toast');
+    const modalEl = document.getElementById('modal');
+    const sideNavEl = document.getElementById('sidenav-1');
+    if (alertEl)
+        window.Alert = Alert.getInstance(alertEl);
+    if (toastEl)
+        window.Toast = Toast.getInstance(toastEl);
+    if (modalEl)
+        window.Modal = new Modal(modalEl);
 
-    window.Alert = Alert.getInstance(document.getElementById('alert'));
-    window.Toast = Toast.getInstance(document.getElementById('toast'));
-    window.Modal = new Modal(document.getElementById('modal'));
-
-
-    window.Sidenav = Sidenav.getInstance(document.getElementById("sidenav-1"));
+    if (sideNavEl)
+        window.Sidenav = Sidenav.getInstance(sideNavEl);
     // }
     initSidenav();
 }
