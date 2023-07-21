@@ -78,7 +78,7 @@ class UserPolicy
 
     public function edit(User $user, $item, $abort = true, $data = null)
     {
-
+//        dd(request()->route()->parameter('site'));
         if ($user->is_blocked) {
             return abort(403, __("user_is_blocked"));
         }
@@ -99,6 +99,7 @@ class UserPolicy
 
     public function update(User $user, $item, $abort = true, $data = null)
     {
+
         if (!$user->is_active) {
             return abort(403, __("user_is_inactive"));
         }

@@ -27,8 +27,8 @@ class SiteRequest extends FormRequest
      */
     public function rules()
     {
-        $types = Category::pluck('id');
 
+        $types = Category::pluck('id');
         if ($this->cmnd)
             return [
                 'charge' => ['required_if:cmnd,charge', 'numeric', 'gt:0'],
@@ -36,8 +36,8 @@ class SiteRequest extends FormRequest
             ];
         return [
             'lang' => ['required', Rule::in(Variable::LANGS)],
-            'name' => ['required', 'max:100'],
-            'link' => ['required', 'starts_with:http', 'url', 'max:1024',],
+            'name' => ['required', 'max:100', Rule::unique('sites', 'name')->ignore($this->id)],
+            'link' => ['required', 'starts_with:http', 'url', 'max:1024', Rule::unique('sites', 'name')->ignore($this->id)],
             'tags' => ['nullable', 'max:1024'],
             'category' => ['nullable', Rule::in($types)],
             'description' => ['nullable', 'max:2048'],

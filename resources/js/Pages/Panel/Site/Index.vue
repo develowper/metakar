@@ -258,10 +258,10 @@
                   class="flex  items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                 <Image class="w-10 h-10 rounded-full" :src="`${route('storage.sites')}/${d.id}.jpg`"
                        :alt="cropText(d.name,5)"/>
-                <div class="px-3">
-                  <div class="text-base font-semibold">{{ d.name }}</div>
+                <Link class="px-3 hover:text-gray-500" :href="route('panel.site.edit',d.id)">
+                  <div class="text-base font-semibold">{{ cropText(d.name, 40) }}</div>
                   <div class="font-normal text-gray-500">{{ }}</div>
-                </div>
+                </Link>
               </td>
               <td class="px-2 py-4 ">
                 <div>
@@ -333,7 +333,7 @@
                     class="  absolute z-[1000]   m-0 hidden   list-none overflow-hidden rounded-lg border-none bg-white bg-clip-padding text-center text-base shadow-lg dark:bg-neutral-700 [&[data-te-dropdown-show]]:block"
                     tabindex="-1" role="menu" aria-orientation="vertical" aria-label="User menu"
                     aria-labelledby="dropdownStatusSetting">
-<!--                  <li v-if="d.status!='blocked'" role="menuitem"-->
+                  <!--                  <li v-if="d.status!='blocked'" role="menuitem"-->
                   <!--                      @click="edit({'idx':idx,'id':d.id,'cmnd':'charge'})"-->
                   <!--                      class="   cursor-pointer   text-sm text-blue-500 transition-colors hover:bg-gray-100 dark:text-light dark:hover:bg-primary">-->
                   <!--                    <div class="flex   items-center  px-6 py-2 justify-center ">-->
@@ -367,7 +367,7 @@
                     </div>
                     <hr class="border-gray-200 dark:border-gray-700 ">
                   </li>
-                  <li v-if="d.status=='inactive' || !d.is_active" role="menuitem"
+                  <li v-if="d.status=='inactive'  " role="menuitem"
                       @click="edit({'idx':idx,'id':d.id,'cmnd':'activate'})"
                       class="   cursor-pointer   text-sm text-primary-700 transition-colors hover:bg-gray-100 dark:text-light dark:hover:bg-primary">
                     <div class="flex items-center  px-6 py-2 justify-between ">

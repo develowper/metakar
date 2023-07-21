@@ -29,6 +29,7 @@ class Variable
         ['name' => 'agriculture',],
         ['name' => 'wearing',],
         ['name' => 'travel_entertainment',],
+        ['name' => 'legal',],
 
     ];
 

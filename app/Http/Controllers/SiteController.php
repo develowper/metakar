@@ -61,12 +61,12 @@ class SiteController extends Controller
     public function edit(Request $request, $site)
     {
 
-        $tmp = Site::with('category')->find($site);
-        $this->authorize('edit', [User::class, $tmp]);
+        $data = Site::with('category')->find($site);
+        $this->authorize('edit', [User::class, $data]);
         return Inertia::render('Panel/Site/Edit', [
             'categories' => Site::categories('parents'),
             'site_statuses' => Variable::SITE_STATUSES,
-            'site' => $tmp,
+            'data' => $data,
         ]);
     }
 
@@ -82,8 +82,8 @@ class SiteController extends Controller
         $cmnd = $request->cmnd;
         $charge = $request->charge;
         $data = Site::find($id);
-        if ($id && $data)
-            $this->authorize('edit', [User::class, $data]);
+        if (!starts_with($cmnd, 'bulk'))
+            $this->authorize('update', [User::class, $data]);
 
         if ($cmnd) {
 
@@ -118,6 +118,9 @@ class SiteController extends Controller
                     return response()->json(['message' => __('updated_successfully'), 'status' => $data->status,], $successStatus);
 
                 case 'activate':
+                    if ($data->status == 'reviewing')
+                        return response()->json(['message' => __('active_after_review'),], $errorStatus);
+
                     if ($data->status != 'inactive') break;
                     if ($data->charge <= $data->view_fee)
                         $data->status = 'need_charge';
@@ -176,6 +179,18 @@ class SiteController extends Controller
                     return response()->json(['message' => count($res) . ' ' . __('item') . ' ' . __('updated_successfully'), 'results' => $res,], $successStatus);
 
             }
+        } elseif ($data) {
+            $request->merge([
+                'status' => 'reviewing',
+                'is_active' => false,
+                'slug' => str_slug($request->name),
+            ]);
+            if ($data->update($request->all())) {
+                $res = ['flash_status' => 'success', 'flash_message' => __('updated_successfully_and_active_after_review')];
+                Util::createImage($request->img, Variable::IMAGE_FOLDERS[Site::class], $id);
+                Telegram::log(null, 'site_edited', $data);
+            } else    $res = ['flash_status' => 'danger', 'flash_message' => __('response_error')];
+            return back()->with($res);
         }
 
         return response()->json($response, $errorStatus);

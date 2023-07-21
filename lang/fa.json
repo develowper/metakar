@@ -70,6 +70,7 @@
   "agriculture": "کشاورزی",
   "wearing": "پوشاک",
   "travel_entertainment": "سفر\u200Cو\u200Cتفریح",
+  "legal": "حقوقی",
   "name": "نام",
   "title": "عنوان",
   "link": "لینک",
@@ -78,6 +79,7 @@
   "reg": "ثبت",
   "tags": "تگ\u200Cها",
   "help_lang": "فقط در زبان انتخابی کاربران نمایش داده خواهد شد",
+  "help_tags": "تگ\u200Cها با کلید + از هم جدا شوند",
   "remove": "حذف",
   "remove_selected": "حذف موارد انتخابی",
   "upload": "آپلود",
@@ -135,5 +137,6 @@
   "will_subtract_for_view_from_charge": "به ازای هر بازدید از مبلغ شارژ کسر خواهد شد",
   "nothing_selected": "موردی انتخاب نشده است",
   "item": "مورد",
+  "updated_successfully_and_active_after_review": "با موفقیت بروزرسانی شد و پس از تایید، فعال خواهد شد",
   "": ""
 }

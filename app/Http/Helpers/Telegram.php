@@ -459,12 +459,27 @@ class Telegram
             $admin = isset ($us) && (in_array($us->role, ['ad', 'go']));
             $now = Jalalian::forge('now', new DateTimeZone('Asia/Tehran'));
             $time = $now->format('%A, %d %B %Y ⏰ H:i');
-            $msg = config('app.name') . PHP_EOL . $time . PHP_EOL;
+            $msg = "\xD8\x9C" . config('app.name') . PHP_EOL . $time . PHP_EOL;
             $msg .= "\xD8\x9C" . "➖➖➖➖➖➖➖➖➖➖➖" . PHP_EOL;
 
             switch ($type) {
                 case 'site_created':
                     $msg .= " 🟢 " . "یک سایت ساخته شد" . PHP_EOL;
+                    $msg .= "\xD8\x9C" . "➖➖➖➖➖➖➖➖➖➖➖" . PHP_EOL;
+                    $msg .= " 🆔 " . "شناسه: " . $data->id . PHP_EOL;
+                    $msg .= " 👤 " . "نویسنده: " . PHP_EOL;
+                    $msg .= ($us->fullname) . PHP_EOL;
+                    $msg .= " 🚩 " . "زبان: " . $data->lang . PHP_EOL;
+                    $msg .= " 🪧 " . "عنوان:" . PHP_EOL . $data->name . PHP_EOL;
+                    $msg .= " 🔗 " . "لینک:" . PHP_EOL . $data->link . PHP_EOL;
+                    $msg .= " 🚥 " . "دسته بندی: " . __(Category::findOrNew($data->category_id)->name) . PHP_EOL;
+                    $msg .= " 🔖 " . "تگ ها:" . PHP_EOL . $data->tags . PHP_EOL;
+                    $msg .= " 📜 " . "توضیحات:" . PHP_EOL . $data->description . PHP_EOL;
+                    $msg .= " 🖼 " . "تصویر:" . PHP_EOL . route('storage.sites') . "/$data->id.jpg" . PHP_EOL;
+
+                    break;
+                case 'site_edited':
+                    $msg .= " 🟠 " . "یک سایت ویرایش شد" . PHP_EOL;
                     $msg .= "\xD8\x9C" . "➖➖➖➖➖➖➖➖➖➖➖" . PHP_EOL;
                     $msg .= " 🆔 " . "شناسه: " . $data->id . PHP_EOL;
                     $msg .= " 👤 " . "نویسنده: " . PHP_EOL;

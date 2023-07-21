@@ -22,7 +22,9 @@
         <div
             class="lg:grid      lg:grid-cols-3  mx-auto md:max-w-5xl   mt-6 px-2 md:px-4 py-4 bg-white shadow-md overflow-hidden  rounded-lg  ">
           <div class="flex-col self-center  m-2 items-center rounded-lg max-w-xs   mx-auto lg:mx-2   ">
-            <ImageUploader ref="imageCropper" :label="__('image_jpg')" cropRatio="1.25" id="img"
+            <ImageUploader mode="edit" v-if="data" :preload="route('storage.sites')+`/${data.id}.jpg`" ref="imageCropper"
+                           :label="__('image_jpg')"
+                           cropRatio="1.25" id="img"
                            height="10" class="grow"/>
             <InputError class="mt-1" :message="form.errors.img"/>
           </div>
@@ -86,8 +88,9 @@
                 </Selector>
               </div>
               <div class="my-2">
+
                 <TagInput
-                    id="tags"
+                    ref="tags"
                     :placeholder="__('tags')"
                     classes="  "
                     v-model="form.tags"
@@ -98,6 +101,7 @@
               </div>
               <div class="my-2">
                 <TextInput
+
                     :multiline="true"
                     id="description"
                     type="text"
@@ -174,8 +178,9 @@ export default {
 
   data() {
     return {
-
+      data: null,
       form: useForm({
+        id: '',
         img: '',
         lang: null,
         name: null,
@@ -215,21 +220,29 @@ export default {
 
   },
   mounted() {
-    console.log(this.$page.props);
+    this.data = this.$page.props.data;
+    // console.log(this.data);
+    this.form.name = this.data.name;
+    this.form.link = this.data.link;
+    this.$refs.categorySelector.selected = this.form.category_id = this.data.category_id;
+    this.$refs.tags.preLoad(this.data.tags);
+    this.form.description = this.data.description;
+    this.$refs.langSelector.selected = this.data.lang;
   },
   methods: {
     submit() {
+      this.form.id = this.data.id;
       this.form.img = this.$refs.imageCropper.getCroppedData();
       this.form.lang = this.$refs.langSelector.selected;
       this.form.category_id = this.$refs.categorySelector.selected;
       this.form.clearErrors();
-      this.form.post(route('site.create'), {
+      this.form.patch(route('site.update'), {
         preserveScroll: false,
         onFinish: (data) => {
         },
         onSuccess: (data) => {
           this.showAlert(this.$page.props.flash.status, this.$page.props.flash.message);
-          this.form.reset();
+          // this.form.reset();
 
         },
         onError: () => this.showToast('danger', Object.values(this.form.errors).join("<br/>"))
