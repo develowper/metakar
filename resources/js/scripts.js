@@ -48,9 +48,9 @@ window.tailwindElements = () => {
     popoverTriggerList.map((popoverTriggerList) => new Popover(popoverTriggerList));
 
     if (!window.Dropdown) {
+        console.log(window.Dropdown);
         window.Dropdown = Dropdown;
         initTE({Dropdown});
-
     }
     window.Popover = Popover;
     window.Tooltip = Tooltip;
@@ -59,7 +59,7 @@ window.tailwindElements = () => {
     window.Toast = Toast;
     window.Sidenav = Sidenav;
     window.Modal = Modal;
-    initTE({Popover, Tooltip, Ripple, Input, Select, Alert, Toast, Sidenav, Modal,});
+    initTE({Popover, Tooltip, Ripple, Input, Select, Alert, Toast, Sidenav, Modal});
     document.querySelectorAll("[data-te-input-notch-ref]").forEach(el => el.setAttribute("dir", "ltr"))
     document.querySelectorAll("[data-te-input-notch-ref]").forEach(el => el.innerHTML = '')
 
