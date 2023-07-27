@@ -30,7 +30,7 @@ class SiteController extends Controller
 
     public function view(Request $request, $site)
     {
-        URL::forceScheme('https');
+
 
         $message = null;
         $link = null;
@@ -51,6 +51,8 @@ class SiteController extends Controller
             $data = ['name' => __('item_view_time_ended'),];
         }
         $meta_view_fee = Variable::SITE_VIEW_META_FEE();
+        if (isset($data) && isset($data->link) && str_starts_with('http:'))
+            $data->link = str_replace('http://', 'https://', $data->link);
         return Inertia::render('Site/View', [
             'auto_view' => $auto_view,
             'available_sites' => $user ? Site::whereIsActive(true)->whereIsBlocked(false)->whereStatus('viewing')->whereLang(app()->getLocale())->whereIntegerNotInRaw('id', Site::where('owner_id', $user->id)->pluck('id'))->whereIntegerNotInRaw('id', SiteTransaction::where('owner_id', $user->id)->pluck('site_id'))->where(function ($query) use ($user, $meta_view_fee) {
