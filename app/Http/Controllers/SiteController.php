@@ -51,7 +51,7 @@ class SiteController extends Controller
             $data = ['name' => __('item_view_time_ended'),];
         }
         $meta_view_fee = Variable::SITE_VIEW_META_FEE();
-        if (isset($data) && isset($data->link) && str_starts_with('http:'))
+        if (isset($data) && isset($data->link) && str_starts_with($data->link, 'http:'))
             $data->link = str_replace('http://', 'https://', $data->link);
         return Inertia::render('Site/View', [
             'auto_view' => $auto_view,
