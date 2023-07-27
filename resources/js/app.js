@@ -1,6 +1,8 @@
 import './bootstrap';
 import '../css/app.css';
 import '../scss/app.scss';
+import '../fonts/tanha/Farsi-Digits/font-face.css';
+import '../fonts/shabnam/Farsi-Digits/font-face.css';
 import 'tw-elements';
 import {createApp, h} from 'vue';
 import {createInertiaApp} from '@inertiajs/vue3';
