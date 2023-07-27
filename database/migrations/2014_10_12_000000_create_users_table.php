@@ -25,8 +25,10 @@ return new class extends Migration {
             $table->enum('role', \App\Http\Helpers\Variable::ROLES)->default(\App\Http\Helpers\Variable::ROLES[0]);
             $table->boolean('is_active')->default(true);
             $table->boolean('is_blocked')->default(false);
+            $table->boolean('wallet_active')->default(0);
             $table->integer('notifications')->unsigned()->default(0);
-            $table->integer('wallet')->default(0);
+            $table->unsignedInteger('wallet')->default(0);
+            $table->unsignedInteger('meta_wallet')->default(0);
             $table->string('cart', 16)->default(null)->nullable();
             $table->string('ref_id', 10);
             $table->string('push_id', 20)->nullable();

@@ -10,111 +10,114 @@ import {UserIcon, EyeIcon, EyeSlashIcon} from "@heroicons/vue/24/outline";
 import {ref} from 'vue'
 
 defineProps({
-    canResetPassword: Boolean,
-    status: String,
+  canResetPassword: Boolean,
+  status: String,
 });
 let showPassword = ref(false);
 const form = useForm({
-    login: '',
-    password: '',
-    remember: false,
+  login: '',
+  password: '',
+  remember: false,
 });
 
 const submit = () => {
-    form.post(route('login'), {
-        onFinish: () => form.reset('password'),
-    });
+  form.post(route('login'), {
+    onFinish: () => form.reset('password'),
+  });
 };
 </script>
 
 <template>
-    <GuestLayout :dir="dir()">
-        <Head :title="__('signin')"/>
+  <GuestLayout :dir="dir()"
 
-        <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
-            {{ status }}
-        </div>
+               aria-expanded="false"
+  >
+    <Head :title="__('signin')"/>
 
-        <form @submit.prevent="submit">
-            <div>
-                <InputLabel for="login" :value="__('email')+ '/'+__('phone')"/>
+    <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
+      {{ status }}
+    </div>
 
-                <TextInput
-                    id="login"
-                    type="text"
-                    classes="  "
-                    v-model="form.login"
-                    required
-                    autofocus
-                    autocomplete="login">
+    <form @submit.prevent="submit">
+      <div>
+        <InputLabel for="login" :value="__('email')+ '/'+__('phone')"/>
+
+        <TextInput
+            id="login"
+            type="text"
+            classes="  "
+            v-model="form.login"
+            required
+            autofocus
+            autocomplete="login">
 
 
-                    <template v-slot:prepend>
-                        <div class="p-3">
-                            <UserIcon class="h-5 w-5"/>
-                        </div>
-                    </template>
-
-                </TextInput>
-
-                <InputError class="mt-2" :message="form.errors.login"/>
+          <template v-slot:prepend>
+            <div class="p-3">
+              <UserIcon class="h-5 w-5"/>
             </div>
+          </template>
 
-            <div class="mt-4">
-                <InputLabel for="password" :value="__('password')"/>
+        </TextInput>
 
-                <TextInput
-                    id="password"
-                    :type="showPassword?'text':'password'"
-                    classes=" "
-                    v-model="form.password"
-                    required
-                    autocomplete="current-password">
+        <InputError class="mt-2" :message="form.errors.login"/>
+      </div>
 
-                    <template v-slot:prepend>
-                        <div class="p-3" @click="showPassword=!showPassword">
-                            <EyeIcon v-if="!showPassword"
-                                     class="h-5 w-5   "/>
-                            <EyeSlashIcon v-else class="h-5 w-5 "/>
-                        </div>
-                    </template>
-                </TextInput>
+      <div class="mt-4">
+        <InputLabel for="password" :value="__('password')"/>
 
-                <InputError class="mt-2" :message="form.errors.password"/>
+        <TextInput
+            id="password"
+            :type="showPassword?'text':'password'"
+            classes=" "
+            v-model="form.password"
+            required
+            autocomplete="current-password">
+
+          <template v-slot:prepend>
+            <div class="p-3" @click="showPassword=!showPassword">
+              <EyeIcon v-if="!showPassword"
+                       class="h-5 w-5   "/>
+              <EyeSlashIcon v-else class="h-5 w-5 "/>
             </div>
+          </template>
+        </TextInput>
 
-            <div class="flex mt-4  items-center  justify-between">
-                <label class="flex items-center">
-                    <Checkbox name="remember" v-model:checked="form.remember"/>
-                    <span class="m-2 text-sm text-gray-600">{{ __('remember_me') }}</span>
-                </label>
-                <Link
-                    v-if="canResetPassword"
-                    :href="route('password.request')"
-                    class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                >
-                    {{ __('forgot_my_password') }}
-                </Link>
-            </div>
+        <InputError class="mt-2" :message="form.errors.password"/>
+      </div>
 
-            <div class="    mt-4">
+      <div class="flex mt-4  items-center  justify-between">
+        <label class="flex items-center">
+          <Checkbox name="remember" v-model:checked="form.remember"/>
+          <span class="m-2 text-sm text-gray-600">{{ __('remember_me') }}</span>
+        </label>
+        <Link
+            v-if="canResetPassword"
+            :href="route('password.request')"
+            class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+        >
+          {{ __('forgot_my_password') }}
+        </Link>
+      </div>
 
-                <PrimaryButton class="w-full    " :class="{ 'opacity-25': form.processing }"
-                               :disabled="form.processing">
-                    <span class=" text-lg w-full">  {{ __('signin') }}</span>
-                </PrimaryButton>
+      <div class="    mt-4">
 
-            </div>
-            <div class="w-full mt-5">
-                <span>{{ __('not_have_account?') }}</span>
-                <Link
-                    v-if="canResetPassword"
-                    :href="route('register')"
-                    class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                >
-                    {{ __('signup') }}
-                </Link>
-            </div>
-        </form>
-    </GuestLayout>
+        <PrimaryButton class="w-full    " :class="{ 'opacity-25': form.processing }"
+                       :disabled="form.processing">
+          <span class=" text-lg w-full">  {{ __('signin') }}</span>
+        </PrimaryButton>
+
+      </div>
+      <div class="w-full mt-5">
+        <span>{{ __('not_have_account?') }}</span>
+        <Link
+            v-if="canResetPassword"
+            :href="route('register')"
+            class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+        >
+          {{ __('signup') }}
+        </Link>
+      </div>
+    </form>
+  </GuestLayout>
 </template>

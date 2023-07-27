@@ -24,15 +24,30 @@
           <li class="relative">
             <Link :href="route('panel.index')"
                   class="pt-2 pb-2 flex  px-3 outline-none transition duration-300 ease-linear hover:bg-slate-200 hover:text-inherit hover:outline-none focus:bg-slate-50 focus:text-inherit focus:outline-none active:bg-slate-50 active:text-inherit active:outline-none data-[te-sidenav-state-active]:text-inherit data-[te-sidenav-state-focus]:outline-none motion-reduce:transition-none dark:text-gray-300 dark:hover:bg-white/10 dark:focus:bg-white/10 dark:active:bg-white/10"
-                  :class="{'bg-primary-100 text-primary-500':menuIsActive ( 'panel.index' )}"
+                  :class="{'  text-primary-500':menuIsActive ( 'panel.index' )}"
             >
-              <span class="w-full"> {{ __('dashboard') }}</span>
+              <span class="w-full text-gray-500"> {{ __('dashboard') }}</span>
             </Link>
-            <div class="flex mx-2 justify-center items-center text-sm text-gray-500">
+            <hr class="border-gray-200 dark:border-gray-700 my-2 mx-4">
+
+            <div v-if="hasWallet()"
+                 class="flex text-primary mx-2 justify-center items-center text-sm text-gray-500">
               <span class="">{{ __('wallet') + ' :' }}</span>
               <strong class="mx-2">{{ asPrice(user.wallet) }} </strong>
               <span class=""> {{ __('currency') }}</span>
 
+              <span
+                  class="mx-2   text-center  bg-success-200 text-success-700 hover:bg-success-100 cursor-pointer px-2 py-[.1rem] rounded-lg transition-all duration-300"> {{
+                  __('charge')
+                }}</span>
+            </div>
+            <hr v-if="hasWallet()" class="border-gray-200 dark:border-gray-700 my-2 mx-4">
+            <div class="flex text-primary mx-2 justify-center items-center text-sm text-gray-500">
+              <Tooltip class="p-2 " :content="__('help_meta')">
+                <QuestionMarkCircleIcon class="text-gray-500 hover:bg-gray-50 w-4 h-4"/>
+              </Tooltip>
+              <span class="">{{ __('meta') + ' :' }}</span>
+              <strong class="mx-2">{{ asPrice(user.meta) }} </strong>
               <span
                   class="mx-2   text-center  bg-success-200 text-success-700 hover:bg-success-100 cursor-pointer px-2 py-[.1rem] rounded-lg transition-all duration-300"> {{
                   __('charge')
@@ -435,8 +450,12 @@ import {
   Cog6ToothIcon,
   ArrowRightOnRectangleIcon,
 } from "@heroicons/vue/24/outline";
+import {
+  QuestionMarkCircleIcon
+} from "@heroicons/vue/24/solid";
 import Image from '@/Components/Image.vue';
 import Toast from '@/Components/Toast.vue';
+import Tooltip from '@/Components/Tooltip.vue';
 import {useRemember} from '@inertiajs/vue3';
 import {initTE, Dropdown, Sidenav} from "tw-elements";
 import PanelScaffold from "@/Layouts/PanelScaffold.vue";
@@ -511,7 +530,8 @@ export default {
     BellAlertIcon,
     Cog6ToothIcon,
     ArrowRightOnRectangleIcon,
-
+    Tooltip,
+    QuestionMarkCircleIcon,
   },
   methods: {
     delay(time) {

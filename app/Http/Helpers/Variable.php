@@ -33,6 +33,9 @@ class Variable
 
     ];
 
+    const SUCCESS_STATUS = 200;
+    const ERROR_STATUS = 422;
+
 
     const SITE_IMAGE_LIMIT_MB = 4;
     const SITE_ALLOWED_MIMES = ['jpeg', 'jpg', 'png'];
@@ -51,10 +54,10 @@ class Variable
     static function getAdmins()
     {
         return [
-            ['id' => 1, 'fullname' => 'رجبی', 'phone' => '09018945844', 'telegram_id' => '72534783',
+            ['id' => 1, 'fullname' => 'رجبی', 'phone' => '09018945844', 'telegram_id' => '72534783', 'wallet_active' => true,
                 'role' => 'us', 'email' => 'moj2raj2@gmail.com', 'password' => Hash::make('o7615564351'), 'email_verified_at' => Carbon::now(), 'phone_verified_at' => Carbon::now(), 'ref_id' => 'develowper'
             ],
-            ['id' => 2, 'fullname' => 'حسن نژاد', 'phone' => '09132258738', 'telegram_id' => '1021078930',
+            ['id' => 2, 'fullname' => 'حسن نژاد', 'phone' => '09132258738', 'telegram_id' => '1021078930', 'wallet_active' => true,
                 'role' => 'us', 'email' => 'jafar.hasannejhad@gmail.com', 'password' => Hash::make('o9132258738'), 'email_verified_at' => Carbon::now(), 'phone_verified_at' => Carbon::now(), 'ref_id' => 'metakar'
             ],
         ];
@@ -63,6 +66,24 @@ class Variable
     static function SITE_MIN_VIEW_FEE()
     {
         return Setting::firstOrNew(['key' => 'site_min_view_fee'])->value ?? 100;
+    }
+
+    static function SITE_VIEW_META_FEE()
+    {
+        return 1;
+        return Setting::firstOrNew(['key' => 'site_view_meta_fee'])->value ?? 1;
+    }
+
+    static function SITE_VIEW_META_REWARD()
+    {
+        return 2;
+        return Setting::firstOrNew(['key' => 'site_view_meta_reward'])->value ?? 2;
+    }
+
+    static function SITE_VIEW_REWARD_SECOND()
+    {
+        return 5;
+        return Setting::firstOrNew(['key' => 'site_view_reward_second'])->value ?? 30;
     }
 
 

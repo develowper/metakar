@@ -36,6 +36,7 @@ use Inertia\Inertia;
 |
 */
 Route::get('test', function () {
+    return storage_path(Storage::allFiles("public/faker/sites")[0]);
 //    File::makeDirectory(Storage::path("public/sites"), $mode = 0755,);
 //    return Telegram::log(null, 'site_created', Site::find(2));
 
@@ -48,7 +49,7 @@ Route::get('/', function () {
     return Inertia::render('Main', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
-        'heroText' => \App\Models\Setting::getValue('hero_text'),
+        'heroText' => \App\Models\Setting::getValue('hero_main_page'),
 
     ]);
 })->name('/');
@@ -93,11 +94,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::post('site/create', [SiteController::class, 'create'])->name('site.create')->middleware('can:create,App\Models\User,App\Models\Site,""');
-    Route::get('site/search', [SiteController::class, 'search'])->name('site.search');
+    Route::get('panel/site/search', [SiteController::class, 'searchPanel'])->name('panel.site.search');
 
     Route::get('site/edit/{site}', [SiteController::class, 'edit'])->name('panel.site.edit');
     Route::patch('site/update', [SiteController::class, 'update'])->name('site.update');
 
+    Route::post('transaction/storesite', [\App\Http\Controllers\TransactionController::class, 'storeSite'])->name('transaction.site.view');
 });
 
 Route::get('/podcasts', [PodcastController::class, 'index'])->name('podcast.index');
@@ -111,6 +113,8 @@ Route::get('/help', [MainController::class, 'helpPage'])->name('page.help');
 Route::get('/contact_us', [MainController::class, 'contactUsPage'])->name('page.contact_us');
 Route::get('/exchange', [ExchangeController::class, 'index'])->name('exchange.index');
 Route::get('/sites', [SiteController::class, 'index'])->name('site.index');
+Route::get('/site/search', [SiteController::class, 'search'])->name('site.search');
+Route::get('site/{site}', [SiteController::class, 'view'])->name('site');
 
 
 Route::get('language/{language}', function ($language) {

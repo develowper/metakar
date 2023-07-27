@@ -17,12 +17,13 @@
       </div>
 
       <!-- Content -->
-      <div class="px-2  md:px-4">
+      <div class="px-2 py-4 my-2 mx-auto md:px-4 bg-white shadow-md overflow-hidden  rounded-lg md:max-w-5xl ">
 
         <div
-            class="lg:grid      lg:grid-cols-3  mx-auto md:max-w-5xl   mt-6 px-2 md:px-4 py-4 bg-white shadow-md overflow-hidden  rounded-lg  ">
+            class="lg:grid      lg:grid-cols-3     mt-6 px-2 md:px-4 py-4   ">
           <div class="flex-col self-center  m-2 items-center rounded-lg max-w-xs   mx-auto lg:mx-2   ">
-            <ImageUploader mode="edit" v-if="data" :preload="route('storage.sites')+`/${data.id}.jpg`" ref="imageCropper"
+            <ImageUploader mode="edit" v-if="data" :preload="route('storage.sites')+`/${data.id}.jpg`"
+                           ref="imageCropper"
                            :label="__('image_jpg')"
                            cropRatio="1.25" id="img"
                            height="10" class="grow"/>
@@ -78,16 +79,6 @@
 
               </div>
               <div class="my-2">
-                <Selector ref="categorySelector" :data="$page.props.categories" :label="__('category')"
-                          id="category_id">
-                  <template v-slot:append>
-                    <div class="p-1 px-4">
-                      <Squares2X2Icon class="h-5 w-5"/>
-                    </div>
-                  </template>
-                </Selector>
-              </div>
-              <div class="my-2">
 
                 <TagInput
                     ref="tags"
@@ -131,12 +122,22 @@
                 </PrimaryButton>
 
               </div>
+              <div class="my-2">
+                <Selector ref="categorySelector" :data="$page.props.categories" :label="__('category')"
+                          id="category_id">
+                  <template v-slot:append>
+                    <div class="p-1 px-4">
+                      <Squares2X2Icon class="h-5 w-5"/>
+                    </div>
+                  </template>
+                </Selector>
+              </div>
 
             </form>
           </div>
 
-
         </div>
+
       </div>
     </template>
 

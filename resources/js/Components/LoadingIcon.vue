@@ -201,6 +201,11 @@
     </svg>
   </template>
 
+  <template v-else-if="type=='linear'" class="transition-all duration-500 ">
+    <div class="progress-line mt-1"></div>
+  </template>
+
+
   <template v-else-if="type=='line-dot'" class="transition-all duration-500 ">
     <!-- By Sam Herbert (@sherb), for everyone. More @ http://goo.gl/7AJzbL -->
     <svg fill="#fff" :class="class" width="120" height="30" viewBox="0 0 120 30" xmlns="http://www.w3.org/2000/svg">
@@ -246,3 +251,56 @@ export default {
   props: ['type', 'class']
 }
 </script>
+<style scoped lang="scss">
+$border-radius: .25rem;
+$gray-400: #ced4da;
+$purple: #9561e2;
+$indigo: #6574cd;
+.progress-line {
+  border-radius: $border-radius;
+  background-color: $gray-400;
+  display: -webkit-flex;
+  display: flex;
+
+  &:before {
+    border-radius: $border-radius;
+    height: .5rem;
+    width: 100%;
+    margin: 0;
+    background-color: $indigo;
+    content: '';
+    -webkit-animation: running-progress 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    animation: running-progress 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  }
+
+  @-webkit-keyframes running-progress {
+    0% {
+      margin-left: 0px;
+      margin-right: 100%;
+    }
+    50% {
+      margin-left: 25%;
+      margin-right: 0%;
+    }
+    100% {
+      margin-left: 100%;
+      margin-right: 0;
+    }
+  }
+
+  @keyframes running-progress {
+    0% {
+      margin-left: 0px;
+      margin-right: 100%;
+    }
+    50% {
+      margin-left: 25%;
+      margin-right: 0%;
+    }
+    100% {
+      margin-left: 100%;
+      margin-right: 0;
+    }
+  }
+}
+</style>

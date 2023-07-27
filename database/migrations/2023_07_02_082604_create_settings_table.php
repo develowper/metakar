@@ -20,9 +20,9 @@ return new class extends Migration {
             $table->timestamps();
         });
         \Illuminate\Support\Facades\DB::table('settings')->insert([
-            ['key' => 'hero_text', 'value' => __('hero_text'), 'lang' => app()->getLocale(), "created_at" => \Carbon\Carbon::now(),],
-            ['key' => 'site_min_view_fee', 'value' => 100, "created_at" => \Carbon\Carbon::now(),],
-            ['key' => 'site_view_commission', 'value' => 70, "created_at" => \Carbon\Carbon::now(),],
+            ['key' => 'hero_main_page', 'value' => __('hero_main_page'), 'lang' => app()->getLocale(), "created_at" => \Carbon\Carbon::now(),],
+            ['key' => 'site_min_view_fee', 'value' => 100, "created_at" => \Carbon\Carbon::now(), 'lang' => null],
+            ['key' => 'site_view_commission', 'value' => 70, "created_at" => \Carbon\Carbon::now(), 'lang' => null],
 
         ]);
     }

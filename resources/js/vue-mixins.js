@@ -13,6 +13,7 @@ export default {
             user: null,
         }
     },
+
     mounted() {
         // console.log(inject('toast'));
         if (usePage().props.auth)
@@ -36,6 +37,9 @@ export default {
         isLoading(loading) {
             this.emitter.emit('loading', loading);
 
+        },
+        sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
         },
         /**
          * Translate the given key.
@@ -64,7 +68,7 @@ export default {
             return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         },
         cropText(str, len, trailing = "...") {
-            return str && str.length >= len ? `${trailing}${str.substring(0, len)}` : str
+            return str && str.length >= len ? `${str.substring(0, len)}${trailing}` : str
         },
         getCategory(id) {
             if (id == null || usePage().props.categories == null) return '';
@@ -95,6 +99,10 @@ export default {
             } else {
                 return error.message;
             }
+        },
+        hasWallet() {
+
+            return this.user ? this.user.wallet_active : false;
         }
     },
 

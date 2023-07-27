@@ -13,6 +13,7 @@ import {
     Input,
     Alert,
     Modal,
+
 } from "tw-elements";
 import axios, {isCancel, AxiosError} from 'axios';
 
@@ -47,11 +48,12 @@ window.tailwindElements = () => {
     const popoverTriggerList = [].slice.call(document.querySelectorAll('[data-te-toggle="popover"]'));
     popoverTriggerList.map((popoverTriggerList) => new Popover(popoverTriggerList));
 
-    if (!window.Dropdown) {
-        console.log(window.Dropdown);
-        window.Dropdown = Dropdown;
-        initTE({Dropdown});
-    }
+
+    // if (!window.Dropdown) {
+    //
+    //     window.Dropdown = Dropdown;
+    //     initTE({Dropdown});
+    // }
     window.Popover = Popover;
     window.Tooltip = Tooltip;
     window.Select = Select;
@@ -73,17 +75,19 @@ window.tailwindElements = () => {
         window.Toast = Toast.getInstance(toastEl);
     if (modalEl)
         window.Modal = new Modal(modalEl);
-
     if (sideNavEl) {
+
         window.Sidenav = Sidenav.getInstance(sideNavEl);
         initSidenav();
-    }
+    } else window.Sidenav = null;
     // }
 }
 
 window.initSidenav = () => {
 
+
     let innerWidth = null;
+
     const setMode = (e) => {
         // Check necessary for Android devices
         if (window.innerWidth === innerWidth) {
@@ -91,6 +95,7 @@ window.initSidenav = () => {
         }
 
         innerWidth = window.innerWidth;
+        if (!window.Sidenav) return;
 
         if (window.innerWidth < window.Sidenav.getBreakpoint("md")) {
             window.Sidenav.changeMode("over");
@@ -107,3 +112,42 @@ window.initSidenav = () => {
 
     window.addEventListener("resize", setMode);
 }
+window.f2e = function (str) {
+    if (!str) return str;
+    str = str.toString();
+    let eng = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+    let per = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+    for (let i in per) {
+//                    str = str.replaceAll(eng[i], per[i]);
+        let re = new RegExp(per[i], "g");
+        str = str.replace(re, eng[i]);
+    }
+    return str;
+
+
+};
+window.e2f = function (str) {
+    let eng = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+    let per = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+    if (!str) return str;
+    if (Array.isArray(str)) {
+        for (let idx in str) {
+            for (let i in per) {
+//                    str = str.replaceAll(eng[i], per[i]);
+                let re = new RegExp(eng[i], "g");
+                str[idx] = str[idx].replace(re, per[i]);
+            }
+        }
+        return str;
+    }
+    str = str.toString();
+
+    for (let i in per) {
+//                    str = str.replaceAll(eng[i], per[i]);
+        let re = new RegExp(eng[i], "g");
+        str = str.replace(re, per[i]);
+    }
+    return str;
+
+
+};

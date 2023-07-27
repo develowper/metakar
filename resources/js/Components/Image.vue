@@ -1,6 +1,6 @@
 <template>
 
-  <img :src="src" :alt="alt" :class="classes+(loading?'   bg-gray-300 ':' ')"
+  <img :src="url" :alt="alt" :class="classes+(loading?'   bg-gray-300 ':' ')"
        @loadstart="loading=true" @loadeddata="loading=false" @load="loading=false;"
        @error="imageError  ">
 </template>
@@ -31,7 +31,6 @@ export default {
   props: ['type', 'src', 'alt', 'classes'],
   methods: {
     imageError() {
-
       this.loading = false;
       if (this.retry < 0) return;
       this.loading = true;

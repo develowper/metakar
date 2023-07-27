@@ -140,22 +140,7 @@
                   <ArrowsUpDownIcon class="w-4 h-4 "/>
                 </div>
               </th>
-              <th scope="col"
-                  class="px-2 py-3   cursor-pointer duration-300 hover:text-gray-500 hover:scale-[105%]"
-                  @click="params.order_by='category_id';params.dir=params.dir=='ASC'? 'DESC':'ASC'; params.page=1;getData()">
-                <div class="flex items-center justify-center">
-                  <span class="px-2">   {{ __('category') }}</span>
-                  <ArrowsUpDownIcon class="w-4 h-4 "/>
-                </div>
-              </th>
-              <th scope="col"
-                  class="px-2 py-3  cursor-pointer duration-300 hover:text-gray-500 hover:scale-[105%]"
-                  @click="params.order_by='link';params.dir=params.dir=='ASC'? 'DESC':'ASC'; params.page=1;getData()">
-                <div class="flex items-center justify-center">
-                  <span class="px-2">   {{ __('link') }} </span>
-                  <ArrowsUpDownIcon class="w-4 h-4 "/>
-                </div>
-              </th>
+
               <th scope="col"
                   class="px-2 py-3   cursor-pointer duration-300 hover:text-gray-500 hover:scale-[105%]"
                   @click="params.order_by='views';params.dir=params.dir=='ASC'? 'DESC':'ASC'; params.page=1;getData()">
@@ -164,7 +149,7 @@
                   <ArrowsUpDownIcon class="w-4 h-4 "/>
                 </div>
               </th>
-              <th scope="col"
+              <th v-if="hasWallet()" scope="col"
                   class="px-2 py-3   cursor-pointer duration-300 hover:text-gray-500 hover:scale-[105%]"
                   @click="params.order_by='view_fee';params.dir=params.dir=='ASC'? 'DESC':'ASC'; params.page=1;getData()">
                 <div class="flex items-center justify-center">
@@ -181,11 +166,35 @@
                   <ArrowsUpDownIcon class="w-4 h-4 "/>
                 </div>
               </th>
-              <th scope="col"
+              <th scope="col" v-if="hasWallet()"
                   class="px-2 py-3   cursor-pointer duration-300 hover:text-gray-500 hover:scale-[105%]"
                   @click="params.order_by='charge';params.dir=params.dir=='ASC'? 'DESC':'ASC'; params.page=1;getData()">
                 <div class="flex items-center justify-center">
                   <span class="px-2">    {{ __('charge') }}  </span>
+                  <ArrowsUpDownIcon class="w-4 h-4 "/>
+                </div>
+              </th>
+              <th scope="col"
+                  class="px-2 py-3   cursor-pointer duration-300 hover:text-gray-500 hover:scale-[105%]"
+                  @click="params.order_by='meta';params.dir=params.dir=='ASC'? 'DESC':'ASC'; params.page=1;getData()">
+                <div class="flex items-center justify-center">
+                  <span class="px-2">    {{ __('meta_charge') }}  </span>
+                  <ArrowsUpDownIcon class="w-4 h-4 "/>
+                </div>
+              </th>
+              <th scope="col"
+                  class="px-2 py-3   cursor-pointer duration-300 hover:text-gray-500 hover:scale-[105%]"
+                  @click="params.order_by='category_id';params.dir=params.dir=='ASC'? 'DESC':'ASC'; params.page=1;getData()">
+                <div class="flex items-center justify-center">
+                  <span class="px-2">   {{ __('category') }}</span>
+                  <ArrowsUpDownIcon class="w-4 h-4 "/>
+                </div>
+              </th>
+              <th scope="col"
+                  class="px-2 py-3  cursor-pointer duration-300 hover:text-gray-500 hover:scale-[105%]"
+                  @click="params.order_by='link';params.dir=params.dir=='ASC'? 'DESC':'ASC'; params.page=1;getData()">
+                <div class="flex items-center justify-center">
+                  <span class="px-2">   {{ __('link') }} </span>
                   <ArrowsUpDownIcon class="w-4 h-4 "/>
                 </div>
               </th>
@@ -263,20 +272,12 @@
                   <div class="font-normal text-gray-500">{{ }}</div>
                 </Link>
               </td>
-              <td class="px-2 py-4 ">
-                <div>
-                  {{ getCategory(d.category_id) }}
-                </div>
-              </td>
-              <td class="px-2 py-4 ">
-                <a target="_blank" class="text-primary-500" :href="d.link">
-                  {{ cropText(d.link, 20) }}
-                </a>
-              </td>
+
               <td class="px-2 py-4">
                 {{ d.views }}
               </td>
-              <td class="px-2 py-4    " data-te-dropdown-ref>
+              <td v-if="hasWallet()"
+                  class="px-2 py-4    " data-te-dropdown-ref>
                 <button
                     id="dropdownViewFee"
                     data-te-dropdown-toggle-ref
@@ -377,7 +378,8 @@
                   </li>
                 </ul>
               </td>
-              <td class="px-2 py-4    " data-te-dropdown-ref>
+              <td v-if="hasWallet()"
+                  class="px-2 py-4    " data-te-dropdown-ref>
                 <button
                     id="dropdownViewCharge"
                     data-te-dropdown-toggle-ref
@@ -417,6 +419,58 @@
                   </li>
 
                 </ul>
+              </td>
+              <td
+                  class="px-2 py-4    " data-te-dropdown-ref>
+                <button
+                    id="dropdownViewCharge"
+                    data-te-dropdown-toggle-ref
+                    aria-expanded="false"
+                    data-te-ripple-init
+                    data-te-ripple-color="light"
+                    class="  min-w-[5rem]  px-1 cursor-pointer items-center text-center rounded-md py-[.2rem]"
+                >
+                  {{ asPrice(d.meta) }}
+                </button>
+                <ul ref="dropdownViewChargeMenu" data-te-dropdown-menu-ref
+                    class="  absolute z-[1000]   p-4  hidden   list-none overflow-hidden rounded-lg border-none bg-white bg-clip-padding text-center text-base shadow-lg dark:bg-neutral-700 [&[data-te-dropdown-show]]:block"
+                    tabindex="-1" role="menu" aria-orientation="vertical" aria-label="User menu"
+                    aria-labelledby="dropdownViewCharge">
+                  <li v-if="d.status!='blocked'"
+                      class="     text-sm flex flex-col">
+                    <span class="text-xs py-3 text-danger-500">{{ __('will_subtract_from_meta') }}</span>
+                    <div class="flex items-center">
+                      <input @keydown.enter="edit({'idx':idx,'id':d.id,'cmnd':'meta','meta':d.meta})"
+                             type="number" min="0" class="grow my-2  p-1 rounded-lg border-gray-400" v-model="d.meta">
+
+                    </div>
+                  </li>
+
+                  <li v-if="d.status!='blocked'">
+                    <button class="bg-success-100 text-success-700 p-2 rounded-lg  hover:bg-success-50 w-full"
+                            @click="edit({'idx':idx,'id':d.id,'cmnd':'meta','meta':d.meta})">
+                      {{ __('charge') }}
+                    </button>
+                  </li>
+                  <li v-if="  d.status=='blocked'  " role="menuitem"
+                      class="   cursor-pointer   text-sm text-gray-700 transition-colors hover:bg-gray-100 dark:text-light dark:hover:bg-primary">
+                    <div class="flex items-center  px-6 py-2 justify-between ">
+                      <span>{{ __('not_available') }}</span>
+                    </div>
+                    <hr class="border-gray-200 dark:border-gray-700 ">
+                  </li>
+
+                </ul>
+              </td>
+              <td class="px-2 py-4 ">
+                <div>
+                  {{ getCategory(d.category_id) }}
+                </div>
+              </td>
+              <td class="px-2 py-4 ">
+                <a target="_blank" class="text-primary-500" :href="d.link">
+                  {{ cropText(d.link, 20) }}
+                </a>
               </td>
               <td class="px-2 py-4">
                 <!-- Actions Group -->
@@ -503,6 +557,7 @@ export default {
   mounted() {
 
     this.getData();
+
     // this.showDialog('danger', 'message',()=>{});
     // this.isLoading(false);
   },
@@ -511,7 +566,7 @@ export default {
 
       this.loading = true;
       this.data = [];
-      window.axios.get(route('site.search'), {
+      window.axios.get(route('panel.site.search'), {
         params: this.params
       }, {
         onUploadProgress: function (axiosProgressEvent) {
@@ -632,6 +687,10 @@ export default {
             if (response.data.view_fee) {
               this.data[params.idx].view_fee = response.data.view_fee;
             }
+            if (response.data.meta) {
+              this.data[params.idx].meta = response.data.meta;
+              this.user.meta_wallet = response.data.meta_wallet;
+            }
 
           })
 
@@ -643,6 +702,9 @@ export default {
               }
               if (error.response.data.view_fee) {
                 this.data[params.idx].view_fee = error.response.data.view_fee;
+              }
+              if (error.response.data.meta) {
+                this.data[params.idx].meta = error.response.data.meta;
               }
             }
             this.showToast('danger', this.error);

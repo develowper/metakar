@@ -5,7 +5,6 @@
     </Head>
     <Alert v-show="$page.props.flash.status" ref="alert"/>
     <Dialog ref="modal"/>
-
     <Toast ref="toast"/>
     <div class="  flex h-screen antialiased text-gray-900 bg-gray-100 dark:bg-dark dark:text-light">
       <!-- Loading screen -->
@@ -237,7 +236,6 @@ import Alert from "@/Components/Alert.vue";
 import LoadingIcon from "@/Components/LoadingIcon.vue";
 
 export const emitter = mitt()
-let self;
 
 export default {
   components: {
@@ -267,7 +265,10 @@ export default {
     // initTE({Sidenav});
     // window.initSidenav();
 
-    self = this;
+    if (!window.Dropdown) {
+      window.Dropdown = Dropdown;
+      initTE({Dropdown});
+    }
 
     this.emitter.on('showToast', (e) => {
       if (this.$refs.toast)
