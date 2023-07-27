@@ -13,6 +13,7 @@ use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\URL;
 use Inertia\Inertia;
 use Termwind\Components\Dd;
 
@@ -29,6 +30,8 @@ class SiteController extends Controller
 
     public function view(Request $request, $site)
     {
+        URL::forceScheme('https');
+
         $message = null;
         $link = null;
         $user = auth()->user();
@@ -41,14 +44,13 @@ class SiteController extends Controller
         } elseif (!$data || !$data->is_active || $data->is_blocked) {
 //            $message = __('no_results');
             $link = route('site.index');
-            $data=['name'=>__('no_results'),];
+            $data = ['name' => __('no_results'),];
         } elseif (!$auto_view && ($data->status != 'viewing' || ($user->wallet_active && $data->charge < $data->view_fee) || (!$user->wallet_active && $data->meta < Variable::SITE_VIEW_META_FEE()))) {
 //            $message = __('item_view_time_ended');
             $link = route('site.index');
-            $data=['name'=> __('item_view_time_ended'),];
+            $data = ['name' => __('item_view_time_ended'),];
         }
         $meta_view_fee = Variable::SITE_VIEW_META_FEE();
-
         return Inertia::render('Site/View', [
             'auto_view' => $auto_view,
             'available_sites' => $user ? Site::whereIsActive(true)->whereIsBlocked(false)->whereStatus('viewing')->whereLang(app()->getLocale())->whereIntegerNotInRaw('id', Site::where('owner_id', $user->id)->pluck('id'))->whereIntegerNotInRaw('id', SiteTransaction::where('owner_id', $user->id)->pluck('site_id'))->where(function ($query) use ($user, $meta_view_fee) {
@@ -56,7 +58,7 @@ class SiteController extends Controller
                     $query->whereColumn('charge', '>=', 'view_fee');
                 else $query->where('meta', '>=', $meta_view_fee);
             })->count() : 0,
-            'error_message' =>   $message,
+            'error_message' => $message,
             'error_link' => $link,
             'data' => $data,
             'site_view_meta_reward' => Variable::SITE_VIEW_META_REWARD(),
