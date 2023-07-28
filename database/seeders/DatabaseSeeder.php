@@ -78,7 +78,7 @@ class DatabaseSeeder extends Seeder
         $file = new UploadedFile(
             $path,
             File::name($path) . '.jpg' /*. File::extension($path)*/,
-            ' jpg' /* File::mimeType($path)*/,
+            'jpg' /* File::mimeType($path)*/,
             null,
             true
 
