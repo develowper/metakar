@@ -2,6 +2,7 @@ import {defineConfig} from 'vite';
 import laravel from 'laravel-vite-plugin';
 import vue from '@vitejs/plugin-vue';
 import manifestSRI from 'vite-plugin-manifest-sri';
+import legacy from '@vitejs/plugin-legacy'
 
 export default defineConfig({
     plugins: [
@@ -18,6 +19,9 @@ export default defineConfig({
                     includeAbsolute: false,
                 },
             },
+        }),
+        legacy({
+            targets: ['since 2011',/*'defaults', 'not IE 11'*/],
         }),
     ],
     server: {
@@ -47,4 +51,5 @@ export default defineConfig({
         //     },
         // },
     },
+
 });
