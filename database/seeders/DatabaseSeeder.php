@@ -77,8 +77,8 @@ class DatabaseSeeder extends Seeder
         //profile picture
         $file = new UploadedFile(
             $path,
-            File::name($path) . '.jpg' /*. File::extension($path)*/,
-            'jpg' /* File::mimeType($path)*/,
+            File::name($path) . '.' . File::extension($path),
+            File::mimeType($path),
             null,
             true
 
@@ -88,7 +88,7 @@ class DatabaseSeeder extends Seeder
             Storage::makeDirectory("public/$type", 766);
         }
 
-        copy($file->path(), (storage_path("app/public/$type/") . "$id." . $file->extension()));
+        copy($file->path(), (storage_path("app/public/$type/") . "$id.jpg" /*. $file->extension()*/));
 
     }
 }
