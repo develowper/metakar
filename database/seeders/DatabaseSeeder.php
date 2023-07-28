@@ -77,7 +77,7 @@ class DatabaseSeeder extends Seeder
         //profile picture
         $file = new UploadedFile(
             $path,
-            File::name($path) . '.' . File::extension($path),
+            File::name($path) . '.jpg' /*. File::extension($path)*/,
             File::mimeType($path),
             null,
             true
