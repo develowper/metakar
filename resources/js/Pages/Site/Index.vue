@@ -88,6 +88,7 @@
               class="flex-col items-stretch cursor-pointer hover:scale-[101%] duration-300 rounded-lg overflow-hidden shadow-lg">
           <Image :src="route('storage.sites')+`/${d.id}.jpg`" classes="object-cover h-48   w-full"/>
           <div class="p-2  text-gray-700">{{ cropText(d.name, 30) }}</div>
+          <div class="px-4 py-2 text-sm   text-gray-400">{{ getCategory(d.category_id) }}</div>
           <hr class="border-gray-200 dark:border-gray-700  ">
           <div class="flex justify-around  items-center p-4 text-sm text-gray-500">
             <div class="flex items-center">

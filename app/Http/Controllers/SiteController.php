@@ -24,6 +24,7 @@ class SiteController extends Controller
         return Inertia::render('Site/Index', [
             'heroText' => Setting::getValue('hero_sites_page'),
             'site_view_meta_reward' => Variable::SITE_VIEW_META_REWARD(),
+            'categories' => Site::categories('parents'),
         ]);
 
     }
