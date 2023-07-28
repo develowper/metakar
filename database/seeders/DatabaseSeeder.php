@@ -85,7 +85,8 @@ class DatabaseSeeder extends Seeder
         );
 
         if (!Storage::exists("app/public/$type")) {
-            Storage::makeDirectory("public/$type", 766);
+//            Storage::makeDirectory("public/$type", 766);
+            File::makeDirectory(Storage::path("public/$type"), $mode = 0755,);
         }
 
         copy($file->path(), (storage_path("app/public/$type/") . "$id.jpg" /*. $file->extension()*/));
