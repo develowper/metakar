@@ -42,6 +42,9 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'is_active' => 'boolean',
+        'is_blocked' => 'boolean',
+        'wallet_active' => 'boolean',
     ];
 
     public static function makeRefCode()

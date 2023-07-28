@@ -19,7 +19,7 @@ class SiteTransaction extends Model
         'amount',
     ];
     protected $casts = [
-
+        'is_meta' => 'boolean',
     ];
 
 
