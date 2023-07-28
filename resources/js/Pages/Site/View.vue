@@ -168,6 +168,7 @@ export default {
       error: null,
       data: null,
       available_sites: 0,
+      hiddenProp: null,
 
     }
   },
@@ -182,6 +183,8 @@ export default {
     // this.isLoading(true);
   },
   mounted() {
+    //if support hidden method with perfixes?
+    this.hiddenProp = this.getHiddenProp();
     if (!this.$page.props.error_message)
       this.isLoading(true);
     this.data = this.$page.props.data;
@@ -196,7 +199,7 @@ export default {
       let seconds = this.$page.props.reward_second;
       // seconds = 5;
       const intervalId = setInterval(function () {
-        if (!document.hidden) {
+        if (!this.tabIsVisible()) {
           this.timer++;
           this.timerPercent = Math.floor((this.timer / seconds) * 100)
         }
@@ -244,45 +247,32 @@ export default {
             // always executed
             this.isLoading(false);
           });
+    },
+    tabIsVisible() {
+
+
+      const prop = this.hiddenProp;
+      if (!prop) return false;
+
+      return document[prop];
+    },
+    getHiddenProp() {
+      var prefixes = ['webkit', 'moz', 'ms', 'o'];
+
+      // if 'hidden' is natively supported just return it
+      if ('hidden' in document) return 'hidden';
+
+      // otherwise loop over all the known prefixes until we find one
+      for (var i = 0; i < prefixes.length; i++) {
+        if ((prefixes[i] + 'Hidden') in document)
+          return prefixes[i] + 'Hidden';
+      }
+
+      // otherwise it's not supported
+      return null;
     }
   },
-  tabIsVisible() {
-    var hidden = "hidden";
 
-    // Standards:
-    if (hidden in document)
-      document.addEventListener("visibilitychange", onchange);
-    else if ((hidden = "mozHidden") in document)
-      document.addEventListener("mozvisibilitychange", onchange);
-    else if ((hidden = "webkitHidden") in document)
-      document.addEventListener("webkitvisibilitychange", onchange);
-    else if ((hidden = "msHidden") in document)
-      document.addEventListener("msvisibilitychange", onchange);
-    // IE 9 and lower:
-    else if ("onfocusin" in document)
-      document.onfocusin = document.onfocusout = onchange;
-    // All others:
-    else
-      window.onpageshow = window.onpagehide
-          = window.onfocus = window.onblur = onchange;
-
-    function onchange(evt) {
-      var v = "visible", h = "hidden",
-          evtMap = {
-            focus: v, focusin: v, pageshow: v, blur: h, focusout: h, pagehide: h
-          };
-
-      evt = evt || window.event;
-      if (evt.type in evtMap)
-        document.body.className = evtMap[evt.type];
-      else
-        document.body.className = this[hidden] ? "hidden" : "visible";
-    }
-
-    // set the initial state (but only if browser supports the Page Visibility API)
-    if (document[hidden] !== undefined)
-      onchange({type: document[hidden] ? "blur" : "focus"});
-  },
 }
 
 </script>
