@@ -261,6 +261,7 @@ export default {
       }.bind(this), 1000);
     },
     addTransaction() {
+      if (!this.$page.props.data) return; //user changed page
       this.isLoading(true);
       window.axios.post(route('transaction.site.view'), {
             id: this.$page.props.data.id,

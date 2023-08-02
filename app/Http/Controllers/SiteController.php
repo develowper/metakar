@@ -36,30 +36,30 @@ class SiteController extends Controller
             : Site::whereStatus('view')->whereLang(app()->getLocale())->whereIntegerNotInRaw('id', SiteView::where('ip', $request->ip())->pluck('site_id'))->where(function ($query) use ($user, $meta_view_fee) {
                 $query->where('meta', '>=', $meta_view_fee);
             })->first();
-
-        return redirect()->route('site',['site'=> optional($data)->id]);
-        if ($data) {
-            if (str_starts_with($data->link, 'http:'))
-                $data->link = str_replace('http://', 'https://', $data->link);
-            $data->name = __('site') . ' ' . $data->name;
-        }
-
-        return Inertia::render('Site/View', [
-            'auto_view' => $auto_view,
-            'available_sites' => $user ? Site::whereStatus('view')->whereLang(app()->getLocale())->whereIntegerNotInRaw('id', Site::where('owner_id', $user->id)->pluck('id'))->whereIntegerNotInRaw('id', SiteTransaction::where('owner_id', $user->id)->pluck('site_id'))->where(function ($query) use ($user, $meta_view_fee) {
-                if ($user->wallet_active)
-                    $query->whereColumn('charge', '>=', 'view_fee');
-                else $query->where('meta', '>=', $meta_view_fee);
-            })->count()
-                : Site::whereStatus('view')->whereLang(app()->getLocale())->whereIntegerNotInRaw('id', SiteView::where('ip', $request->ip())->pluck('site_id'))->where(function ($query) use ($user, $meta_view_fee) {
-                    $query->where('meta', '>=', $meta_view_fee);
-                })->count(),
-            'error_message' => $message,
-            'error_link' => $link,
-            'data' => $data,
-            'site_view_meta_reward' => Variable::SITE_VIEW_META_REWARD(),
-            'reward_second' => Variable::SITE_VIEW_REWARD_SECOND(),
-        ]);
+        if ($data)
+            return redirect()->route('site', ['site' => optional($data)->id]);
+//        if ($data) {
+//            if (str_starts_with($data->link, 'http:'))
+//                $data->link = str_replace('http://', 'https://', $data->link);
+//            $data->name = __('site') . ' ' . $data->name;
+//        }
+//
+//        return Inertia::render('Site/View', [
+//            'auto_view' => $auto_view,
+//            'available_sites' => $user ? Site::whereStatus('view')->whereLang(app()->getLocale())->whereIntegerNotInRaw('id', Site::where('owner_id', $user->id)->pluck('id'))->whereIntegerNotInRaw('id', SiteTransaction::where('owner_id', $user->id)->pluck('site_id'))->where(function ($query) use ($user, $meta_view_fee) {
+//                if ($user->wallet_active)
+//                    $query->whereColumn('charge', '>=', 'view_fee');
+//                else $query->where('meta', '>=', $meta_view_fee);
+//            })->count()
+//                : Site::whereStatus('view')->whereLang(app()->getLocale())->whereIntegerNotInRaw('id', SiteView::where('ip', $request->ip())->pluck('site_id'))->where(function ($query) use ($user, $meta_view_fee) {
+//                    $query->where('meta', '>=', $meta_view_fee);
+//                })->count(),
+//            'error_message' => $message,
+//            'error_link' => $link,
+//            'data' => $data,
+//            'site_view_meta_reward' => Variable::SITE_VIEW_META_REWARD(),
+//            'reward_second' => Variable::SITE_VIEW_REWARD_SECOND(),
+//        ]);
 
 
         return Inertia::render('Site/Index', [
