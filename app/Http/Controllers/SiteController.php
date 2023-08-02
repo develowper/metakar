@@ -37,7 +37,7 @@ class SiteController extends Controller
                 $query->where('meta', '>=', $meta_view_fee);
             })->first();
 
-        return redirect()->route('site', optional($data)->id);
+        return redirect()->route('site',['site'=> optional($data)->id]);
         if ($data) {
             if (str_starts_with($data->link, 'http:'))
                 $data->link = str_replace('http://', 'https://', $data->link);
