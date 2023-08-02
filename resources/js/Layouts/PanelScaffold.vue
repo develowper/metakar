@@ -152,12 +152,12 @@
                     aria-expanded="false"
                     data-te-ripple-init
                     data-te-ripple-color="light"
-                    class=" flex p-2 transition-colors duration-200 rounded-full text-primary-500 bg-primary-50 hover:text-primary hover:bg-primary-100 dark:hover:text-light dark:hover:bg-primary-dark dark:bg-dark focus:outline-none focus:bg-primary-100 dark:focus:bg-primary-dark focus:ring-primary-darker">
+                    class=" flex   transition-colors duration-200 rounded-full text-primary-500 bg-primary-50 hover:text-primary hover:bg-primary-100 dark:hover:text-light dark:hover:bg-primary-dark dark:bg-dark focus:outline-none focus:bg-primary-100 dark:focus:bg-primary-dark focus:ring-primary-darker">
 
                   <span class="sr-only">User menu</span>
                   <Image
-                      classes="   hover:shadow-lg  object-cover   rounded-full w-8 h-8  "
-                      src="https://www.kindpng.com/free/profile-picture"
+                      classes="   hover:shadow-lg  object-cover   rounded-full w-12 h-12  "
+                      :src="route('storage.users')+'/1.jpg'"
                       alt="jane avatar"
                       type="user"/>
                 </button>

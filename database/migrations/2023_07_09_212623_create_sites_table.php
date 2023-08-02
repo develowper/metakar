@@ -28,8 +28,8 @@ return new class extends Migration {
             $table->string('slug', 200)->nullable();
             $table->unsignedInteger('meta')->default(0);
             $table->string('tags', 200)->nullable();
-            $table->boolean('is_active', 200)->default(true);
-            $table->boolean('is_blocked', 200)->default(false);
+//            $table->boolean('is_active', 200)->default(true);
+//            $table->boolean('is_blocked', 200)->default(false);
             $table->foreign('owner_id')->references('id')->on('users')->onDelete('no action');
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('no action');
 

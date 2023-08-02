@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Helpers\Variable;
 use App\Models\Site;
 use App\Models\SiteTransaction;
+use App\Models\SiteView;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -22,13 +23,26 @@ class TransactionController extends Controller
         $meta_view_fee = Variable::SITE_VIEW_META_FEE();
         $meta_view_reward = Variable::SITE_VIEW_META_REWARD();
         session()->put('auto_view', $autoView);
-        $next = Site::where('id', '!=', $siteId)->whereIsActive(true)->whereIsBlocked(false)->whereStatus('viewing')->whereLang(app()->getLocale())->whereIntegerNotInRaw('id', Site::where('owner_id', $user->id)->pluck('id'))->whereIntegerNotInRaw('id', SiteTransaction::where('owner_id', $user->id)->pluck('site_id'))->orderBy('view_fee', 'DESC')->where(function ($query) use ($user, $meta_view_fee) {
+        $next = $user ? Site::where('id', '!=', $siteId)->whereStatus('view')->whereLang(app()->getLocale())->whereIntegerNotInRaw('id', Site::where('owner_id', $user->id)->pluck('id'))->whereIntegerNotInRaw('id', SiteTransaction::where('owner_id', $user->id)->pluck('site_id'))->orderBy('view_fee', 'DESC')->where(function ($query) use ($user, $meta_view_fee) {
             if ($user->wallet_active)
                 $query->whereColumn('charge', '>=', 'view_fee');
             else $query->where('meta', '>=', $meta_view_fee);
-        })->firstOrNew()->id;
-        if (!$data || !$data->is_active || $data->is_blocked) {
-            return response()->json(['message' => __('item_is_inactive'), 'next' => $next,], $errorStatus);
+        })->firstOrNew()->id
+            : Site::where('id', '!=', $siteId)->whereStatus('view')->whereLang(app()->getLocale())->whereIntegerNotInRaw('id', SiteView::where('ip', $request->ip())->pluck('site_id'))->where(function ($query) use ($user, $meta_view_fee) {
+                $query->where('meta', '>=', $meta_view_fee);
+            })->firstOrNew()->id;
+        if (!$data || $data->status == 'inactive' || $data->status == 'block') {
+            return response()->json(['message' => "$siteId" . __('item_is_inactive'), 'next' => $next,], $errorStatus);
+        }
+        if (!$user) {
+            SiteView::create(['ip' => $request->ip(), 'site_id' => $data->id]);
+            if ($data->meta >= $meta_view_fee)
+                $data->meta -= $meta_view_fee;
+            else
+                $data->status = 'need_charge';
+            $data->views++;
+            $data->save();
+            return response()->json(['message' => __('login_or_register_for_get_reward'), 'next' => $next,], $errorStatus);
         }
         if ($user->is_blocked || !$user->is_active) {
             return response()->json(['message' => __('user_is_inactive'),], $errorStatus);
@@ -39,8 +53,8 @@ class TransactionController extends Controller
         if (SiteTransaction::where('owner_id', $user->id)->where('site_id', $data->id)->first()) {
             return response()->json(['message' => __('you_viewed_this_site_before'), 'next' => $next,], $errorStatus);
         }
-        if ($data->status != 'viewing' || ($user->wallet_active && $data->charge < $data->view_fee) || (!$user->wallet_active && $data->meta < $meta_view_fee)) {
-            if ($data->status == 'viewing') {
+        if ($data->status != 'view' || ($user->wallet_active && $data->charge < $data->view_fee) || (!$user->wallet_active && $data->meta < $meta_view_fee)) {
+            if ($data->status == 'view') {
                 $data->status = 'need_charge';
                 $data->save();
             }
@@ -66,11 +80,11 @@ class TransactionController extends Controller
                 $data->status = 'need_charge';
 
             //check if user have site for view? add wallet meta to that
-            $userSite = Site::where('owner_id', $user->id)->where('status', 'need_charge')->orWhere('status', 'viewing')->first();
+            $userSite = Site::where('owner_id', $user->id)->where('status', 'need_charge')->orWhere('status', 'view')->first();
             if ($userSite) {
                 $userSite->meta += $meta_view_reward;
                 if ($userSite->status == 'need_charge')
-                    $userSite->status = 'viewing';
+                    $userSite->status = 'view';
                 $userSite->save();
             } else {
                 $user->meta_wallet += $meta_view_reward;

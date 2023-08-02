@@ -81,7 +81,7 @@ const remove = (idx) => {
             <PlusIcon class="h-5 w-5 text-white font-bold"/>
         </span>
     </div>
-
+    <InputError class="mt-1" :message="error"/>
     <div class="flex   items-center  ">
             <span v-for="(item,idx) in items">
                 <button @click.prevent="remove(idx)"

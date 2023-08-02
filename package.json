@@ -29,6 +29,7 @@
         "cropperjs": "^1.5.13",
         "dns": "^0.2.2",
         "mitt": "^3.0.1",
+        "puppeteer": "^20.9.0",
         "tw-elements": "^1.0.0-beta2",
         "vue-plugin-load-script": "^2.1.1"
     }

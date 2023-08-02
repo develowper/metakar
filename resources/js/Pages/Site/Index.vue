@@ -80,13 +80,13 @@
     </div>
 
     <section class="flex justify-center  p-5 max-w-7xl  mx-auto">
-      <div class=" w-80 p-3   mx-2      lg:flex md:hidden sm:hidden xs:hidden">hi</div>
+      <!--      <div class=" w-80 p-3   mx-2  bg-white rounded-lg      lg:flex md:hidden sm:hidden xs:hidden"></div>-->
 
       <div
-          class="   grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4  gap-4     max-w-6xl">
+          class="   grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4   gap-2     max-w-6xl">
         <Link v-for="(d,idx) in data" :href="route('site',d.id)"
               class="flex-col items-stretch cursor-pointer hover:scale-[101%] duration-300 rounded-lg overflow-hidden shadow-lg">
-          <Image :src="route('storage.sites')+`/${d.id}.jpg`" classes="object-cover h-48   w-full"/>
+          <Image :src="route('storage.sites')+`/${d.id}.jpg`" classes="object-cover h-48 rounded-lg  w-full"/>
           <div class="p-2  text-gray-700">{{ cropText(d.name, 30) }}</div>
           <div class="px-4 py-2 text-sm   text-gray-400">{{ getCategory(d.category_id) }}</div>
           <hr class="border-gray-200 dark:border-gray-700  ">
@@ -96,7 +96,7 @@
               <span class="px-1">{{ __('view') }}:</span>
               <span class="px-1">{{ d.views }}</span>
             </div>
-            <div class=" border-s   py-4"></div>
+            <div class=" border-s   py-2"></div>
             <div v-if="!hasWallet()" class="flex items-center">
               <!--              <EyeIcon class="w-4 h-4"/>-->
               <span class="px-1">{{ __('reward') }}:</span>

@@ -2,7 +2,7 @@
   <!--    Toast-->
   <div
       :class="`bg-${color}-100 text-${color}-700`"
-      class=" z-[9999] fixed bottom-0 start-64 pointer-events-auto mx-auto mb-4 hidden w-96 max-w-full rounded-lg   bg-clip-padding text-sm   shadow-lg shadow-black/5 data-[te-toast-show]:block data-[te-toast-hide]:hidden"
+      class=" z-[9999] fixed bottom-0 end-0 pointer-events-auto m-2   hidden w-96 max-w-full rounded-lg   bg-clip-padding text-sm   shadow-lg shadow-black/5 data-[te-toast-show]:block data-[te-toast-hide]:hidden"
       id="toast"
       role="alert"
       aria-live="assertive"

@@ -35,7 +35,7 @@
               {{ __('podcasts') }}
             </Link>
             <Link :href="route('site.index')" class="nav-item" :class="navClasses('site')">
-              {{ __('sites') }}
+              {{ __('increase_view') }}
             </Link>
             <Link :href="route('page.make_money')" class="nav-item" :class="navClasses('make_money')">
               {{ __('make_money') }}

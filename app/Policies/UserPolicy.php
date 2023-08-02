@@ -107,7 +107,7 @@ class UserPolicy
             return abort(403, __("user_is_blocked"));
         }
 
-        if ($item && $item->is_blocked) {
+        if ($item && $item->status == 'block') {
             return abort(403, __("item_is_blocked"));
         }
 

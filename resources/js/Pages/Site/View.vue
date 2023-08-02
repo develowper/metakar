@@ -43,6 +43,8 @@
 
             </div>
             <div class="  px-3    flex  items-center">
+              <PrimaryButton class="mx-2 p-2 grow  ">{{ __('register_site') }}</PrimaryButton>
+              <SecondaryButton class="mx-2 p-2 grow">{{ __('make_money') }}</SecondaryButton>
             </div>
           </div>
 
@@ -85,7 +87,7 @@
 
       <div v-else-if="data" class=" flex flex-col ">
         <div class="px-4 py-2 text-white bg-primary">{{ data.name }}</div>
-        <div class="block xs:flex items-center justify-between     text-white bg-primary px-4 py-2 ">
+        <div class="block sm:flex items-center justify-between     text-white bg-primary px-4 py-2 ">
 
           <div
               class=" flex w-full justify-start  items-center  text-sm  ">
@@ -122,7 +124,7 @@
               >
             </div>
           </div>
-          <div class="text-primary-500 bg-primary-100 rounded-lg p-2 flex text-xs">
+          <div class="text-primary-500 bg-primary-100 rounded-lg p-2 justify-center flex text-xs">
             <span class="mx-1">  {{ __('viewable') }}:</span>
             <span class="mx-1"> {{ available_sites > 0 ? available_sites - 1 : 0 }}</span>
 
@@ -139,12 +141,46 @@
           </div>
         </div>
 
-        <iframe ref="iframe" class="w-full h-screen" :src="$page.props.data.link"
+        <iframe ref="iframe" class="w-full  min-h-screen" :src="$page.props.data.link"
                 @load.once="startTimer">
 
         </iframe>
       </div>
     </div>
+    <section class="flex justify-center  p-5 max-w-7xl  mx-auto border-t mt-5">
+      <!--      <div class=" w-80 p-3   mx-2  bg-white rounded-lg      lg:flex md:hidden sm:hidden xs:hidden"></div>-->
+
+      <div
+          class="   grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4   gap-2     max-w-6xl">
+        <Link v-for="(d,idx) in sites" :href="route('site',d.id)"
+              class="flex-col items-stretch cursor-pointer hover:scale-[101%] duration-300 rounded-lg overflow-hidden shadow-lg">
+          <Image :src="route('storage.sites')+`/${d.id}.jpg`" classes="object-cover h-48 rounded-lg  w-full"/>
+          <div class="p-2  text-gray-700">{{ cropText(d.name, 30) }}</div>
+          <div class="px-4 py-2 text-sm   text-gray-400">{{ getCategory(d.category_id) }}</div>
+          <hr class="border-gray-200 dark:border-gray-700  ">
+          <div class="flex justify-around  items-center p-4 text-sm text-gray-500">
+            <div class="flex items-center">
+              <!--              <EyeIcon class="w-4 h-4"/>-->
+              <span class="px-1">{{ __('view') }}:</span>
+              <span class="px-1">{{ d.views }}</span>
+            </div>
+            <div class=" border-s   py-2"></div>
+            <div v-if="!hasWallet()" class="flex items-center">
+              <!--              <EyeIcon class="w-4 h-4"/>-->
+              <span class="px-1">{{ __('reward') }}:</span>
+              <span class="px-1">{{ $page.props.site_view_meta_reward }} {{ __('meta') }}</span>
+            </div>
+            <div v-else class="flex items-center">
+              <!--              <EyeIcon class="w-4 h-4"/>-->
+              <span class="px-1">{{ __('reward') }}:</span>
+              <span class="px-1">{{ asPrice(d.view_fee) }} {{ __('currency_symbol') }}</span>
+            </div>
+
+          </div>
+        </Link>
+      </div>
+    </section>
+    <LoadingIcon v-show="loading" ref="loader" type="linear"/>
   </Scaffold>
 </template>
 
@@ -169,7 +205,15 @@ export default {
       data: null,
       available_sites: 0,
       hiddenProp: null,
-
+      intervalId: null,
+      sites: [],
+      loading: false,
+      params: {
+        page: 0,
+        search: null,
+        order_by: null,
+        dir: null,
+      }
     }
   },
   components: {
@@ -178,9 +222,15 @@ export default {
     Link,
     EyeIcon,
     CurrencyDollarIcon,
+    LoadingIcon,
+    PrimaryButton,
+    SecondaryButton,
   },
   created() {
     // this.isLoading(true);
+    window.addEventListener("beforeunload", () => {
+      clearInterval(this.intervalId);
+    });
   },
   mounted() {
     //if support hidden method with perfixes?
@@ -189,7 +239,8 @@ export default {
       this.isLoading(true);
     this.data = this.$page.props.data;
     this.available_sites = this.$page.props.available_sites;
-
+    this.setScroll(this.$refs.loader.$el);
+    this.getData();
   },
   methods: {
     startTimer(el) {
@@ -198,13 +249,13 @@ export default {
       const iframe = el.target;
       let seconds = this.$page.props.reward_second;
       // seconds = 5;
-      const intervalId = setInterval(function () {
+      this.intervalId = setInterval(function () {
         if (!this.tabIsVisible()) {
           this.timer++;
           this.timerPercent = Math.floor((this.timer / seconds) * 100)
         }
         if (this.timer >= seconds) {
-          clearInterval(intervalId);
+          clearInterval(this.intervalId);
           this.addTransaction();
         }
       }.bind(this), 1000);
@@ -270,7 +321,52 @@ export default {
 
       // otherwise it's not supported
       return null;
-    }
+    },
+    getData() {
+
+      if (this.total > 0 && this.total <= this.sites.length) return;
+      this.loading = true;
+
+      window.axios.get(route('site.search'), {
+        params: this.params
+      })
+          .then((response) => {
+            this.sites = this.sites.concat(response.data.data);
+            this.total = response.data.total;
+            this.params.page = response.data.current_page + 1;
+
+          })
+          .catch((error) => {
+            this.error = this.getErrors(error);
+
+            this.showToast('danger', this.error)
+          })
+          .finally(() => {
+            // always executed
+            this.loading = false;
+          });
+    },
+    setScroll(el) {
+      window.onscroll = () => {
+//                    const {top, bottom, height} = this.loader.getBoundingClientRect();
+
+        let top_of_element = el.offsetTop;
+        let bottom_of_element = el.offsetTop + el.offsetHeight;
+        let bottom_of_screen = window.pageYOffset + window.innerHeight;
+        let top_of_screen = window.pageYOffset;
+
+        if ((bottom_of_screen + 300 > top_of_element) && (top_of_screen < bottom_of_element + 200) && !this.loading) {
+
+          this.getData();
+          // scrolled = true;
+//                        console.log('visible')
+          // the element is visible, do something
+        } else {
+//                        console.log('invisible')
+          // the element is not visible, do something else
+        }
+      };
+    },
   },
 
 }

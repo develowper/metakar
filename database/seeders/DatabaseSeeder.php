@@ -53,7 +53,7 @@ class DatabaseSeeder extends Seeder
                 'slug' => str_slug($name),
                 'link' => $this->faker->url(),
 
-                'status' => $this->faker->randomElement(["viewing", "viewing", "viewing", "ready"]),
+                'status' => $this->faker->randomElement(["view", "view", "view", "ready"]),
                 'meta' => $this->faker->numberBetween(0, 5),
                 'owner_id' => $this->faker->numberBetween(1, 2),
                 'category_id' => $this->faker->randomElement(Category::pluck('id')),
@@ -84,7 +84,7 @@ class DatabaseSeeder extends Seeder
 
         );
 
-        if (!Storage::exists("app/public/$type")) {
+        if (!File::exists("storage/app/public/$type")) {
 //            Storage::makeDirectory("public/$type", 766);
             File::makeDirectory(Storage::path("public/$type"), $mode = 0755,);
         }

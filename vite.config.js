@@ -20,9 +20,9 @@ export default defineConfig({
                 },
             },
         }),
-        legacy({
-            targets: ['since 2011',/*'defaults', 'not IE 11'*/],
-        }),
+        // legacy({
+        //     targets: ['since 2011',/*'defaults', 'not IE 11'*/],
+        // }),
     ],
     server: {
         host: "localhost",

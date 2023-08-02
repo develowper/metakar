@@ -1,15 +1,16 @@
 <template>
-    <div>
-        <InputLabel class="my-2" :for="id" :value="label"/>
-        <div class="flex ">
+  <div>
+    <InputLabel class="my-2" :for="id" :value="label"/>
+    <div class="flex ">
          <span v-if="$slots.append"
                class=" flex bg-gray-100  text-gray-500 items-center whitespace-nowrap rounded-s border border-e-0 border-solid border-neutral-300  text-center text-base font-normal leading-[1.6]   dark:border-neutral-600 dark:text-neutral-200 dark:placeholder:text-neutral-200"
                :id="`${id}-addon`">
             <slot name="append"></slot>
         </span>
 
-            <span class="grow ">
-            <select :id="id" class=" " v-model="selected" :name="id"
+      <span class="grow ">
+            <select :id="id" class=" " :value="modelValue" @change="$emit('update:modelValue', $event.target.value)"
+                    :name="id"
                     data-te-select-filter="true"
                     data-te-select-search-placeholder="..."
                     data-te-select-clear-button="true"
@@ -33,11 +34,11 @@
                 <option class="text-end" v-for="d in data" :value="d.id"> {{ __(d.name) }}</option>
 
             </select>
-                <!--            <label data-te-select-label-ref> {{ label }}</label>-->
+        <!--            <label data-te-select-label-ref> {{ label }}</label>-->
 </span>
 
-        </div>
     </div>
+  </div>
 </template>
 
 
@@ -46,26 +47,27 @@ import {Select, initTE} from "tw-elements";
 import InputLabel from '@/Components/InputLabel.vue';
 
 export default {
-    data() {
-        return {
-            selected: null,
-        }
-    },
-    props: ['id', 'label', 'data'],
-    components: {InputLabel},
-    mounted() {
-
-        // initTE({Select})
-
-        // if (!window.Select) {
-        // this.$forceUpdate();
-        // this.$nextTick(function () {
-        //     initTE({Select})
-        //     window.Select = Select;
-        // });
-        // }
-
+  data() {
+    return {
+      selected: null,
     }
+  },
+  props: ['id', 'label', 'data', 'modelValue'],
+  emits: ['update:modelValue'],
+  components: {InputLabel},
+  mounted() {
+
+    // initTE({Select})
+
+    // if (!window.Select) {
+    // this.$forceUpdate();
+    // this.$nextTick(function () {
+    //     initTE({Select})
+    //     window.Select = Select;
+    // });
+    // }
+
+  }
 }
 </script>
 

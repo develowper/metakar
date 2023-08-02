@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
+use Spatie\Browsershot\Browsershot;
+use Spatie\Browsershot\Exceptions\CouldNotTakeBrowsershot;
 
 class Util
 {
@@ -30,6 +32,25 @@ class Util
         return $imageSave;
         return "/storage/$type/$name.jpg";
 //        file_put_contents(storage_path("app/public/$type_id/$image->id.jpg"), $image_base64);
+
+
+    }
+
+    static function createScreenshot($url, $type, $name)
+    {
+        return true;
+        if (!Storage::exists("public/$type")) {
+            File::makeDirectory(Storage::path("public/$type"), $mode = 0755,);
+        }
+        try {
+            return Browsershot::url($url)
+                ->setOption('landscape', true)
+                //            ->windowSize(3840, 2160)
+                ->waitUntilNetworkIdle()
+                ->save(storage_path("app/public/$type/$name.jpg"));
+        } catch (CouldNotTakeBrowsershot $e) {
+            return false;
+        }
 
 
     }

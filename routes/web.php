@@ -14,7 +14,10 @@ use App\Http\Controllers\SiteController;
 use App\Http\Controllers\VideoController;
 use App\Http\Helpers\Telegram;
 use App\Http\Helpers\Variable;
+use App\Models\Business;
 use App\Models\Category;
+use App\Models\County;
+use App\Models\Province;
 use App\Models\Setting;
 use App\Models\Site;
 use Illuminate\Foundation\Application;
@@ -44,6 +47,7 @@ Route::get('test', function () {
 
 Route::get('storage')->name('storage');
 Route::get('storage/sites')->name('storage.sites');
+Route::get('storage/users')->name('storage.users');
 
 Route::get('/', function () {
     return Inertia::render('Main', [
@@ -63,7 +67,12 @@ Route::middleware(['auth', 'verified'])->prefix('panel')->group(function ($route
 //    PanelController::makeInertiaRoute('get', 'site/edit/{site}', 'panel.site.edit', 'Panel/Site/Edit', ['categories' => Site::categories('parents'), 'site_statuses' => Variable::SITE_STATUSES, 'site' => $tmp = Site::with('category')->find(request()->segment(count(request()->segments())))], 'can:edit,App\Models\User,App\Models\Site,"","' . $tmp . '"');
 
 
-    PanelController::makeInertiaRoute('get', 'business/create', 'panel.business.new', 'Panel/Business/Create');
+    PanelController::makeInertiaRoute('get', 'business/new', 'panel.business.new', 'Panel/Business/Create', [
+        'provinces' => Province::all(),
+        'counties' => County::all(),
+        'categories' => Business::categories(),
+        'max_images_limit' => Variable::BUSINESS_IMAGE_LIMIT,
+    ]);
     PanelController::makeInertiaRoute('get', 'business/index', 'panel.business.index', 'Panel/Business/Index');
     PanelController::makeInertiaRoute('get', 'article/index', 'panel.article.index', 'Panel/Business/Index');
     PanelController::makeInertiaRoute('get', 'article/new', 'panel.article.new', 'Panel/Business/Create');
@@ -86,6 +95,14 @@ Route::middleware(['auth', 'verified'])->prefix('panel')->group(function ($route
 
 });
 
+Route::post('site/create', [SiteController::class, 'create'])->name('site.create')->middleware('can:create,App\Models\User,App\Models\Site,""');
+Route::post('business/create', [BusinessController::class, 'create'])->name('business.create')->middleware('can:create,App\Models\User,App\Models\Business,""');
+
+
+Route::middleware('throttle:6,1')->group(function () {
+    Route::post('sms/send', [MainController::class, 'sendSms'])->name('sms.send.verification');
+
+});
 
 Route::middleware('auth')->group(function () {
 
@@ -93,14 +110,14 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::post('site/create', [SiteController::class, 'create'])->name('site.create')->middleware('can:create,App\Models\User,App\Models\Site,""');
     Route::get('panel/site/search', [SiteController::class, 'searchPanel'])->name('panel.site.search');
+
 
     Route::get('site/edit/{site}', [SiteController::class, 'edit'])->name('panel.site.edit');
     Route::patch('site/update', [SiteController::class, 'update'])->name('site.update');
 
-    Route::post('transaction/storesite', [\App\Http\Controllers\TransactionController::class, 'storeSite'])->name('transaction.site.view');
 });
+Route::post('transaction/storesite', [\App\Http\Controllers\TransactionController::class, 'storeSite'])->name('transaction.site.view');
 
 Route::get('/podcasts', [PodcastController::class, 'index'])->name('podcast.index');
 Route::get('/articles', [ArticleController::class, 'index'])->name('article.index');

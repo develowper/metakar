@@ -9,18 +9,59 @@ use App\Http\Requests\SiteRequest;
 use App\Models\Setting;
 use App\Models\Site;
 use App\Models\SiteTransaction;
+use App\Models\SiteView;
 use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
 use Inertia\Inertia;
+use Spatie\Browsershot\Browsershot;
 use Termwind\Components\Dd;
 
 class SiteController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $message = null;
+        $link = null;
+        $auto_view = session()->get('auto_view', true);
+        $meta_view_fee = Variable::SITE_VIEW_META_FEE();
+        $user = auth()->user();
+        $data = $user ? Site::whereStatus('view')->whereLang(app()->getLocale())->whereIntegerNotInRaw('id', Site::where('owner_id', $user->id)->pluck('id'))->whereIntegerNotInRaw('id', SiteTransaction::where('owner_id', $user->id)->pluck('site_id'))->where(function ($query) use ($user, $meta_view_fee) {
+            if ($user->wallet_active)
+                $query->whereColumn('charge', '>=', 'view_fee');
+            else $query->where('meta', '>=', $meta_view_fee);
+        })->first()
+            : Site::whereStatus('view')->whereLang(app()->getLocale())->whereIntegerNotInRaw('id', SiteView::where('ip', $request->ip())->pluck('site_id'))->where(function ($query) use ($user, $meta_view_fee) {
+                $query->where('meta', '>=', $meta_view_fee);
+            })->first();
+
+        return redirect()->route('site', optional($data)->id);
+        if ($data) {
+            if (str_starts_with($data->link, 'http:'))
+                $data->link = str_replace('http://', 'https://', $data->link);
+            $data->name = __('site') . ' ' . $data->name;
+        }
+
+        return Inertia::render('Site/View', [
+            'auto_view' => $auto_view,
+            'available_sites' => $user ? Site::whereStatus('view')->whereLang(app()->getLocale())->whereIntegerNotInRaw('id', Site::where('owner_id', $user->id)->pluck('id'))->whereIntegerNotInRaw('id', SiteTransaction::where('owner_id', $user->id)->pluck('site_id'))->where(function ($query) use ($user, $meta_view_fee) {
+                if ($user->wallet_active)
+                    $query->whereColumn('charge', '>=', 'view_fee');
+                else $query->where('meta', '>=', $meta_view_fee);
+            })->count()
+                : Site::whereStatus('view')->whereLang(app()->getLocale())->whereIntegerNotInRaw('id', SiteView::where('ip', $request->ip())->pluck('site_id'))->where(function ($query) use ($user, $meta_view_fee) {
+                    $query->where('meta', '>=', $meta_view_fee);
+                })->count(),
+            'error_message' => $message,
+            'error_link' => $link,
+            'data' => $data,
+            'site_view_meta_reward' => Variable::SITE_VIEW_META_REWARD(),
+            'reward_second' => Variable::SITE_VIEW_REWARD_SECOND(),
+        ]);
+
+
         return Inertia::render('Site/Index', [
             'heroText' => Setting::getValue('hero_sites_page'),
             'site_view_meta_reward' => Variable::SITE_VIEW_META_REWARD(),
@@ -37,30 +78,35 @@ class SiteController extends Controller
         $link = null;
         $user = auth()->user();
         $data = Site::find($site);
-        $auto_view = session()->get('auto_view', false);
+        $auto_view = session()->get('auto_view', true);
+        $meta_view_fee = Variable::SITE_VIEW_META_FEE();
 
-        if (!$user) {
-            $message = __('first_login_or_register');
-            $link = route('login');
-        } elseif (!$data || !$data->is_active || $data->is_blocked) {
+//        if (!$user) {
+//            $data = ['name' => __('first_login_or_register'),];
+////            $message = __('first_login_or_register');
+//            $link = route('login');
+//        } else
+        if (!$data || $data->status == 'inactive' || $data->status == 'block') {
 //            $message = __('no_results');
             $link = route('site.index');
             $data = ['name' => __('no_results'),];
-        } elseif (!$auto_view && ($data->status != 'viewing' || ($user->wallet_active && $data->charge < $data->view_fee) || (!$user->wallet_active && $data->meta < Variable::SITE_VIEW_META_FEE()))) {
+        } elseif ($user && ($data->status != 'view' || ($user->wallet_active && $data->charge < $data->view_fee) || (!$user->wallet_active && $data->meta < $meta_view_fee))) {
 //            $message = __('item_view_time_ended');
             $link = route('site.index');
             $data = ['name' => __('item_view_time_ended'),];
+        } elseif (isset($data) && isset($data->link)) {
+            if (str_starts_with($data->link, 'http:'))
+                $data->link = str_replace('http://', 'https://', $data->link);
+            $data->name = __('site') . ' ' . $data->name;
         }
-        $meta_view_fee = Variable::SITE_VIEW_META_FEE();
-        if (isset($data) && isset($data->link) && str_starts_with($data->link, 'http:'))
-            $data->link = str_replace('http://', 'https://', $data->link);
         return Inertia::render('Site/View', [
             'auto_view' => $auto_view,
-            'available_sites' => $user ? Site::whereIsActive(true)->whereIsBlocked(false)->whereStatus('viewing')->whereLang(app()->getLocale())->whereIntegerNotInRaw('id', Site::where('owner_id', $user->id)->pluck('id'))->whereIntegerNotInRaw('id', SiteTransaction::where('owner_id', $user->id)->pluck('site_id'))->where(function ($query) use ($user, $meta_view_fee) {
+            'available_sites' => $user ? Site::whereStatus('view')->whereLang(app()->getLocale())->whereIntegerNotInRaw('id', Site::where('owner_id', $user->id)->pluck('id'))->whereIntegerNotInRaw('id', SiteTransaction::where('owner_id', $user->id)->pluck('site_id'))->where(function ($query) use ($user, $meta_view_fee) {
                 if ($user->wallet_active)
                     $query->whereColumn('charge', '>=', 'view_fee');
                 else $query->where('meta', '>=', $meta_view_fee);
-            })->count() : 0,
+            })->count()
+                : Site::whereStatus('view')->whereLang(app()->getLocale())->whereIntegerNotInRaw('id', SiteView::where('ip', $request->ip())->pluck('site_id'))->where('meta', '>=', $meta_view_fee)->count(),
             'error_message' => $message,
             'error_link' => $link,
             'data' => $data,
@@ -102,7 +148,7 @@ class SiteController extends Controller
         $query = Site::query();
 
         $query = $query->select('id', 'name', 'status', 'category_id', 'created_at', 'view_fee', 'views');
-        $query = $query->whereIsActive(true)->whereIsBlocked(false)->whereStatus('viewing')->whereLang(app()->getLocale());
+        $query = $query->whereStatus('view')->whereLang(app()->getLocale());
         if ($search)
             $query = $query->where('name', 'like', "%$search%")->orWhere('link', 'like', "%$search%");
 
@@ -112,6 +158,8 @@ class SiteController extends Controller
                     $query->whereColumn('charge', '>=', 'view_fee');
                 else $query->where('meta', '>=', $meta_view_fee);
             });
+        else
+            $query = $query->whereIntegerNotInRaw('id', SiteView::where('ip', $request->ip())->pluck('site_id'))->where('meta', '>=', $meta_view_fee);
         return $query->orderBy($orderBy, $dir)->paginate($paginate, ['*'], 'page', $page);
     }
 
@@ -121,13 +169,16 @@ class SiteController extends Controller
         $request->merge([
             'owner_id' => $request->user()->id,
             'slug' => str_slug($request->name),
-            'status' => 'reviewing',
+            'status' => 'review',
         ]);
 
         $site = Site::create($request->all());
         if ($site) {
             $res = ['flash_status' => 'success', 'flash_message' => __('created_successfully_and_activete_after_review')];
-            Util::createImage($request->img, Variable::IMAGE_FOLDERS[Site::class], $site->id);
+            if (!$request->img)
+                Util::createScreenshot($site->link, Variable::IMAGE_FOLDERS[Site::class], $site->id);
+            else
+                Util::createImage($request->img, Variable::IMAGE_FOLDERS[Site::class], $site->id);
             Telegram::log(null, 'site_created', $site);
         } else    $res = ['flash_status' => 'danger', 'flash_message' => __('response_error')];
         return to_route('panel.site.index')->with($res);
@@ -192,7 +243,7 @@ class SiteController extends Controller
 
                     }
                 case 'stop-view':
-                    if ($data->status == 'viewing') {
+                    if ($data->status == 'view') {
                         $data->status = 'ready';
                         $data->save();
                         return response()->json(['message' => __('updated_successfully'), 'status' => $data->status,], $successStatus);
@@ -206,12 +257,12 @@ class SiteController extends Controller
                         return response()->json(['message' => __('low_wallet'),], $errorStatus);
                     if ($data->status != 'ready')
                         return response()->json(['message' => __('site_must_be_ready'),], $errorStatus);
-                    $data->status = 'viewing';
+                    $data->status = 'view';
                     $data->save();
                     return response()->json(['message' => __('updated_successfully'), 'status' => $data->status,], $successStatus);
 
                 case 'activate':
-                    if ($data->status == 'reviewing')
+                    if ($data->status == 'review')
                         return response()->json(['message' => __('active_after_review'),], $errorStatus);
 
                     if ($data->status != 'inactive') break;
@@ -220,7 +271,7 @@ class SiteController extends Controller
                     else
                         $data->status = 'ready';
 
-                    $data->is_active = true;
+//                    $data->is_active = true;
                     $data->save();
                     return response()->json(['message' => __('updated_successfully'), 'status' => $data->status,], $successStatus);
                     break;
@@ -246,13 +297,12 @@ class SiteController extends Controller
                     $min = Variable::SITE_MIN_VIEW_FEE();
                     $res = [];
                     foreach (Site::whereIntegerInRaw('id', ($request->data ?: []))->get() as $data) {
-                        if ($data->is_active
-                            && !$data->is_blocked
-                            && $data->view_fee >= $min
+                        if (
+                            $data->view_fee >= $min
                             && $data->charge >= $data->view_fee
                             && in_array($data->status, ['need_charge', 'ready'])) {
 
-                            $data->status = 'viewing';
+                            $data->status = 'view';
                             $res[] = ['id' => $data->id, 'status' => $data->status];
                             $data->save();
                         }
@@ -263,7 +313,7 @@ class SiteController extends Controller
                     $min = Variable::SITE_MIN_VIEW_FEE();
                     $res = [];
                     foreach (Site::whereIntegerInRaw('id', ($request->data ?: []))->get() as $data) {
-                        if ($data->status == 'viewing') {
+                        if ($data->status == 'view') {
                             if ($data->charge < $data->view_fee)
                                 $data->status = 'need_charge';
                             else $data->status = 'ready';
@@ -276,8 +326,8 @@ class SiteController extends Controller
             }
         } elseif ($data) {
             $request->merge([
-                'status' => 'reviewing',
-                'is_active' => false,
+                'status' => 'review',
+//                'is_active' => false,
                 'slug' => str_slug($request->name),
             ]);
             if ($data->update($request->all())) {

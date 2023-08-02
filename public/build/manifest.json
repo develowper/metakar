@@ -7,270 +7,270 @@
     "file": "assets/Selector-15248d4a.css",
     "src": "Selector.css"
   },
-  "_ApplicationLogo-27dc3d7d.js": {
+  "_ApplicationLogo-c769210f.js": {
     "assets": [
       "assets/logo-e4cc3e59.png"
     ],
-    "file": "assets/ApplicationLogo-27dc3d7d.js",
+    "file": "assets/ApplicationLogo-c769210f.js",
     "imports": [
       "__plugin-vue_export-helper-c27b6911.js",
       "resources/js/app.js"
     ]
   },
-  "_ApplicationLogo-legacy-da8a7c86.js": {
+  "_ApplicationLogo-legacy-8401a0ef.js": {
     "assets": [
       "assets/logo-e4cc3e59.png"
     ],
-    "file": "assets/ApplicationLogo-legacy-da8a7c86.js",
+    "file": "assets/ApplicationLogo-legacy-8401a0ef.js",
     "imports": [
       "__plugin-vue_export-helper-legacy-c6aa7c23.js",
       "resources/js/app-legacy.js"
     ]
   },
-  "_AuthenticatedLayout-277b6ae3.js": {
-    "file": "assets/AuthenticatedLayout-277b6ae3.js",
+  "_AuthenticatedLayout-d59b4d1e.js": {
+    "file": "assets/AuthenticatedLayout-d59b4d1e.js",
     "imports": [
-      "_ApplicationLogo-27dc3d7d.js",
+      "_ApplicationLogo-c769210f.js",
       "resources/js/app.js"
     ]
   },
-  "_AuthenticatedLayout-legacy-90187582.js": {
-    "file": "assets/AuthenticatedLayout-legacy-90187582.js",
+  "_AuthenticatedLayout-legacy-3973938b.js": {
+    "file": "assets/AuthenticatedLayout-legacy-3973938b.js",
     "imports": [
-      "_ApplicationLogo-legacy-da8a7c86.js",
+      "_ApplicationLogo-legacy-8401a0ef.js",
       "resources/js/app-legacy.js"
     ]
   },
-  "_Checkbox-b4554442.js": {
-    "file": "assets/Checkbox-b4554442.js",
-    "imports": [
-      "resources/js/app.js"
-    ]
-  },
-  "_Checkbox-legacy-118bd352.js": {
-    "file": "assets/Checkbox-legacy-118bd352.js",
-    "imports": [
-      "resources/js/app-legacy.js"
-    ]
-  },
-  "_CurrencyDollarIcon-5c0ccf10.js": {
-    "file": "assets/CurrencyDollarIcon-5c0ccf10.js",
+  "_Checkbox-b2e4083b.js": {
+    "file": "assets/Checkbox-b2e4083b.js",
     "imports": [
       "resources/js/app.js"
     ]
   },
-  "_CurrencyDollarIcon-legacy-6156ec12.js": {
-    "file": "assets/CurrencyDollarIcon-legacy-6156ec12.js",
+  "_Checkbox-legacy-a8068a2f.js": {
+    "file": "assets/Checkbox-legacy-a8068a2f.js",
     "imports": [
       "resources/js/app-legacy.js"
     ]
   },
-  "_EyeIcon-8fd7fe7c.js": {
-    "file": "assets/EyeIcon-8fd7fe7c.js",
+  "_CurrencyDollarIcon-9fed74d1.js": {
+    "file": "assets/CurrencyDollarIcon-9fed74d1.js",
     "imports": [
       "resources/js/app.js"
     ]
   },
-  "_EyeIcon-legacy-91232656.js": {
-    "file": "assets/EyeIcon-legacy-91232656.js",
+  "_CurrencyDollarIcon-legacy-8e25121a.js": {
+    "file": "assets/CurrencyDollarIcon-legacy-8e25121a.js",
     "imports": [
       "resources/js/app-legacy.js"
     ]
   },
-  "_GuestLayout-8b2e00de.js": {
-    "file": "assets/GuestLayout-8b2e00de.js",
+  "_EyeIcon-b2253890.js": {
+    "file": "assets/EyeIcon-b2253890.js",
     "imports": [
-      "_ApplicationLogo-27dc3d7d.js",
       "resources/js/app.js"
     ]
   },
-  "_GuestLayout-legacy-e3ccc3b4.js": {
-    "file": "assets/GuestLayout-legacy-e3ccc3b4.js",
+  "_EyeIcon-legacy-acaf9be4.js": {
+    "file": "assets/EyeIcon-legacy-acaf9be4.js",
     "imports": [
-      "_ApplicationLogo-legacy-da8a7c86.js",
       "resources/js/app-legacy.js"
     ]
   },
-  "_Image-f08e1363.js": {
-    "file": "assets/Image-f08e1363.js",
+  "_GuestLayout-8040a7e0.js": {
+    "file": "assets/GuestLayout-8040a7e0.js",
+    "imports": [
+      "_ApplicationLogo-c769210f.js",
+      "resources/js/app.js"
+    ]
+  },
+  "_GuestLayout-legacy-82ca2b14.js": {
+    "file": "assets/GuestLayout-legacy-82ca2b14.js",
+    "imports": [
+      "_ApplicationLogo-legacy-8401a0ef.js",
+      "resources/js/app-legacy.js"
+    ]
+  },
+  "_Image-05ee28de.js": {
+    "file": "assets/Image-05ee28de.js",
     "imports": [
       "resources/js/app.js",
       "__plugin-vue_export-helper-c27b6911.js",
-      "_UserIcon-1d5bdaea.js"
+      "_UserIcon-01de6b11.js"
     ]
   },
-  "_Image-legacy-600eee5a.js": {
-    "file": "assets/Image-legacy-600eee5a.js",
+  "_Image-legacy-329a2d5d.js": {
+    "file": "assets/Image-legacy-329a2d5d.js",
     "imports": [
       "resources/js/app-legacy.js",
       "__plugin-vue_export-helper-legacy-c6aa7c23.js",
-      "_UserIcon-legacy-5ff7a6ec.js"
+      "_UserIcon-legacy-5ac95cba.js"
     ]
   },
-  "_LoadingIcon-ca97f54a.js": {
+  "_LoadingIcon-58a8816b.js": {
     "css": [
       "assets/LoadingIcon-b71c1fbf.css"
     ],
-    "file": "assets/LoadingIcon-ca97f54a.js",
+    "file": "assets/LoadingIcon-58a8816b.js",
     "imports": [
       "resources/js/app.js",
       "__plugin-vue_export-helper-c27b6911.js",
-      "_Image-f08e1363.js",
-      "_UserIcon-1d5bdaea.js",
-      "_ApplicationLogo-27dc3d7d.js"
+      "_Image-05ee28de.js",
+      "_UserIcon-01de6b11.js",
+      "_ApplicationLogo-c769210f.js"
     ]
   },
-  "_LoadingIcon-legacy-8a10b5a2.js": {
-    "file": "assets/LoadingIcon-legacy-8a10b5a2.js",
+  "_LoadingIcon-legacy-5566a905.js": {
+    "file": "assets/LoadingIcon-legacy-5566a905.js",
     "imports": [
       "resources/js/app-legacy.js",
       "__plugin-vue_export-helper-legacy-c6aa7c23.js",
-      "_Image-legacy-600eee5a.js",
-      "_UserIcon-legacy-5ff7a6ec.js",
-      "_ApplicationLogo-legacy-da8a7c86.js"
+      "_Image-legacy-329a2d5d.js",
+      "_UserIcon-legacy-5ac95cba.js",
+      "_ApplicationLogo-legacy-8401a0ef.js"
     ]
   },
-  "_PrimaryButton-3a10ddc4.js": {
-    "file": "assets/PrimaryButton-3a10ddc4.js",
+  "_PrimaryButton-08c1122c.js": {
+    "file": "assets/PrimaryButton-08c1122c.js",
     "imports": [
       "resources/js/app.js"
     ]
   },
-  "_PrimaryButton-legacy-74c235c7.js": {
-    "file": "assets/PrimaryButton-legacy-74c235c7.js",
+  "_PrimaryButton-legacy-fa0d64dd.js": {
+    "file": "assets/PrimaryButton-legacy-fa0d64dd.js",
     "imports": [
       "resources/js/app-legacy.js"
     ]
   },
-  "_Scaffold-54bd22ea.js": {
-    "file": "assets/Scaffold-54bd22ea.js",
+  "_Scaffold-dfc3d278.js": {
+    "file": "assets/Scaffold-dfc3d278.js",
     "imports": [
       "resources/js/app.js",
-      "_LoadingIcon-ca97f54a.js",
+      "_LoadingIcon-58a8816b.js",
       "__plugin-vue_export-helper-c27b6911.js"
     ]
   },
-  "_Scaffold-legacy-d74ffa76.js": {
-    "file": "assets/Scaffold-legacy-d74ffa76.js",
+  "_Scaffold-legacy-1e6571a5.js": {
+    "file": "assets/Scaffold-legacy-1e6571a5.js",
     "imports": [
       "resources/js/app-legacy.js",
-      "_LoadingIcon-legacy-8a10b5a2.js",
+      "_LoadingIcon-legacy-5566a905.js",
       "__plugin-vue_export-helper-legacy-c6aa7c23.js"
     ]
   },
-  "_SecondaryButton-45c51ad6.js": {
-    "file": "assets/SecondaryButton-45c51ad6.js",
+  "_SecondaryButton-8080d449.js": {
+    "file": "assets/SecondaryButton-8080d449.js",
     "imports": [
       "resources/js/app.js"
     ]
   },
-  "_SecondaryButton-legacy-0f5e92d6.js": {
-    "file": "assets/SecondaryButton-legacy-0f5e92d6.js",
+  "_SecondaryButton-legacy-79356c18.js": {
+    "file": "assets/SecondaryButton-legacy-79356c18.js",
     "imports": [
       "resources/js/app-legacy.js"
     ]
   },
-  "_Selector-29955761.js": {
+  "_Selector-877a5eb3.js": {
     "css": [
       "assets/Selector-15248d4a.css"
     ],
-    "file": "assets/Selector-29955761.js",
+    "file": "assets/Selector-877a5eb3.js",
     "imports": [
       "resources/js/app.js",
       "__plugin-vue_export-helper-c27b6911.js",
-      "_User-3e59a997.js",
-      "_TextInput-607bb586.js",
-      "_XMarkIcon-78bc412c.js"
+      "_User-2b02609a.js",
+      "_TextInput-ae074a75.js",
+      "_XMarkIcon-e10a4b21.js"
     ]
   },
-  "_Selector-legacy-327baa94.js": {
-    "file": "assets/Selector-legacy-327baa94.js",
+  "_Selector-legacy-391a605e.js": {
+    "file": "assets/Selector-legacy-391a605e.js",
     "imports": [
       "resources/js/app-legacy.js",
       "__plugin-vue_export-helper-legacy-c6aa7c23.js",
-      "_User-legacy-4b94868b.js",
-      "_TextInput-legacy-02216e57.js",
-      "_XMarkIcon-legacy-b83c824e.js"
+      "_User-legacy-96def0a3.js",
+      "_TextInput-legacy-55f1f3bc.js",
+      "_XMarkIcon-legacy-688b489d.js"
     ]
   },
-  "_TextInput-607bb586.js": {
-    "file": "assets/TextInput-607bb586.js",
+  "_TextInput-ae074a75.js": {
+    "file": "assets/TextInput-ae074a75.js",
     "imports": [
       "resources/js/app.js"
     ]
   },
-  "_TextInput-legacy-02216e57.js": {
-    "file": "assets/TextInput-legacy-02216e57.js",
+  "_TextInput-legacy-55f1f3bc.js": {
+    "file": "assets/TextInput-legacy-55f1f3bc.js",
     "imports": [
       "resources/js/app-legacy.js"
     ]
   },
-  "_TicketIcon-941aca78.js": {
-    "file": "assets/TicketIcon-941aca78.js",
+  "_TicketIcon-72621558.js": {
+    "file": "assets/TicketIcon-72621558.js",
     "imports": [
       "resources/js/app.js"
     ]
   },
-  "_TicketIcon-legacy-5bd0e313.js": {
-    "file": "assets/TicketIcon-legacy-5bd0e313.js",
+  "_TicketIcon-legacy-2cc021b3.js": {
+    "file": "assets/TicketIcon-legacy-2cc021b3.js",
     "imports": [
       "resources/js/app-legacy.js"
     ]
   },
-  "_User-3e59a997.js": {
-    "file": "assets/User-3e59a997.js",
+  "_User-2b02609a.js": {
+    "file": "assets/User-2b02609a.js",
     "imports": [
       "resources/js/app.js",
-      "_Image-f08e1363.js",
-      "_LoadingIcon-ca97f54a.js",
+      "_Image-05ee28de.js",
+      "_LoadingIcon-58a8816b.js",
       "__plugin-vue_export-helper-c27b6911.js",
-      "_WindowIcon-63659959.js",
-      "_CurrencyDollarIcon-5c0ccf10.js"
+      "_WindowIcon-033a9c7d.js",
+      "_CurrencyDollarIcon-9fed74d1.js"
     ]
   },
-  "_User-legacy-4b94868b.js": {
-    "file": "assets/User-legacy-4b94868b.js",
+  "_User-legacy-96def0a3.js": {
+    "file": "assets/User-legacy-96def0a3.js",
     "imports": [
       "resources/js/app-legacy.js",
-      "_Image-legacy-600eee5a.js",
-      "_LoadingIcon-legacy-8a10b5a2.js",
+      "_Image-legacy-329a2d5d.js",
+      "_LoadingIcon-legacy-5566a905.js",
       "__plugin-vue_export-helper-legacy-c6aa7c23.js",
-      "_WindowIcon-legacy-3e584b8f.js",
-      "_CurrencyDollarIcon-legacy-6156ec12.js"
+      "_WindowIcon-legacy-8d729453.js",
+      "_CurrencyDollarIcon-legacy-8e25121a.js"
     ]
   },
-  "_UserIcon-1d5bdaea.js": {
-    "file": "assets/UserIcon-1d5bdaea.js",
+  "_UserIcon-01de6b11.js": {
+    "file": "assets/UserIcon-01de6b11.js",
     "imports": [
       "resources/js/app.js"
     ]
   },
-  "_UserIcon-legacy-5ff7a6ec.js": {
-    "file": "assets/UserIcon-legacy-5ff7a6ec.js",
+  "_UserIcon-legacy-5ac95cba.js": {
+    "file": "assets/UserIcon-legacy-5ac95cba.js",
     "imports": [
       "resources/js/app-legacy.js"
     ]
   },
-  "_WindowIcon-63659959.js": {
-    "file": "assets/WindowIcon-63659959.js",
+  "_WindowIcon-033a9c7d.js": {
+    "file": "assets/WindowIcon-033a9c7d.js",
     "imports": [
       "resources/js/app.js"
     ]
   },
-  "_WindowIcon-legacy-3e584b8f.js": {
-    "file": "assets/WindowIcon-legacy-3e584b8f.js",
+  "_WindowIcon-legacy-8d729453.js": {
+    "file": "assets/WindowIcon-legacy-8d729453.js",
     "imports": [
       "resources/js/app-legacy.js"
     ]
   },
-  "_XMarkIcon-78bc412c.js": {
-    "file": "assets/XMarkIcon-78bc412c.js",
+  "_XMarkIcon-e10a4b21.js": {
+    "file": "assets/XMarkIcon-e10a4b21.js",
     "imports": [
       "resources/js/app.js"
     ]
   },
-  "_XMarkIcon-legacy-b83c824e.js": {
-    "file": "assets/XMarkIcon-legacy-b83c824e.js",
+  "_XMarkIcon-legacy-688b489d.js": {
+    "file": "assets/XMarkIcon-legacy-688b489d.js",
     "imports": [
       "resources/js/app-legacy.js"
     ]
@@ -338,294 +338,294 @@
     "src": "resources/images/logo.png"
   },
   "resources/js/Pages/Ad/Index-legacy.vue": {
-    "file": "assets/Index-legacy-d41d1bbb.js",
+    "file": "assets/Index-legacy-5353c29c.js",
     "imports": [
-      "_Scaffold-legacy-d74ffa76.js",
+      "_Scaffold-legacy-1e6571a5.js",
       "__plugin-vue_export-helper-legacy-c6aa7c23.js",
       "resources/js/app-legacy.js",
-      "_LoadingIcon-legacy-8a10b5a2.js",
-      "_Image-legacy-600eee5a.js",
-      "_UserIcon-legacy-5ff7a6ec.js",
-      "_ApplicationLogo-legacy-da8a7c86.js"
+      "_LoadingIcon-legacy-5566a905.js",
+      "_Image-legacy-329a2d5d.js",
+      "_UserIcon-legacy-5ac95cba.js",
+      "_ApplicationLogo-legacy-8401a0ef.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Ad/Index-legacy.vue"
   },
   "resources/js/Pages/Ad/Index.vue": {
-    "file": "assets/Index-87591685.js",
+    "file": "assets/Index-87809f6b.js",
     "imports": [
-      "_Scaffold-54bd22ea.js",
+      "_Scaffold-dfc3d278.js",
       "__plugin-vue_export-helper-c27b6911.js",
       "resources/js/app.js",
-      "_LoadingIcon-ca97f54a.js",
-      "_Image-f08e1363.js",
-      "_UserIcon-1d5bdaea.js",
-      "_ApplicationLogo-27dc3d7d.js"
+      "_LoadingIcon-58a8816b.js",
+      "_Image-05ee28de.js",
+      "_UserIcon-01de6b11.js",
+      "_ApplicationLogo-c769210f.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Ad/Index.vue"
   },
   "resources/js/Pages/Admin/Panel-legacy.vue": {
-    "file": "assets/Panel-legacy-a4f97742.js",
+    "file": "assets/Panel-legacy-472ea375.js",
     "imports": [
       "resources/js/app-legacy.js",
-      "_Image-legacy-600eee5a.js",
+      "_Image-legacy-329a2d5d.js",
       "__plugin-vue_export-helper-legacy-c6aa7c23.js",
-      "_WindowIcon-legacy-3e584b8f.js",
-      "_CurrencyDollarIcon-legacy-6156ec12.js",
-      "_UserIcon-legacy-5ff7a6ec.js"
+      "_WindowIcon-legacy-8d729453.js",
+      "_CurrencyDollarIcon-legacy-8e25121a.js",
+      "_UserIcon-legacy-5ac95cba.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Admin/Panel-legacy.vue"
   },
   "resources/js/Pages/Admin/Panel.vue": {
-    "file": "assets/Panel-e3203e3b.js",
+    "file": "assets/Panel-94d115f6.js",
     "imports": [
       "resources/js/app.js",
-      "_Image-f08e1363.js",
+      "_Image-05ee28de.js",
       "__plugin-vue_export-helper-c27b6911.js",
-      "_WindowIcon-63659959.js",
-      "_CurrencyDollarIcon-5c0ccf10.js",
-      "_UserIcon-1d5bdaea.js"
+      "_WindowIcon-033a9c7d.js",
+      "_CurrencyDollarIcon-9fed74d1.js",
+      "_UserIcon-01de6b11.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Admin/Panel.vue"
   },
   "resources/js/Pages/Article/Index-legacy.vue": {
-    "file": "assets/Index-legacy-78556084.js",
+    "file": "assets/Index-legacy-1a7dce4a.js",
     "imports": [
-      "_Scaffold-legacy-d74ffa76.js",
+      "_Scaffold-legacy-1e6571a5.js",
       "__plugin-vue_export-helper-legacy-c6aa7c23.js",
       "resources/js/app-legacy.js",
-      "_LoadingIcon-legacy-8a10b5a2.js",
-      "_Image-legacy-600eee5a.js",
-      "_UserIcon-legacy-5ff7a6ec.js",
-      "_ApplicationLogo-legacy-da8a7c86.js"
+      "_LoadingIcon-legacy-5566a905.js",
+      "_Image-legacy-329a2d5d.js",
+      "_UserIcon-legacy-5ac95cba.js",
+      "_ApplicationLogo-legacy-8401a0ef.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Article/Index-legacy.vue"
   },
   "resources/js/Pages/Article/Index.vue": {
-    "file": "assets/Index-6bb12a35.js",
+    "file": "assets/Index-255a94b1.js",
     "imports": [
-      "_Scaffold-54bd22ea.js",
+      "_Scaffold-dfc3d278.js",
       "__plugin-vue_export-helper-c27b6911.js",
       "resources/js/app.js",
-      "_LoadingIcon-ca97f54a.js",
-      "_Image-f08e1363.js",
-      "_UserIcon-1d5bdaea.js",
-      "_ApplicationLogo-27dc3d7d.js"
+      "_LoadingIcon-58a8816b.js",
+      "_Image-05ee28de.js",
+      "_UserIcon-01de6b11.js",
+      "_ApplicationLogo-c769210f.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Article/Index.vue"
   },
   "resources/js/Pages/Auth/ConfirmPassword-legacy.vue": {
-    "file": "assets/ConfirmPassword-legacy-580c634a.js",
+    "file": "assets/ConfirmPassword-legacy-65b2b672.js",
     "imports": [
       "resources/js/app-legacy.js",
-      "_GuestLayout-legacy-e3ccc3b4.js",
-      "_TextInput-legacy-02216e57.js",
-      "_PrimaryButton-legacy-74c235c7.js",
-      "_ApplicationLogo-legacy-da8a7c86.js",
+      "_GuestLayout-legacy-82ca2b14.js",
+      "_TextInput-legacy-55f1f3bc.js",
+      "_PrimaryButton-legacy-fa0d64dd.js",
+      "_ApplicationLogo-legacy-8401a0ef.js",
       "__plugin-vue_export-helper-legacy-c6aa7c23.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Auth/ConfirmPassword-legacy.vue"
   },
   "resources/js/Pages/Auth/ConfirmPassword.vue": {
-    "file": "assets/ConfirmPassword-f805395c.js",
+    "file": "assets/ConfirmPassword-3a43a3dc.js",
     "imports": [
       "resources/js/app.js",
-      "_GuestLayout-8b2e00de.js",
-      "_TextInput-607bb586.js",
-      "_PrimaryButton-3a10ddc4.js",
-      "_ApplicationLogo-27dc3d7d.js",
+      "_GuestLayout-8040a7e0.js",
+      "_TextInput-ae074a75.js",
+      "_PrimaryButton-08c1122c.js",
+      "_ApplicationLogo-c769210f.js",
       "__plugin-vue_export-helper-c27b6911.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Auth/ConfirmPassword.vue"
   },
   "resources/js/Pages/Auth/ForgotPassword-legacy.vue": {
-    "file": "assets/ForgotPassword-legacy-8cd12e5a.js",
+    "file": "assets/ForgotPassword-legacy-310bcc7b.js",
     "imports": [
       "resources/js/app-legacy.js",
-      "_GuestLayout-legacy-e3ccc3b4.js",
-      "_TextInput-legacy-02216e57.js",
-      "_PrimaryButton-legacy-74c235c7.js",
-      "_ApplicationLogo-legacy-da8a7c86.js",
+      "_GuestLayout-legacy-82ca2b14.js",
+      "_TextInput-legacy-55f1f3bc.js",
+      "_PrimaryButton-legacy-fa0d64dd.js",
+      "_ApplicationLogo-legacy-8401a0ef.js",
       "__plugin-vue_export-helper-legacy-c6aa7c23.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Auth/ForgotPassword-legacy.vue"
   },
   "resources/js/Pages/Auth/ForgotPassword.vue": {
-    "file": "assets/ForgotPassword-62122b7b.js",
+    "file": "assets/ForgotPassword-4585c849.js",
     "imports": [
       "resources/js/app.js",
-      "_GuestLayout-8b2e00de.js",
-      "_TextInput-607bb586.js",
-      "_PrimaryButton-3a10ddc4.js",
-      "_ApplicationLogo-27dc3d7d.js",
+      "_GuestLayout-8040a7e0.js",
+      "_TextInput-ae074a75.js",
+      "_PrimaryButton-08c1122c.js",
+      "_ApplicationLogo-c769210f.js",
       "__plugin-vue_export-helper-c27b6911.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Auth/ForgotPassword.vue"
   },
   "resources/js/Pages/Auth/Login-legacy.vue": {
-    "file": "assets/Login-legacy-4b9d6543.js",
+    "file": "assets/Login-legacy-835ac075.js",
     "imports": [
       "resources/js/app-legacy.js",
-      "_Checkbox-legacy-118bd352.js",
-      "_GuestLayout-legacy-e3ccc3b4.js",
-      "_TextInput-legacy-02216e57.js",
-      "_PrimaryButton-legacy-74c235c7.js",
-      "_UserIcon-legacy-5ff7a6ec.js",
-      "_EyeIcon-legacy-91232656.js",
-      "_ApplicationLogo-legacy-da8a7c86.js",
+      "_Checkbox-legacy-a8068a2f.js",
+      "_GuestLayout-legacy-82ca2b14.js",
+      "_TextInput-legacy-55f1f3bc.js",
+      "_PrimaryButton-legacy-fa0d64dd.js",
+      "_UserIcon-legacy-5ac95cba.js",
+      "_EyeIcon-legacy-acaf9be4.js",
+      "_ApplicationLogo-legacy-8401a0ef.js",
       "__plugin-vue_export-helper-legacy-c6aa7c23.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Auth/Login-legacy.vue"
   },
   "resources/js/Pages/Auth/Login.vue": {
-    "file": "assets/Login-56219698.js",
+    "file": "assets/Login-e484967b.js",
     "imports": [
       "resources/js/app.js",
-      "_Checkbox-b4554442.js",
-      "_GuestLayout-8b2e00de.js",
-      "_TextInput-607bb586.js",
-      "_PrimaryButton-3a10ddc4.js",
-      "_UserIcon-1d5bdaea.js",
-      "_EyeIcon-8fd7fe7c.js",
-      "_ApplicationLogo-27dc3d7d.js",
+      "_Checkbox-b2e4083b.js",
+      "_GuestLayout-8040a7e0.js",
+      "_TextInput-ae074a75.js",
+      "_PrimaryButton-08c1122c.js",
+      "_UserIcon-01de6b11.js",
+      "_EyeIcon-b2253890.js",
+      "_ApplicationLogo-c769210f.js",
       "__plugin-vue_export-helper-c27b6911.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Auth/Login.vue"
   },
   "resources/js/Pages/Auth/Register-legacy.vue": {
-    "file": "assets/Register-legacy-385cb920.js",
+    "file": "assets/Register-legacy-2f6aa0db.js",
     "imports": [
       "resources/js/app-legacy.js",
-      "_GuestLayout-legacy-e3ccc3b4.js",
-      "_TextInput-legacy-02216e57.js",
-      "_PrimaryButton-legacy-74c235c7.js",
-      "_ApplicationLogo-legacy-da8a7c86.js",
+      "_GuestLayout-legacy-82ca2b14.js",
+      "_TextInput-legacy-55f1f3bc.js",
+      "_PrimaryButton-legacy-fa0d64dd.js",
+      "_ApplicationLogo-legacy-8401a0ef.js",
       "__plugin-vue_export-helper-legacy-c6aa7c23.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Auth/Register-legacy.vue"
   },
   "resources/js/Pages/Auth/Register.vue": {
-    "file": "assets/Register-db52c634.js",
+    "file": "assets/Register-afcdb211.js",
     "imports": [
       "resources/js/app.js",
-      "_GuestLayout-8b2e00de.js",
-      "_TextInput-607bb586.js",
-      "_PrimaryButton-3a10ddc4.js",
-      "_ApplicationLogo-27dc3d7d.js",
+      "_GuestLayout-8040a7e0.js",
+      "_TextInput-ae074a75.js",
+      "_PrimaryButton-08c1122c.js",
+      "_ApplicationLogo-c769210f.js",
       "__plugin-vue_export-helper-c27b6911.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Auth/Register.vue"
   },
   "resources/js/Pages/Auth/ResetPassword-legacy.vue": {
-    "file": "assets/ResetPassword-legacy-51b61386.js",
+    "file": "assets/ResetPassword-legacy-24feccdc.js",
     "imports": [
       "resources/js/app-legacy.js",
-      "_GuestLayout-legacy-e3ccc3b4.js",
-      "_TextInput-legacy-02216e57.js",
-      "_PrimaryButton-legacy-74c235c7.js",
-      "_ApplicationLogo-legacy-da8a7c86.js",
+      "_GuestLayout-legacy-82ca2b14.js",
+      "_TextInput-legacy-55f1f3bc.js",
+      "_PrimaryButton-legacy-fa0d64dd.js",
+      "_ApplicationLogo-legacy-8401a0ef.js",
       "__plugin-vue_export-helper-legacy-c6aa7c23.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Auth/ResetPassword-legacy.vue"
   },
   "resources/js/Pages/Auth/ResetPassword.vue": {
-    "file": "assets/ResetPassword-318f791c.js",
+    "file": "assets/ResetPassword-00070b1b.js",
     "imports": [
       "resources/js/app.js",
-      "_GuestLayout-8b2e00de.js",
-      "_TextInput-607bb586.js",
-      "_PrimaryButton-3a10ddc4.js",
-      "_ApplicationLogo-27dc3d7d.js",
+      "_GuestLayout-8040a7e0.js",
+      "_TextInput-ae074a75.js",
+      "_PrimaryButton-08c1122c.js",
+      "_ApplicationLogo-c769210f.js",
       "__plugin-vue_export-helper-c27b6911.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Auth/ResetPassword.vue"
   },
   "resources/js/Pages/Auth/VerifyEmail-legacy.vue": {
-    "file": "assets/VerifyEmail-legacy-046b4db0.js",
+    "file": "assets/VerifyEmail-legacy-5395d079.js",
     "imports": [
       "resources/js/app-legacy.js",
-      "_GuestLayout-legacy-e3ccc3b4.js",
-      "_PrimaryButton-legacy-74c235c7.js",
-      "_ApplicationLogo-legacy-da8a7c86.js",
+      "_GuestLayout-legacy-82ca2b14.js",
+      "_PrimaryButton-legacy-fa0d64dd.js",
+      "_ApplicationLogo-legacy-8401a0ef.js",
       "__plugin-vue_export-helper-legacy-c6aa7c23.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Auth/VerifyEmail-legacy.vue"
   },
   "resources/js/Pages/Auth/VerifyEmail.vue": {
-    "file": "assets/VerifyEmail-4e26f4b4.js",
+    "file": "assets/VerifyEmail-af9a8347.js",
     "imports": [
       "resources/js/app.js",
-      "_GuestLayout-8b2e00de.js",
-      "_PrimaryButton-3a10ddc4.js",
-      "_ApplicationLogo-27dc3d7d.js",
+      "_GuestLayout-8040a7e0.js",
+      "_PrimaryButton-08c1122c.js",
+      "_ApplicationLogo-c769210f.js",
       "__plugin-vue_export-helper-c27b6911.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Auth/VerifyEmail.vue"
   },
   "resources/js/Pages/Business/Index-legacy.vue": {
-    "file": "assets/Index-legacy-d51aa2fb.js",
+    "file": "assets/Index-legacy-fe6ee321.js",
     "imports": [
-      "_Scaffold-legacy-d74ffa76.js",
-      "_User-legacy-4b94868b.js",
+      "_Scaffold-legacy-1e6571a5.js",
+      "_User-legacy-96def0a3.js",
       "resources/js/app-legacy.js",
       "__plugin-vue_export-helper-legacy-c6aa7c23.js",
-      "_CurrencyDollarIcon-legacy-6156ec12.js",
-      "_TicketIcon-legacy-5bd0e313.js",
-      "_LoadingIcon-legacy-8a10b5a2.js",
-      "_Image-legacy-600eee5a.js",
-      "_UserIcon-legacy-5ff7a6ec.js",
-      "_ApplicationLogo-legacy-da8a7c86.js",
-      "_WindowIcon-legacy-3e584b8f.js"
+      "_CurrencyDollarIcon-legacy-8e25121a.js",
+      "_TicketIcon-legacy-2cc021b3.js",
+      "_LoadingIcon-legacy-5566a905.js",
+      "_Image-legacy-329a2d5d.js",
+      "_UserIcon-legacy-5ac95cba.js",
+      "_ApplicationLogo-legacy-8401a0ef.js",
+      "_WindowIcon-legacy-8d729453.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Business/Index-legacy.vue"
   },
   "resources/js/Pages/Business/Index.vue": {
-    "file": "assets/Index-61cf1359.js",
+    "file": "assets/Index-b0d87d25.js",
     "imports": [
-      "_Scaffold-54bd22ea.js",
-      "_User-3e59a997.js",
+      "_Scaffold-dfc3d278.js",
+      "_User-2b02609a.js",
       "resources/js/app.js",
       "__plugin-vue_export-helper-c27b6911.js",
-      "_CurrencyDollarIcon-5c0ccf10.js",
-      "_TicketIcon-941aca78.js",
-      "_LoadingIcon-ca97f54a.js",
-      "_Image-f08e1363.js",
-      "_UserIcon-1d5bdaea.js",
-      "_ApplicationLogo-27dc3d7d.js",
-      "_WindowIcon-63659959.js"
+      "_CurrencyDollarIcon-9fed74d1.js",
+      "_TicketIcon-72621558.js",
+      "_LoadingIcon-58a8816b.js",
+      "_Image-05ee28de.js",
+      "_UserIcon-01de6b11.js",
+      "_ApplicationLogo-c769210f.js",
+      "_WindowIcon-033a9c7d.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Business/Index.vue"
   },
   "resources/js/Pages/ContactUs-legacy.vue": {
-    "file": "assets/ContactUs-legacy-69652f3f.js",
+    "file": "assets/ContactUs-legacy-409494db.js",
     "imports": [
-      "_Scaffold-legacy-d74ffa76.js",
+      "_Scaffold-legacy-1e6571a5.js",
       "resources/js/app-legacy.js",
       "_hero-legacy-2ba6b89f.js",
       "__plugin-vue_export-helper-legacy-c6aa7c23.js",
-      "_LoadingIcon-legacy-8a10b5a2.js",
-      "_Image-legacy-600eee5a.js",
-      "_UserIcon-legacy-5ff7a6ec.js",
-      "_ApplicationLogo-legacy-da8a7c86.js"
+      "_LoadingIcon-legacy-5566a905.js",
+      "_Image-legacy-329a2d5d.js",
+      "_UserIcon-legacy-5ac95cba.js",
+      "_ApplicationLogo-legacy-8401a0ef.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/ContactUs-legacy.vue"
@@ -638,44 +638,44 @@
     "css": [
       "assets/ContactUs-01748374.css"
     ],
-    "file": "assets/ContactUs-6b88a429.js",
+    "file": "assets/ContactUs-376f4071.js",
     "imports": [
-      "_Scaffold-54bd22ea.js",
+      "_Scaffold-dfc3d278.js",
       "resources/js/app.js",
       "_hero-b8cdbe5c.js",
       "__plugin-vue_export-helper-c27b6911.js",
-      "_LoadingIcon-ca97f54a.js",
-      "_Image-f08e1363.js",
-      "_UserIcon-1d5bdaea.js",
-      "_ApplicationLogo-27dc3d7d.js"
+      "_LoadingIcon-58a8816b.js",
+      "_Image-05ee28de.js",
+      "_UserIcon-01de6b11.js",
+      "_ApplicationLogo-c769210f.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/ContactUs.vue"
   },
   "resources/js/Pages/Dashboard-legacy.vue": {
-    "file": "assets/Dashboard-legacy-34ad9a1b.js",
+    "file": "assets/Dashboard-legacy-631b6f9a.js",
     "imports": [
-      "_AuthenticatedLayout-legacy-90187582.js",
+      "_AuthenticatedLayout-legacy-3973938b.js",
       "resources/js/app-legacy.js",
-      "_ApplicationLogo-legacy-da8a7c86.js",
+      "_ApplicationLogo-legacy-8401a0ef.js",
       "__plugin-vue_export-helper-legacy-c6aa7c23.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Dashboard-legacy.vue"
   },
   "resources/js/Pages/Dashboard.vue": {
-    "file": "assets/Dashboard-f615f841.js",
+    "file": "assets/Dashboard-2654d503.js",
     "imports": [
-      "_AuthenticatedLayout-277b6ae3.js",
+      "_AuthenticatedLayout-d59b4d1e.js",
       "resources/js/app.js",
-      "_ApplicationLogo-27dc3d7d.js",
+      "_ApplicationLogo-c769210f.js",
       "__plugin-vue_export-helper-c27b6911.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Dashboard.vue"
   },
   "resources/js/Pages/Dashboard/Index-legacy.vue": {
-    "file": "assets/Index-legacy-9d6e00d6.js",
+    "file": "assets/Index-legacy-222720a8.js",
     "imports": [
       "__plugin-vue_export-helper-legacy-c6aa7c23.js",
       "resources/js/app-legacy.js"
@@ -684,7 +684,7 @@
     "src": "resources/js/Pages/Dashboard/Index-legacy.vue"
   },
   "resources/js/Pages/Dashboard/Index.vue": {
-    "file": "assets/Index-c0d4a5a1.js",
+    "file": "assets/Index-c65e1682.js",
     "imports": [
       "__plugin-vue_export-helper-c27b6911.js",
       "resources/js/app.js"
@@ -693,44 +693,44 @@
     "src": "resources/js/Pages/Dashboard/Index.vue"
   },
   "resources/js/Pages/God/Panel-legacy.vue": {
-    "file": "assets/Panel-legacy-acca5d2d.js",
+    "file": "assets/Panel-legacy-0201c941.js",
     "imports": [
       "resources/js/app-legacy.js",
-      "_Image-legacy-600eee5a.js",
+      "_Image-legacy-329a2d5d.js",
       "__plugin-vue_export-helper-legacy-c6aa7c23.js",
-      "_WindowIcon-legacy-3e584b8f.js",
-      "_CurrencyDollarIcon-legacy-6156ec12.js",
-      "_UserIcon-legacy-5ff7a6ec.js"
+      "_WindowIcon-legacy-8d729453.js",
+      "_CurrencyDollarIcon-legacy-8e25121a.js",
+      "_UserIcon-legacy-5ac95cba.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/God/Panel-legacy.vue"
   },
   "resources/js/Pages/God/Panel.vue": {
-    "file": "assets/Panel-21b6d10c.js",
+    "file": "assets/Panel-35f7a2d0.js",
     "imports": [
       "resources/js/app.js",
-      "_Image-f08e1363.js",
+      "_Image-05ee28de.js",
       "__plugin-vue_export-helper-c27b6911.js",
-      "_WindowIcon-63659959.js",
-      "_CurrencyDollarIcon-5c0ccf10.js",
-      "_UserIcon-1d5bdaea.js"
+      "_WindowIcon-033a9c7d.js",
+      "_CurrencyDollarIcon-9fed74d1.js",
+      "_UserIcon-01de6b11.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/God/Panel.vue"
   },
   "resources/js/Pages/Main-legacy.vue": {
-    "file": "assets/Main-legacy-4f7ee879.js",
+    "file": "assets/Main-legacy-b752bc59.js",
     "imports": [
-      "_Scaffold-legacy-d74ffa76.js",
+      "_Scaffold-legacy-1e6571a5.js",
       "resources/js/app-legacy.js",
       "_hero-legacy-2ba6b89f.js",
-      "_PrimaryButton-legacy-74c235c7.js",
-      "_SecondaryButton-legacy-0f5e92d6.js",
+      "_PrimaryButton-legacy-fa0d64dd.js",
+      "_SecondaryButton-legacy-79356c18.js",
       "__plugin-vue_export-helper-legacy-c6aa7c23.js",
-      "_LoadingIcon-legacy-8a10b5a2.js",
-      "_Image-legacy-600eee5a.js",
-      "_UserIcon-legacy-5ff7a6ec.js",
-      "_ApplicationLogo-legacy-da8a7c86.js"
+      "_LoadingIcon-legacy-5566a905.js",
+      "_Image-legacy-329a2d5d.js",
+      "_UserIcon-legacy-5ac95cba.js",
+      "_ApplicationLogo-legacy-8401a0ef.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Main-legacy.vue"
@@ -743,33 +743,33 @@
     "css": [
       "assets/ContactUs-01748374.css"
     ],
-    "file": "assets/Main-1b2ef40a.js",
+    "file": "assets/Main-65c10ff6.js",
     "imports": [
-      "_Scaffold-54bd22ea.js",
+      "_Scaffold-dfc3d278.js",
       "resources/js/app.js",
       "_hero-b8cdbe5c.js",
-      "_PrimaryButton-3a10ddc4.js",
-      "_SecondaryButton-45c51ad6.js",
+      "_PrimaryButton-08c1122c.js",
+      "_SecondaryButton-8080d449.js",
       "__plugin-vue_export-helper-c27b6911.js",
-      "_LoadingIcon-ca97f54a.js",
-      "_Image-f08e1363.js",
-      "_UserIcon-1d5bdaea.js",
-      "_ApplicationLogo-27dc3d7d.js"
+      "_LoadingIcon-58a8816b.js",
+      "_Image-05ee28de.js",
+      "_UserIcon-01de6b11.js",
+      "_ApplicationLogo-c769210f.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Main.vue"
   },
   "resources/js/Pages/MakeMoney-legacy.vue": {
-    "file": "assets/MakeMoney-legacy-12ad788f.js",
+    "file": "assets/MakeMoney-legacy-fb87fe95.js",
     "imports": [
-      "_Scaffold-legacy-d74ffa76.js",
+      "_Scaffold-legacy-1e6571a5.js",
       "resources/js/app-legacy.js",
       "_hero-legacy-2ba6b89f.js",
       "__plugin-vue_export-helper-legacy-c6aa7c23.js",
-      "_LoadingIcon-legacy-8a10b5a2.js",
-      "_Image-legacy-600eee5a.js",
-      "_UserIcon-legacy-5ff7a6ec.js",
-      "_ApplicationLogo-legacy-da8a7c86.js"
+      "_LoadingIcon-legacy-5566a905.js",
+      "_Image-legacy-329a2d5d.js",
+      "_UserIcon-legacy-5ac95cba.js",
+      "_ApplicationLogo-legacy-8401a0ef.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/MakeMoney-legacy.vue"
@@ -782,965 +782,965 @@
     "css": [
       "assets/ContactUs-01748374.css"
     ],
-    "file": "assets/MakeMoney-5c022e34.js",
+    "file": "assets/MakeMoney-883b3519.js",
     "imports": [
-      "_Scaffold-54bd22ea.js",
+      "_Scaffold-dfc3d278.js",
       "resources/js/app.js",
       "_hero-b8cdbe5c.js",
       "__plugin-vue_export-helper-c27b6911.js",
-      "_LoadingIcon-ca97f54a.js",
-      "_Image-f08e1363.js",
-      "_UserIcon-1d5bdaea.js",
-      "_ApplicationLogo-27dc3d7d.js"
+      "_LoadingIcon-58a8816b.js",
+      "_Image-05ee28de.js",
+      "_UserIcon-01de6b11.js",
+      "_ApplicationLogo-c769210f.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/MakeMoney.vue"
   },
   "resources/js/Pages/Panel/Admin-legacy.vue": {
-    "file": "assets/Admin-legacy-ddd19cca.js",
+    "file": "assets/Admin-legacy-f57096c4.js",
     "imports": [
-      "_Scaffold-legacy-d74ffa76.js",
+      "_Scaffold-legacy-1e6571a5.js",
       "resources/js/app-legacy.js",
-      "_Image-legacy-600eee5a.js",
+      "_Image-legacy-329a2d5d.js",
       "__plugin-vue_export-helper-legacy-c6aa7c23.js",
-      "_WindowIcon-legacy-3e584b8f.js",
-      "_CurrencyDollarIcon-legacy-6156ec12.js",
-      "_LoadingIcon-legacy-8a10b5a2.js",
-      "_UserIcon-legacy-5ff7a6ec.js",
-      "_ApplicationLogo-legacy-da8a7c86.js"
+      "_WindowIcon-legacy-8d729453.js",
+      "_CurrencyDollarIcon-legacy-8e25121a.js",
+      "_LoadingIcon-legacy-5566a905.js",
+      "_UserIcon-legacy-5ac95cba.js",
+      "_ApplicationLogo-legacy-8401a0ef.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Panel/Admin-legacy.vue"
   },
   "resources/js/Pages/Panel/Admin.vue": {
-    "file": "assets/Admin-07d411fe.js",
+    "file": "assets/Admin-330dd154.js",
     "imports": [
-      "_Scaffold-54bd22ea.js",
+      "_Scaffold-dfc3d278.js",
       "resources/js/app.js",
-      "_Image-f08e1363.js",
+      "_Image-05ee28de.js",
       "__plugin-vue_export-helper-c27b6911.js",
-      "_WindowIcon-63659959.js",
-      "_CurrencyDollarIcon-5c0ccf10.js",
-      "_LoadingIcon-ca97f54a.js",
-      "_UserIcon-1d5bdaea.js",
-      "_ApplicationLogo-27dc3d7d.js"
+      "_WindowIcon-033a9c7d.js",
+      "_CurrencyDollarIcon-9fed74d1.js",
+      "_LoadingIcon-58a8816b.js",
+      "_UserIcon-01de6b11.js",
+      "_ApplicationLogo-c769210f.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Panel/Admin.vue"
   },
   "resources/js/Pages/Panel/Auction/Create-legacy.vue": {
-    "file": "assets/Create-legacy-ae6a94ad.js",
+    "file": "assets/Create-legacy-dfc2cd1b.js",
     "imports": [
-      "_Scaffold-legacy-d74ffa76.js",
-      "_User-legacy-4b94868b.js",
+      "_Scaffold-legacy-1e6571a5.js",
+      "_User-legacy-96def0a3.js",
       "resources/js/app-legacy.js",
       "__plugin-vue_export-helper-legacy-c6aa7c23.js",
-      "_WindowIcon-legacy-3e584b8f.js",
-      "_Image-legacy-600eee5a.js",
-      "_LoadingIcon-legacy-8a10b5a2.js",
-      "_UserIcon-legacy-5ff7a6ec.js",
-      "_ApplicationLogo-legacy-da8a7c86.js",
-      "_CurrencyDollarIcon-legacy-6156ec12.js"
+      "_WindowIcon-legacy-8d729453.js",
+      "_Image-legacy-329a2d5d.js",
+      "_LoadingIcon-legacy-5566a905.js",
+      "_UserIcon-legacy-5ac95cba.js",
+      "_ApplicationLogo-legacy-8401a0ef.js",
+      "_CurrencyDollarIcon-legacy-8e25121a.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Panel/Auction/Create-legacy.vue"
   },
   "resources/js/Pages/Panel/Auction/Create.vue": {
-    "file": "assets/Create-fae04eea.js",
+    "file": "assets/Create-7601a735.js",
     "imports": [
-      "_Scaffold-54bd22ea.js",
-      "_User-3e59a997.js",
+      "_Scaffold-dfc3d278.js",
+      "_User-2b02609a.js",
       "resources/js/app.js",
       "__plugin-vue_export-helper-c27b6911.js",
-      "_WindowIcon-63659959.js",
-      "_Image-f08e1363.js",
-      "_LoadingIcon-ca97f54a.js",
-      "_UserIcon-1d5bdaea.js",
-      "_ApplicationLogo-27dc3d7d.js",
-      "_CurrencyDollarIcon-5c0ccf10.js"
+      "_WindowIcon-033a9c7d.js",
+      "_Image-05ee28de.js",
+      "_LoadingIcon-58a8816b.js",
+      "_UserIcon-01de6b11.js",
+      "_ApplicationLogo-c769210f.js",
+      "_CurrencyDollarIcon-9fed74d1.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Panel/Auction/Create.vue"
   },
   "resources/js/Pages/Panel/Auction/Index-legacy.vue": {
-    "file": "assets/Index-legacy-392343d8.js",
+    "file": "assets/Index-legacy-056ba3b8.js",
     "imports": [
-      "_Scaffold-legacy-d74ffa76.js",
-      "_User-legacy-4b94868b.js",
+      "_Scaffold-legacy-1e6571a5.js",
+      "_User-legacy-96def0a3.js",
       "resources/js/app-legacy.js",
       "__plugin-vue_export-helper-legacy-c6aa7c23.js",
-      "_WindowIcon-legacy-3e584b8f.js",
-      "_Image-legacy-600eee5a.js",
-      "_LoadingIcon-legacy-8a10b5a2.js",
-      "_UserIcon-legacy-5ff7a6ec.js",
-      "_ApplicationLogo-legacy-da8a7c86.js",
-      "_CurrencyDollarIcon-legacy-6156ec12.js"
+      "_WindowIcon-legacy-8d729453.js",
+      "_Image-legacy-329a2d5d.js",
+      "_LoadingIcon-legacy-5566a905.js",
+      "_UserIcon-legacy-5ac95cba.js",
+      "_ApplicationLogo-legacy-8401a0ef.js",
+      "_CurrencyDollarIcon-legacy-8e25121a.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Panel/Auction/Index-legacy.vue"
   },
   "resources/js/Pages/Panel/Auction/Index.vue": {
-    "file": "assets/Index-bad513ad.js",
+    "file": "assets/Index-d5ff3b3f.js",
     "imports": [
-      "_Scaffold-54bd22ea.js",
-      "_User-3e59a997.js",
+      "_Scaffold-dfc3d278.js",
+      "_User-2b02609a.js",
       "resources/js/app.js",
       "__plugin-vue_export-helper-c27b6911.js",
-      "_WindowIcon-63659959.js",
-      "_Image-f08e1363.js",
-      "_LoadingIcon-ca97f54a.js",
-      "_UserIcon-1d5bdaea.js",
-      "_ApplicationLogo-27dc3d7d.js",
-      "_CurrencyDollarIcon-5c0ccf10.js"
+      "_WindowIcon-033a9c7d.js",
+      "_Image-05ee28de.js",
+      "_LoadingIcon-58a8816b.js",
+      "_UserIcon-01de6b11.js",
+      "_ApplicationLogo-c769210f.js",
+      "_CurrencyDollarIcon-9fed74d1.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Panel/Auction/Index.vue"
   },
   "resources/js/Pages/Panel/Business/Create-legacy.vue": {
-    "file": "assets/Create-legacy-392343d8.js",
+    "file": "assets/Create-legacy-056ba3b8.js",
     "imports": [
-      "_Scaffold-legacy-d74ffa76.js",
-      "_User-legacy-4b94868b.js",
+      "_Scaffold-legacy-1e6571a5.js",
+      "_User-legacy-96def0a3.js",
       "resources/js/app-legacy.js",
       "__plugin-vue_export-helper-legacy-c6aa7c23.js",
-      "_WindowIcon-legacy-3e584b8f.js",
-      "_Image-legacy-600eee5a.js",
-      "_LoadingIcon-legacy-8a10b5a2.js",
-      "_UserIcon-legacy-5ff7a6ec.js",
-      "_ApplicationLogo-legacy-da8a7c86.js",
-      "_CurrencyDollarIcon-legacy-6156ec12.js"
+      "_WindowIcon-legacy-8d729453.js",
+      "_Image-legacy-329a2d5d.js",
+      "_LoadingIcon-legacy-5566a905.js",
+      "_UserIcon-legacy-5ac95cba.js",
+      "_ApplicationLogo-legacy-8401a0ef.js",
+      "_CurrencyDollarIcon-legacy-8e25121a.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Panel/Business/Create-legacy.vue"
   },
   "resources/js/Pages/Panel/Business/Create.vue": {
-    "file": "assets/Create-38486aa6.js",
+    "file": "assets/Create-4d444b01.js",
     "imports": [
-      "_Scaffold-54bd22ea.js",
-      "_User-3e59a997.js",
+      "_Scaffold-dfc3d278.js",
+      "_User-2b02609a.js",
       "resources/js/app.js",
       "__plugin-vue_export-helper-c27b6911.js",
-      "_WindowIcon-63659959.js",
-      "_Image-f08e1363.js",
-      "_LoadingIcon-ca97f54a.js",
-      "_UserIcon-1d5bdaea.js",
-      "_ApplicationLogo-27dc3d7d.js",
-      "_CurrencyDollarIcon-5c0ccf10.js"
+      "_WindowIcon-033a9c7d.js",
+      "_Image-05ee28de.js",
+      "_LoadingIcon-58a8816b.js",
+      "_UserIcon-01de6b11.js",
+      "_ApplicationLogo-c769210f.js",
+      "_CurrencyDollarIcon-9fed74d1.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Panel/Business/Create.vue"
   },
   "resources/js/Pages/Panel/Business/Index-legacy.vue": {
-    "file": "assets/Index-legacy-0ddc60f9.js",
+    "file": "assets/Index-legacy-dfc2cd1b.js",
     "imports": [
-      "_Scaffold-legacy-d74ffa76.js",
-      "_User-legacy-4b94868b.js",
+      "_Scaffold-legacy-1e6571a5.js",
+      "_User-legacy-96def0a3.js",
       "resources/js/app-legacy.js",
       "__plugin-vue_export-helper-legacy-c6aa7c23.js",
-      "_WindowIcon-legacy-3e584b8f.js",
-      "_Image-legacy-600eee5a.js",
-      "_LoadingIcon-legacy-8a10b5a2.js",
-      "_UserIcon-legacy-5ff7a6ec.js",
-      "_ApplicationLogo-legacy-da8a7c86.js",
-      "_CurrencyDollarIcon-legacy-6156ec12.js"
+      "_WindowIcon-legacy-8d729453.js",
+      "_Image-legacy-329a2d5d.js",
+      "_LoadingIcon-legacy-5566a905.js",
+      "_UserIcon-legacy-5ac95cba.js",
+      "_ApplicationLogo-legacy-8401a0ef.js",
+      "_CurrencyDollarIcon-legacy-8e25121a.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Panel/Business/Index-legacy.vue"
   },
   "resources/js/Pages/Panel/Business/Index.vue": {
-    "file": "assets/Index-6d872ae2.js",
+    "file": "assets/Index-9e35d946.js",
     "imports": [
-      "_Scaffold-54bd22ea.js",
-      "_User-3e59a997.js",
+      "_Scaffold-dfc3d278.js",
+      "_User-2b02609a.js",
       "resources/js/app.js",
       "__plugin-vue_export-helper-c27b6911.js",
-      "_WindowIcon-63659959.js",
-      "_Image-f08e1363.js",
-      "_LoadingIcon-ca97f54a.js",
-      "_UserIcon-1d5bdaea.js",
-      "_ApplicationLogo-27dc3d7d.js",
-      "_CurrencyDollarIcon-5c0ccf10.js"
+      "_WindowIcon-033a9c7d.js",
+      "_Image-05ee28de.js",
+      "_LoadingIcon-58a8816b.js",
+      "_UserIcon-01de6b11.js",
+      "_ApplicationLogo-c769210f.js",
+      "_CurrencyDollarIcon-9fed74d1.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Panel/Business/Index.vue"
   },
   "resources/js/Pages/Panel/BusinessArticle/Create-legacy.vue": {
-    "file": "assets/Create-legacy-0ddc60f9.js",
+    "file": "assets/Create-legacy-5a1e87a7.js",
     "imports": [
-      "_Scaffold-legacy-d74ffa76.js",
-      "_User-legacy-4b94868b.js",
+      "_Scaffold-legacy-1e6571a5.js",
+      "_User-legacy-96def0a3.js",
       "resources/js/app-legacy.js",
       "__plugin-vue_export-helper-legacy-c6aa7c23.js",
-      "_WindowIcon-legacy-3e584b8f.js",
-      "_Image-legacy-600eee5a.js",
-      "_LoadingIcon-legacy-8a10b5a2.js",
-      "_UserIcon-legacy-5ff7a6ec.js",
-      "_ApplicationLogo-legacy-da8a7c86.js",
-      "_CurrencyDollarIcon-legacy-6156ec12.js"
+      "_WindowIcon-legacy-8d729453.js",
+      "_Image-legacy-329a2d5d.js",
+      "_LoadingIcon-legacy-5566a905.js",
+      "_UserIcon-legacy-5ac95cba.js",
+      "_ApplicationLogo-legacy-8401a0ef.js",
+      "_CurrencyDollarIcon-legacy-8e25121a.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Panel/BusinessArticle/Create-legacy.vue"
   },
   "resources/js/Pages/Panel/BusinessArticle/Create.vue": {
-    "file": "assets/Create-df8519f9.js",
+    "file": "assets/Create-3734e6b4.js",
     "imports": [
-      "_Scaffold-54bd22ea.js",
-      "_User-3e59a997.js",
+      "_Scaffold-dfc3d278.js",
+      "_User-2b02609a.js",
       "resources/js/app.js",
       "__plugin-vue_export-helper-c27b6911.js",
-      "_WindowIcon-63659959.js",
-      "_Image-f08e1363.js",
-      "_LoadingIcon-ca97f54a.js",
-      "_UserIcon-1d5bdaea.js",
-      "_ApplicationLogo-27dc3d7d.js",
-      "_CurrencyDollarIcon-5c0ccf10.js"
+      "_WindowIcon-033a9c7d.js",
+      "_Image-05ee28de.js",
+      "_LoadingIcon-58a8816b.js",
+      "_UserIcon-01de6b11.js",
+      "_ApplicationLogo-c769210f.js",
+      "_CurrencyDollarIcon-9fed74d1.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Panel/BusinessArticle/Create.vue"
   },
   "resources/js/Pages/Panel/BusinessArticle/Index-legacy.vue": {
-    "file": "assets/Index-legacy-ae6a94ad.js",
+    "file": "assets/Index-legacy-5a1e87a7.js",
     "imports": [
-      "_Scaffold-legacy-d74ffa76.js",
-      "_User-legacy-4b94868b.js",
+      "_Scaffold-legacy-1e6571a5.js",
+      "_User-legacy-96def0a3.js",
       "resources/js/app-legacy.js",
       "__plugin-vue_export-helper-legacy-c6aa7c23.js",
-      "_WindowIcon-legacy-3e584b8f.js",
-      "_Image-legacy-600eee5a.js",
-      "_LoadingIcon-legacy-8a10b5a2.js",
-      "_UserIcon-legacy-5ff7a6ec.js",
-      "_ApplicationLogo-legacy-da8a7c86.js",
-      "_CurrencyDollarIcon-legacy-6156ec12.js"
+      "_WindowIcon-legacy-8d729453.js",
+      "_Image-legacy-329a2d5d.js",
+      "_LoadingIcon-legacy-5566a905.js",
+      "_UserIcon-legacy-5ac95cba.js",
+      "_ApplicationLogo-legacy-8401a0ef.js",
+      "_CurrencyDollarIcon-legacy-8e25121a.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Panel/BusinessArticle/Index-legacy.vue"
   },
   "resources/js/Pages/Panel/BusinessArticle/Index.vue": {
-    "file": "assets/Index-47f823ab.js",
+    "file": "assets/Index-1ab983fd.js",
     "imports": [
-      "_Scaffold-54bd22ea.js",
-      "_User-3e59a997.js",
+      "_Scaffold-dfc3d278.js",
+      "_User-2b02609a.js",
       "resources/js/app.js",
       "__plugin-vue_export-helper-c27b6911.js",
-      "_WindowIcon-63659959.js",
-      "_Image-f08e1363.js",
-      "_LoadingIcon-ca97f54a.js",
-      "_UserIcon-1d5bdaea.js",
-      "_ApplicationLogo-27dc3d7d.js",
-      "_CurrencyDollarIcon-5c0ccf10.js"
+      "_WindowIcon-033a9c7d.js",
+      "_Image-05ee28de.js",
+      "_LoadingIcon-58a8816b.js",
+      "_UserIcon-01de6b11.js",
+      "_ApplicationLogo-c769210f.js",
+      "_CurrencyDollarIcon-9fed74d1.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Panel/BusinessArticle/Index.vue"
   },
   "resources/js/Pages/Panel/Financial/Transaction/Create-legacy.vue": {
-    "file": "assets/Create-legacy-2988a49f.js",
+    "file": "assets/Create-legacy-9a070ced.js",
     "imports": [
-      "_Scaffold-legacy-d74ffa76.js",
-      "_User-legacy-4b94868b.js",
+      "_Scaffold-legacy-1e6571a5.js",
+      "_User-legacy-96def0a3.js",
       "resources/js/app-legacy.js",
       "__plugin-vue_export-helper-legacy-c6aa7c23.js",
-      "_WindowIcon-legacy-3e584b8f.js",
-      "_Image-legacy-600eee5a.js",
-      "_LoadingIcon-legacy-8a10b5a2.js",
-      "_UserIcon-legacy-5ff7a6ec.js",
-      "_ApplicationLogo-legacy-da8a7c86.js",
-      "_CurrencyDollarIcon-legacy-6156ec12.js"
+      "_WindowIcon-legacy-8d729453.js",
+      "_Image-legacy-329a2d5d.js",
+      "_LoadingIcon-legacy-5566a905.js",
+      "_UserIcon-legacy-5ac95cba.js",
+      "_ApplicationLogo-legacy-8401a0ef.js",
+      "_CurrencyDollarIcon-legacy-8e25121a.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Panel/Financial/Transaction/Create-legacy.vue"
   },
   "resources/js/Pages/Panel/Financial/Transaction/Create.vue": {
-    "file": "assets/Create-aa2574e2.js",
+    "file": "assets/Create-89f4e665.js",
     "imports": [
-      "_Scaffold-54bd22ea.js",
-      "_User-3e59a997.js",
+      "_Scaffold-dfc3d278.js",
+      "_User-2b02609a.js",
       "resources/js/app.js",
       "__plugin-vue_export-helper-c27b6911.js",
-      "_WindowIcon-63659959.js",
-      "_Image-f08e1363.js",
-      "_LoadingIcon-ca97f54a.js",
-      "_UserIcon-1d5bdaea.js",
-      "_ApplicationLogo-27dc3d7d.js",
-      "_CurrencyDollarIcon-5c0ccf10.js"
+      "_WindowIcon-033a9c7d.js",
+      "_Image-05ee28de.js",
+      "_LoadingIcon-58a8816b.js",
+      "_UserIcon-01de6b11.js",
+      "_ApplicationLogo-c769210f.js",
+      "_CurrencyDollarIcon-9fed74d1.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Panel/Financial/Transaction/Create.vue"
   },
   "resources/js/Pages/Panel/Financial/Transaction/Index-legacy.vue": {
-    "file": "assets/Index-legacy-2988a49f.js",
+    "file": "assets/Index-legacy-9a070ced.js",
     "imports": [
-      "_Scaffold-legacy-d74ffa76.js",
-      "_User-legacy-4b94868b.js",
+      "_Scaffold-legacy-1e6571a5.js",
+      "_User-legacy-96def0a3.js",
       "resources/js/app-legacy.js",
       "__plugin-vue_export-helper-legacy-c6aa7c23.js",
-      "_WindowIcon-legacy-3e584b8f.js",
-      "_Image-legacy-600eee5a.js",
-      "_LoadingIcon-legacy-8a10b5a2.js",
-      "_UserIcon-legacy-5ff7a6ec.js",
-      "_ApplicationLogo-legacy-da8a7c86.js",
-      "_CurrencyDollarIcon-legacy-6156ec12.js"
+      "_WindowIcon-legacy-8d729453.js",
+      "_Image-legacy-329a2d5d.js",
+      "_LoadingIcon-legacy-5566a905.js",
+      "_UserIcon-legacy-5ac95cba.js",
+      "_ApplicationLogo-legacy-8401a0ef.js",
+      "_CurrencyDollarIcon-legacy-8e25121a.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Panel/Financial/Transaction/Index-legacy.vue"
   },
   "resources/js/Pages/Panel/Financial/Transaction/Index.vue": {
-    "file": "assets/Index-59837fe6.js",
+    "file": "assets/Index-154e8a3c.js",
     "imports": [
-      "_Scaffold-54bd22ea.js",
-      "_User-3e59a997.js",
+      "_Scaffold-dfc3d278.js",
+      "_User-2b02609a.js",
       "resources/js/app.js",
       "__plugin-vue_export-helper-c27b6911.js",
-      "_WindowIcon-63659959.js",
-      "_Image-f08e1363.js",
-      "_LoadingIcon-ca97f54a.js",
-      "_UserIcon-1d5bdaea.js",
-      "_ApplicationLogo-27dc3d7d.js",
-      "_CurrencyDollarIcon-5c0ccf10.js"
+      "_WindowIcon-033a9c7d.js",
+      "_Image-05ee28de.js",
+      "_LoadingIcon-58a8816b.js",
+      "_UserIcon-01de6b11.js",
+      "_ApplicationLogo-c769210f.js",
+      "_CurrencyDollarIcon-9fed74d1.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Panel/Financial/Transaction/Index.vue"
   },
   "resources/js/Pages/Panel/God-legacy.vue": {
-    "file": "assets/God-legacy-cd298fed.js",
+    "file": "assets/God-legacy-4fd69bfc.js",
     "imports": [
-      "_Scaffold-legacy-d74ffa76.js",
+      "_Scaffold-legacy-1e6571a5.js",
       "resources/js/app-legacy.js",
-      "_Image-legacy-600eee5a.js",
+      "_Image-legacy-329a2d5d.js",
       "__plugin-vue_export-helper-legacy-c6aa7c23.js",
-      "_WindowIcon-legacy-3e584b8f.js",
-      "_CurrencyDollarIcon-legacy-6156ec12.js",
-      "_LoadingIcon-legacy-8a10b5a2.js",
-      "_UserIcon-legacy-5ff7a6ec.js",
-      "_ApplicationLogo-legacy-da8a7c86.js"
+      "_WindowIcon-legacy-8d729453.js",
+      "_CurrencyDollarIcon-legacy-8e25121a.js",
+      "_LoadingIcon-legacy-5566a905.js",
+      "_UserIcon-legacy-5ac95cba.js",
+      "_ApplicationLogo-legacy-8401a0ef.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Panel/God-legacy.vue"
   },
   "resources/js/Pages/Panel/God.vue": {
-    "file": "assets/God-2f771042.js",
+    "file": "assets/God-938fcd55.js",
     "imports": [
-      "_Scaffold-54bd22ea.js",
+      "_Scaffold-dfc3d278.js",
       "resources/js/app.js",
-      "_Image-f08e1363.js",
+      "_Image-05ee28de.js",
       "__plugin-vue_export-helper-c27b6911.js",
-      "_WindowIcon-63659959.js",
-      "_CurrencyDollarIcon-5c0ccf10.js",
-      "_LoadingIcon-ca97f54a.js",
-      "_UserIcon-1d5bdaea.js",
-      "_ApplicationLogo-27dc3d7d.js"
+      "_WindowIcon-033a9c7d.js",
+      "_CurrencyDollarIcon-9fed74d1.js",
+      "_LoadingIcon-58a8816b.js",
+      "_UserIcon-01de6b11.js",
+      "_ApplicationLogo-c769210f.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Panel/God.vue"
   },
   "resources/js/Pages/Panel/Image/Create-legacy.vue": {
-    "file": "assets/Create-legacy-d6d6cd8b.js",
+    "file": "assets/Create-legacy-841909a5.js",
     "imports": [
-      "_Scaffold-legacy-d74ffa76.js",
-      "_User-legacy-4b94868b.js",
+      "_Scaffold-legacy-1e6571a5.js",
+      "_User-legacy-96def0a3.js",
       "resources/js/app-legacy.js",
       "__plugin-vue_export-helper-legacy-c6aa7c23.js",
-      "_WindowIcon-legacy-3e584b8f.js",
-      "_Image-legacy-600eee5a.js",
-      "_LoadingIcon-legacy-8a10b5a2.js",
-      "_UserIcon-legacy-5ff7a6ec.js",
-      "_ApplicationLogo-legacy-da8a7c86.js",
-      "_CurrencyDollarIcon-legacy-6156ec12.js"
+      "_WindowIcon-legacy-8d729453.js",
+      "_Image-legacy-329a2d5d.js",
+      "_LoadingIcon-legacy-5566a905.js",
+      "_UserIcon-legacy-5ac95cba.js",
+      "_ApplicationLogo-legacy-8401a0ef.js",
+      "_CurrencyDollarIcon-legacy-8e25121a.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Panel/Image/Create-legacy.vue"
   },
   "resources/js/Pages/Panel/Image/Create.vue": {
-    "file": "assets/Create-3f57f466.js",
+    "file": "assets/Create-6debc4e7.js",
     "imports": [
-      "_Scaffold-54bd22ea.js",
-      "_User-3e59a997.js",
+      "_Scaffold-dfc3d278.js",
+      "_User-2b02609a.js",
       "resources/js/app.js",
       "__plugin-vue_export-helper-c27b6911.js",
-      "_WindowIcon-63659959.js",
-      "_Image-f08e1363.js",
-      "_LoadingIcon-ca97f54a.js",
-      "_UserIcon-1d5bdaea.js",
-      "_ApplicationLogo-27dc3d7d.js",
-      "_CurrencyDollarIcon-5c0ccf10.js"
+      "_WindowIcon-033a9c7d.js",
+      "_Image-05ee28de.js",
+      "_LoadingIcon-58a8816b.js",
+      "_UserIcon-01de6b11.js",
+      "_ApplicationLogo-c769210f.js",
+      "_CurrencyDollarIcon-9fed74d1.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Panel/Image/Create.vue"
   },
   "resources/js/Pages/Panel/Image/Index-legacy.vue": {
-    "file": "assets/Index-legacy-112a83f9.js",
+    "file": "assets/Index-legacy-841909a5.js",
     "imports": [
-      "_Scaffold-legacy-d74ffa76.js",
-      "_User-legacy-4b94868b.js",
+      "_Scaffold-legacy-1e6571a5.js",
+      "_User-legacy-96def0a3.js",
       "resources/js/app-legacy.js",
       "__plugin-vue_export-helper-legacy-c6aa7c23.js",
-      "_WindowIcon-legacy-3e584b8f.js",
-      "_Image-legacy-600eee5a.js",
-      "_LoadingIcon-legacy-8a10b5a2.js",
-      "_UserIcon-legacy-5ff7a6ec.js",
-      "_ApplicationLogo-legacy-da8a7c86.js",
-      "_CurrencyDollarIcon-legacy-6156ec12.js"
+      "_WindowIcon-legacy-8d729453.js",
+      "_Image-legacy-329a2d5d.js",
+      "_LoadingIcon-legacy-5566a905.js",
+      "_UserIcon-legacy-5ac95cba.js",
+      "_ApplicationLogo-legacy-8401a0ef.js",
+      "_CurrencyDollarIcon-legacy-8e25121a.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Panel/Image/Index-legacy.vue"
   },
   "resources/js/Pages/Panel/Image/Index.vue": {
-    "file": "assets/Index-e08a90ad.js",
+    "file": "assets/Index-81515c5f.js",
     "imports": [
-      "_Scaffold-54bd22ea.js",
-      "_User-3e59a997.js",
+      "_Scaffold-dfc3d278.js",
+      "_User-2b02609a.js",
       "resources/js/app.js",
       "__plugin-vue_export-helper-c27b6911.js",
-      "_WindowIcon-63659959.js",
-      "_Image-f08e1363.js",
-      "_LoadingIcon-ca97f54a.js",
-      "_UserIcon-1d5bdaea.js",
-      "_ApplicationLogo-27dc3d7d.js",
-      "_CurrencyDollarIcon-5c0ccf10.js"
+      "_WindowIcon-033a9c7d.js",
+      "_Image-05ee28de.js",
+      "_LoadingIcon-58a8816b.js",
+      "_UserIcon-01de6b11.js",
+      "_ApplicationLogo-c769210f.js",
+      "_CurrencyDollarIcon-9fed74d1.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Panel/Image/Index.vue"
   },
   "resources/js/Pages/Panel/Podcast/Create-legacy.vue": {
-    "file": "assets/Create-legacy-112a83f9.js",
+    "file": "assets/Create-legacy-862d949b.js",
     "imports": [
-      "_Scaffold-legacy-d74ffa76.js",
-      "_User-legacy-4b94868b.js",
+      "_Scaffold-legacy-1e6571a5.js",
+      "_User-legacy-96def0a3.js",
       "resources/js/app-legacy.js",
       "__plugin-vue_export-helper-legacy-c6aa7c23.js",
-      "_WindowIcon-legacy-3e584b8f.js",
-      "_Image-legacy-600eee5a.js",
-      "_LoadingIcon-legacy-8a10b5a2.js",
-      "_UserIcon-legacy-5ff7a6ec.js",
-      "_ApplicationLogo-legacy-da8a7c86.js",
-      "_CurrencyDollarIcon-legacy-6156ec12.js"
+      "_WindowIcon-legacy-8d729453.js",
+      "_Image-legacy-329a2d5d.js",
+      "_LoadingIcon-legacy-5566a905.js",
+      "_UserIcon-legacy-5ac95cba.js",
+      "_ApplicationLogo-legacy-8401a0ef.js",
+      "_CurrencyDollarIcon-legacy-8e25121a.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Panel/Podcast/Create-legacy.vue"
   },
   "resources/js/Pages/Panel/Podcast/Create.vue": {
-    "file": "assets/Create-df96e1bb.js",
+    "file": "assets/Create-0901a148.js",
     "imports": [
-      "_Scaffold-54bd22ea.js",
-      "_User-3e59a997.js",
+      "_Scaffold-dfc3d278.js",
+      "_User-2b02609a.js",
       "resources/js/app.js",
       "__plugin-vue_export-helper-c27b6911.js",
-      "_WindowIcon-63659959.js",
-      "_Image-f08e1363.js",
-      "_LoadingIcon-ca97f54a.js",
-      "_UserIcon-1d5bdaea.js",
-      "_ApplicationLogo-27dc3d7d.js",
-      "_CurrencyDollarIcon-5c0ccf10.js"
+      "_WindowIcon-033a9c7d.js",
+      "_Image-05ee28de.js",
+      "_LoadingIcon-58a8816b.js",
+      "_UserIcon-01de6b11.js",
+      "_ApplicationLogo-c769210f.js",
+      "_CurrencyDollarIcon-9fed74d1.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Panel/Podcast/Create.vue"
   },
   "resources/js/Pages/Panel/Podcast/Index-legacy.vue": {
-    "file": "assets/Index-legacy-d6d6cd8b.js",
+    "file": "assets/Index-legacy-862d949b.js",
     "imports": [
-      "_Scaffold-legacy-d74ffa76.js",
-      "_User-legacy-4b94868b.js",
+      "_Scaffold-legacy-1e6571a5.js",
+      "_User-legacy-96def0a3.js",
       "resources/js/app-legacy.js",
       "__plugin-vue_export-helper-legacy-c6aa7c23.js",
-      "_WindowIcon-legacy-3e584b8f.js",
-      "_Image-legacy-600eee5a.js",
-      "_LoadingIcon-legacy-8a10b5a2.js",
-      "_UserIcon-legacy-5ff7a6ec.js",
-      "_ApplicationLogo-legacy-da8a7c86.js",
-      "_CurrencyDollarIcon-legacy-6156ec12.js"
+      "_WindowIcon-legacy-8d729453.js",
+      "_Image-legacy-329a2d5d.js",
+      "_LoadingIcon-legacy-5566a905.js",
+      "_UserIcon-legacy-5ac95cba.js",
+      "_ApplicationLogo-legacy-8401a0ef.js",
+      "_CurrencyDollarIcon-legacy-8e25121a.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Panel/Podcast/Index-legacy.vue"
   },
   "resources/js/Pages/Panel/Podcast/Index.vue": {
-    "file": "assets/Index-30b12b62.js",
+    "file": "assets/Index-ae780734.js",
     "imports": [
-      "_Scaffold-54bd22ea.js",
-      "_User-3e59a997.js",
+      "_Scaffold-dfc3d278.js",
+      "_User-2b02609a.js",
       "resources/js/app.js",
       "__plugin-vue_export-helper-c27b6911.js",
-      "_WindowIcon-63659959.js",
-      "_Image-f08e1363.js",
-      "_LoadingIcon-ca97f54a.js",
-      "_UserIcon-1d5bdaea.js",
-      "_ApplicationLogo-27dc3d7d.js",
-      "_CurrencyDollarIcon-5c0ccf10.js"
+      "_WindowIcon-033a9c7d.js",
+      "_Image-05ee28de.js",
+      "_LoadingIcon-58a8816b.js",
+      "_UserIcon-01de6b11.js",
+      "_ApplicationLogo-c769210f.js",
+      "_CurrencyDollarIcon-9fed74d1.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Panel/Podcast/Index.vue"
   },
   "resources/js/Pages/Panel/Site/Create-legacy.vue": {
-    "file": "assets/Create-legacy-ba80f9cf.js",
+    "file": "assets/Create-legacy-e6682f91.js",
     "imports": [
-      "_Scaffold-legacy-d74ffa76.js",
-      "_User-legacy-4b94868b.js",
+      "_Scaffold-legacy-1e6571a5.js",
+      "_User-legacy-96def0a3.js",
       "resources/js/app-legacy.js",
-      "_Checkbox-legacy-118bd352.js",
+      "_Checkbox-legacy-a8068a2f.js",
       "__plugin-vue_export-helper-legacy-c6aa7c23.js",
-      "_TextInput-legacy-02216e57.js",
-      "_PrimaryButton-legacy-74c235c7.js",
-      "_Selector-legacy-327baa94.js",
-      "_LoadingIcon-legacy-8a10b5a2.js",
-      "_WindowIcon-legacy-3e584b8f.js",
-      "_Image-legacy-600eee5a.js",
-      "_UserIcon-legacy-5ff7a6ec.js",
-      "_EyeIcon-legacy-91232656.js",
-      "_CurrencyDollarIcon-legacy-6156ec12.js",
-      "_XMarkIcon-legacy-b83c824e.js",
-      "_ApplicationLogo-legacy-da8a7c86.js"
+      "_TextInput-legacy-55f1f3bc.js",
+      "_PrimaryButton-legacy-fa0d64dd.js",
+      "_Selector-legacy-391a605e.js",
+      "_LoadingIcon-legacy-5566a905.js",
+      "_WindowIcon-legacy-8d729453.js",
+      "_Image-legacy-329a2d5d.js",
+      "_UserIcon-legacy-5ac95cba.js",
+      "_EyeIcon-legacy-acaf9be4.js",
+      "_CurrencyDollarIcon-legacy-8e25121a.js",
+      "_XMarkIcon-legacy-688b489d.js",
+      "_ApplicationLogo-legacy-8401a0ef.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Panel/Site/Create-legacy.vue"
   },
   "resources/js/Pages/Panel/Site/Create.vue": {
-    "file": "assets/Create-c3616560.js",
+    "file": "assets/Create-a7faa96e.js",
     "imports": [
-      "_Scaffold-54bd22ea.js",
-      "_User-3e59a997.js",
+      "_Scaffold-dfc3d278.js",
+      "_User-2b02609a.js",
       "resources/js/app.js",
-      "_Checkbox-b4554442.js",
+      "_Checkbox-b2e4083b.js",
       "__plugin-vue_export-helper-c27b6911.js",
-      "_TextInput-607bb586.js",
-      "_PrimaryButton-3a10ddc4.js",
-      "_Selector-29955761.js",
-      "_LoadingIcon-ca97f54a.js",
-      "_WindowIcon-63659959.js",
-      "_Image-f08e1363.js",
-      "_UserIcon-1d5bdaea.js",
-      "_EyeIcon-8fd7fe7c.js",
-      "_CurrencyDollarIcon-5c0ccf10.js",
-      "_XMarkIcon-78bc412c.js",
-      "_ApplicationLogo-27dc3d7d.js"
+      "_TextInput-ae074a75.js",
+      "_PrimaryButton-08c1122c.js",
+      "_Selector-877a5eb3.js",
+      "_LoadingIcon-58a8816b.js",
+      "_WindowIcon-033a9c7d.js",
+      "_Image-05ee28de.js",
+      "_UserIcon-01de6b11.js",
+      "_EyeIcon-b2253890.js",
+      "_CurrencyDollarIcon-9fed74d1.js",
+      "_XMarkIcon-e10a4b21.js",
+      "_ApplicationLogo-c769210f.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Panel/Site/Create.vue"
   },
   "resources/js/Pages/Panel/Site/Edit-legacy.vue": {
-    "file": "assets/Edit-legacy-abc854d6.js",
+    "file": "assets/Edit-legacy-210b5c73.js",
     "imports": [
-      "_Scaffold-legacy-d74ffa76.js",
-      "_User-legacy-4b94868b.js",
+      "_Scaffold-legacy-1e6571a5.js",
+      "_User-legacy-96def0a3.js",
       "resources/js/app-legacy.js",
-      "_Checkbox-legacy-118bd352.js",
+      "_Checkbox-legacy-a8068a2f.js",
       "__plugin-vue_export-helper-legacy-c6aa7c23.js",
-      "_TextInput-legacy-02216e57.js",
-      "_PrimaryButton-legacy-74c235c7.js",
-      "_Selector-legacy-327baa94.js",
-      "_LoadingIcon-legacy-8a10b5a2.js",
-      "_WindowIcon-legacy-3e584b8f.js",
-      "_Image-legacy-600eee5a.js",
-      "_UserIcon-legacy-5ff7a6ec.js",
-      "_EyeIcon-legacy-91232656.js",
-      "_CurrencyDollarIcon-legacy-6156ec12.js",
-      "_XMarkIcon-legacy-b83c824e.js",
-      "_ApplicationLogo-legacy-da8a7c86.js"
+      "_TextInput-legacy-55f1f3bc.js",
+      "_PrimaryButton-legacy-fa0d64dd.js",
+      "_Selector-legacy-391a605e.js",
+      "_LoadingIcon-legacy-5566a905.js",
+      "_WindowIcon-legacy-8d729453.js",
+      "_Image-legacy-329a2d5d.js",
+      "_UserIcon-legacy-5ac95cba.js",
+      "_EyeIcon-legacy-acaf9be4.js",
+      "_CurrencyDollarIcon-legacy-8e25121a.js",
+      "_XMarkIcon-legacy-688b489d.js",
+      "_ApplicationLogo-legacy-8401a0ef.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Panel/Site/Edit-legacy.vue"
   },
   "resources/js/Pages/Panel/Site/Edit.vue": {
-    "file": "assets/Edit-3dde9895.js",
+    "file": "assets/Edit-5b16c3c7.js",
     "imports": [
-      "_Scaffold-54bd22ea.js",
-      "_User-3e59a997.js",
+      "_Scaffold-dfc3d278.js",
+      "_User-2b02609a.js",
       "resources/js/app.js",
-      "_Checkbox-b4554442.js",
+      "_Checkbox-b2e4083b.js",
       "__plugin-vue_export-helper-c27b6911.js",
-      "_TextInput-607bb586.js",
-      "_PrimaryButton-3a10ddc4.js",
-      "_Selector-29955761.js",
-      "_LoadingIcon-ca97f54a.js",
-      "_WindowIcon-63659959.js",
-      "_Image-f08e1363.js",
-      "_UserIcon-1d5bdaea.js",
-      "_EyeIcon-8fd7fe7c.js",
-      "_CurrencyDollarIcon-5c0ccf10.js",
-      "_XMarkIcon-78bc412c.js",
-      "_ApplicationLogo-27dc3d7d.js"
+      "_TextInput-ae074a75.js",
+      "_PrimaryButton-08c1122c.js",
+      "_Selector-877a5eb3.js",
+      "_LoadingIcon-58a8816b.js",
+      "_WindowIcon-033a9c7d.js",
+      "_Image-05ee28de.js",
+      "_UserIcon-01de6b11.js",
+      "_EyeIcon-b2253890.js",
+      "_CurrencyDollarIcon-9fed74d1.js",
+      "_XMarkIcon-e10a4b21.js",
+      "_ApplicationLogo-c769210f.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Panel/Site/Edit.vue"
   },
   "resources/js/Pages/Panel/Site/Index-legacy.vue": {
-    "file": "assets/Index-legacy-dc139433.js",
+    "file": "assets/Index-legacy-9e3fb9f8.js",
     "imports": [
-      "_Scaffold-legacy-d74ffa76.js",
-      "_User-legacy-4b94868b.js",
+      "_Scaffold-legacy-1e6571a5.js",
+      "_User-legacy-96def0a3.js",
       "resources/js/app-legacy.js",
       "__plugin-vue_export-helper-legacy-c6aa7c23.js",
-      "_Image-legacy-600eee5a.js",
-      "_WindowIcon-legacy-3e584b8f.js",
-      "_XMarkIcon-legacy-b83c824e.js",
-      "_LoadingIcon-legacy-8a10b5a2.js",
-      "_UserIcon-legacy-5ff7a6ec.js",
-      "_ApplicationLogo-legacy-da8a7c86.js",
-      "_CurrencyDollarIcon-legacy-6156ec12.js"
+      "_Image-legacy-329a2d5d.js",
+      "_WindowIcon-legacy-8d729453.js",
+      "_XMarkIcon-legacy-688b489d.js",
+      "_LoadingIcon-legacy-5566a905.js",
+      "_UserIcon-legacy-5ac95cba.js",
+      "_ApplicationLogo-legacy-8401a0ef.js",
+      "_CurrencyDollarIcon-legacy-8e25121a.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Panel/Site/Index-legacy.vue"
   },
   "resources/js/Pages/Panel/Site/Index.vue": {
-    "file": "assets/Index-6684f596.js",
+    "file": "assets/Index-71592bed.js",
     "imports": [
-      "_Scaffold-54bd22ea.js",
-      "_User-3e59a997.js",
+      "_Scaffold-dfc3d278.js",
+      "_User-2b02609a.js",
       "resources/js/app.js",
       "__plugin-vue_export-helper-c27b6911.js",
-      "_Image-f08e1363.js",
-      "_WindowIcon-63659959.js",
-      "_XMarkIcon-78bc412c.js",
-      "_LoadingIcon-ca97f54a.js",
-      "_UserIcon-1d5bdaea.js",
-      "_ApplicationLogo-27dc3d7d.js",
-      "_CurrencyDollarIcon-5c0ccf10.js"
+      "_Image-05ee28de.js",
+      "_WindowIcon-033a9c7d.js",
+      "_XMarkIcon-e10a4b21.js",
+      "_LoadingIcon-58a8816b.js",
+      "_UserIcon-01de6b11.js",
+      "_ApplicationLogo-c769210f.js",
+      "_CurrencyDollarIcon-9fed74d1.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Panel/Site/Index.vue"
   },
   "resources/js/Pages/Panel/Support/Create-legacy.vue": {
-    "file": "assets/Create-legacy-06ec3ed1.js",
+    "file": "assets/Create-legacy-fe24706e.js",
     "imports": [
-      "_Scaffold-legacy-d74ffa76.js",
-      "_User-legacy-4b94868b.js",
+      "_Scaffold-legacy-1e6571a5.js",
+      "_User-legacy-96def0a3.js",
       "resources/js/app-legacy.js",
       "__plugin-vue_export-helper-legacy-c6aa7c23.js",
-      "_WindowIcon-legacy-3e584b8f.js",
-      "_Image-legacy-600eee5a.js",
-      "_LoadingIcon-legacy-8a10b5a2.js",
-      "_UserIcon-legacy-5ff7a6ec.js",
-      "_ApplicationLogo-legacy-da8a7c86.js",
-      "_CurrencyDollarIcon-legacy-6156ec12.js"
+      "_WindowIcon-legacy-8d729453.js",
+      "_Image-legacy-329a2d5d.js",
+      "_LoadingIcon-legacy-5566a905.js",
+      "_UserIcon-legacy-5ac95cba.js",
+      "_ApplicationLogo-legacy-8401a0ef.js",
+      "_CurrencyDollarIcon-legacy-8e25121a.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Panel/Support/Create-legacy.vue"
   },
   "resources/js/Pages/Panel/Support/Create.vue": {
-    "file": "assets/Create-b64a3ceb.js",
+    "file": "assets/Create-6dc13167.js",
     "imports": [
-      "_Scaffold-54bd22ea.js",
-      "_User-3e59a997.js",
+      "_Scaffold-dfc3d278.js",
+      "_User-2b02609a.js",
       "resources/js/app.js",
       "__plugin-vue_export-helper-c27b6911.js",
-      "_WindowIcon-63659959.js",
-      "_Image-f08e1363.js",
-      "_LoadingIcon-ca97f54a.js",
-      "_UserIcon-1d5bdaea.js",
-      "_ApplicationLogo-27dc3d7d.js",
-      "_CurrencyDollarIcon-5c0ccf10.js"
+      "_WindowIcon-033a9c7d.js",
+      "_Image-05ee28de.js",
+      "_LoadingIcon-58a8816b.js",
+      "_UserIcon-01de6b11.js",
+      "_ApplicationLogo-c769210f.js",
+      "_CurrencyDollarIcon-9fed74d1.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Panel/Support/Create.vue"
   },
   "resources/js/Pages/Panel/Support/Index-legacy.vue": {
-    "file": "assets/Index-legacy-4f8c8cb5.js",
+    "file": "assets/Index-legacy-af1dec40.js",
     "imports": [
-      "_Scaffold-legacy-d74ffa76.js",
-      "_User-legacy-4b94868b.js",
+      "_Scaffold-legacy-1e6571a5.js",
+      "_User-legacy-96def0a3.js",
       "resources/js/app-legacy.js",
       "__plugin-vue_export-helper-legacy-c6aa7c23.js",
-      "_WindowIcon-legacy-3e584b8f.js",
-      "_Image-legacy-600eee5a.js",
-      "_LoadingIcon-legacy-8a10b5a2.js",
-      "_UserIcon-legacy-5ff7a6ec.js",
-      "_ApplicationLogo-legacy-da8a7c86.js",
-      "_CurrencyDollarIcon-legacy-6156ec12.js"
+      "_WindowIcon-legacy-8d729453.js",
+      "_Image-legacy-329a2d5d.js",
+      "_LoadingIcon-legacy-5566a905.js",
+      "_UserIcon-legacy-5ac95cba.js",
+      "_ApplicationLogo-legacy-8401a0ef.js",
+      "_CurrencyDollarIcon-legacy-8e25121a.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Panel/Support/Index-legacy.vue"
   },
   "resources/js/Pages/Panel/Support/Index.vue": {
-    "file": "assets/Index-512574a9.js",
+    "file": "assets/Index-3f378bc2.js",
     "imports": [
-      "_Scaffold-54bd22ea.js",
-      "_User-3e59a997.js",
+      "_Scaffold-dfc3d278.js",
+      "_User-2b02609a.js",
       "resources/js/app.js",
       "__plugin-vue_export-helper-c27b6911.js",
-      "_WindowIcon-63659959.js",
-      "_Image-f08e1363.js",
-      "_LoadingIcon-ca97f54a.js",
-      "_UserIcon-1d5bdaea.js",
-      "_ApplicationLogo-27dc3d7d.js",
-      "_CurrencyDollarIcon-5c0ccf10.js"
+      "_WindowIcon-033a9c7d.js",
+      "_Image-05ee28de.js",
+      "_LoadingIcon-58a8816b.js",
+      "_UserIcon-01de6b11.js",
+      "_ApplicationLogo-c769210f.js",
+      "_CurrencyDollarIcon-9fed74d1.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Panel/Support/Index.vue"
   },
   "resources/js/Pages/Panel/Text/Create-legacy.vue": {
-    "file": "assets/Create-legacy-4f8c8cb5.js",
+    "file": "assets/Create-legacy-af1dec40.js",
     "imports": [
-      "_Scaffold-legacy-d74ffa76.js",
-      "_User-legacy-4b94868b.js",
+      "_Scaffold-legacy-1e6571a5.js",
+      "_User-legacy-96def0a3.js",
       "resources/js/app-legacy.js",
       "__plugin-vue_export-helper-legacy-c6aa7c23.js",
-      "_WindowIcon-legacy-3e584b8f.js",
-      "_Image-legacy-600eee5a.js",
-      "_LoadingIcon-legacy-8a10b5a2.js",
-      "_UserIcon-legacy-5ff7a6ec.js",
-      "_ApplicationLogo-legacy-da8a7c86.js",
-      "_CurrencyDollarIcon-legacy-6156ec12.js"
+      "_WindowIcon-legacy-8d729453.js",
+      "_Image-legacy-329a2d5d.js",
+      "_LoadingIcon-legacy-5566a905.js",
+      "_UserIcon-legacy-5ac95cba.js",
+      "_ApplicationLogo-legacy-8401a0ef.js",
+      "_CurrencyDollarIcon-legacy-8e25121a.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Panel/Text/Create-legacy.vue"
   },
   "resources/js/Pages/Panel/Text/Create.vue": {
-    "file": "assets/Create-74a3f9a0.js",
+    "file": "assets/Create-784e8ea1.js",
     "imports": [
-      "_Scaffold-54bd22ea.js",
-      "_User-3e59a997.js",
+      "_Scaffold-dfc3d278.js",
+      "_User-2b02609a.js",
       "resources/js/app.js",
       "__plugin-vue_export-helper-c27b6911.js",
-      "_WindowIcon-63659959.js",
-      "_Image-f08e1363.js",
-      "_LoadingIcon-ca97f54a.js",
-      "_UserIcon-1d5bdaea.js",
-      "_ApplicationLogo-27dc3d7d.js",
-      "_CurrencyDollarIcon-5c0ccf10.js"
+      "_WindowIcon-033a9c7d.js",
+      "_Image-05ee28de.js",
+      "_LoadingIcon-58a8816b.js",
+      "_UserIcon-01de6b11.js",
+      "_ApplicationLogo-c769210f.js",
+      "_CurrencyDollarIcon-9fed74d1.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Panel/Text/Create.vue"
   },
   "resources/js/Pages/Panel/Text/Index-legacy.vue": {
-    "file": "assets/Index-legacy-7426f75f.js",
+    "file": "assets/Index-legacy-fe24706e.js",
     "imports": [
-      "_Scaffold-legacy-d74ffa76.js",
-      "_User-legacy-4b94868b.js",
+      "_Scaffold-legacy-1e6571a5.js",
+      "_User-legacy-96def0a3.js",
       "resources/js/app-legacy.js",
       "__plugin-vue_export-helper-legacy-c6aa7c23.js",
-      "_WindowIcon-legacy-3e584b8f.js",
-      "_Image-legacy-600eee5a.js",
-      "_LoadingIcon-legacy-8a10b5a2.js",
-      "_UserIcon-legacy-5ff7a6ec.js",
-      "_ApplicationLogo-legacy-da8a7c86.js",
-      "_CurrencyDollarIcon-legacy-6156ec12.js"
+      "_WindowIcon-legacy-8d729453.js",
+      "_Image-legacy-329a2d5d.js",
+      "_LoadingIcon-legacy-5566a905.js",
+      "_UserIcon-legacy-5ac95cba.js",
+      "_ApplicationLogo-legacy-8401a0ef.js",
+      "_CurrencyDollarIcon-legacy-8e25121a.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Panel/Text/Index-legacy.vue"
   },
   "resources/js/Pages/Panel/Text/Index.vue": {
-    "file": "assets/Index-75a643df.js",
+    "file": "assets/Index-2331461b.js",
     "imports": [
-      "_Scaffold-54bd22ea.js",
-      "_User-3e59a997.js",
+      "_Scaffold-dfc3d278.js",
+      "_User-2b02609a.js",
       "resources/js/app.js",
       "__plugin-vue_export-helper-c27b6911.js",
-      "_WindowIcon-63659959.js",
-      "_Image-f08e1363.js",
-      "_LoadingIcon-ca97f54a.js",
-      "_UserIcon-1d5bdaea.js",
-      "_ApplicationLogo-27dc3d7d.js",
-      "_CurrencyDollarIcon-5c0ccf10.js"
+      "_WindowIcon-033a9c7d.js",
+      "_Image-05ee28de.js",
+      "_LoadingIcon-58a8816b.js",
+      "_UserIcon-01de6b11.js",
+      "_ApplicationLogo-c769210f.js",
+      "_CurrencyDollarIcon-9fed74d1.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Panel/Text/Index.vue"
   },
   "resources/js/Pages/Panel/Ticket/Create-legacy.vue": {
-    "file": "assets/Create-legacy-7426f75f.js",
+    "file": "assets/Create-legacy-0f812d04.js",
     "imports": [
-      "_Scaffold-legacy-d74ffa76.js",
-      "_User-legacy-4b94868b.js",
+      "_Scaffold-legacy-1e6571a5.js",
+      "_User-legacy-96def0a3.js",
       "resources/js/app-legacy.js",
       "__plugin-vue_export-helper-legacy-c6aa7c23.js",
-      "_WindowIcon-legacy-3e584b8f.js",
-      "_Image-legacy-600eee5a.js",
-      "_LoadingIcon-legacy-8a10b5a2.js",
-      "_UserIcon-legacy-5ff7a6ec.js",
-      "_ApplicationLogo-legacy-da8a7c86.js",
-      "_CurrencyDollarIcon-legacy-6156ec12.js"
+      "_WindowIcon-legacy-8d729453.js",
+      "_Image-legacy-329a2d5d.js",
+      "_LoadingIcon-legacy-5566a905.js",
+      "_UserIcon-legacy-5ac95cba.js",
+      "_ApplicationLogo-legacy-8401a0ef.js",
+      "_CurrencyDollarIcon-legacy-8e25121a.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Panel/Ticket/Create-legacy.vue"
   },
   "resources/js/Pages/Panel/Ticket/Create.vue": {
-    "file": "assets/Create-8ab166db.js",
+    "file": "assets/Create-a1b4d451.js",
     "imports": [
-      "_Scaffold-54bd22ea.js",
-      "_User-3e59a997.js",
+      "_Scaffold-dfc3d278.js",
+      "_User-2b02609a.js",
       "resources/js/app.js",
       "__plugin-vue_export-helper-c27b6911.js",
-      "_WindowIcon-63659959.js",
-      "_Image-f08e1363.js",
-      "_LoadingIcon-ca97f54a.js",
-      "_UserIcon-1d5bdaea.js",
-      "_ApplicationLogo-27dc3d7d.js",
-      "_CurrencyDollarIcon-5c0ccf10.js"
+      "_WindowIcon-033a9c7d.js",
+      "_Image-05ee28de.js",
+      "_LoadingIcon-58a8816b.js",
+      "_UserIcon-01de6b11.js",
+      "_ApplicationLogo-c769210f.js",
+      "_CurrencyDollarIcon-9fed74d1.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Panel/Ticket/Create.vue"
   },
   "resources/js/Pages/Panel/Ticket/Index-legacy.vue": {
-    "file": "assets/Index-legacy-06ec3ed1.js",
+    "file": "assets/Index-legacy-0f812d04.js",
     "imports": [
-      "_Scaffold-legacy-d74ffa76.js",
-      "_User-legacy-4b94868b.js",
+      "_Scaffold-legacy-1e6571a5.js",
+      "_User-legacy-96def0a3.js",
       "resources/js/app-legacy.js",
       "__plugin-vue_export-helper-legacy-c6aa7c23.js",
-      "_WindowIcon-legacy-3e584b8f.js",
-      "_Image-legacy-600eee5a.js",
-      "_LoadingIcon-legacy-8a10b5a2.js",
-      "_UserIcon-legacy-5ff7a6ec.js",
-      "_ApplicationLogo-legacy-da8a7c86.js",
-      "_CurrencyDollarIcon-legacy-6156ec12.js"
+      "_WindowIcon-legacy-8d729453.js",
+      "_Image-legacy-329a2d5d.js",
+      "_LoadingIcon-legacy-5566a905.js",
+      "_UserIcon-legacy-5ac95cba.js",
+      "_ApplicationLogo-legacy-8401a0ef.js",
+      "_CurrencyDollarIcon-legacy-8e25121a.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Panel/Ticket/Index-legacy.vue"
   },
   "resources/js/Pages/Panel/Ticket/Index.vue": {
-    "file": "assets/Index-16d915cb.js",
+    "file": "assets/Index-817bc4fe.js",
     "imports": [
-      "_Scaffold-54bd22ea.js",
-      "_User-3e59a997.js",
+      "_Scaffold-dfc3d278.js",
+      "_User-2b02609a.js",
       "resources/js/app.js",
       "__plugin-vue_export-helper-c27b6911.js",
-      "_WindowIcon-63659959.js",
-      "_Image-f08e1363.js",
-      "_LoadingIcon-ca97f54a.js",
-      "_UserIcon-1d5bdaea.js",
-      "_ApplicationLogo-27dc3d7d.js",
-      "_CurrencyDollarIcon-5c0ccf10.js"
+      "_WindowIcon-033a9c7d.js",
+      "_Image-05ee28de.js",
+      "_LoadingIcon-58a8816b.js",
+      "_UserIcon-01de6b11.js",
+      "_ApplicationLogo-c769210f.js",
+      "_CurrencyDollarIcon-9fed74d1.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Panel/Ticket/Index.vue"
   },
   "resources/js/Pages/Panel/User-legacy.vue": {
-    "file": "assets/User-legacy-bcbdc4aa.js",
+    "file": "assets/User-legacy-1509dcb1.js",
     "imports": [
-      "_User-legacy-4b94868b.js",
+      "_User-legacy-96def0a3.js",
       "resources/js/app-legacy.js",
       "__plugin-vue_export-helper-legacy-c6aa7c23.js",
-      "_CurrencyDollarIcon-legacy-6156ec12.js",
-      "_TicketIcon-legacy-5bd0e313.js",
-      "_Image-legacy-600eee5a.js",
-      "_UserIcon-legacy-5ff7a6ec.js",
-      "_LoadingIcon-legacy-8a10b5a2.js",
-      "_ApplicationLogo-legacy-da8a7c86.js",
-      "_WindowIcon-legacy-3e584b8f.js"
+      "_CurrencyDollarIcon-legacy-8e25121a.js",
+      "_TicketIcon-legacy-2cc021b3.js",
+      "_Image-legacy-329a2d5d.js",
+      "_UserIcon-legacy-5ac95cba.js",
+      "_LoadingIcon-legacy-5566a905.js",
+      "_ApplicationLogo-legacy-8401a0ef.js",
+      "_WindowIcon-legacy-8d729453.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Panel/User-legacy.vue"
   },
   "resources/js/Pages/Panel/User.vue": {
-    "file": "assets/User-ce97b796.js",
+    "file": "assets/User-650711c1.js",
     "imports": [
-      "_User-3e59a997.js",
+      "_User-2b02609a.js",
       "resources/js/app.js",
       "__plugin-vue_export-helper-c27b6911.js",
-      "_CurrencyDollarIcon-5c0ccf10.js",
-      "_TicketIcon-941aca78.js",
-      "_Image-f08e1363.js",
-      "_UserIcon-1d5bdaea.js",
-      "_LoadingIcon-ca97f54a.js",
-      "_ApplicationLogo-27dc3d7d.js",
-      "_WindowIcon-63659959.js"
+      "_CurrencyDollarIcon-9fed74d1.js",
+      "_TicketIcon-72621558.js",
+      "_Image-05ee28de.js",
+      "_UserIcon-01de6b11.js",
+      "_LoadingIcon-58a8816b.js",
+      "_ApplicationLogo-c769210f.js",
+      "_WindowIcon-033a9c7d.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Panel/User.vue"
   },
   "resources/js/Pages/Panel/Video/Create-legacy.vue": {
-    "file": "assets/Create-legacy-c0f32083.js",
+    "file": "assets/Create-legacy-e61b7b1b.js",
     "imports": [
-      "_Scaffold-legacy-d74ffa76.js",
-      "_User-legacy-4b94868b.js",
+      "_Scaffold-legacy-1e6571a5.js",
+      "_User-legacy-96def0a3.js",
       "resources/js/app-legacy.js",
       "__plugin-vue_export-helper-legacy-c6aa7c23.js",
-      "_WindowIcon-legacy-3e584b8f.js",
-      "_Image-legacy-600eee5a.js",
-      "_LoadingIcon-legacy-8a10b5a2.js",
-      "_UserIcon-legacy-5ff7a6ec.js",
-      "_ApplicationLogo-legacy-da8a7c86.js",
-      "_CurrencyDollarIcon-legacy-6156ec12.js"
+      "_WindowIcon-legacy-8d729453.js",
+      "_Image-legacy-329a2d5d.js",
+      "_LoadingIcon-legacy-5566a905.js",
+      "_UserIcon-legacy-5ac95cba.js",
+      "_ApplicationLogo-legacy-8401a0ef.js",
+      "_CurrencyDollarIcon-legacy-8e25121a.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Panel/Video/Create-legacy.vue"
   },
   "resources/js/Pages/Panel/Video/Create.vue": {
-    "file": "assets/Create-f9fd1d8e.js",
+    "file": "assets/Create-502887f8.js",
     "imports": [
-      "_Scaffold-54bd22ea.js",
-      "_User-3e59a997.js",
+      "_Scaffold-dfc3d278.js",
+      "_User-2b02609a.js",
       "resources/js/app.js",
       "__plugin-vue_export-helper-c27b6911.js",
-      "_WindowIcon-63659959.js",
-      "_Image-f08e1363.js",
-      "_LoadingIcon-ca97f54a.js",
-      "_UserIcon-1d5bdaea.js",
-      "_ApplicationLogo-27dc3d7d.js",
-      "_CurrencyDollarIcon-5c0ccf10.js"
+      "_WindowIcon-033a9c7d.js",
+      "_Image-05ee28de.js",
+      "_LoadingIcon-58a8816b.js",
+      "_UserIcon-01de6b11.js",
+      "_ApplicationLogo-c769210f.js",
+      "_CurrencyDollarIcon-9fed74d1.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Panel/Video/Create.vue"
   },
   "resources/js/Pages/Panel/Video/Index-legacy.vue": {
-    "file": "assets/Index-legacy-c0f32083.js",
+    "file": "assets/Index-legacy-e61b7b1b.js",
     "imports": [
-      "_Scaffold-legacy-d74ffa76.js",
-      "_User-legacy-4b94868b.js",
+      "_Scaffold-legacy-1e6571a5.js",
+      "_User-legacy-96def0a3.js",
       "resources/js/app-legacy.js",
       "__plugin-vue_export-helper-legacy-c6aa7c23.js",
-      "_WindowIcon-legacy-3e584b8f.js",
-      "_Image-legacy-600eee5a.js",
-      "_LoadingIcon-legacy-8a10b5a2.js",
-      "_UserIcon-legacy-5ff7a6ec.js",
-      "_ApplicationLogo-legacy-da8a7c86.js",
-      "_CurrencyDollarIcon-legacy-6156ec12.js"
+      "_WindowIcon-legacy-8d729453.js",
+      "_Image-legacy-329a2d5d.js",
+      "_LoadingIcon-legacy-5566a905.js",
+      "_UserIcon-legacy-5ac95cba.js",
+      "_ApplicationLogo-legacy-8401a0ef.js",
+      "_CurrencyDollarIcon-legacy-8e25121a.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Panel/Video/Index-legacy.vue"
   },
   "resources/js/Pages/Panel/Video/Index.vue": {
-    "file": "assets/Index-589894ff.js",
+    "file": "assets/Index-3b6f75e4.js",
     "imports": [
-      "_Scaffold-54bd22ea.js",
-      "_User-3e59a997.js",
+      "_Scaffold-dfc3d278.js",
+      "_User-2b02609a.js",
       "resources/js/app.js",
       "__plugin-vue_export-helper-c27b6911.js",
-      "_WindowIcon-63659959.js",
-      "_Image-f08e1363.js",
-      "_LoadingIcon-ca97f54a.js",
-      "_UserIcon-1d5bdaea.js",
-      "_ApplicationLogo-27dc3d7d.js",
-      "_CurrencyDollarIcon-5c0ccf10.js"
+      "_WindowIcon-033a9c7d.js",
+      "_Image-05ee28de.js",
+      "_LoadingIcon-58a8816b.js",
+      "_UserIcon-01de6b11.js",
+      "_ApplicationLogo-c769210f.js",
+      "_CurrencyDollarIcon-9fed74d1.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Panel/Video/Index.vue"
   },
   "resources/js/Pages/Podcast/Index-legacy.vue": {
-    "file": "assets/Index-legacy-074fffd8.js",
+    "file": "assets/Index-legacy-30a62798.js",
     "imports": [
-      "_Scaffold-legacy-d74ffa76.js",
+      "_Scaffold-legacy-1e6571a5.js",
       "__plugin-vue_export-helper-legacy-c6aa7c23.js",
       "resources/js/app-legacy.js",
-      "_LoadingIcon-legacy-8a10b5a2.js",
-      "_Image-legacy-600eee5a.js",
-      "_UserIcon-legacy-5ff7a6ec.js",
-      "_ApplicationLogo-legacy-da8a7c86.js"
+      "_LoadingIcon-legacy-5566a905.js",
+      "_Image-legacy-329a2d5d.js",
+      "_UserIcon-legacy-5ac95cba.js",
+      "_ApplicationLogo-legacy-8401a0ef.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Podcast/Index-legacy.vue"
   },
   "resources/js/Pages/Podcast/Index.vue": {
-    "file": "assets/Index-4b97c715.js",
+    "file": "assets/Index-e408aa08.js",
     "imports": [
-      "_Scaffold-54bd22ea.js",
+      "_Scaffold-dfc3d278.js",
       "__plugin-vue_export-helper-c27b6911.js",
       "resources/js/app.js",
-      "_LoadingIcon-ca97f54a.js",
-      "_Image-f08e1363.js",
-      "_UserIcon-1d5bdaea.js",
-      "_ApplicationLogo-27dc3d7d.js"
+      "_LoadingIcon-58a8816b.js",
+      "_Image-05ee28de.js",
+      "_UserIcon-01de6b11.js",
+      "_ApplicationLogo-c769210f.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Podcast/Index.vue"
   },
   "resources/js/Pages/Prices-legacy.vue": {
-    "file": "assets/Prices-legacy-d58d863d.js",
+    "file": "assets/Prices-legacy-0fda1503.js",
     "imports": [
-      "_Scaffold-legacy-d74ffa76.js",
+      "_Scaffold-legacy-1e6571a5.js",
       "resources/js/app-legacy.js",
       "_hero-legacy-2ba6b89f.js",
       "__plugin-vue_export-helper-legacy-c6aa7c23.js",
-      "_LoadingIcon-legacy-8a10b5a2.js",
-      "_Image-legacy-600eee5a.js",
-      "_UserIcon-legacy-5ff7a6ec.js",
-      "_ApplicationLogo-legacy-da8a7c86.js"
+      "_LoadingIcon-legacy-5566a905.js",
+      "_Image-legacy-329a2d5d.js",
+      "_UserIcon-legacy-5ac95cba.js",
+      "_ApplicationLogo-legacy-8401a0ef.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Prices-legacy.vue"
@@ -1753,128 +1753,128 @@
     "css": [
       "assets/ContactUs-01748374.css"
     ],
-    "file": "assets/Prices-a1e31a99.js",
+    "file": "assets/Prices-000a90b7.js",
     "imports": [
-      "_Scaffold-54bd22ea.js",
+      "_Scaffold-dfc3d278.js",
       "resources/js/app.js",
       "_hero-b8cdbe5c.js",
       "__plugin-vue_export-helper-c27b6911.js",
-      "_LoadingIcon-ca97f54a.js",
-      "_Image-f08e1363.js",
-      "_UserIcon-1d5bdaea.js",
-      "_ApplicationLogo-27dc3d7d.js"
+      "_LoadingIcon-58a8816b.js",
+      "_Image-05ee28de.js",
+      "_UserIcon-01de6b11.js",
+      "_ApplicationLogo-c769210f.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Prices.vue"
   },
   "resources/js/Pages/Profile/Edit-legacy.vue": {
-    "file": "assets/Edit-legacy-cea02575.js",
+    "file": "assets/Edit-legacy-43a906a6.js",
     "imports": [
-      "_AuthenticatedLayout-legacy-90187582.js",
+      "_AuthenticatedLayout-legacy-3973938b.js",
       "resources/js/Pages/Profile/Partials/DeleteUserForm-legacy.vue",
       "resources/js/Pages/Profile/Partials/UpdatePasswordForm-legacy.vue",
       "resources/js/Pages/Profile/Partials/UpdateProfileInformationForm-legacy.vue",
       "resources/js/app-legacy.js",
-      "_ApplicationLogo-legacy-da8a7c86.js",
+      "_ApplicationLogo-legacy-8401a0ef.js",
       "__plugin-vue_export-helper-legacy-c6aa7c23.js",
-      "_TextInput-legacy-02216e57.js",
-      "_SecondaryButton-legacy-0f5e92d6.js",
-      "_PrimaryButton-legacy-74c235c7.js"
+      "_TextInput-legacy-55f1f3bc.js",
+      "_SecondaryButton-legacy-79356c18.js",
+      "_PrimaryButton-legacy-fa0d64dd.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Profile/Edit-legacy.vue"
   },
   "resources/js/Pages/Profile/Edit.vue": {
-    "file": "assets/Edit-11cd95d1.js",
+    "file": "assets/Edit-6f950406.js",
     "imports": [
-      "_AuthenticatedLayout-277b6ae3.js",
+      "_AuthenticatedLayout-d59b4d1e.js",
       "resources/js/Pages/Profile/Partials/DeleteUserForm.vue",
       "resources/js/Pages/Profile/Partials/UpdatePasswordForm.vue",
       "resources/js/Pages/Profile/Partials/UpdateProfileInformationForm.vue",
       "resources/js/app.js",
-      "_ApplicationLogo-27dc3d7d.js",
+      "_ApplicationLogo-c769210f.js",
       "__plugin-vue_export-helper-c27b6911.js",
-      "_TextInput-607bb586.js",
-      "_SecondaryButton-45c51ad6.js",
-      "_PrimaryButton-3a10ddc4.js"
+      "_TextInput-ae074a75.js",
+      "_SecondaryButton-8080d449.js",
+      "_PrimaryButton-08c1122c.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Profile/Edit.vue"
   },
   "resources/js/Pages/Profile/Partials/DeleteUserForm-legacy.vue": {
-    "file": "assets/DeleteUserForm-legacy-ba9a461d.js",
+    "file": "assets/DeleteUserForm-legacy-33fdb607.js",
     "imports": [
       "resources/js/app-legacy.js",
-      "_TextInput-legacy-02216e57.js",
-      "_SecondaryButton-legacy-0f5e92d6.js"
+      "_TextInput-legacy-55f1f3bc.js",
+      "_SecondaryButton-legacy-79356c18.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Profile/Partials/DeleteUserForm-legacy.vue"
   },
   "resources/js/Pages/Profile/Partials/DeleteUserForm.vue": {
-    "file": "assets/DeleteUserForm-0df224e8.js",
+    "file": "assets/DeleteUserForm-714b4fe6.js",
     "imports": [
       "resources/js/app.js",
-      "_TextInput-607bb586.js",
-      "_SecondaryButton-45c51ad6.js"
+      "_TextInput-ae074a75.js",
+      "_SecondaryButton-8080d449.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Profile/Partials/DeleteUserForm.vue"
   },
   "resources/js/Pages/Profile/Partials/UpdatePasswordForm-legacy.vue": {
-    "file": "assets/UpdatePasswordForm-legacy-dd324397.js",
+    "file": "assets/UpdatePasswordForm-legacy-74ea5be4.js",
     "imports": [
       "resources/js/app-legacy.js",
-      "_TextInput-legacy-02216e57.js",
-      "_PrimaryButton-legacy-74c235c7.js"
+      "_TextInput-legacy-55f1f3bc.js",
+      "_PrimaryButton-legacy-fa0d64dd.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Profile/Partials/UpdatePasswordForm-legacy.vue"
   },
   "resources/js/Pages/Profile/Partials/UpdatePasswordForm.vue": {
-    "file": "assets/UpdatePasswordForm-b69fe4c1.js",
+    "file": "assets/UpdatePasswordForm-a9415352.js",
     "imports": [
       "resources/js/app.js",
-      "_TextInput-607bb586.js",
-      "_PrimaryButton-3a10ddc4.js"
+      "_TextInput-ae074a75.js",
+      "_PrimaryButton-08c1122c.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Profile/Partials/UpdatePasswordForm.vue"
   },
   "resources/js/Pages/Profile/Partials/UpdateProfileInformationForm-legacy.vue": {
-    "file": "assets/UpdateProfileInformationForm-legacy-df55a034.js",
+    "file": "assets/UpdateProfileInformationForm-legacy-12cebf35.js",
     "imports": [
       "resources/js/app-legacy.js",
-      "_TextInput-legacy-02216e57.js",
-      "_PrimaryButton-legacy-74c235c7.js"
+      "_TextInput-legacy-55f1f3bc.js",
+      "_PrimaryButton-legacy-fa0d64dd.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Profile/Partials/UpdateProfileInformationForm-legacy.vue"
   },
   "resources/js/Pages/Profile/Partials/UpdateProfileInformationForm.vue": {
-    "file": "assets/UpdateProfileInformationForm-30c0a241.js",
+    "file": "assets/UpdateProfileInformationForm-d8ed6f93.js",
     "imports": [
       "resources/js/app.js",
-      "_TextInput-607bb586.js",
-      "_PrimaryButton-3a10ddc4.js"
+      "_TextInput-ae074a75.js",
+      "_PrimaryButton-08c1122c.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Profile/Partials/UpdateProfileInformationForm.vue"
   },
   "resources/js/Pages/Site/Index-legacy.vue": {
-    "file": "assets/Index-legacy-5fec03ef.js",
+    "file": "assets/Index-legacy-9cc17d17.js",
     "imports": [
-      "_LoadingIcon-legacy-8a10b5a2.js",
-      "_Image-legacy-600eee5a.js",
-      "_Scaffold-legacy-d74ffa76.js",
+      "_LoadingIcon-legacy-5566a905.js",
+      "_Image-legacy-329a2d5d.js",
+      "_Scaffold-legacy-1e6571a5.js",
       "resources/js/app-legacy.js",
       "_hero-legacy-2ba6b89f.js",
-      "_PrimaryButton-legacy-74c235c7.js",
-      "_SecondaryButton-legacy-0f5e92d6.js",
+      "_PrimaryButton-legacy-fa0d64dd.js",
+      "_SecondaryButton-legacy-79356c18.js",
       "__plugin-vue_export-helper-legacy-c6aa7c23.js",
-      "_EyeIcon-legacy-91232656.js",
-      "_UserIcon-legacy-5ff7a6ec.js",
-      "_ApplicationLogo-legacy-da8a7c86.js"
+      "_EyeIcon-legacy-acaf9be4.js",
+      "_UserIcon-legacy-5ac95cba.js",
+      "_ApplicationLogo-legacy-8401a0ef.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Site/Index-legacy.vue"
@@ -1887,85 +1887,85 @@
     "css": [
       "assets/ContactUs-01748374.css"
     ],
-    "file": "assets/Index-659549a2.js",
+    "file": "assets/Index-4edf85ed.js",
     "imports": [
-      "_LoadingIcon-ca97f54a.js",
-      "_Image-f08e1363.js",
-      "_Scaffold-54bd22ea.js",
+      "_LoadingIcon-58a8816b.js",
+      "_Image-05ee28de.js",
+      "_Scaffold-dfc3d278.js",
       "resources/js/app.js",
       "_hero-b8cdbe5c.js",
-      "_PrimaryButton-3a10ddc4.js",
-      "_SecondaryButton-45c51ad6.js",
+      "_PrimaryButton-08c1122c.js",
+      "_SecondaryButton-8080d449.js",
       "__plugin-vue_export-helper-c27b6911.js",
-      "_EyeIcon-8fd7fe7c.js",
-      "_UserIcon-1d5bdaea.js",
-      "_ApplicationLogo-27dc3d7d.js"
+      "_EyeIcon-b2253890.js",
+      "_UserIcon-01de6b11.js",
+      "_ApplicationLogo-c769210f.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Site/Index.vue"
   },
   "resources/js/Pages/Site/View-legacy.vue": {
-    "file": "assets/View-legacy-a5331c96.js",
+    "file": "assets/View-legacy-3ba7fc69.js",
     "imports": [
-      "_Scaffold-legacy-d74ffa76.js",
+      "_Scaffold-legacy-1e6571a5.js",
       "resources/js/app-legacy.js",
-      "_LoadingIcon-legacy-8a10b5a2.js",
+      "_LoadingIcon-legacy-5566a905.js",
       "__plugin-vue_export-helper-legacy-c6aa7c23.js",
-      "_Image-legacy-600eee5a.js",
-      "_EyeIcon-legacy-91232656.js",
-      "_CurrencyDollarIcon-legacy-6156ec12.js",
-      "_UserIcon-legacy-5ff7a6ec.js",
-      "_ApplicationLogo-legacy-da8a7c86.js"
+      "_Image-legacy-329a2d5d.js",
+      "_EyeIcon-legacy-acaf9be4.js",
+      "_CurrencyDollarIcon-legacy-8e25121a.js",
+      "_UserIcon-legacy-5ac95cba.js",
+      "_ApplicationLogo-legacy-8401a0ef.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Site/View-legacy.vue"
   },
   "resources/js/Pages/Site/View.vue": {
-    "file": "assets/View-b028d7a3.js",
+    "file": "assets/View-a9e51aeb.js",
     "imports": [
-      "_Scaffold-54bd22ea.js",
+      "_Scaffold-dfc3d278.js",
       "resources/js/app.js",
-      "_LoadingIcon-ca97f54a.js",
+      "_LoadingIcon-58a8816b.js",
       "__plugin-vue_export-helper-c27b6911.js",
-      "_Image-f08e1363.js",
-      "_EyeIcon-8fd7fe7c.js",
-      "_CurrencyDollarIcon-5c0ccf10.js",
-      "_UserIcon-1d5bdaea.js",
-      "_ApplicationLogo-27dc3d7d.js"
+      "_Image-05ee28de.js",
+      "_EyeIcon-b2253890.js",
+      "_CurrencyDollarIcon-9fed74d1.js",
+      "_UserIcon-01de6b11.js",
+      "_ApplicationLogo-c769210f.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Site/View.vue"
   },
   "resources/js/Pages/Video/Index-legacy.vue": {
-    "file": "assets/Index-legacy-9b1d4b85.js",
+    "file": "assets/Index-legacy-08406a2d.js",
     "imports": [
-      "_Scaffold-legacy-d74ffa76.js",
+      "_Scaffold-legacy-1e6571a5.js",
       "__plugin-vue_export-helper-legacy-c6aa7c23.js",
       "resources/js/app-legacy.js",
-      "_LoadingIcon-legacy-8a10b5a2.js",
-      "_Image-legacy-600eee5a.js",
-      "_UserIcon-legacy-5ff7a6ec.js",
-      "_ApplicationLogo-legacy-da8a7c86.js"
+      "_LoadingIcon-legacy-5566a905.js",
+      "_Image-legacy-329a2d5d.js",
+      "_UserIcon-legacy-5ac95cba.js",
+      "_ApplicationLogo-legacy-8401a0ef.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Video/Index-legacy.vue"
   },
   "resources/js/Pages/Video/Index.vue": {
-    "file": "assets/Index-e216db0f.js",
+    "file": "assets/Index-f62a8ea1.js",
     "imports": [
-      "_Scaffold-54bd22ea.js",
+      "_Scaffold-dfc3d278.js",
       "__plugin-vue_export-helper-c27b6911.js",
       "resources/js/app.js",
-      "_LoadingIcon-ca97f54a.js",
-      "_Image-f08e1363.js",
-      "_UserIcon-1d5bdaea.js",
-      "_ApplicationLogo-27dc3d7d.js"
+      "_LoadingIcon-58a8816b.js",
+      "_Image-05ee28de.js",
+      "_UserIcon-01de6b11.js",
+      "_ApplicationLogo-c769210f.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Video/Index.vue"
   },
   "resources/js/Pages/Welcome-legacy.vue": {
-    "file": "assets/Welcome-legacy-31baaeaa.js",
+    "file": "assets/Welcome-legacy-8a000108.js",
     "imports": [
       "resources/js/app-legacy.js"
     ],
@@ -1980,7 +1980,7 @@
     "css": [
       "assets/Welcome-665689a9.css"
     ],
-    "file": "assets/Welcome-52adec8e.js",
+    "file": "assets/Welcome-73cc92af.js",
     "imports": [
       "resources/js/app.js"
     ],
@@ -2053,12 +2053,12 @@
       "resources/js/Pages/Video/Index-legacy.vue",
       "resources/js/Pages/Welcome-legacy.vue"
     ],
-    "file": "assets/app-legacy-cd248b5c.js",
+    "file": "assets/app-legacy-0e6343c4.js",
     "isEntry": true,
     "src": "resources/js/app-legacy.js"
   },
   "resources/js/app.css": {
-    "file": "assets/app-4be8cb13.css",
+    "file": "assets/app-88aae160.css",
     "src": "resources/js/app.css"
   },
   "resources/js/app.js": {
@@ -2074,7 +2074,7 @@
       "assets/Shabnam-Bold-FD-7ff616ca.ttf"
     ],
     "css": [
-      "assets/app-4be8cb13.css"
+      "assets/app-88aae160.css"
     ],
     "dynamicImports": [
       "resources/js/Pages/Ad/Index.vue",
@@ -2130,12 +2130,12 @@
       "resources/js/Pages/Video/Index.vue",
       "resources/js/Pages/Welcome.vue"
     ],
-    "file": "assets/app-c1ad1263.js",
+    "file": "assets/app-fe8539d6.js",
     "isEntry": true,
     "src": "resources/js/app.js"
   },
   "vite/legacy-polyfills-legacy": {
-    "file": "assets/polyfills-legacy-c99bf180.js",
+    "file": "assets/polyfills-legacy-180a607f.js",
     "isEntry": true,
     "src": "vite/legacy-polyfills-legacy"
   }

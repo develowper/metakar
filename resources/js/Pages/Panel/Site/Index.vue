@@ -292,7 +292,7 @@
                     class="p-4  absolute z-[1000]    hidden   list-none overflow-hidden rounded-lg border-none bg-white bg-clip-padding text-center text-base shadow-lg dark:bg-neutral-700 [&[data-te-dropdown-show]]:block"
                     tabindex="-1" role="menu" aria-orientation="vertical" aria-label="User menu"
                     aria-labelledby="dropdownViewFee">
-                  <li v-if="d.status!='blocked'"
+                  <li v-if="d.status!='block'"
                       class="   text-sm  ">
                     <span class="text-xs py-2 text-danger-500">{{ __('will_subtract_for_view_from_charge') }}</span>
                     <div class="flex items-center ">
@@ -303,13 +303,13 @@
                     </div>
                   </li>
 
-                  <li v-if="d.status!='blocked'">
+                  <li v-if="d.status!='block'">
                     <button class="bg-success-100 text-success-700 p-2 rounded-lg  hover:bg-success-50 w-full"
                             @click="edit({'idx':idx,'id':d.id,'cmnd':'view-fee','view_fee':d.view_fee})">
                       {{ __('reg') }}
                     </button>
                   </li>
-                  <li v-if="  d.status=='blocked'  " role="menuitem"
+                  <li v-if="  d.status=='block'  " role="menuitem"
                       class="   cursor-pointer   text-sm text-gray-700 transition-colors hover:bg-gray-100 dark:text-light dark:hover:bg-primary">
                     <div class="flex items-center  px-6 py-2 justify-between ">
                       <span>{{ __('not_available') }}</span>
@@ -334,7 +334,7 @@
                     class="  absolute z-[1000]   m-0 hidden   list-none overflow-hidden rounded-lg border-none bg-white bg-clip-padding text-center text-base shadow-lg dark:bg-neutral-700 [&[data-te-dropdown-show]]:block"
                     tabindex="-1" role="menu" aria-orientation="vertical" aria-label="User menu"
                     aria-labelledby="dropdownStatusSetting">
-                  <!--                  <li v-if="d.status!='blocked'" role="menuitem"-->
+                  <!--                  <li v-if="d.status!='block'" role="menuitem"-->
                   <!--                      @click="edit({'idx':idx,'id':d.id,'cmnd':'charge'})"-->
                   <!--                      class="   cursor-pointer   text-sm text-blue-500 transition-colors hover:bg-gray-100 dark:text-light dark:hover:bg-primary">-->
                   <!--                    <div class="flex   items-center  px-6 py-2 justify-center ">-->
@@ -342,7 +342,7 @@
                   <!--                    </div>-->
                   <!--                    <hr class="border-gray-200 dark:border-gray-700 ">-->
                   <!--                  </li>-->
-                  <li v-if="d.status=='viewing'" role="menuitem"
+                  <li v-if="d.status=='view'" role="menuitem"
                       @click="edit({'idx':idx,'id':d.id,'cmnd':'stop-view'})"
                       class="   cursor-pointer   text-sm text-red-700 transition-colors hover:bg-gray-100 dark:text-light dark:hover:bg-primary">
                     <div class="flex items-center  px-6 py-2 justify-between ">
@@ -360,11 +360,11 @@
                     </div>
                     <hr class="border-gray-200 dark:border-gray-700 ">
                   </li>
-                  <li v-if="d.status=='reviewing' || d.status=='blocked'  " role="menuitem"
+                  <li v-if="d.status=='review' || d.status=='block'  " role="menuitem"
                       class="   cursor-pointer   text-sm text-gray-700 transition-colors hover:bg-gray-100 dark:text-light dark:hover:bg-primary">
                     <div class="flex items-center  px-6 py-2 justify-between ">
-                      <span v-if="d.status=='reviewing'">{{ __('active_after_review') }}</span>
-                      <span v-if="d.status=='blocked'">{{ __('not_available') }}</span>
+                      <span v-if="d.status=='review'">{{ __('active_after_review') }}</span>
+                      <span v-if="d.status=='block'">{{ __('not_available') }}</span>
                     </div>
                     <hr class="border-gray-200 dark:border-gray-700 ">
                   </li>
@@ -394,7 +394,7 @@
                     class="  absolute z-[1000]   p-4  hidden   list-none overflow-hidden rounded-lg border-none bg-white bg-clip-padding text-center text-base shadow-lg dark:bg-neutral-700 [&[data-te-dropdown-show]]:block"
                     tabindex="-1" role="menu" aria-orientation="vertical" aria-label="User menu"
                     aria-labelledby="dropdownViewCharge">
-                  <li v-if="d.status!='blocked'"
+                  <li v-if="d.status!='block'"
                       class="     text-sm flex flex-col">
                     <span class="text-xs py-3 text-danger-500">{{ __('will_subtract_from_wallet') }}</span>
                     <div class="flex items-center">
@@ -404,13 +404,13 @@
                     </div>
                   </li>
 
-                  <li v-if="d.status!='blocked'">
+                  <li v-if="d.status!='block'">
                     <button class="bg-success-100 text-success-700 p-2 rounded-lg  hover:bg-success-50 w-full"
                             @click="edit({'idx':idx,'id':d.id,'cmnd':'charge','charge':d.charge})">
                       {{ __('charge') }}
                     </button>
                   </li>
-                  <li v-if="  d.status=='blocked'  " role="menuitem"
+                  <li v-if="  d.status=='block'  " role="menuitem"
                       class="   cursor-pointer   text-sm text-gray-700 transition-colors hover:bg-gray-100 dark:text-light dark:hover:bg-primary">
                     <div class="flex items-center  px-6 py-2 justify-between ">
                       <span>{{ __('not_available') }}</span>
@@ -436,7 +436,7 @@
                     class="  absolute z-[1000]   p-4  hidden   list-none overflow-hidden rounded-lg border-none bg-white bg-clip-padding text-center text-base shadow-lg dark:bg-neutral-700 [&[data-te-dropdown-show]]:block"
                     tabindex="-1" role="menu" aria-orientation="vertical" aria-label="User menu"
                     aria-labelledby="dropdownViewCharge">
-                  <li v-if="d.status!='blocked'"
+                  <li v-if="d.status!='block'"
                       class="     text-sm flex flex-col">
                     <span class="text-xs py-3 text-danger-500">{{ __('will_subtract_from_meta') }}</span>
                     <div class="flex items-center">
@@ -446,13 +446,13 @@
                     </div>
                   </li>
 
-                  <li v-if="d.status!='blocked'">
+                  <li v-if="d.status!='block'">
                     <button class="bg-success-100 text-success-700 p-2 rounded-lg  hover:bg-success-50 w-full"
                             @click="edit({'idx':idx,'id':d.id,'cmnd':'meta','meta':d.meta})">
                       {{ __('charge') }}
                     </button>
                   </li>
-                  <li v-if="  d.status=='blocked'  " role="menuitem"
+                  <li v-if="  d.status=='block'  " role="menuitem"
                       class="   cursor-pointer   text-sm text-gray-700 transition-colors hover:bg-gray-100 dark:text-light dark:hover:bg-primary">
                     <div class="flex items-center  px-6 py-2 justify-between ">
                       <span>{{ __('not_available') }}</span>

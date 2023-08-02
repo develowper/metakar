@@ -1,253 +1,218 @@
 <template>
+  <Scaffold>
+    <template v-slot:header>
+      <title>{{__('sites')}}</title>
 
-    <Panel>
-        <template v-slot:header>
-            <title>{{__('panel')}}</title>
-        </template>
+    </template>
 
+    <div class="relative  bg-gradient-to-t from-pink-300 via-purple-300 to-indigo-400">
+      <!--Hero-->
+      <div class="py-24 xl:py-48        mx-auto    ">
+        <div class="  px-3  sm:px-1  flex   flex-col md:flex-row items-center ">
+          <!--                    Right Col-->
+          <!--          <div class="  md:w-2/5 py-6 text-center">-->
+          <!--            <img class="w-full xs:w-3/4 sm:w-3/4   mx-auto  z-50   " :src="heroImage"/>-->
+          <!--          </div>-->
+          <!--Left Col-->
+          <div
+              class="flex flex-col max-w-3xl text-white w-full   justify-center  mx-auto  text-center ">
+            <h1 class="my-4 text-5xl font-bold leading-tight">
 
-        <template v-slot:content>
-            <!-- Content header -->
-            <div
-                class="flex items-center justify-between px-4 py-2 border-b lg:py-4 dark:border-primary-darker">
-                <h1 class="text-2xl font-semibold">{{ __('statistics') }}</h1>
+            </h1>
+            <p class="leading-normal text-2xl mb-8" v-html="heroText">
+
+            </p>
+            <!--                        search-->
+            <div v-if="false" class="w-full mx-auto mt-2 my-10">
+              <div class="relative  px-6 mx-auto  ">
+                <div
+                    class="absolute top-0 bottom-0 start-0 flex items-center opacity-60  ps-10  ">
+                  <svg
+                      class="w-4 h-4 text-gray-600 fill-current   "
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20">
+                    <path
+                        d="M12.9 14.32a8 8 0 1 1 1.41-1.41l5.35 5.33-1.42 1.42-5.33-5.34zM8 14A6 6 0 1 0 8 2a6 6 0 0 0 0 12z"></path>
+                  </svg>
+                  <span class="absolute border-gray-300  border-s top-0 bottom-0 my-2 ms-6"></span>
+                </div>
+                <input id="search-toggle" type="search" :placeholder="__('hero_search_placeholder')"
+                       class="placeholder-gray-400 border-transparent block w-full py-3 ps-12 pe-4 font-bold text-gray-700 bg-gray-100 rounded-lg shadow-lg focus:outline-none focus:bg-white"
+                       onkeyup="updateSearchResults(this.value);">
+
+              </div>
+
 
             </div>
-
-            <!-- Content -->
-            <div class="mt-2">
-                <!-- State cards -->
-                <div class="grid grid-cols-1 gap-8 p-4 lg:grid-cols-2 xl:grid-cols-3">
-
-                    <!-- wallet card -->
-                    <div class="flex shadow-sm items-center justify-between p-4 bg-white  rounded-lg dark:bg-darker">
-                        <div>
-                            <h6 class="text-xs font-bold   py-2 tracking-wider text-gray-500 uppercase dark:text-primary-light">
-                                {{ __('wallet') }}
-                            </h6>
-                            <span class="text-xl font-semibold"> {{ asPrice(user.wallet) }} {{ __('currency') }}</span>
-
-                        </div>
-
-                        <div>
-                            <CurrencyDollarIcon class="w-12 h-12 text-primary-300 dark:text-pink-50 "/>
-                        </div>
-
-                    </div>
-                    <!-- ticket card -->
-                    <Link :href="route('panel.ticket.index')"
-                          class="flex hover:scale-[101%] transition duration-300 cursor-pointer  shadow-sm items-center justify-around   p-4 bg-white  rounded-lg dark:bg-darker">
-                        <div class="flex flex-col grow">
-                            <h6 class="text-xs font-bold   py-2 tracking-wider text-gray-500 uppercase dark:text-primary-light">
-                                {{ __('tickets') }}
-                            </h6>
-
-                            <div class="justify-center flex  ">
-                                <span v-for="t,idx in tickets" class="align-middle flex  flex-col text-center  ">
-                                        <span
-                                            :class="idx==0?'text-red-500':idx==1?'text-primary-500':'text-green-500'"
-                                            class="  text-xl font-semibold "> {{ t.value }}</span>
-                                        <span
-                                            :class="idx==0?'bg-red-100 text-red-500':idx==1?'bg-primary-100 text-primary-500':'bg-green-100 text-green-500'"
-                                            class="   mx-1 px-2 py-1    text-xs  rounded-md">
-                                   {{ t.title }}
-                                        </span>
-                                </span>
-                            </div>
-
-                        </div>
-                        <div class="flex">
-                            <TicketIcon class="w-12 h-12 text-primary-300 dark:text-pink-50 "/>
-                        </div>
-
-                    </Link>
-
-
-                </div>
-
-                <!-- Charts -->
-                <div class="grid grid-cols-1 p-4 space-y-8 lg:gap-8 lg:space-y-0 lg:grid-cols-3">
-                    <!-- Bar chart card -->
-                    <div class="col-span-2 bg-white rounded-md dark:bg-darker" x-data="{ isOn: false }">
-                        <!-- Card header -->
-                        <div class="flex items-center justify-between p-4 border-b dark:border-primary">
-                            <h4 class="text-lg font-semibold text-gray-500 dark:text-light">Bar Chart</h4>
-                            <div class="flex items-center space-x-2">
-                                <span class="text-sm text-gray-500 dark:text-light">Last year</span>
-                                <button class="relative focus:outline-none"
-                                        @click="isOn = !isOn;  ">
-                                    <div
-                                        class="w-12 h-6 transition rounded-full outline-none bg-primary-100 dark:bg-primary-darker"></div>
-                                    <div
-                                        class="absolute top-0 left-0 inline-flex items-center justify-center w-6 h-6 transition-all duration-200 ease-in-out transform scale-110 rounded-full shadow-sm translate-x-0 bg-white dark:bg-primary-100"
-                                        :class="{ 'translate-x-0  bg-white dark:bg-primary-100': !isOn, 'translate-x-6 bg-primary-light dark:bg-primary': isOn }"></div>
-                                </button>
-                            </div>
-                        </div>
-                        <!-- Chart -->
-                        <div class="relative p-4 h-72">
-                            <div class="chartjs-size-monitor">
-                                <div class="chartjs-size-monitor-expand">
-                                    <div class=""></div>
-                                </div>
-                                <div class="chartjs-size-monitor-shrink">
-                                    <div class=""></div>
-                                </div>
-                            </div>
-                            <canvas id="barChart" style="display: block; width: 505px; height: 256px;"
-                                    width="505" height="256" class="chartjs-render-monitor"></canvas>
-                        </div>
-                    </div>
-
-                    <!-- Doughnut chart card -->
-                    <div class="bg-white rounded-md dark:bg-darker" x-data="{ isOn: false }">
-                        <!-- Card header -->
-                        <div class="flex items-center justify-between p-4 border-b dark:border-primary">
-                            <h4 class="text-lg font-semibold text-gray-500 dark:text-light">Doughnut Chart</h4>
-                            <div class="flex items-center">
-                                <button class="relative focus:outline-none"
-                                        @click="isOn = !isOn; $parent.updateDoughnutChart(isOn)">
-                                    <div
-                                        class="w-12 h-6 transition rounded-full outline-none bg-primary-100 dark:bg-primary-darker"></div>
-                                    <div
-                                        class="absolute top-0 left-0 inline-flex items-center justify-center w-6 h-6 transition-all duration-200 ease-in-out transform scale-110 rounded-full shadow-sm translate-x-0 bg-white dark:bg-primary-100"
-                                        :class="{ 'translate-x-0  bg-white dark:bg-primary-100': !isOn, 'translate-x-6 bg-primary-light dark:bg-primary': isOn }"></div>
-                                </button>
-                            </div>
-                        </div>
-                        <!-- Chart -->
-                        <div class="relative p-4 h-72">
-                            <div class="chartjs-size-monitor">
-                                <div class="chartjs-size-monitor-expand">
-                                    <div class=""></div>
-                                </div>
-                                <div class="chartjs-size-monitor-shrink">
-                                    <div class=""></div>
-                                </div>
-                            </div>
-                            <canvas id="doughnutChart" width="505" height="256"
-                                    style="display: block; width: 505px; height: 256px;"
-                                    class="chartjs-render-monitor"></canvas>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Two grid columns -->
-                <div class="grid grid-cols-1 p-4 space-y-8 lg:gap-8 lg:space-y-0 lg:grid-cols-3">
-                    <!-- Active users chart -->
-                    <div class="col-span-1 bg-white rounded-md dark:bg-darker">
-                        <!-- Card header -->
-                        <div class="p-4 border-b dark:border-primary">
-                            <h4 class="text-lg font-semibold text-gray-500 dark:text-light">Active users right
-                                now</h4>
-                        </div>
-                        <p class="p-4">
-                                    <span class="text-2xl font-medium text-gray-500 dark:text-light"
-                                          id="usersCount">104</span>
-                            <span class="text-sm font-medium text-gray-500 dark:text-primary">Users</span>
-                        </p>
-                        <!-- Chart -->
-                        <div class="relative p-4">
-                            <div class="chartjs-size-monitor">
-                                <div class="chartjs-size-monitor-expand">
-                                    <div class=""></div>
-                                </div>
-                                <div class="chartjs-size-monitor-shrink">
-                                    <div class=""></div>
-                                </div>
-                            </div>
-                            <canvas id="activeUsersChart" width="505" height="150"
-                                    style="display: block; width: 505px; height: 150px;"
-                                    class="chartjs-render-monitor"></canvas>
-                        </div>
-                    </div>
-
-                    <!-- Line chart card -->
-                    <div class="col-span-2 bg-white rounded-md dark:bg-darker" x-data="{ isOn: false }">
-                        <!-- Card header -->
-                        <div class="flex items-center justify-between p-4 border-b dark:border-primary">
-                            <h4 class="text-lg font-semibold text-gray-500 dark:text-light">Line Chart</h4>
-                            <div class="flex items-center">
-                                <button class="relative focus:outline-none"
-                                        @click="isOn = !isOn; $parent.updateLineChart()">
-                                    <div
-                                        class="w-12 h-6 transition rounded-full outline-none bg-primary-100 dark:bg-primary-darker"></div>
-                                    <div
-                                        class="absolute top-0 left-0 inline-flex items-center justify-center w-6 h-6 transition-all duration-200 ease-in-out transform scale-110 rounded-full shadow-sm translate-x-0 bg-white dark:bg-primary-100"
-                                        :class="{ 'translate-x-0  bg-white dark:bg-primary-100': !isOn, 'translate-x-6 bg-primary-light dark:bg-primary': isOn }"></div>
-                                </button>
-                            </div>
-                        </div>
-                        <!-- Chart -->
-                        <div class="relative p-4 h-72">
-                            <div class="chartjs-size-monitor">
-                                <div class="chartjs-size-monitor-expand">
-                                    <div class=""></div>
-                                </div>
-                                <div class="chartjs-size-monitor-shrink">
-                                    <div class=""></div>
-                                </div>
-                            </div>
-                            <canvas id="lineChart" width="505" height="256"
-                                    style="display: block; width: 505px; height: 256px;"
-                                    class="chartjs-render-monitor"></canvas>
-                        </div>
-                    </div>
-                </div>
+            <div class="  px-3    flex  items-center">
+              <PrimaryButton class="mx-2 p-2 grow  ">{{ __('register_site') }}</PrimaryButton>
+              <SecondaryButton class="mx-2 p-2 grow">{{ __('make_money') }}</SecondaryButton>
             </div>
-        </template>
+          </div>
+
+        </div>
+      </div>
+      <!--wave-->
+      <div class="absolute  bottom-0 start-0 end-0">
+        <svg viewBox="0 0 1428 174" xmlns="http://www.w3.org/2000/svg"
+             xmlns:xlink="http://www.w3.org/1999/xlink">
+          <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+            <g transform="translate(-2.000000, 44.000000)" fill="#FFFFFF" fill-rule="nonzero">
+              <path
+                  d="M0,0 C90.7283404,0.927527913 147.912752,27.187927 291.910178,59.9119003 C387.908462,81.7278826 543.605069,89.334785 759,82.7326078 C469.336065,156.254352 216.336065,153.6679 0,74.9732496"
+                  opacity="0.100000001"></path>
+              <path
+                  d="M100,104.708498 C277.413333,72.2345949 426.147877,52.5246657 546.203633,45.5787101 C666.259389,38.6327546 810.524845,41.7979068 979,55.0741668 C931.069965,56.122511 810.303266,74.8455141 616.699903,111.243176 C423.096539,147.640838 250.863238,145.462612 100,104.708498 Z"
+                  opacity="0.100000001"
+              ></path>
+              <path
+                  d="M1046,51.6521276 C1130.83045,29.328812 1279.08318,17.607883 1439,40.1656806 L1439,120 C1271.17211,77.9435312 1140.17211,55.1609071 1046,51.6521276 Z"
+                  id="Path-4" opacity="0.200000003"></path>
+            </g>
+            <g transform="translate(-4.000000, 76.000000)" fill="#FFFFFF" fill-rule="nonzero">
+              <path
+                  d="M0.457,34.035 C57.086,53.198 98.208,65.809 123.822,71.865 C181.454,85.495 234.295,90.29 272.033,93.459 C311.355,96.759 396.635,95.801 461.025,91.663 C486.76,90.01 518.727,86.372 556.926,80.752 C595.747,74.596 622.372,70.008 636.799,66.991 C663.913,61.324 712.501,49.503 727.605,46.128 C780.47,34.317 818.839,22.532 856.324,15.904 C922.689,4.169 955.676,2.522 1011.185,0.432 C1060.705,1.477 1097.39,3.129 1121.236,5.387 C1161.703,9.219 1208.621,17.821 1235.4,22.304 C1285.855,30.748 1354.351,47.432 1440.886,72.354 L1441.191,104.352 L1.121,104.031 L0.457,34.035 Z"
+              ></path>
+            </g>
+          </g>
+        </svg>
+      </div>
+    </div>
+
+    <section class="flex justify-center  p-5 max-w-7xl  mx-auto">
+      <div class=" w-80 p-3   mx-2  bg-white rounded-lg     lg:flex md:hidden sm:hidden xs:hidden"></div>
 
 
-    </Panel>
+      <div
+          class="   grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4  gap-4     max-w-6xl">
+        <Link v-for="(d,idx) in data" :href="route('site',d.id)"
+              class="flex-col items-stretch cursor-pointer hover:scale-[101%] duration-300 rounded-lg overflow-hidden shadow-lg">
+          <Image :src="route('storage.sites')+`/${d.id}.jpg`" classes="object-cover h-48   w-full"/>
+          <div class="p-2  text-gray-700">{{ cropText(d.name, 30) }}</div>
+          <div class="px-4 py-2 text-sm   text-gray-400">{{ getCategory(d.category_id) }}</div>
+          <hr class="border-gray-200 dark:border-gray-700  ">
+          <div class="flex justify-around  items-center p-4 text-sm text-gray-500">
+            <div class="flex items-center">
+              <!--              <EyeIcon class="w-4 h-4"/>-->
+              <span class="px-1">{{ __('view') }}:</span>
+              <span class="px-1">{{ d.views }}</span>
+            </div>
+            <div class=" border-s   py-4"></div>
+            <div v-if="!hasWallet()" class="flex items-center">
+              <!--              <EyeIcon class="w-4 h-4"/>-->
+              <span class="px-1">{{ __('reward') }}:</span>
+              <span class="px-1">{{ $page.props.site_view_meta_reward }} {{ __('meta') }}</span>
+            </div>
+            <div v-else class="flex items-center">
+              <!--              <EyeIcon class="w-4 h-4"/>-->
+              <span class="px-1">{{ __('reward') }}:</span>
+              <span class="px-1">{{ asPrice(d.view_fee) }} {{ __('currency_symbol') }}</span>
+            </div>
+
+          </div>
+        </Link>
+      </div>
+    </section>
+
+    <LoadingIcon v-show="loading" ref="loader" type="linear"/>
+  </Scaffold>
 </template>
 
 <script>
+import LoadingIcon from "@/Components/LoadingIcon.vue";
+import Image from "@/Components/Image.vue";
 import Scaffold from "@/Layouts/Scaffold.vue";
-import Panel from "@/Layouts/Panel/User.vue";
-import {Head, Link} from "@inertiajs/vue3";
+import {Head, Link} from '@inertiajs/vue3';
+import heroImage from '@/../images/hero.png';
 import {loadScript} from "vue-plugin-load-script";
-
-import {
-    HomeIcon,
-    ChevronDownIcon,
-    Bars3Icon,
-    PlusSmallIcon,
-    Bars2Icon,
-    NewspaperIcon,
-    WindowIcon,
-    GlobeAltIcon,
-    PencilSquareIcon,
-    PhotoIcon,
-    FilmIcon,
-    MicrophoneIcon,
-    MegaphoneIcon,
-    LightBulbIcon,
-    CurrencyDollarIcon,
-    BellAlertIcon,
-    Cog6ToothIcon,
-    TicketIcon,
-} from "@heroicons/vue/24/outline";
+import PrimaryButton from "@/Components/PrimaryButton.vue";
+import SecondaryButton from "@/Components/SecondaryButton.vue";
+import {EyeIcon} from "@heroicons/vue/24/outline";
 
 export default {
-    data() {
-        return {
-            open: false,
-            isDark: false,
-            loading: false,
-            showDialog: false,
-            isMobileMainMenuOpen: false,
-            isMobileSubMenuOpen: false,
-            isOn: false,
-            user: this.$page.props.auth.user,
-            tickets: this.$page.props.tickets,
-        }
-    },
-    components: {Panel, Scaffold, CurrencyDollarIcon, TicketIcon, Head, Link},
-    mounted() {
-
-
+  data() {
+    return {
+      heroImage,
+      loading: false,
+      total: 0,
+      data: [],
+      params: {
+        page: 0,
+        search: null,
+        order_by: null,
+        dir: null,
+      }
     }
+  },
+  props: ['heroText'],
+  components: {SecondaryButton, PrimaryButton, Scaffold, Head, LoadingIcon, Image, EyeIcon, Link,},
+  // mixins: [Mixin],
+  setup(props) {
+
+  }, mounted() {
+    this.setScroll(this.$refs.loader.$el);
+    this.getData();
+  },
+  methods: {
+    getData() {
+
+      if (this.total > 0 && this.total <= this.data.length) return;
+      this.loading = true;
+
+      window.axios.get(route('site.search'), {
+        params: this.params
+      })
+          .then((response) => {
+            this.data = this.data.concat(response.data.data);
+            this.total = response.data.total;
+            this.params.page = response.data.current_page + 1;
+
+          })
+          .catch((error) => {
+            this.error = this.getErrors(error);
+
+            this.showToast('danger', this.error)
+          })
+          .finally(() => {
+            // always executed
+            this.loading = false;
+          });
+    },
+    setScroll(el) {
+      window.onscroll = () => {
+//                    const {top, bottom, height} = this.loader.getBoundingClientRect();
+
+        let top_of_element = el.offsetTop;
+        let bottom_of_element = el.offsetTop + el.offsetHeight;
+        let bottom_of_screen = window.pageYOffset + window.innerHeight;
+        let top_of_screen = window.pageYOffset;
+
+        if ((bottom_of_screen + 300 > top_of_element) && (top_of_screen < bottom_of_element + 200) && !this.loading) {
+
+          this.getData();
+          // scrolled = true;
+//                        console.log('visible')
+          // the element is visible, do something
+        } else {
+//                        console.log('invisible')
+          // the element is not visible, do something else
+        }
+      };
+    },
+  }
 
 }
 </script>
-q
+<style type="text/css">.turbo-progress-bar {
+  position: fixed;
+  display: block;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: #0076ff;
+  z-index: 9999;
+  transition: width 300ms ease-out,
+  opacity 150ms 150ms ease-in;
+  transform: translate3d(0, 0, 0);
+}
+</style>
