@@ -4,6 +4,8 @@
   </header>
   <main :dir="dir()" class="min-h-screen ">
     <Head>
+      <meta name="author" :content="__('app_name')">
+
       <slot name="header"/>
     </head>
     <Alert v-show="$page.props.flash.status" ref="alert"/>

@@ -1,12 +1,14 @@
 <template>
   <Scaffold>
     <template v-slot:header>
-      <title>{{__('sites')}}</title>
+      <title v-if="data">{{ data.name }}</title>
+      <meta v-if="data" name="description" :content=" data.description ">
+
     </template>
-    <div class="relative bg-gradient-to-t from-pink-300 via-purple-300 to-indigo-400">
+    <div class="relative   bg-gradient-to-t from-pink-300 via-purple-300 to-indigo-400">
       <!--Hero-->
-      <div class="py-12 lg:py-24 mx-auto    ">
-        <div class="  px-3  sm:px-1  flex   flex-col md:flex-row items-center ">
+      <div class="py-24 lg:py-24 mx-auto    ">
+        <div class="  md:px-3  sm:px-1  flex   flex-col md:flex-row items-center ">
           <!--                    Right Col-->
           <!--          <div class="  md:w-2/5 py-6 text-center">-->
           <!--            <img class="w-full xs:w-3/4 sm:w-3/4   mx-auto  z-50   " :src="heroImage"/>-->
@@ -77,76 +79,96 @@
       </div>
 
     </div>
-    <div
-        class="   rounded-lg overflow-x-hidden shadow-lg max-w-4xl  xs:mx-2 md:mx-auto    blur-xs opacity-75 bg-white  backdrop-filter">
-      <div v-if="$page.props.error_message" class="text-center flex flex-col font-bold p-4 text-danger  text-lg">
-        <div class="text-gray-900">{{ $page.props.error_message }}</div>
-        <Link :href="$page.props.error_link" class="my-4">{{ __('return') }}</Link>
-      </div>
-      <!--      main sectiob-->
-
-      <div v-else-if="data" class=" flex flex-col ">
-        <div class="px-4 py-2 text-white bg-primary">{{ data.name }}</div>
-        <div class="block sm:flex items-center justify-between     text-white bg-primary px-4 py-2 ">
-
-          <div
-              class=" flex w-full justify-start  items-center  text-sm  ">
-            <div class="flex items-center">
-              <EyeIcon class="w-4 h-4"/>
-              <span class="px-1">{{ __('view') }}:</span>
-              <span class="px-1">{{ data.views }}</span>
-            </div>
-            <div class=" border-s   py-4 md:mx-6  mx-1"></div>
-            <div v-if="!hasWallet()" class="flex items-center">
-              <CurrencyDollarIcon class="w-4 h-4"/>
-
-              <span class="px-1">{{ __('reward') }}:</span>
-              <span class="px-1">{{ $page.props.site_view_meta_reward }} {{ __('meta') }}</span>
-            </div>
-            <div v-else class="flex items-center">
-              <CurrencyDollarIcon class="w-4 h-4"/>
-              <span class="px-1">{{ __('reward') }}:</span>
-              <span class="px-1">{{ asPrice(data.view_fee) }} {{ __('currency_symbol') }}</span>
-            </div>
-            <div class=" border-s   py-4 md:mx-6  mx-1"></div>
-            <div class="flex items-center" dir="ltr">
-              <input v-model="auto_view"
-                     @change="auto_view && timer>=$page.props.reward_second  ?startTimer($refs.iframe  ):null"
-                     class="mx-2   h-3.5 w-8 appearance-none rounded-[0.4375rem]  bg-neutral-300 before:pointer-events-none before:absolute before:h-3.5 before:w-3.5 before:rounded-full before:bg-transparent before:content-[''] after:absolute after:z-[2] after:-mt-[0.1975rem] after:h-5 after:w-5 after:rounded-full after:border-none after:bg-neutral-100 after:shadow-[0_0px_3px_0_rgb(0_0_0_/_7%),_0_2px_2px_0_rgb(0_0_0_/_4%)] after:transition-[background-color_0.2s,transform_0.2s] after:content-[''] checked:bg-success checked:after:absolute checked:after:z-[2] checked:after:-mt-[3px] checked:after:ml-[1.0625rem] checked:after:h-5 checked:after:w-5 checked:after:rounded-full checked:after:border-none checked:after:bg-success checked:after:shadow-[0_3px_1px_-2px_rgba(0,0,0,0.2),_0_2px_2px_0_rgba(0,0,0,0.14),_0_1px_5px_0_rgba(0,0,0,0.12)] checked:after:transition-[background-color_0.2s,transform_0.2s] checked:after:content-[''] hover:cursor-pointer focus:outline-none focus:ring-0 focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-[3px_-1px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s,transform_0.2s] focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-5 focus:after:w-5 focus:after:rounded-full focus:after:content-[''] checked:focus:border-success checked:focus:bg-success checked:focus:before:ml-[1.0625rem] checked:focus:before:scale-100 checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s] dark:bg-neutral-600 dark:after:bg-success-400 dark:checked:bg-primary dark:checked:after:bg-success dark:focus:before:shadow-[3px_-1px_0px_13px_rgba(255,255,255,0.4)] dark:checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca]"
-                     type="checkbox"
-                     role="switch"
-                     id="auto_view"
-              />
-              <label
-                  class="inline-block px-2 hover:cursor-pointer"
-                  for="auto_view"
-              > {{ __('auto_view') }}</label
-              >
-            </div>
-          </div>
-          <div class="text-primary-500 bg-primary-100 rounded-lg p-2 justify-center flex text-xs">
-            <span class="mx-1">  {{ __('viewable') }}:</span>
-            <span class="mx-1"> {{ available_sites > 0 ? available_sites - 1 : 0 }}</span>
-
-          </div>
+    <section class="flex justify-center">
+      <div
+          class="w-full   rounded-lg overflow-x-hidden shadow-lg max-w-4xl  xs:mx-2 md:mx-4    blur-xs opacity-75 bg-white  backdrop-filter">
+        <div v-if="$page.props.error_message" class="text-center flex flex-col font-bold p-4 text-danger  text-lg">
+          <div class="text-gray-900">{{ $page.props.error_message }}</div>
+          <Link :href="$page.props.error_link" class="my-4">{{ __('return') }}</Link>
         </div>
-        <div class="flex">
-          <div class="shadow w-full bg-grey-light m-2   bg-gray-200 rounded-full">
+        <!--      main section-->
+
+        <div v-else-if="data" class=" flex flex-col ">
+          <div class="px-4 py-2 text-white bg-primary">{{ data.name }}</div>
+          <div class="block sm:flex items-center justify-between     text-white bg-primary px-4 py-2 ">
+
             <div
-                class=" bg-primary rounded  text-xs leading-none py-[.1rem] text-center text-white duration-300 "
-                :class="{' animate-pulse': timerPercent<100}"
-                :style="`width: ${timerPercent}%`">
-              <span class="animate-bounce">{{ timer }}</span>
+                class=" flex w-full justify-start  items-center  text-sm  ">
+              <div class="flex items-center">
+                <EyeIcon class="w-4 h-4"/>
+                <span class="px-1">{{ __('view') }}:</span>
+                <span class="px-1">{{ data.views }}</span>
+              </div>
+              <div class=" border-s   py-4 md:mx-6  mx-1"></div>
+              <div v-if="!hasWallet()" class="flex items-center">
+                <CurrencyDollarIcon class="w-4 h-4"/>
+
+                <span class="px-1">{{ __('reward') }}:</span>
+                <span class="px-1">{{ $page.props.site_view_meta_reward }} {{ __('meta') }}</span>
+              </div>
+              <div v-else class="flex items-center">
+                <CurrencyDollarIcon class="w-4 h-4"/>
+                <span class="px-1">{{ __('reward') }}:</span>
+                <span class="px-1">{{ asPrice(data.view_fee) }} {{ __('currency_symbol') }}</span>
+              </div>
+              <div class=" border-s   py-4 md:mx-6  mx-1"></div>
+              <div class="flex items-center" dir="ltr">
+                <input v-model="auto_view"
+                       @change="auto_view && timer>=$page.props.reward_second  ?startTimer($refs.iframe  ):null"
+                       class="mx-2   h-3.5 w-8 appearance-none rounded-[0.4375rem]  bg-neutral-300 before:pointer-events-none before:absolute before:h-3.5 before:w-3.5 before:rounded-full before:bg-transparent before:content-[''] after:absolute after:z-[2] after:-mt-[0.1975rem] after:h-5 after:w-5 after:rounded-full after:border-none after:bg-neutral-100 after:shadow-[0_0px_3px_0_rgb(0_0_0_/_7%),_0_2px_2px_0_rgb(0_0_0_/_4%)] after:transition-[background-color_0.2s,transform_0.2s] after:content-[''] checked:bg-success checked:after:absolute checked:after:z-[2] checked:after:-mt-[3px] checked:after:ml-[1.0625rem] checked:after:h-5 checked:after:w-5 checked:after:rounded-full checked:after:border-none checked:after:bg-success checked:after:shadow-[0_3px_1px_-2px_rgba(0,0,0,0.2),_0_2px_2px_0_rgba(0,0,0,0.14),_0_1px_5px_0_rgba(0,0,0,0.12)] checked:after:transition-[background-color_0.2s,transform_0.2s] checked:after:content-[''] hover:cursor-pointer focus:outline-none focus:ring-0 focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-[3px_-1px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s,transform_0.2s] focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-5 focus:after:w-5 focus:after:rounded-full focus:after:content-[''] checked:focus:border-success checked:focus:bg-success checked:focus:before:ml-[1.0625rem] checked:focus:before:scale-100 checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s] dark:bg-neutral-600 dark:after:bg-success-400 dark:checked:bg-primary dark:checked:after:bg-success dark:focus:before:shadow-[3px_-1px_0px_13px_rgba(255,255,255,0.4)] dark:checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca]"
+                       type="checkbox"
+                       role="switch"
+                       id="auto_view"
+                />
+                <label
+                    class="inline-block px-2 hover:cursor-pointer"
+                    for="auto_view"
+                > {{ __('auto_view') }}</label
+                >
+              </div>
+            </div>
+            <div class="text-primary-500 bg-primary-100 rounded-lg p-2 justify-center flex text-xs">
+              <span class="mx-1">  {{ __('viewable') }}:</span>
+              <span class="mx-1"> {{ available_sites > 0 ? available_sites - 1 : 0 }}</span>
+
             </div>
           </div>
+          <div class="flex">
+            <div class="shadow w-full bg-grey-light m-2   bg-gray-200 rounded-full">
+              <div
+                  class=" bg-primary rounded  text-xs leading-none py-[.1rem] text-center text-white duration-300 "
+                  :class="{' animate-pulse': timerPercent<100}"
+                  :style="`width: ${timerPercent}%`">
+                <span class="animate-bounce">{{ timer }}</span>
+              </div>
+            </div>
+          </div>
+
+          <iframe ref="iframe" class="w-full  min-h-[auto]" :src="$page.props.data.link"
+                  @load.once="startTimer">
+
+          </iframe>
+          <div v-if="data" class="border-t   p-4 flex flex-col space-y-4 m-4">
+            <p v-if="data.owner" class="text-sm">
+              <span class="text-gray-500 ">{{ __('owner') }}: </span>
+              <span>{{ data.owner.fullname }}</span>
+              <span class="border-s mx-2">  </span>
+              <span class="text-gray-500  ">{{ __('phone') }}: </span>
+              <span>{{ data.owner.phone }}</span>
+            </p>
+            <p class="text-sm">
+              <span class="text-gray-500 ">{{ __('tags') }}: </span>
+              <span>{{ data.tags }}</span>
+            </p>
+            <p class="text-sm">
+              <span class="text-gray-500 ">{{ __('description') }}: </span>
+              <span>{{ data.description }}</span>
+            </p>
+
+          </div>
         </div>
-
-        <iframe ref="iframe" class="w-full  min-h-screen" :src="$page.props.data.link"
-                @load.once="startTimer">
-
-        </iframe>
       </div>
-    </div>
+    </section>
     <section class="flex justify-center  p-5 max-w-7xl  mx-auto border-t mt-5">
       <!--      <div class=" w-80 p-3   mx-2  bg-white rounded-lg      lg:flex md:hidden sm:hidden xs:hidden"></div>-->
 

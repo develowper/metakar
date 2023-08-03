@@ -31,6 +31,11 @@ class Site extends Model
         'is_blocked' => 'boolean',
     ];
 
+    public function owner()
+    {
+        return $this->belongsTo(User::class, 'owner_id');
+    }
+
     public function category()
     {
         return $this->belongsTo(Category::class, 'category_id');

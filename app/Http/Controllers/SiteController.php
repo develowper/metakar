@@ -77,7 +77,7 @@ class SiteController extends Controller
         $message = null;
         $link = null;
         $user = auth()->user();
-        $data = Site::find($site);
+        $data = Site::where('id', $site)->with('owner:id,fullname,phone')->first();
         $auto_view = session()->get('auto_view', true);
         $meta_view_fee = Variable::SITE_VIEW_META_FEE();
 

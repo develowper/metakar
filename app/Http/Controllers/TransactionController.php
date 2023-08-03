@@ -22,26 +22,29 @@ class TransactionController extends Controller
         $successStatus = Variable::SUCCESS_STATUS;
         $meta_view_fee = Variable::SITE_VIEW_META_FEE();
         $meta_view_reward = Variable::SITE_VIEW_META_REWARD();
+        $ip = $request->ip();
         session()->put('auto_view', $autoView);
         $next = $user ? Site::where('id', '!=', $siteId)->whereStatus('view')->whereLang(app()->getLocale())->whereIntegerNotInRaw('id', Site::where('owner_id', $user->id)->pluck('id'))->whereIntegerNotInRaw('id', SiteTransaction::where('owner_id', $user->id)->pluck('site_id'))->orderBy('view_fee', 'DESC')->where(function ($query) use ($user, $meta_view_fee) {
             if ($user->wallet_active)
                 $query->whereColumn('charge', '>=', 'view_fee');
             else $query->where('meta', '>=', $meta_view_fee);
         })->firstOrNew()->id
-            : Site::where('id', '!=', $siteId)->whereStatus('view')->whereLang(app()->getLocale())->whereIntegerNotInRaw('id', SiteView::where('ip', $request->ip())->pluck('site_id'))->where(function ($query) use ($user, $meta_view_fee) {
+            : Site::where('id', '!=', $siteId)->whereStatus('view')->whereLang(app()->getLocale())->whereIntegerNotInRaw('id', SiteView::where('ip', $ip)->pluck('site_id'))->where(function ($query) use ($user, $meta_view_fee) {
                 $query->where('meta', '>=', $meta_view_fee);
             })->firstOrNew()->id;
         if (!$data || $data->status == 'inactive' || $data->status == 'block') {
             return response()->json(['message' => "$siteId" . __('item_is_inactive'), 'next' => $next,], $errorStatus);
         }
         if (!$user) {
-            SiteView::create(['ip' => $request->ip(), 'site_id' => $data->id]);
-            if ($data->meta >= $meta_view_fee)
-                $data->meta -= $meta_view_fee;
-            else
-                $data->status = 'need_charge';
-            $data->views++;
-            $data->save();
+            if ($ip && !SiteView::where('ip', $ip)->where('site_id', $data->id)->exists()) {
+                SiteView::create(['ip' => $ip, 'site_id' => $data->id]);
+                if ($data->meta >= $meta_view_fee)
+                    $data->meta -= $meta_view_fee;
+                else
+                    $data->status = 'need_charge';
+                $data->views++;
+                $data->save();
+            }
             return response()->json(['message' => __('login_or_register_for_get_reward'), 'next' => $next,], $errorStatus);
         }
         if ($user->is_blocked || !$user->is_active) {

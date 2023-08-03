@@ -81,7 +81,9 @@
 
     <section class="flex justify-center  p-5 max-w-7xl  mx-auto">
       <!--      <div class=" w-80 p-3   mx-2  bg-white rounded-lg      lg:flex md:hidden sm:hidden xs:hidden"></div>-->
-
+      <div v-if="data.length==0" class="text-center flex flex-col font-bold p-4 text-danger  text-lg">
+        <div class="text-gray-900">{{ __('no_result')}}</div>
+      </div>
       <div
           class="   grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4   gap-2     max-w-6xl">
         <Link v-for="(d,idx) in data" :href="route('site',d.id)"
