@@ -1,7 +1,7 @@
 {
   "app_name": "متا\u200Cکار",
   "fa": "فارسی",
-  "en": "انگلیسی",
+  "en": "English",
   "ar": "عربی",
   "home": "خانه\u200C",
   "signup": "ثبت نام",
@@ -60,6 +60,7 @@
   "currency": "تومان",
   "currency_symbol": "ت",
   "new_site": "سایت جدید",
+  "edit_site": "ویرایش سایت",
   "industry_mining": "صنعت\u200Cو\u200Cمعدن",
   "estate": "املاک",
   "trading": "بازرگانی",
@@ -98,6 +99,7 @@
   "no_results": "نتیجه\u200Cای یافت نشد",
   "access_denied": "دسترسی غیرمجاز است",
   "validator.max_len": "حداکثر طول مجاز %s است. طول فعلی:%s",
+  "validator.min_len": "حداقل طول مجاز %s است. طول فعلی:%s",
   "validator.required": "%s ضروری است",
   "validator.invalid": "%s نامعتبر است",
   "validator.max_size": "حداکثر حجم مجاز %s مگابایت است",
@@ -106,6 +108,7 @@
   "validator.min": "حداقل مقدار مجاز %s است",
   "validator.dividable": "عدد باید مضرب %s باشد",
   "validator.max_images": "حداکثر تعداد تصاویر %s باشد",
+  "validator.unique": " %s تکراری است",
   "created_successfully": "با موفقیت ساخته شد",
   "done_successfully": "با موفقیت انجام شد",
   "response_error": "مشکلی در انجام عملیات پیش آمد",
@@ -120,7 +123,7 @@
   "need_charge": "اتمام\u200Cشارژ",
   "start_view": "شروع\u200Cبازدید",
   "stop_view": "توقف\u200Cبازدید",
-  "reviewing": "در\u200Cحال\u200Cبررسی",
+  "review": "در\u200Cحال\u200Cبررسی",
   "viewing": "در\u200Cحال\u200Cبازدید",
   "active_after_review": "پس از تایید، فعال خواهد شد",
   "not_available": "در دسترس نیست",
@@ -177,5 +180,6 @@
   "increase_view": "افزایش\u200Cبازدید",
   "login_or_register_for_get_reward": "جهت دریافت جایزه وارد شوید یا ثبت نام کنید",
   "owner": "مالک",
+  "fullname": "نام و نام خانوادگی",
   "": ""
 }

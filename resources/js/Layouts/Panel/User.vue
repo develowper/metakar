@@ -82,8 +82,8 @@
                   <Bars2Icon class="w-5 h-5 mx-1"/>
                   {{ __('list') }}
                 </Link>
-                <Link :href="route('panel.business.new')" role="menuitem"
-                      :class="subMenuIsActive ( 'panel.business.new' )"
+                <Link :href="route('panel.business.create')" role="menuitem"
+                      :class="subMenuIsActive ( 'panel.business.create' )"
                       class="flex   border-s-2 hover:border-primary-500  items-center p-2   text-sm  transition-all duration-200   dark:text-light dark:hover:text-light hover:text-primary-700 hover:bg-primary-50">
                   <PlusSmallIcon class="w-5 h-5 mx-1"/>
                   {{ __('new') }}
@@ -118,8 +118,8 @@
                   <Bars2Icon class="w-5 h-5 mx-1"/>
                   {{ __('list') }}
                 </Link>
-                <Link :href="route('panel.article.new')" role="menuitem"
-                      :class="subMenuIsActive ( 'panel.article.new' )"
+                <Link :href="route('panel.article.create')" role="menuitem"
+                      :class="subMenuIsActive ( 'panel.article.create' )"
                       class="flex   border-s-2 hover:border-primary-500  items-center p-2   text-sm  transition-all duration-200   dark:text-light dark:hover:text-light hover:text-primary-700 hover:bg-primary-50">
                   <PlusSmallIcon class="w-5 h-5 mx-1"/>
                   {{ __('new') }}
@@ -154,8 +154,8 @@
                   <Bars2Icon class="w-5 h-5 mx-1"/>
                   {{ __('list') }}
                 </Link>
-                <Link :href="route('panel.site.new')" role="menuitem"
-                      :class="subMenuIsActive ( 'panel.site.new' )"
+                <Link :href="route('panel.site.create')" role="menuitem"
+                      :class="subMenuIsActive ( 'panel.site.create' )"
                       class="flex   border-s-2 hover:border-primary-500  items-center p-2   text-sm  transition-all duration-200   dark:text-light dark:hover:text-light hover:text-primary-700 hover:bg-primary-50">
                   <PlusSmallIcon class="w-5 h-5 mx-1"/>
                   {{ __('new') }}
@@ -190,8 +190,8 @@
                   <Bars2Icon class="w-5 h-5 mx-1"/>
                   {{ __('list') }}
                 </Link>
-                <Link :href="route('panel.text.new')" role="menuitem"
-                      :class="subMenuIsActive ( 'panel.text.new' )"
+                <Link :href="route('panel.text.create')" role="menuitem"
+                      :class="subMenuIsActive ( 'panel.text.create' )"
                       class="flex   border-s-2 hover:border-primary-500  items-center p-2   text-sm  transition-all duration-200   dark:text-light dark:hover:text-light hover:text-primary-700 hover:bg-primary-50">
                   <PlusSmallIcon class="w-5 h-5 mx-1"/>
                   {{ __('new') }}
@@ -226,8 +226,8 @@
                   <Bars2Icon class="w-5 h-5 mx-1"/>
                   {{ __('list') }}
                 </Link>
-                <Link :href="route('panel.image.new')" role="menuitem"
-                      :class="subMenuIsActive ( 'panel.image.new' )"
+                <Link :href="route('panel.image.create')" role="menuitem"
+                      :class="subMenuIsActive ( 'panel.image.create' )"
                       class="flex   border-s-2 hover:border-primary-500  items-center p-2   text-sm  transition-all duration-200   dark:text-light dark:hover:text-light hover:text-primary-700 hover:bg-primary-50">
                   <PlusSmallIcon class="w-5 h-5 mx-1"/>
                   {{ __('new') }}
@@ -262,8 +262,8 @@
                   <Bars2Icon class="w-5 h-5 mx-1"/>
                   {{ __('list') }}
                 </Link>
-                <Link :href="route('panel.video.new')" role="menuitem"
-                      :class="subMenuIsActive ( 'panel.video.new' )"
+                <Link :href="route('panel.video.create')" role="menuitem"
+                      :class="subMenuIsActive ( 'panel.video.create' )"
                       class="flex   border-s-2 hover:border-primary-500  items-center p-2   text-sm  transition-all duration-200   dark:text-light dark:hover:text-light hover:text-primary-700 hover:bg-primary-50">
                   <PlusSmallIcon class="w-5 h-5 mx-1"/>
                   {{ __('new') }}
@@ -298,8 +298,8 @@
                   <Bars2Icon class="w-5 h-5 mx-1"/>
                   {{ __('list') }}
                 </Link>
-                <Link :href="route('panel.podcast.new')" role="menuitem"
-                      :class="subMenuIsActive ( 'panel.podcast.new' )"
+                <Link :href="route('panel.podcast.create')" role="menuitem"
+                      :class="subMenuIsActive ( 'panel.podcast.create' )"
                       class="flex   border-s-2 hover:border-primary-500  items-center p-2   text-sm  transition-all duration-200   dark:text-light dark:hover:text-light hover:text-primary-700 hover:bg-primary-50">
                   <PlusSmallIcon class="w-5 h-5 mx-1"/>
                   {{ __('new') }}
@@ -334,8 +334,8 @@
                   <Bars2Icon class="w-5 h-5 mx-1"/>
                   {{ __('list') }}
                 </Link>
-                <Link :href="route('panel.auction.new')" role="menuitem"
-                      :class="subMenuIsActive ( 'panel.auction.new' )"
+                <Link :href="route('panel.auction.create')" role="menuitem"
+                      :class="subMenuIsActive ( 'panel.auction.create' )"
                       class="flex   border-s-2 hover:border-primary-500  items-center p-2   text-sm  transition-all duration-200   dark:text-light dark:hover:text-light hover:text-primary-700 hover:bg-primary-50">
                   <PlusSmallIcon class="w-5 h-5 mx-1"/>
                   {{ __('new') }}
@@ -370,8 +370,8 @@
                   <Bars2Icon class="w-5 h-5 mx-1"/>
                   {{ __('tickets') }}
                 </Link>
-                <Link :href="route('panel.ticket.new')" role="menuitem"
-                      :class="subMenuIsActive ( 'panel.ticket.new' )"
+                <Link :href="route('panel.ticket.create')" role="menuitem"
+                      :class="subMenuIsActive ( 'panel.ticket.create' )"
                       class="flex   border-s-2 hover:border-primary-500  items-center p-2   text-sm  transition-all duration-200   dark:text-light dark:hover:text-light hover:text-primary-700 hover:bg-primary-50">
                   <PlusSmallIcon class="w-5 h-5 mx-1"/>
                   {{ __('new_ticket') }}

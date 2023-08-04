@@ -143,8 +143,8 @@
                                         <Bars2Icon class="w-5 h-5 mx-1"/>
                                         {{ __('list') }}
                                     </Link>
-                                    <Link :href="route('panel.site.new')" role="menuitem"
-                                          :class="subMenuIsActive ( 'panel.site.new' )"
+                                    <Link :href="route('panel.site.create')" role="menuitem"
+                                          :class="subMenuIsActive ( 'panel.site.create' )"
                                           class="flex   border-s-2 hover:border-primary-500  items-center p-2   text-sm  transition-all duration-200   dark:text-light dark:hover:text-light hover:text-primary-700 hover:bg-primary-50">
                                         <PlusSmallIcon class="w-5 h-5 mx-1"/>
                                         {{ __('new') }}

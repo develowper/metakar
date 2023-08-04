@@ -29,15 +29,25 @@ class SiteRequest extends FormRequest
     {
 
         $types = Category::pluck('id');
+        $request = $this;
+        $user = auth()->user()/* ?? auth('api')->user()*/
+        ;
         if ($this->cmnd)
             return [
                 'charge' => ['required_if:cmnd,charge', 'numeric', 'gt:0'],
                 'view_fee' => ['required_if:cmnd,view-fee', 'numeric', 'gt:0'],
             ];
         return [
+            'fullname' => $user ? ['sometimes'] : ['required', 'min:3', 'max:100',],
+            'phone' => $user ? ['sometimes'] : 'required|numeric|digits:11|regex:/^09[0-9]+$/',
+            'phone_verify' => ['required_with:phone', Rule::exists('sms_verify', 'code')->where(function ($query) use ($request) {
+                return $query->where('phone', $request->phone);
+            }),],
+            'password' => 'required|regex:/^.*(?=.{6,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x]).*$/',
+
             'lang' => ['required', Rule::in(Variable::LANGS)],
-            'name' => ['required', 'max:100', Rule::unique('sites', 'name')->ignore($this->id)],
-            'link' => ['required', 'starts_with:https://', 'url', 'max:1024', Rule::unique('sites', 'name')->ignore($this->id)],
+            'name' => ['required', 'min:3', 'max:100', Rule::unique('sites', 'name')->ignore($this->id)],
+            'link' => ['required', 'starts_with:https://', 'url', 'max:1024', Rule::unique('sites', 'link')->ignore($this->id)],
             'tags' => ['nullable', 'max:1024'],
             'category' => ['nullable', Rule::in($types)],
             'description' => ['nullable', 'max:2048'],
@@ -56,16 +66,39 @@ class SiteRequest extends FormRequest
 
             ];
         return [
+
+            'phone.required' => 'شماره تماس نمی تواند خالی باشد',
+            'phone.numeric' => 'شماره تماس باید عدد باشد',
+            'phone.digits' => 'شماره تماس  11 رقم و با 09 شروع شود',
+            'phone.regex' => 'شماره تماس  11 رقم و با 09 شروع شود',
+            'phone.unique' => 'شماره تماس تکراری است',
+
+            'phone_verify.required' => 'کد تایید شماره تماس ضروری است',
+            'phone_verify.required_with' => 'کد تایید شماره تماس ضروری است',
+            'phone_verify.required_if' => 'کد تایید شماره تماس ضروری است',
+            'phone_verify.exists' => 'کد تایید شماره تماس نامعتبر است',
+
+            'password.required' => 'رمزعبور ضروری است',
+            'password_verify.same' => 'رمزعبور با تایید رمز عبور یکسان نیست',
+            'password.regex' => 'رمزعبور حداقل 6 کاراکتر و شامل حروف و عدد باشد',
+
             'lang.required' => sprintf(__("validator.required"), __('lang')),
             'lang.in' => sprintf(__("validator.invalid"), __('lang')),
 
-            'name.required' => sprintf(__("validator.required"), __('title')),
-            'name.max' => sprintf(__("validator.max_len"), 2048, mb_strlen($this->name)),
+            'fullname.required' => sprintf(__("validator.required"), __('fullname')),
+            'fullname.max' => sprintf(__("validator.max_len"), 100, mb_strlen($this->fullname)),
+            'fullname.min' => sprintf(__("validator.min_len"), 3, mb_strlen($this->fullname)),
+
+            'name.required' => sprintf(__("validator.required"), __('name')),
+            'name.max' => sprintf(__("validator.max_len"), 100, mb_strlen($this->name)),
+            'name.min' => sprintf(__("validator.min_len"), 3, mb_strlen($this->name)),
+            'name.unique' => sprintf(__("validator.unique"), __('name')),
 
             'link.required' => sprintf(__("validator.required"), __('link')),
             'link.max' => sprintf(__("validator.max_len"), 1024, mb_strlen($this->link)),
             'link.url' => sprintf(__("validator.invalid"), __('link')),
             'link.starts_with' => sprintf(__("validator.starts_with"), __('link'), "https://"),
+            'link.unique' => sprintf(__("validator.unique"), __('link')),
 
             'category.in' => sprintf(__("validator.invalid"), __('lang')),
 

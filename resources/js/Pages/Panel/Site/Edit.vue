@@ -10,9 +10,9 @@
       <!-- Content header -->
       <div
           class="flex items-center justify-start px-4 py-2 text-primary-500 border-b md:py-4 dark:border-primary-darker">
-        <FolderPlusIcon class="h-7 w-7 mx-3"/>
+        <PencilSquareIcon class="h-7 w-7 mx-3"/>
 
-        <h1 class="text-2xl font-semibold">{{ __('new_site') }}</h1>
+        <h1 class="text-2xl font-semibold">{{ __('edit_site') }}</h1>
 
       </div>
 
@@ -79,6 +79,16 @@
 
               </div>
               <div class="my-2">
+                <Selector ref="categorySelector" :data="$page.props.categories" :label="__('category')"
+                          id="category_id" v-model="form.category_id">
+                  <template v-slot:append>
+                    <div class="p-1 px-4">
+                      <Squares2X2Icon class="h-5 w-5"/>
+                    </div>
+                  </template>
+                </Selector>
+              </div>
+              <div class="my-2">
 
                 <TagInput
                     ref="tags"
@@ -122,16 +132,7 @@
                 </PrimaryButton>
 
               </div>
-              <div class="my-2">
-                <Selector ref="categorySelector" :data="$page.props.categories" :label="__('category')"
-                          id="category_id">
-                  <template v-slot:append>
-                    <div class="p-1 px-4">
-                      <Squares2X2Icon class="h-5 w-5"/>
-                    </div>
-                  </template>
-                </Selector>
-              </div>
+
 
             </form>
           </div>
@@ -158,6 +159,7 @@ import {
   Bars2Icon,
   LinkIcon,
   Squares2X2Icon,
+  PencilSquareIcon,
 
 } from "@heroicons/vue/24/outline";
 import {QuestionMarkCircleIcon,} from "@heroicons/vue/24/solid";
@@ -218,6 +220,7 @@ export default {
     QuestionMarkCircleIcon,
     Selector,
     Squares2X2Icon,
+    PencilSquareIcon,
 
   },
   mounted() {

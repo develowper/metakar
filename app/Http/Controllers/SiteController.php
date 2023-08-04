@@ -14,6 +14,7 @@ use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\URL;
 use Inertia\Inertia;
 use Spatie\Browsershot\Browsershot;
@@ -21,6 +22,15 @@ use Termwind\Components\Dd;
 
 class SiteController extends Controller
 {
+    public function new()
+    {
+        return Inertia::render('Site/Create', [
+            'heroText' => Setting::getValue('hero_sites_page'),
+            'site_view_meta_reward' => Variable::SITE_VIEW_META_REWARD(),
+            'categories' => Site::categories('parents'),
+        ]);
+    }
+
     public function index(Request $request)
     {
         $message = null;
@@ -166,8 +176,29 @@ class SiteController extends Controller
     public function create(SiteRequest $request)
     {
 
+        $user = auth()->user()/* ?? auth('api')->user()*/
+        ;
+        $phone = $request->phone;
+        $fullname = $request->fullname;
+        if (!$user) {
+            //find user or create new user
+            $user = User::where('phone', $phone)->first();
+            if (!$user)
+                $user = User::create(['fullname' => $fullname, 'phone' => $phone, 'password' => Hash::make($request->password), 'ref_id' => User::makeRefCode()]);
+
+        }
+        if (!$user) {
+            $res = ['flash_status' => 'danger', 'flash_message' => __('response_error')];
+            return back()->with($res);
+        }
+        if ($user->is_blocked) {
+            $res = ['flash_status' => 'danger', 'flash_message' => __('user_is_blocked')];
+            return back()->with($res);
+        }
+        if (!auth()->user())
+            auth()->login($user);
         $request->merge([
-            'owner_id' => $request->user()->id,
+            'owner_id' => $user->id,
             'slug' => str_slug($request->name),
             'status' => 'review',
         ]);

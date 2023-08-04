@@ -16,7 +16,7 @@
             @input="$emit('update:phone', $event.target.value); "
             class="  flex-auto rounded-e  border border-solid border-neutral-300    px-3   text-neutral-700   transition duration-200 ease-in-out focus:z-[3] focus:border-primary focus:text-neutral-700   dark:border-neutral-600 dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:focus:border-primary"
             @visibility.window="$el.type =  'text'  "
-            ref="input"/>
+            ref="input_phone"/>
 
       </div>
 
@@ -33,11 +33,11 @@
             </div>
         </span>
         <input
-            :value="phoneVerify"
+            :value="phoneVerify" id="phone_verify"
             @input="$emit('update:phoneVerify', $event.target.value)"
             class="  flex-auto rounded-0   border border-solid border-neutral-300    px-3   text-neutral-700   transition duration-200 ease-in-out focus:z-[3] focus:border-primary-500 focus:text-neutral-700   dark:border-neutral-600 dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:focus:border-primary"
             @visibility.window="$el.type =  'text'  "
-            ref="input"/>
+            ref="input_phone_verify"/>
         <span @click="!loading && timer>=60 ?sendVerificationCode():null"
               class="flex  cursor-pointer hover:bg-primary-400 bg-primary-500 items-center whitespace-nowrap rounded-e border border-s-0 border-solid border-neutral-300 px-3 py-[0.25rem] focus:border-primary text-center text-base font-normal leading-[1.6] text-neutral-700 dark:border-neutral-600 dark:text-neutral-200 dark:placeholder:text-neutral-200"
               :class="{ 'opacity-25':loading || timer<60 && timer>0}"

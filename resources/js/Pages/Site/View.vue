@@ -6,8 +6,13 @@
 
     </template>
     <div class="relative   bg-gradient-to-t from-pink-300 via-purple-300 to-indigo-400">
-      <!--Hero-->
-      <div class="py-24 lg:py-24 mx-auto    ">
+
+      <div class="h-48 sm:h-56 md:h-64 lg:h-72 xl:h-96  "></div>
+
+      <div class="absolute  bottom-0  start-0 end-0  ">
+
+        <!--        hero and buttons-->
+
         <div class="  md:px-3  sm:px-1  flex   flex-col md:flex-row items-center ">
           <!--                    Right Col-->
           <!--          <div class="  md:w-2/5 py-6 text-center">-->
@@ -45,15 +50,17 @@
 
             </div>
             <div class="  px-3    flex  items-center">
-              <PrimaryButton class="mx-2 p-2 grow  ">{{ __('register_site') }}</PrimaryButton>
+              <PrimaryButton @click="$inertia.visit(route(($page.props.auth.user?'panel.':'')+'site.create' ))"
+                             class="mx-2 p-2 grow  ">
+                {{ __('register_site') }}
+              </PrimaryButton>
               <SecondaryButton class="mx-2 p-2 grow">{{ __('make_money') }}</SecondaryButton>
             </div>
           </div>
 
         </div>
-      </div>
-      <!--wave-->
-      <div class="absolute  bottom-0 start-0 end-0">
+
+        <!--wave-->
         <svg viewBox="0 0 1428 174" xmlns="http://www.w3.org/2000/svg"
              xmlns:xlink="http://www.w3.org/1999/xlink">
           <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -90,6 +97,24 @@
 
         <div v-else-if="data" class=" flex flex-col ">
           <div class="px-4 py-2 text-white bg-primary">{{ data.name }}</div>
+          <div v-if="data" class="border-t   p-4 flex flex-col space-y-4 m-4">
+            <p v-if="data.owner" class="text-sm">
+              <span class="text-gray-500 ">{{ __('owner') }}: </span>
+              <span>{{ data.owner.fullname }}</span>
+              <span class="border-s mx-2">  </span>
+              <span class="text-gray-500  ">{{ __('phone') }}: </span>
+              <span>{{ data.owner.phone }}</span>
+            </p>
+            <p class="text-sm">
+              <span class="text-gray-500 ">{{ __('tags') }}: </span>
+              <span>{{ data.tags }}</span>
+            </p>
+            <p class="text-sm">
+              <span class="text-gray-500 ">{{ __('description') }}: </span>
+              <span>{{ data.description }}</span>
+            </p>
+
+          </div>
           <div class="block sm:flex items-center justify-between     text-white bg-primary px-4 py-2 ">
 
             <div
@@ -144,28 +169,11 @@
             </div>
           </div>
 
-          <iframe ref="iframe" class="w-full  min-h-[auto]" :src="$page.props.data.link"
+          <iframe ref="iframe" class="w-full  min-h-[24rem]" :src="$page.props.data.link"
                   @load.once="startTimer">
 
           </iframe>
-          <div v-if="data" class="border-t   p-4 flex flex-col space-y-4 m-4">
-            <p v-if="data.owner" class="text-sm">
-              <span class="text-gray-500 ">{{ __('owner') }}: </span>
-              <span>{{ data.owner.fullname }}</span>
-              <span class="border-s mx-2">  </span>
-              <span class="text-gray-500  ">{{ __('phone') }}: </span>
-              <span>{{ data.owner.phone }}</span>
-            </p>
-            <p class="text-sm">
-              <span class="text-gray-500 ">{{ __('tags') }}: </span>
-              <span>{{ data.tags }}</span>
-            </p>
-            <p class="text-sm">
-              <span class="text-gray-500 ">{{ __('description') }}: </span>
-              <span>{{ data.description }}</span>
-            </p>
 
-          </div>
         </div>
       </div>
     </section>

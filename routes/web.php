@@ -67,7 +67,7 @@ Route::middleware(['auth', 'verified'])->prefix('panel')->group(function ($route
 //    PanelController::makeInertiaRoute('get', 'site/edit/{site}', 'panel.site.edit', 'Panel/Site/Edit', ['categories' => Site::categories('parents'), 'site_statuses' => Variable::SITE_STATUSES, 'site' => $tmp = Site::with('category')->find(request()->segment(count(request()->segments())))], 'can:edit,App\Models\User,App\Models\Site,"","' . $tmp . '"');
 
 
-    PanelController::makeInertiaRoute('get', 'business/new', 'panel.business.new', 'Panel/Business/Create', [
+    PanelController::makeInertiaRoute('get', 'business/create', 'panel.business.create', 'Panel/Business/Create', [
         'provinces' => Province::all(),
         'counties' => County::all(),
         'categories' => Business::categories(),
@@ -75,27 +75,29 @@ Route::middleware(['auth', 'verified'])->prefix('panel')->group(function ($route
     ]);
     PanelController::makeInertiaRoute('get', 'business/index', 'panel.business.index', 'Panel/Business/Index');
     PanelController::makeInertiaRoute('get', 'article/index', 'panel.article.index', 'Panel/Business/Index');
-    PanelController::makeInertiaRoute('get', 'article/new', 'panel.article.new', 'Panel/Business/Create');
+    PanelController::makeInertiaRoute('get', 'article/create', 'panel.article.create', 'Panel/Business/Create');
     PanelController::makeInertiaRoute('get', 'site/index', 'panel.site.index', 'Panel/Site/Index', ['categories' => Site::categories('parents'), 'site_statuses' => Variable::SITE_STATUSES]);
-    PanelController::makeInertiaRoute('get', 'site/new', 'panel.site.new', 'Panel/Site/Create', ['categories' => Site::categories('parents'),]);
+    PanelController::makeInertiaRoute('get', 'site/create', 'panel.site.create', 'Panel/Site/Create', ['categories' => Site::categories('parents'),]);
     PanelController::makeInertiaRoute('get', 'text/index', 'panel.text.index', 'Panel/Text/Index');
-    PanelController::makeInertiaRoute('get', 'text/new', 'panel.text.new', 'Panel/Text/Create');
+    PanelController::makeInertiaRoute('get', 'text/create', 'panel.text.create', 'Panel/Text/Create');
     PanelController::makeInertiaRoute('get', 'image/index', 'panel.image.index', 'Panel/Image/Index');
-    PanelController::makeInertiaRoute('get', 'image/new', 'panel.image.new', 'Panel/Image/Create');
+    PanelController::makeInertiaRoute('get', 'image/create', 'panel.image.create', 'Panel/Image/Create');
     PanelController::makeInertiaRoute('get', 'video/index', 'panel.video.index', 'Panel/Video/Index');
-    PanelController::makeInertiaRoute('get', 'video/new', 'panel.video.new', 'Panel/Video/Create');
+    PanelController::makeInertiaRoute('get', 'video/create', 'panel.video.create', 'Panel/Video/Create');
     PanelController::makeInertiaRoute('get', 'podcast/index', 'panel.podcast.index', 'Panel/Podcast/Index');
-    PanelController::makeInertiaRoute('get', 'podcast/new', 'panel.podcast.new', 'Panel/Podcast/Create');
+    PanelController::makeInertiaRoute('get', 'podcast/create', 'panel.podcast.create', 'Panel/Podcast/Create');
     PanelController::makeInertiaRoute('get', 'auction/index', 'panel.auction.index', 'Panel/Auction/Index');
-    PanelController::makeInertiaRoute('get', 'auction/new', 'panel.auction.new', 'Panel/Auction/Create');
+    PanelController::makeInertiaRoute('get', 'auction/create', 'panel.auction.create', 'Panel/Auction/Create');
     PanelController::makeInertiaRoute('get', 'ticket/index', 'panel.ticket.index', 'Panel/Ticket/Index');
-    PanelController::makeInertiaRoute('get', 'ticket/new', 'panel.ticket.new', 'Panel/Ticket/Create');
+    PanelController::makeInertiaRoute('get', 'ticket/create', 'panel.ticket.create', 'Panel/Ticket/Create');
     PanelController::makeInertiaRoute('get', 'transaction/index', 'panel.financial.transaction.index', 'Panel/Financial/Transaction/Index');
 
 
 });
 
-Route::post('site/create', [SiteController::class, 'create'])->name('site.create')->middleware('can:create,App\Models\User,App\Models\Site,""');
+Route::get('site/create', [SiteController::class, 'new'])->name('site.create');
+Route::post('site/create', [SiteController::class, 'create'])->name('site.create')/*->middleware('can:create,App\Models\User,App\Models\Site,""')*/
+;
 Route::post('business/create', [BusinessController::class, 'create'])->name('business.create')->middleware('can:create,App\Models\User,App\Models\Business,""');
 
 

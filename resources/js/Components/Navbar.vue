@@ -100,6 +100,7 @@ export default {
     ApplicationLogo,
     LanguageButton, UserButton, Bars3Icon, UserIcon, Link, Head
   },
+  props: ['theme'],
   data() {
     return {}
   }, mounted() {
@@ -125,33 +126,32 @@ export default {
       var scrollpos = window.scrollY;
       var nav = document.getElementsByTagName("nav")[0];
       var links = document.querySelectorAll(".nav-item");
+      if (this.theme == 'light') {
+        nav.classList.remove("bg-transparent");
+        nav.classList.add("bg-white");
+        nav.classList.remove("text-white");
+        nav.classList.add("text-primary-500");
+        nav.classList.add("shadow-lg");
 
-      // if (!this.route().current('/')) {
-      //     nav.classList.remove("bg-transparent");
-      //     nav.classList.add("bg-white");
-      //     nav.classList.remove("text-white");
-      //     nav.classList.add("text-primary-500");
-      //     nav.classList.add("shadow-lg");
-      //
-      //     for (let el of links) {
-      //         el.classList.remove("text-white");
-      //         el.classList.add("text-primary-500");
-      //     }
-      //     return;
-      // } else {
-      nav.classList.add("bg-transparent");
-      nav.classList.remove("bg-white");
-      nav.classList.add("text-white");
-      nav.classList.remove("text-primary-500");
-      nav.classList.remove("shadow-lg");
+        for (let el of links) {
+          el.classList.remove("text-white");
+          el.classList.add("text-primary-500");
+        }
+        return;
+      } else {
+        nav.classList.add("bg-transparent");
+        nav.classList.remove("bg-white");
+        nav.classList.add("text-white");
+        nav.classList.remove("text-primary-500");
+        nav.classList.remove("shadow-lg");
 
-      for (let el of links) {
-        el.classList.add("text-white");
-        el.classList.remove("text-primary-500");
+        for (let el of links) {
+          el.classList.add("text-white");
+          el.classList.remove("text-primary-500");
+        }
+
+
       }
-
-
-      // }
 
       document.addEventListener("scroll", function () {
         /*Apply classes for slide in bar*/

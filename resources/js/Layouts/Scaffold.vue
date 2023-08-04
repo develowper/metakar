@@ -1,6 +1,6 @@
 <template>
   <header :dir="dir()">
-    <Navbar/>
+    <Navbar :theme="navbarTheme"/>
   </header>
   <main :dir="dir()" class="min-h-screen ">
     <Head>
@@ -45,6 +45,7 @@ export default {
       loading: false,
     }
   },
+  props: ['navbarTheme'],
   components: {
     Head, Link, Navbar, Footer, Alert, Dialog, Toast, LoadingIcon,
   },

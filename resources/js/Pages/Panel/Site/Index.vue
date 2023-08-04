@@ -15,7 +15,7 @@
           <h1 class="text-2xl font-semibold">{{ __('sites_list') }}</h1>
         </div>
         <div>
-          <Link :href="route('panel.site.new')"
+          <Link :href="route('panel.site.create')"
                 class="inline-flex items-center  justify-center px-4 py-2 bg-green-500 border border-transparent rounded-md font-semibold  transition-all duration-500 text-white     hover:bg-green-600 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150"
           >
             {{ __('new_site') }}
