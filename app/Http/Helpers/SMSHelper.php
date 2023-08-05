@@ -68,9 +68,9 @@ class SMSHelper
                 $patternValues  // pattern values
             );
         } catch (\IPPanel\Errors\Error $e) {
-            Telegram::sendMessage(Helper::$logs[0], $e->getMessage());
+            Telegram::sendMessage(Variable::LOGS[0], $e->getMessage());
         } catch (\IPPanel\Errors\HttpException $e) {
-            Telegram::sendMessage(Helper::$logs[0], $e->getMessage());
+            Telegram::sendMessage(Variable::LOGS[0], $e->getMessage());
 
         }
 //        Telegram::sendMessage(Helper::$logs[0], $messageId);
