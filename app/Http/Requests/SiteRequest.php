@@ -40,9 +40,11 @@ class SiteRequest extends FormRequest
         return [
             'fullname' => $user ? ['sometimes'] : ['required', 'min:3', 'max:100',],
             'phone' => $user ? ['sometimes'] : 'required|numeric|digits:11|regex:/^09[0-9]+$/',
-            'phone_verify' => ['required_with:phone', Rule::exists('sms_verify', 'code')->where(function ($query) use ($request) {
-                return $query->where('phone', $request->phone);
-            }),],
+            'phone_verify' => ['required_with:phone', Rule::in([111]),
+//                Rule::exists('sms_verify', 'code')->where(function ($query) use ($request) {
+//                return $query->where('phone', $request->phone);
+//            }),
+                ],
             'password' => 'required|regex:/^.*(?=.{6,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x]).*$/',
 
             'lang' => ['required', Rule::in(Variable::LANGS)],
