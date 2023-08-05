@@ -101,7 +101,7 @@ class TransactionController extends Controller
                 $data->status = 'need_charge';
 
             //check if user have site for view? add wallet meta to that
-            $userSite = Site::where('owner_id', $user->id)->where('status', 'need_charge')->orWhere('status', 'view')->first();
+            $userSite = Site::where('owner_id', $user->id)->where('status', 'need_charge')->orWhere('status', 'view')->orderBy('meta', 'ASC')->first();
             if ($userSite) {
                 $userSite->meta += $meta_view_reward;
                 if ($userSite->status == 'need_charge')
