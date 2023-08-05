@@ -1,13 +1,13 @@
 <template>
-  <Scaffold>
+  <Scaffold navbar-theme="light">
     <template v-slot:header>
       <title v-if="data">{{ data.name }}</title>
       <meta v-if="data" name="description" :content=" data.description ">
 
     </template>
-    <div class="relative   bg-gradient-to-t from-pink-300 via-purple-300 to-indigo-400">
+    <div v-if="false" class="relative   bg-gradient-to-t from-pink-300 via-purple-300 to-indigo-400">
 
-      <div class="h-48 sm:h-56 md:h-64 lg:h-72 xl:h-96  "></div>
+      <div class="h-32      "></div>
 
       <div class="absolute  bottom-0  start-0 end-0  ">
 
@@ -49,13 +49,7 @@
 
 
             </div>
-            <div class="  px-3    flex  items-center">
-              <PrimaryButton @click="$inertia.visit(route(($page.props.auth.user?'panel.':'')+'site.create' ))"
-                             class="mx-2 p-2 grow  ">
-                {{ __('register_site') }}
-              </PrimaryButton>
-              <SecondaryButton class="mx-2 p-2 grow">{{ __('make_money') }}</SecondaryButton>
-            </div>
+
           </div>
 
         </div>
@@ -86,7 +80,7 @@
       </div>
 
     </div>
-    <section class="flex justify-center">
+    <section class="flex justify-center pt-24">
       <div
           class="w-full   rounded-lg overflow-x-hidden shadow-lg max-w-4xl  xs:mx-2 md:mx-4    blur-xs opacity-75 bg-white  backdrop-filter">
         <div v-if="$page.props.error_message" class="text-center flex flex-col font-bold p-4 text-danger  text-lg">
@@ -98,6 +92,7 @@
         <div v-else-if="data" class=" flex flex-col ">
           <div class="px-4 py-2 text-white bg-primary">{{ data.name }}</div>
           <div v-if="data" class="border-t   p-4 flex flex-col space-y-4 m-4">
+
             <p v-if="data.owner" class="text-sm">
               <span class="text-gray-500 ">{{ __('owner') }}: </span>
               <span>{{ data.owner.fullname }}</span>
@@ -122,7 +117,13 @@
               <div class="flex items-center">
                 <EyeIcon class="w-4 h-4"/>
                 <span class="px-1">{{ __('view') }}:</span>
-                <span class="px-1">{{ data.views }}</span>
+                <span class="px-1">{{ data.view }}</span>
+              </div>
+              <div class=" border-s   py-4 md:mx-6  mx-1"></div>
+              <div class="flex items-center">
+                <UserIcon class="w-4 h-4"/>
+                <span class="px-1">{{ __('viewer') }}:</span>
+                <span class="px-1">{{ data.viewer }}</span>
               </div>
               <div class=" border-s   py-4 md:mx-6  mx-1"></div>
               <div v-if="!hasWallet()" class="flex items-center">
@@ -177,6 +178,14 @@
         </div>
       </div>
     </section>
+    <section>
+      <div class=" w-full px-3 my-8   flex  items-center justify-center">
+        <PrimaryButton @click="$inertia.visit(route(($page.props.auth.user?'panel.':'')+'site.create' ))"
+                       class="mx-2 py-2  px-6  ">
+          {{ __('register_site') }}
+        </PrimaryButton>
+      </div>
+    </section>
     <section class="flex justify-center  p-5 max-w-7xl  mx-auto border-t mt-5">
       <!--      <div class=" w-80 p-3   mx-2  bg-white rounded-lg      lg:flex md:hidden sm:hidden xs:hidden"></div>-->
 
@@ -192,7 +201,7 @@
             <div class="flex items-center">
               <!--              <EyeIcon class="w-4 h-4"/>-->
               <span class="px-1">{{ __('view') }}:</span>
-              <span class="px-1">{{ d.views }}</span>
+              <span class="px-1">{{ d.view }}</span>
             </div>
             <div class=" border-s   py-2"></div>
             <div v-if="!hasWallet()" class="flex items-center">
@@ -222,7 +231,8 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 import {Head, Link} from "@inertiajs/vue3";
 import LoadingIcon from "@/Components/LoadingIcon.vue";
 import Image from "@/Components/Image.vue";
-import {EyeIcon, CurrencyDollarIcon} from "@heroicons/vue/24/outline";
+import {} from "@heroicons/vue/24/outline";
+import {EyeIcon, CurrencyDollarIcon, UserIcon} from "@heroicons/vue/24/solid";
 
 export default {
   data() {
@@ -255,6 +265,7 @@ export default {
     LoadingIcon,
     PrimaryButton,
     SecondaryButton,
+    UserIcon,
   },
   created() {
     // this.isLoading(true);

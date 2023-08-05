@@ -17,7 +17,8 @@ return new class extends Migration {
             $table->id();
             $table->unsignedBigInteger('owner_id');
             $table->unsignedInteger('category_id')->nullable();
-            $table->unsignedInteger('views')->default(0);
+            $table->unsignedInteger('view')->default(0);
+            $table->unsignedInteger('viewer')->default(0);
             $table->string('name', 100);
             $table->string('lang', 2)->nullable();
             $table->string('description', 2048)->nullable();

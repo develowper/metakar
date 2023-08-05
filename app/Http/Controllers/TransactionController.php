@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Helpers\Variable;
+use App\Models\County;
 use App\Models\Site;
 use App\Models\SiteTransaction;
 use App\Models\SiteView;
@@ -24,27 +25,43 @@ class TransactionController extends Controller
         $meta_view_reward = Variable::SITE_VIEW_META_REWARD();
         $ip = $request->ip();
         session()->put('auto_view', $autoView);
-        $next = $user ? Site::where('id', '!=', $siteId)->whereStatus('view')->whereLang(app()->getLocale())->whereIntegerNotInRaw('id', Site::where('owner_id', $user->id)->pluck('id'))->whereIntegerNotInRaw('id', SiteTransaction::where('owner_id', $user->id)->pluck('site_id'))->orderBy('view_fee', 'DESC')->where(function ($query) use ($user, $meta_view_fee) {
-            if ($user->wallet_active)
-                $query->whereColumn('charge', '>=', 'view_fee');
-            else $query->where('meta', '>=', $meta_view_fee);
-        })->firstOrNew()->id
-            : Site::where('id', '!=', $siteId)->whereStatus('view')->whereLang(app()->getLocale())->whereIntegerNotInRaw('id', SiteView::where('ip', $ip)->pluck('site_id'))->where(function ($query) use ($user, $meta_view_fee) {
-                $query->where('meta', '>=', $meta_view_fee);
-            })->firstOrNew()->id;
+        if (!session()->get('site_views', null))
+            session()->put('site_views', []);
+        if ($siteId)
+            session()->push('site_views', $siteId);
+
+        $loop = 0;
+        while ($loop < 2) {
+            $loop++;
+            $seen = session()->get('site_views', []);
+            $next = $user ? Site::where('id', '!=', $siteId)->whereStatus('view')->whereLang(app()->getLocale())->whereIntegerNotInRaw('id', Site::where('owner_id', $user->id)->pluck('id'))->whereIntegerNotInRaw('id', $seen/* SiteTransaction::where('owner_id', $user->id)->pluck('site_id')*/)->orderBy('view_fee', 'DESC')->where(function ($query) use ($user, $meta_view_fee) {
+                if ($user->wallet_active)
+                    $query->whereColumn('charge', '>=', 'view_fee');
+                else $query->where('meta', '>=', $meta_view_fee);
+            })->firstOrNew()->id
+                : Site::where('id', '!=', $siteId)->whereStatus('view')->whereLang(app()->getLocale())->whereIntegerNotInRaw('id', $seen /*SiteView::where('ip', $ip)->pluck('site_id')*/)->where(function ($query) use ($user, $meta_view_fee) {
+                    $query->where('meta', '>=', $meta_view_fee);
+                })->firstOrNew()->id;
+            if (!$next && count($seen) > 0)
+                session()->forget('site_views');
+            else break;
+        }
         if (!$data || $data->status == 'inactive' || $data->status == 'block') {
             return response()->json(['message' => "$siteId" . __('item_is_inactive'), 'next' => $next,], $errorStatus);
         }
         if (!$user) {
             if ($ip && !SiteView::where('ip', $ip)->where('site_id', $data->id)->exists()) {
                 SiteView::create(['ip' => $ip, 'site_id' => $data->id]);
-                if ($data->meta >= $meta_view_fee)
-                    $data->meta -= $meta_view_fee;
-                else
-                    $data->status = 'need_charge';
-                $data->views++;
-                $data->save();
+                $data->viewer++;
             }
+            if ($data->meta >= $meta_view_fee)
+                $data->meta -= $meta_view_fee;
+            else
+                $data->status = 'need_charge';
+
+
+            $data->view++;
+            $data->save();
             return response()->json(['message' => __('login_or_register_for_get_reward'), 'next' => $next,], $errorStatus);
         }
         if ($user->is_blocked || !$user->is_active) {
@@ -53,9 +70,9 @@ class TransactionController extends Controller
         if ($user->id == $data->owner_id) {
             return response()->json(['message' => __('item_is_yours'), 'next' => $next,], $errorStatus);
         }
-        if (SiteTransaction::where('owner_id', $user->id)->where('site_id', $data->id)->first()) {
-            return response()->json(['message' => __('you_viewed_this_site_before'), 'next' => $next,], $errorStatus);
-        }
+//        if (SiteTransaction::where('owner_id', $user->id)->where('site_id', $data->id)->first()) {
+//            return response()->json(['message' => __('you_viewed_this_site_before'), 'next' => $next,], $errorStatus);
+//        }
         if ($data->status != 'view' || ($user->wallet_active && $data->charge < $data->view_fee) || (!$user->wallet_active && $data->meta < $meta_view_fee)) {
             if ($data->status == 'view') {
                 $data->status = 'need_charge';
@@ -65,6 +82,7 @@ class TransactionController extends Controller
         }
 
         $is_meta = null;
+
 
         if ($user->wallet_active && $data->charge >= $data->view_fee) {
             $data->charge -= $data->view_fee;
@@ -109,7 +127,13 @@ class TransactionController extends Controller
                 'site_id' => $siteId,
 
             ]);
-            $data->views++;
+            $data->view++;
+            //add unique viewers
+            if (!SiteTransaction::where('owner_id', $user->id)->where('site_id', $data->id)->first()
+                && !SiteView::where('ip', $ip)->where('site_id', $data->id)->first()) {
+                $data->viewer++;
+
+            }
             $data->save();
             return response()->json(['message' => $message, 'next' => $next,], $successStatus);
         }

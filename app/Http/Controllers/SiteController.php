@@ -90,7 +90,8 @@ class SiteController extends Controller
         $data = Site::where('id', $site)->with('owner:id,fullname,phone')->first();
         $auto_view = session()->get('auto_view', true);
         $meta_view_fee = Variable::SITE_VIEW_META_FEE();
-
+//        $seen = session()->forget('site_views');
+        $seen = session()->get('site_views', []);
 //        if (!$user) {
 //            $data = ['name' => __('first_login_or_register'),];
 ////            $message = __('first_login_or_register');
@@ -111,12 +112,12 @@ class SiteController extends Controller
         }
         return Inertia::render('Site/View', [
             'auto_view' => $auto_view,
-            'available_sites' => $user ? Site::whereStatus('view')->whereLang(app()->getLocale())->whereIntegerNotInRaw('id', Site::where('owner_id', $user->id)->pluck('id'))->whereIntegerNotInRaw('id', SiteTransaction::where('owner_id', $user->id)->pluck('site_id'))->where(function ($query) use ($user, $meta_view_fee) {
+            'available_sites' => $user ? Site::whereStatus('view')->whereLang(app()->getLocale())->whereIntegerNotInRaw('id', Site::where('owner_id', $user->id)->pluck('id'))->whereIntegerNotInRaw('id', $seen/*SiteTransaction::where('owner_id', $user->id)->pluck('site_id')*/)->where(function ($query) use ($user, $meta_view_fee) {
                 if ($user->wallet_active)
                     $query->whereColumn('charge', '>=', 'view_fee');
                 else $query->where('meta', '>=', $meta_view_fee);
             })->count()
-                : Site::whereStatus('view')->whereLang(app()->getLocale())->whereIntegerNotInRaw('id', SiteView::where('ip', $request->ip())->pluck('site_id'))->where('meta', '>=', $meta_view_fee)->count(),
+                : Site::whereStatus('view')->whereLang(app()->getLocale())->whereIntegerNotInRaw('id', $seen /*SiteView::where('ip', $request->ip())->pluck('site_id')*/)->where('meta', '>=', $meta_view_fee)->count(),
             'error_message' => $message,
             'error_link' => $link,
             'data' => $data,
@@ -156,8 +157,8 @@ class SiteController extends Controller
         $paginate = $request->paginate ?: 24;
         $meta_view_fee = Variable::SITE_VIEW_META_FEE();
         $query = Site::query();
-
-        $query = $query->select('id', 'name', 'status', 'category_id', 'created_at', 'view_fee', 'views');
+//        $seen = session()->get('site_views', []);
+        $query = $query->select('id', 'name', 'status', 'category_id', 'created_at', 'view_fee', 'view', 'viewer');
         $query = $query->whereStatus('view')->whereLang(app()->getLocale());
         if ($search)
             $query = $query->where('name', 'like', "%$search%")->orWhere('link', 'like', "%$search%");

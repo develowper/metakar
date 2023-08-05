@@ -39,6 +39,11 @@ use Inertia\Inertia;
 |
 */
 Route::get('test', function () {
+    session()->put('a', [1]);
+    session()->push('a', 2);
+    session()->push('a', 2);
+//    session()->put('a', []);
+    return session()->get('a', []);
     return storage_path(Storage::allFiles("public/faker/sites")[0]);
 //    File::makeDirectory(Storage::path("public/sites"), $mode = 0755,);
 //    return Telegram::log(null, 'site_created', Site::find(2));
