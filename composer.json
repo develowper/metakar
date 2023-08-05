@@ -13,6 +13,7 @@
         "ext-gd": "*",
         "guzzlehttp/guzzle": "^7.2",
         "inertiajs/inertia-laravel": "^0.6.8",
+        "ippanel/php-rest-sdk": "^2.0",
         "laravel/framework": "^9.19",
         "laravel/helpers": "^1.6",
         "laravel/jetstream": "^3.0",

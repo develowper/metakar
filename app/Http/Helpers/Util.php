@@ -149,4 +149,16 @@ class Util
         echo 'optimize ' . "$exitCode | " . PHP_EOL;
 
     }
+
+    public
+    static function generateRandomNumber($length = 8)
+    {
+        $random = "";
+        srand((double)microtime() * 1000000);
+        $data = "123456123456789071234567890890";
+        for ($i = 0; $i < $length; $i++) {
+            $random .= substr($data, (rand() % (strlen($data))), 1);
+        }
+        return $random;
+    }
 }

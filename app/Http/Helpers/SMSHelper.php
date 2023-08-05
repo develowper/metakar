@@ -13,10 +13,10 @@ class SMSHelper
 
     public function __construct()
     {
-        $this->register_pattern = 'i5gqousv1o5ndev';
+        $this->register_pattern = '8v0sqgbhws7s5u6';
         $this->forget_password_pattern = '43z2ci5l612ro0x';
-        $this->server_number = '+985000125475';
-//        $this->server_number = '+983000505';
+//        $this->server_number = '+985000125475';
+        $this->server_number = '+983000505';
 //        $this->server_number = '+9850004150400040';
 //        $this->server_number = '+9850004150001232';
         $this->apiKey = env('SMS_API');
@@ -28,8 +28,8 @@ class SMSHelper
 
     public function sendOTPSMS($to, $msg, $cmnd = 'register')
     {
-        if ($to == "09018945844" || $to == "9018945844") return;
-        $name = "هم سیگنال";
+//        if ($to == "09018945844" || $to == "9018945844") return;
+        $name = "متاکار";
         $pattern = $this->register_pattern;
         $code = null;
 
