@@ -53,7 +53,7 @@ class SiteRequest extends FormRequest
             'tags' => ['nullable', 'max:1024'],
             'category' => ['nullable', Rule::in($types)],
             'description' => ['nullable', 'max:2048'],
-            'img' => ['nullable', 'base64_image_size:' . Variable::SITE_IMAGE_LIMIT_MB * 1024, 'base64_image_mime:' . implode(",", Variable::SITE_ALLOWED_MIMES)],
+            'img' => ['required', 'base64_image_size:' . Variable::SITE_IMAGE_LIMIT_MB * 1024, 'base64_image_mime:' . implode(",", Variable::SITE_ALLOWED_MIMES)],
 
         ];
     }

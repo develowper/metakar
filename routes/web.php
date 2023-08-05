@@ -12,7 +12,9 @@ use App\Http\Controllers\PodcastController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SiteController;
 use App\Http\Controllers\VideoController;
+use App\Http\Helpers\SMSHelper;
 use App\Http\Helpers\Telegram;
+use App\Http\Helpers\Util;
 use App\Http\Helpers\Variable;
 use App\Models\Business;
 use App\Models\Category;
@@ -23,6 +25,7 @@ use App\Models\Site;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
@@ -39,11 +42,14 @@ use Inertia\Inertia;
 |
 */
 Route::get('test', function () {
-    session()->put('a', [1]);
-    session()->push('a', 2);
-    session()->push('a', 2);
-//    session()->put('a', []);
-    return session()->get('a', []);
+    $code = Util::generateRandomNumber(5);
+    $res = (new SMSHelper())->sendOTPSMS("09018945844", "$code", "register");
+    if ($res) {
+        DB::table('sms_verify')->insert(
+            ['code' => $code, 'phone' => "09018945844"]
+        );
+        return $res;
+    }
     return storage_path(Storage::allFiles("public/faker/sites")[0]);
 //    File::makeDirectory(Storage::path("public/sites"), $mode = 0755,);
 //    return Telegram::log(null, 'site_created', Site::find(2));
