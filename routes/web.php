@@ -42,15 +42,7 @@ use Inertia\Inertia;
 |
 */
 Route::get('test', function () {
-    $code = Util::generateRandomNumber(5);
-    $res = (new SMSHelper())->sendOTPSMS("09018945844", "$code", "register");
-    if ($res) {
-        DB::table('sms_verify')->insert(
-            ['code' => $code, 'phone' => "09018945844"]
-        );
-        return $res;
-    }
-    return storage_path(Storage::allFiles("public/faker/sites")[0]);
+   
 //    File::makeDirectory(Storage::path("public/sites"), $mode = 0755,);
 //    return Telegram::log(null, 'site_created', Site::find(2));
 
