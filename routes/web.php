@@ -42,7 +42,7 @@ use Inertia\Inertia;
 |
 */
 Route::get('test', function () {
-   
+
 //    File::makeDirectory(Storage::path("public/sites"), $mode = 0755,);
 //    return Telegram::log(null, 'site_created', Site::find(2));
 

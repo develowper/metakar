@@ -56,14 +56,6 @@
 
             </div>
             <div class="my-2">
-              <PhoneFields
-                  v-model:phone="form.phone"
-                  v-model:phone-verify="form.phone_verify"
-                  :phone-error="form.errors.phone"
-                  :phone-verify-error="form.errors.phone_verify"
-              />
-            </div>
-            <div class="my-2">
               <TextInput
                   id="password"
                   type="password"
@@ -82,6 +74,15 @@
               </TextInput>
 
             </div>
+            <div class="my-2">
+              <PhoneFields
+                  v-model:phone="form.phone"
+                  v-model:phone-verify="form.phone_verify"
+                  :phone-error="form.errors.phone"
+                  :phone-verify-error="form.errors.phone_verify"
+              />
+            </div>
+
             <div class="my-2">
               <TextInput
                   id="name"
