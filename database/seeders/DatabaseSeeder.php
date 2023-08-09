@@ -3,7 +3,9 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Business;
 use App\Models\Category;
+use App\Models\County;
 use App\Models\Doc;
 use App\Models\Site;
 use Carbon\Carbon;
@@ -30,12 +32,50 @@ class DatabaseSeeder extends Seeder
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
 
         $this->createSites(50);
+        $this->createBusinesses(50);
         // \App\Models\User::factory(10)->create();
 
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+    }
+
+    private function createBusinesses($count = 30)
+    {
+        $allFiles = Storage::allFiles("public/businesses");
+        foreach ($allFiles as $item)
+            File::delete($item);
+        DB::table('businesses')->truncate();
+        $socials = [
+            ['name' => 'تلگرام', 'value' => 't.me/develowper',],
+            ['name' => 'ایتا', 'value' => 'eitaa.com/vartastudio',],
+            ['name' => 'واتساپ', 'value' => 'wa.me/00989398793845',],
+            ['name' => 'ایمیل', 'value' => 'moj2raj2@gmail.com',],
+        ];
+        for ($i = 0; $i < $count; $i++) {
+
+            $name = $this->faker->company;
+            $county = County::inRandomOrder()->first();
+
+            $data = Business::create([
+                'owner_id' => $this->faker->numberBetween(1, 2),
+                'category_id' => $this->faker->randomElement(Category::pluck('id')),
+                'province_id' => $county->province_id,
+                'county_id' => $county->id,
+                'name' => $name,
+                'slug' => str_slug($name),
+                'description' => $this->faker->realText($this->faker->numberBetween(200, 1024)),
+                'phone' => $this->faker->numerify("09#########"),
+                'tags' => implode(",", $this->faker->randomElements(["سایت", "بازدید", "تگ", "تست", "خدمات", "افزایش",], $this->faker->numberBetween(0, 5))),
+                'status' => $this->faker->randomElement(["active", "active", "active", "review", "inactive"]),
+                'lang' => 'fa',
+                'view' => 0,
+                'socials' => json_encode($this->faker->randomElements($socials, $this->faker->numberBetween(0, 4))),
+                'created_at' => Carbon::now(),
+            ]);
+            $this->makeFile("businesses", null, $data->id);
+        }
     }
 
     private function createSites($count = 30)
@@ -92,5 +132,35 @@ class DatabaseSeeder extends Seeder
 
         copy($file->path(), (storage_path("app/public/$type/") . "$id.jpg" /*. $file->extension()*/));
 
+    }
+
+    private function makeGallery($type, $id)
+    {
+        $fakeFiles = Storage::allFiles("public/faker/$type");
+        if (!File::exists("storage/app/public/$type/$id")) {
+//            Storage::makeDirectory("public/$type", 766);
+            File::makeDirectory(Storage::path("public/$type/$id"), $mode = 0755,);
+        }
+        for ($i = 0; $i < [1, 2, 3, 4][array_rand([1, 2, 3, 4])]; $i++) {
+
+            $path = storage_path('app/' . $fakeFiles[array_rand($fakeFiles)]);
+            //profile picture
+            $file = new UploadedFile(
+                $path,
+                File::name($path) . '.' . File::extension($path),
+                File::mimeType($path),
+                null,
+                true
+
+            );
+            $name = 1;
+            $allFiles = Storage::allFiles("public/faker/$type/$id");
+            foreach ($allFiles as $path) {
+                if (str_contains($path, "/$name.jpg")) {
+                    $name++;
+                }
+            }
+            copy($file->path(), (storage_path("app/public/$type/$id") . "$name.jpg" /*. $file->extension()*/));
+        }
     }
 }
