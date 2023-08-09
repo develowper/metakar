@@ -43,9 +43,9 @@ class DatabaseSeeder extends Seeder
 
     private function createBusinesses($count = 30)
     {
-        $allFiles = Storage::allFiles("public/businesses");
-        foreach ($allFiles as $item)
-            File::delete($item);
+        File::deleteDirectory("storage/app/public/businesses");
+        File::makeDirectory("storage/app/public/businesses");
+
         DB::table('businesses')->truncate();
         $socials = [
             ['name' => 'تلگرام', 'value' => 't.me/develowper',],
@@ -74,15 +74,14 @@ class DatabaseSeeder extends Seeder
                 'socials' => json_encode($this->faker->randomElements($socials, $this->faker->numberBetween(0, 4))),
                 'created_at' => Carbon::now(),
             ]);
-            $this->makeFile("businesses", null, $data->id);
+            $this->makeGallery("businesses", $data->id);
         }
     }
 
     private function createSites($count = 30)
     {
-        $allFiles = Storage::allFiles("public/sites");
-        foreach ($allFiles as $item)
-            File::delete($item);
+        File::deleteDirectory("storage/app/public/sites");
+        File::makeDirectory("storage/app/public/sites");
         DB::table('sites')->truncate();
 
         for ($i = 0; $i < $count; $i++) {
@@ -141,9 +140,12 @@ class DatabaseSeeder extends Seeder
 //            Storage::makeDirectory("public/$type", 766);
             File::makeDirectory(Storage::path("public/$type/$id"), $mode = 0755,);
         }
-        for ($i = 0; $i < [1, 2, 3, 4][array_rand([1, 2, 3, 4])]; $i++) {
+        $rand = [1, 2, 3, 4][array_rand([1, 2, 3, 4])];
+
+        for ($i = 0; $i < $rand; $i++) {
 
             $path = storage_path('app/' . $fakeFiles[array_rand($fakeFiles)]);
+
             //profile picture
             $file = new UploadedFile(
                 $path,
@@ -154,13 +156,14 @@ class DatabaseSeeder extends Seeder
 
             );
             $name = 1;
-            $allFiles = Storage::allFiles("public/faker/$type/$id");
+            $allFiles = Storage::allFiles("public/businesses/$id");
+
             foreach ($allFiles as $path) {
                 if (str_contains($path, "/$name.jpg")) {
                     $name++;
                 }
             }
-            copy($file->path(), (storage_path("app/public/$type/$id") . "$name.jpg" /*. $file->extension()*/));
+            copy($file->path(), (storage_path("app/public/$type/$id/$name.jpg")   /*. $file->extension()*/));
         }
     }
 }
