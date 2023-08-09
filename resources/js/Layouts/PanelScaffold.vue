@@ -3,7 +3,7 @@
     <Head>
       <slot name="header"/>
     </Head>
-    <Alert v-show="$page.props.flash.status" ref="alert"/>
+    <Alert ref="alert"/>
     <Dialog ref="modal"/>
     <Toast ref="toast"/>
     <div class="  flex h-screen antialiased text-gray-900 bg-gray-100 dark:bg-dark dark:text-light">
@@ -12,14 +12,14 @@
 
         <div class="flex items-center justify-center  w-full h-full  ">
           <div class="flex justify-center items-center space-x-1 text-sm text-gray-700">
-            <LoadingIcon type="line-dot" class=" fill-primary"/>
+            <LoadingIcon :percentage="percentage" type="line-dot" class=" fill-primary"/>
 
           </div>
         </div>
       </div>
       <!--      Dynamic Colors need to be added statically-->
       <div
-          class="hidden border-success-200 border-success-300 border-danger-200 border-danger-300 border-warning-200 border-warning-300 border-orange-200 border-orange-300 border-primary-200 text-danger-500 text-success-500 text-danger bg-success-100 bg-orange-100 bg-danger-200 bg-danger-100  hover:bg-orange-200 hover:bg-danger hover:bg-success-200    text-orange-500"></div>
+          class="hidden border-success-200 border-success-300 border-danger-200 border-danger-300 border-warning-200 border-warning-300 border-orange-200 border-orange-300 border-primary-200 text-danger-500 text-success-500 text-danger bg-success-100 bg-orange-100 bg-danger-200 bg-danger-100  hover:bg-orange-200 hover:bg-danger hover:bg-danger-200 hover:bg-success-200    text-orange-500"></div>
 
       <!-- Sidebar -->
       <aside class="  overflow-x-hidden  ">
@@ -251,6 +251,7 @@ export default {
     return {
       isDark: false,
       loading: false,
+      percentage: null,
       toast: null,
       showSidenav: false,
     }
@@ -281,15 +282,19 @@ export default {
     });
 
     this.emitter.on('showDialog', (e) => {
-
       if (this.$refs.modal)
-        this.$refs.modal.show(e.type, e.message);
+        this.$refs.modal.show(e.type, e.message, e.button, e.action);
     });
 
-    this.emitter.on('loading', (e) => {
+    this.emitter.on('loading', (e, percentage) => {
       this.loading = e;
+      this.percentage = percentage;
     });
 
+    if (this.$page.props.flash.message) {
+
+      this.$refs.alert.show(this.$page.props.flash.status, this.$page.props.flash.message);
+    }
   },
 
   methods: {

@@ -1,4 +1,7 @@
 <template>
+  <template v-if="percentage">
+    <div class="text-center text-primary"> {{ percentage }}%</div>
+  </template>
   <template v-if="!type" class="transition-all duration-500 ">
     <svg fill="#fff" :class="class" width="135" height="140" viewBox="0 0 135 140" xmlns="http://www.w3.org/2000/svg">
       <rect y="10" width="15" height="120" rx="6">
@@ -248,7 +251,7 @@ export default {
   data() {
     return {}
   },
-  props: ['type', 'class']
+  props: ['type', 'class','percentage']
 }
 </script>
 <style scoped lang="scss">

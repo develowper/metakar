@@ -14,7 +14,7 @@
         <input
             :value="phone"
             @input="$emit('update:phone', $event.target.value); "
-            class="  flex-auto rounded-e  border border-solid border-neutral-300    px-3   text-neutral-700   transition duration-200 ease-in-out focus:z-[3] focus:border-primary focus:text-neutral-700   dark:border-neutral-600 dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:focus:border-primary"
+            class="  flex-auto rounded-0  border border-solid border-neutral-300    px-3   text-neutral-700   transition duration-200 ease-in-out focus:z-[3] focus:border-primary focus:text-neutral-700   dark:border-neutral-600 dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:focus:border-primary"
             @visibility.window="$el.type =  'text'  "
             ref="input_phone"/>
         <span @click="!loading && timer>=60 ?sendVerificationCode(phone):null"
@@ -28,7 +28,7 @@
           <!--            <PaperAirplaneIcon class="h-5 w-5 text-white font-bold "/>-->
         </span>
       </div>
-
+      <InputError class="mt-1" :message="phoneError"/>
     </div>
     <div>
       <InputLabel class="my-2" for="phone_verify" :value="__('phone_verify')"/>
@@ -49,7 +49,7 @@
             ref="input_phone_verify"/>
 
       </div>
-
+      <InputError class="mt-1" :message="phoneError"/>
     </div>
   </div>
 
@@ -62,6 +62,7 @@ import {Link} from "@inertiajs/vue3";
 import {CurrencyDollarIcon, EyeIcon} from "@heroicons/vue/24/outline";
 import LoadingIcon from "@/Components/LoadingIcon.vue";
 import InputLabel from "@/Components/InputLabel.vue";
+import InputError from "@/Components/InputError.vue";
 import {getCurrentInstance} from 'vue'
 import {
   TagIcon,
@@ -89,6 +90,7 @@ export default {
     LoadingIcon,
     PhoneIcon,
     InputLabel,
+    InputError,
   },
   created() {
     // this.isLoading(true);

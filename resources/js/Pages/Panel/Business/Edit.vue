@@ -2,7 +2,7 @@
 
   <Panel>
     <template v-slot:header>
-      <title>{{__('new_site')}}</title>
+      <title>{{__('edit_business')}}</title>
     </template>
 
 
@@ -10,27 +10,37 @@
       <!-- Content header -->
       <div
           class="flex items-center justify-start px-4 py-2 text-primary-500 border-b md:py-4 dark:border-primary-darker">
-        <FolderPlusIcon class="h-7 w-7 mx-3"/>
+        <PencilSquareIcon class="h-7 w-7 mx-3"/>
 
-        <h1 class="text-2xl font-semibold">{{ __('new_site') }}</h1>
+        <h1 class="text-2xl font-semibold">{{ __('edit_business') }}</h1>
 
       </div>
 
       <!-- Content -->
-      <div class="px-2 py-4 my-2 mx-auto md:px-4 bg-white shadow-md overflow-hidden  rounded-lg md:max-w-5xl ">
+      <div v-if="$page.props.data" class="px-2  md:px-4">
 
         <div
-            class="lg:grid      lg:grid-cols-3     mt-6 px-2 md:px-4 py-4   ">
-          <div class="flex-col self-center  m-2 items-center rounded-lg max-w-xs   mx-auto lg:mx-2   ">
-            <ImageUploader mode="edit" v-if="data" :preload="route('storage.sites')+`/${data.id}.jpg`"
-                           ref="imageCropper"
-                           :label="__('image_jpg')"
-                           cropRatio="1.25" id="img"
-                           height="10" class="grow"/>
-            <InputError class="mt-1" :message="form.errors.img"/>
+            class="lg:grid      lg:grid-cols-3  mx-auto md:max-w-5xl   mt-6 px-2 md:px-4 py-4 bg-white shadow-md overflow-hidden  rounded-lg  ">
+          <div
+              class="lg:flex-col  flex flex-wrap    md:m-2  lg:mx-2 items-stretch rounded-lg    ">
+            <InputLabel class="m-2 w-full md:text-start lg:text-center"
+                        :value="__('business_images_max_%s_item').replace('%s',$page.props.max_images_limit)"/>
+
+            <div v-for="(data,idx) in $page.props.max_images_limit"
+                 class="m-1 md:max-w-[150px] lg:max-w-xs  ">
+              <ImageUploader mode="edit"
+
+                             :link="route('business.update')"
+                             :preload="$page.props.data.images[idx]" ref="imageCropper"
+                             :label="__('image_jpg')" :for-id="$page.props.data.id"
+                             cropRatio="1.25" :id="'img-'+idx"
+                             class="  "/>
+              <InputError class="mt-1 text-xs" :message="form.errors.images ? form.errors.images.idx:null "/>
+            </div>
+
           </div>
           <div
-              class="flex flex-col mx-auto   col-span-2 w-full md:max-w-xl lg:border-s px-2"
+              class="flex flex-col mx-2   col-span-2 w-full   lg:border-s px-2"
           >
             <form @submit.prevent="submit">
 
@@ -59,28 +69,51 @@
                 </TextInput>
 
               </div>
+
               <div class="my-2">
-                <TextInput
-                    id="link"
-                    type="text"
-                    :placeholder="__('link')"
-                    classes="  "
-                    v-model="form.link"
-                    autocomplete="link"
-                    :error="form.errors.link"
-                >
-                  <template v-slot:prepend>
-                    <div class="p-3">
-                      <LinkIcon class="h-5 w-5"/>
+                <PhoneFields
+                    v-model:phone="form.phone"
+                    v-model:phone-verify="form.phone_verify"
+                    :phone-error="form.errors.phone"
+                    :phone-verify-error="form.errors.phone_verify"
+                />
+              </div>
+              <div class="my-2">
+                <ProvinceCounty
+                    ref="provinceCounty"
+                    v-model:province-data="form.province_id"
+                    v-model:county-data="form.county_id"
+                    :provinces-data="$page.props.provinces"
+                    :counties-data="$page.props.counties"
+                    :provinceError="form.errors.province_id"
+                    :countyError="form.errors.county_id"
+                />
+
+              </div>
+
+              <div class="my-2">
+                <Selector ref="categorySelector" :data="$page.props.categories" :label="__('category')"
+                          id="category_id" v-model="form.category_id">
+                  <template v-slot:append>
+                    <div class="p-1 px-4">
+                      <Squares2X2Icon class="h-5 w-5"/>
                     </div>
                   </template>
+                </Selector>
+              </div>
+              <div class="my-2">
+                <SocialFields
+                    ref="socials"
+                    classes="  "
+                    v-model="form.socials"
+                    :error="form.errors.socials"
+                />
 
-                </TextInput>
 
               </div>
               <div class="my-2">
-
                 <TagInput
+                    id="tags"
                     ref="tags"
                     :placeholder="__('tags')"
                     classes="  "
@@ -92,7 +125,6 @@
               </div>
               <div class="my-2">
                 <TextInput
-
                     :multiline="true"
                     id="description"
                     type="text"
@@ -111,10 +143,18 @@
                 </TextInput>
 
               </div>
-
+              <div v-if="form.progress" class="shadow w-full bg-grey-light m-2   bg-gray-200 rounded-full">
+                <div
+                    class=" bg-primary rounded  text-xs leading-none py-[.1rem] text-center text-white duration-300 "
+                    :class="{' animate-pulse': form.progress.percentage <100}"
+                    :style="`width: ${form.progress.percentage }%`">
+                  <span class="animate-bounce">{{ form.progress.percentage }}</span>
+                </div>
+              </div>
               <div class="    mt-4">
 
                 <PrimaryButton class="w-full  "
+                               @click.prevent="  showDialog('primary',__('will_active_after_review'), __('ok') , submit ) "
                                :class="{ 'opacity-25': form.processing }"
                                :disabled="form.processing">
                   <LoadingIcon class="w-4 h-4 mx-3 " v-if="  form.processing"/>
@@ -122,22 +162,12 @@
                 </PrimaryButton>
 
               </div>
-              <div class="my-2">
-                <Selector ref="categorySelector" :data="$page.props.categories" :label="__('category')"
-                          id="category_id">
-                  <template v-slot:append>
-                    <div class="p-1 px-4">
-                      <Squares2X2Icon class="h-5 w-5"/>
-                    </div>
-                  </template>
-                </Selector>
-              </div>
 
             </form>
           </div>
 
-        </div>
 
+        </div>
       </div>
     </template>
 
@@ -158,6 +188,7 @@ import {
   Bars2Icon,
   LinkIcon,
   Squares2X2Icon,
+  PencilSquareIcon,
 
 } from "@heroicons/vue/24/outline";
 import {QuestionMarkCircleIcon,} from "@heroicons/vue/24/solid";
@@ -174,6 +205,9 @@ import Tooltip from "@/Components/Tooltip.vue";
 import TagInput from "@/Components/TagInput.vue";
 import ImageUploader from "@/Components/ImageUploader.vue";
 import Selector from "@/Components/Selector.vue";
+import ProvinceCounty from "@/Components/ProvinceCounty.vue";
+import PhoneFields from "@/Components/PhoneFields.vue";
+import SocialFields from "@/Components/SocialFields.vue";
 
 export default {
 
@@ -181,16 +215,21 @@ export default {
     return {
       data: null,
       form: useForm({
-        id: '',
-        img: '',
+        id: this.$page.props.data.id,
+        phone: null,
+        phone_verify: null,
         lang: null,
         name: null,
         link: null,
         category_id: null,
-        tags: '',
+        province_id: this.$page.props.data.province_id,
+        socials: null,
+        county_id: this.$page.props.data.county_id,
+        tags: null,
         description: '',
 
       }),
+      images: [],
     }
   },
   components: {
@@ -218,35 +257,62 @@ export default {
     QuestionMarkCircleIcon,
     Selector,
     Squares2X2Icon,
+    ProvinceCounty,
+    PhoneFields,
+    SocialFields,
+    PencilSquareIcon,
+
+  },
+  created() {
 
   },
   mounted() {
     this.data = this.$page.props.data;
     // console.log(this.data);
+
     this.form.name = this.data.name;
+    this.form.phone = this.data.phone;
     this.form.link = this.data.link;
-    this.$refs.categorySelector.selected = this.form.category_id = this.data.category_id;
-    this.$refs.tags.preLoad(this.data.tags);
+    this.form.category_id = this.data.category_id;
+    this.form.province_id = this.data.province_id;
+    this.form.county_id = this.data.county_id;
+    this.$refs.socials.set(this.data.socials);
+    this.$refs.tags.set(this.data.tags);
     this.form.description = this.data.description;
     this.$refs.langSelector.selected = this.data.lang;
   },
   methods: {
     submit() {
-      this.form.id = this.data.id;
-      this.form.img = this.$refs.imageCropper.getCroppedData();
+
+      this.form.socials = this.$refs.socials.get();
+      this.form.uploading = false;
+
       this.form.lang = this.$refs.langSelector.selected;
-      this.form.category_id = this.$refs.categorySelector.selected;
+      // this.form.category_id = this.$refs.categorySelector.selected;
       this.form.clearErrors();
-      this.form.patch(route('site.update'), {
+
+      // this.isLoading(true, this.form.progress ? this.form.progress.percentage : null);
+      // this.images = [];
+      // for (let i = 0; i < this.$page.props.max_images_limit; i++) {
+      //   let tmp = this.$refs.imageCropper[i].getCroppedData();
+      //   if (tmp) this.images.push(tmp);
+      // }
+      this.form.patch(route('business.update'), {
         preserveScroll: false,
-        onFinish: (data) => {
-        },
+
         onSuccess: (data) => {
-          this.showAlert(this.$page.props.flash.status, this.$page.props.flash.message);
-          // this.form.reset();
+          if (this.$page.props.flash.status)
+            this.showAlert(this.$page.props.flash.status, this.$page.props.flash.message);
 
         },
-        onError: () => this.showToast('danger', Object.values(this.form.errors).join("<br/>"))
+        onError: () => {
+          this.showToast('danger', Object.values(this.form.errors).join("<br/>"));
+        },
+        onFinish: (data) => {
+          // this.isLoading(false,);
+          if (this.$page.props.flash.status)
+            this.showAlert(this.$page.props.flash.status, this.$page.props.flash.message);
+        },
       });
     }
   },

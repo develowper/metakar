@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Helpers\SMSHelper;
 use App\Http\Helpers\Telegram;
 use App\Http\Helpers\Util;
 use App\Http\Helpers\Variable;
@@ -207,10 +208,8 @@ class SiteController extends Controller
         $site = Site::create($request->all());
         if ($site) {
             $res = ['flash_status' => 'success', 'flash_message' => __('created_successfully_and_activete_after_review')];
-            if (!$request->img)
-                Util::createScreenshot($site->link, Variable::IMAGE_FOLDERS[Site::class], $site->id);
-            else
-                Util::createImage($request->img, Variable::IMAGE_FOLDERS[Site::class], $site->id);
+            Util::createImage($request->img, Variable::IMAGE_FOLDERS[Site::class], $site->id);
+            SMSHelper::deleteCode($phone);
             Telegram::log(null, 'site_created', $site);
         } else    $res = ['flash_status' => 'danger', 'flash_message' => __('response_error')];
         return to_route('panel.site.index')->with($res);

@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Http\Helpers\Variable;
+use App\Models\Business;
 use App\Models\Category;
 use App\Models\County;
 use App\Models\Sport;
@@ -31,8 +32,10 @@ class BusinessRequest extends FormRequest
     {
         $user = auth()->user();
         $types = Category::pluck('id');
+        $editMode = (bool)$this->id;
         $request = $this;
         $tmp = [];
+        $phoneChanged = $this->id && Business::findOrNew($this->id)->phone != $this->phone;
         if ($this->cmnd)
             return [
 
@@ -40,24 +43,24 @@ class BusinessRequest extends FormRequest
         $tmp = [
             'lang' => ['required', Rule::in(Variable::LANGS)],
             'name' => ['required', 'max:100', Rule::unique('sites', 'name')->ignore($this->id)],
-            'link' => ['required', 'starts_with:https://', 'url', 'max:1024', Rule::unique('sites', 'name')->ignore($this->id)],
             'tags' => ['nullable', 'max:1024'],
-            'province' => 'required|in:' . County::where('id', $this->county)->firstOrNew()->province_id,
-            'county' => 'required|' . Rule::in(County::pluck('id')),
-            'category' => ['nullable', Rule::in($types)],
+            'province_id' => 'required|in:' . County::where('id', $this->county_id)->firstOrNew()->province_id,
+            'county_id' => 'required|' . Rule::in(County::pluck('id')),
+            'category_id' => ['nullable', Rule::in($types)],
             'description' => ['nullable', 'max:2048'],
-            'img' => ['nullable', 'base64_image_size:' . Variable::SITE_IMAGE_LIMIT_MB * 1024, 'base64_image_mime:' . implode(",", Variable::SITE_ALLOWED_MIMES)],
-            'phone' => 'required|numeric|digits:11|regex:/^09[0-9]+$/' . '|unique:businesses,phone',
-            'phone_verify' => [Rule::requiredIf(function () use ($request, $user) {
-                return !$user || $request->phone != $user->phone;
-            }), !$user || $request->phone != $user->phone ? Rule::exists('sms_verify', 'code')->where(function ($query) use ($request) {
+            'phone' => ['required', 'numeric', 'digits:11', 'regex:/^09[0-9]+$/', Rule::unique('businesses', 'phone')->ignore($this->id)],
+            'phone_verify' => [Rule::requiredIf(function () use ($request, $user, $phoneChanged, $editMode) {
+
+                return $phoneChanged
+                    || !$user || (!$editMode && $request->phone != $user->phone);
+            }), !$user || (!$editMode && $request->phone != $user->phone) ? Rule::exists('sms_verify', 'code')->where(function ($query) use ($request) {
                 return $query->where('phone', $request->phone);
             }) : '',],
         ];
-        if (isset($request->uploading))
+        if ($request->uploading)
             $tmp = array_merge($tmp, [
                 'images' => 'required|array|min:1|max:' . Variable::BUSINESS_IMAGE_LIMIT,
-                'images.*' => 'required|base64_image'/*.'|base64_size:2048'*/,
+                'images.*' => ['nullable', 'base64_image_size:' . Variable::SITE_IMAGE_LIMIT_MB * 1024, 'base64_image_mime:' . implode(",", Variable::SITE_ALLOWED_MIMES)],
             ]);
         return $tmp;
     }
@@ -78,12 +81,25 @@ class BusinessRequest extends FormRequest
             'name.required' => sprintf(__("validator.required"), __('title')),
             'name.max' => sprintf(__("validator.max_len"), 2048, mb_strlen($this->name)),
 
+            'phone.required' => sprintf(__("validator.required"), __('phone')),
+            'phone.unique' => sprintf(__("validator.unique"), __('phone')),
+            'phone_verify.required' => sprintf(__("validator.required"), __('phone_verify')),
+            'phone_verify.exists' => sprintf(__("validator.invalid"), __('phone_verify')),
+
+
             'link.required' => sprintf(__("validator.required"), __('link')),
             'link.max' => sprintf(__("validator.max_len"), 1024, mb_strlen($this->link)),
             'link.url' => sprintf(__("validator.invalid"), __('link')),
             'link.starts_with' => sprintf(__("validator.starts_with"), __('link'), "https://"),
 
-            'category.in' => sprintf(__("validator.invalid"), __('lang')),
+
+            'category_id.in' => sprintf(__("validator.invalid"), __('category')),
+
+            'province_id.required' => sprintf(__("validator.required"), __('province')),
+            'province_id.in' => sprintf(__("validator.invalid"), __('province')),
+
+            'county_id.required' => sprintf(__("validator.required"), __('county')),
+            'county_id.in' => sprintf(__("validator.invalid"), __('county')),
 
             'tags.max' => sprintf(__("validator.max_len"), 1024, mb_strlen($this->tags)),
 
@@ -92,7 +108,7 @@ class BusinessRequest extends FormRequest
 
             'images.max' => sprintf(__("validator.max_images"), Variable::BUSINESS_IMAGE_LIMIT),
 
-            'images.required' => sprintf(__("validator.required"), __('image')),
+            'images.required' => sprintf(__("validator.min_images"), 1),
             'images.*.base64_image_size' => sprintf(__("validator.max_size"), Variable::SITE_IMAGE_LIMIT_MB),
             'images.*.base64_image_mime' => sprintf(__("validator.invalid_format"), implode(",", Variable::SITE_ALLOWED_MIMES)),
         ];

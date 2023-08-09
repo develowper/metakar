@@ -18,11 +18,16 @@ return new class extends Migration {
             $table->unsignedBigInteger('owner_id')->nullable();
             $table->foreign('owner_id')->references('id')->on('users')->onDelete('no action');
             $table->unsignedInteger('category_id')->nullable();
+            $table->unsignedInteger('province_id')->nullable();
+            $table->unsignedInteger('county_id')->nullable();
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('no action');
             $table->string('name', 200);
             $table->string('description', 2048)->nullable();
             $table->string('phone', 20)->nullable();
-            $table->timestamp('phone_verified_at')->nullable();
+            $table->string('slug', 200)->nullable();
+            $table->unsignedInteger('view')->default(0);
+
+//            $table->timestamp('phone_verified_at')->nullable();
 //            $table->string('email', 50)->nullable();
 //            $table->timestamp('email_verified_at')->nullable();
             $table->string('tags', 200)->nullable();

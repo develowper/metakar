@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Models\Business;
 use App\Models\Site;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -65,11 +66,11 @@ class UserPolicy
                     return true;
                 break;
             case Site::class  :
+            case Business::class  :
                 if (in_array($user->role, ['us', 'ad',]))
                     return true;
                 break;
         }
-
 
         if ($abort)
             return abort(403, __("access_denied"));
@@ -89,6 +90,7 @@ class UserPolicy
                     return true;
                 break;
             case $item instanceof Site :
+            case $item instanceof Business :
                 return $user->role == 'us' && optional($item)->owner_id == $user->id || in_array($user->role, ['ad',]);
                 break;
         }
@@ -117,6 +119,7 @@ class UserPolicy
                     return true;
                 break;
             case $item instanceof Site  :
+            case $item instanceof Business  :
                 return $user->role == 'us' && optional($item)->owner_id == $user->id || in_array($user->role, ['ad',]);
                 break;
         }

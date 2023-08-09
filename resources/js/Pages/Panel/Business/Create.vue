@@ -29,12 +29,12 @@
             <div v-for="(data,idx) in $page.props.max_images_limit" class="m-1 md:max-w-[10rem] lg:max-w-xs">
               <ImageUploader ref="imageCropper" :label="__('image_jpg')" cropRatio="1.25" :id="'img-'+idx"
                              height="10" class="grow"/>
-              <InputError class="mt-1 text-xs" :message="form.errors.images"/>
+              <InputError class="mt-1 text-xs" :message="form.errors.images ? form.errors.images.idx:null "/>
             </div>
 
           </div>
           <div
-              class="flex flex-col mx-auto   col-span-2 w-full md:max-w-xl lg:border-s px-2"
+              class="flex flex-col mx-2   col-span-2 w-full   lg:border-s px-2"
           >
             <form @submit.prevent="submit">
 
@@ -75,34 +75,16 @@
               <div class="my-2">
                 <ProvinceCounty
                     ref="provinceCounty"
-                    :province-data="form.province"
-                    :county-data="form.county"
+                    v-model:province-data="form.province_id"
+                    v-model:county-data="form.county_id"
                     :provinces-data="$page.props.provinces"
                     :counties-data="$page.props.counties"
-                    :provinceError="form.errors.province"
-                    :countyError="form.errors.county"
+                    :provinceError="form.errors.province_id"
+                    :countyError="form.errors.county_id"
                 />
 
               </div>
-              <div class="my-2">
-                <TextInput
-                    id="link"
-                    type="text"
-                    :placeholder="__('link')"
-                    classes="  "
-                    v-model="form.link"
-                    autocomplete="link"
-                    :error="form.errors.link"
-                >
-                  <template v-slot:prepend>
-                    <div class="p-3">
-                      <LinkIcon class="h-5 w-5"/>
-                    </div>
-                  </template>
 
-                </TextInput>
-
-              </div>
               <div class="my-2">
                 <Selector ref="categorySelector" :data="$page.props.categories" :label="__('category')"
                           id="category_id" v-model="form.category_id">
@@ -115,6 +97,7 @@
               </div>
               <div class="my-2">
                 <SocialFields
+                    ref="socials"
                     classes="  "
                     v-model="form.socials"
                     :error="form.errors.socials"
@@ -153,7 +136,14 @@
                 </TextInput>
 
               </div>
-
+              <div v-if="form.progress" class="shadow w-full bg-grey-light m-2   bg-gray-200 rounded-full">
+                <div
+                    class=" bg-primary rounded  text-xs leading-none py-[.1rem] text-center text-white duration-300 "
+                    :class="{' animate-pulse': form.progress.percentage <100}"
+                    :style="`width: ${form.progress.percentage }%`">
+                  <span class="animate-bounce">{{ form.progress.percentage }}</span>
+                </div>
+              </div>
               <div class="    mt-4">
 
                 <PrimaryButton class="w-full  "
@@ -217,7 +207,6 @@ export default {
     return {
 
       form: useForm({
-        img: '',
         lang: null,
         name: null,
         phone: null,
@@ -225,13 +214,13 @@ export default {
         province_id: null,
         county_id: null,
         socials: null,
-        link: null,
         category_id: null,
         tags: '',
-        images: [],
         description: '',
 
       }),
+      images: [],
+
     }
   },
   components: {
@@ -270,28 +259,61 @@ export default {
   methods: {
     submit() {
 
-      this.form.img = this.$refs.imageCropper.getCroppedData();
+      this.form.socials = this.$refs.socials.get();
+      this.form.uploading = false;
+
       this.form.lang = this.$refs.langSelector.selected;
-      this.form.category_id = this.$refs.categorySelector.selected;
+      // this.form.category_id = this.$refs.categorySelector.selected;
       this.form.clearErrors();
 
-      this.form.post(route('site.create'), {
-        preserveScroll: false,
-        onFinish: (data) => {
-        },
-        onSuccess: (data) => {
-          this.showAlert(this.$page.props.flash.status, this.$page.props.flash.message);
-          this.form.reset();
+      // this.isLoading(true, this.form.progress ? this.form.progress.percentage : null);
+      this.images = [];
+      for (let i = 0; i < this.$page.props.max_images_limit; i++) {
+        let tmp = this.$refs.imageCropper[i].getCroppedData();
+        if (tmp) this.images.push(tmp);
 
+      }
+      this.form.post(route('business.create'), {
+        preserveScroll: false,
+
+        onSuccess: (data) => {
+
+          if (!this.form.uploading) {
+            this.form.uploading = true;
+
+            this.form.transform((data) => ({...data, uploading: true, images: this.images}))
+                .post(route('business.create'), {
+                  preserveScroll: false,
+                  onSuccess: (data) => {
+
+                    // else {
+                    //   this.showAlert(this.$page.props.flash.status, this.$page.props.flash.message);
+                    //   this.form.reset();
+                    // }
+                  },
+                  onError: () => {
+
+                    this.showToast('danger', Object.values(this.form.errors).join("<br/>"));
+                  },
+                  onFinish: (data) => {
+                    // this.isLoading(false,);
+                  },
+                });
+          }
+          // else {
+          //   this.showAlert(this.$page.props.flash.status, this.$page.props.flash.message);
+          //   this.form.reset();
+          // }
         },
-        onError: () => this.showToast('danger', Object.values(this.form.errors).join("<br/>"))
+        onError: () => {
+          this.showToast('danger', Object.values(this.form.errors).join("<br/>"));
+        },
+        onFinish: (data) => {
+          // this.isLoading(false,);
+        },
       });
     }
   },
-  watch: {
-    form() {
-      console.log(this.form.phone)
-    }
-  },
+  watch: {},
 }
 </script>

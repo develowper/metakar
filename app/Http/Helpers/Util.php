@@ -14,7 +14,7 @@ use Spatie\Browsershot\Exceptions\CouldNotTakeBrowsershot;
 class Util
 {
 
-    static function createImage($img, $type, $name)
+    static function createImage($img, $type, $name = null, $folder = null)
     {
 
         $image_parts = explode(";base64,", $img);
@@ -26,6 +26,19 @@ class Util
             File::makeDirectory(Storage::path("public/$type"), $mode = 0755,);
         }
         $source = imagecreatefromstring($image_base64);
+        if (!$name && $folder) { //is gallery
+            if (!Storage::exists("public/$type/$folder"))
+                File::makeDirectory(Storage::path("public/$type/$folder"), $mode = 0755,);
+            $allFiles = Storage::allFiles("public/$type/$folder");
+            $name = 1;
+            foreach ($allFiles as $path) {
+                if (str_contains($path, "/$name.jpg")) {
+                    $name++;
+                }
+            }
+            $type = "$type/$folder";
+        }
+
 //        imagetruecolortopalette($source, false, 16);
         $imageSave = imagejpeg($source, storage_path("app/public/$type/$name.jpg"), 80);
         imagedestroy($source);

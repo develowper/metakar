@@ -2,7 +2,7 @@
 
   <Panel>
     <template v-slot:header>
-      <title>{{__('new_site')}}</title>
+      <title>{{__('edit_site')}}</title>
     </template>
 
 
@@ -17,7 +17,8 @@
       </div>
 
       <!-- Content -->
-      <div class="px-2 py-4 my-2 mx-auto md:px-4 bg-white shadow-md overflow-hidden  rounded-lg md:max-w-5xl ">
+      <div v-if="data"
+           class="px-2 py-4 my-2 mx-auto md:px-4 bg-white shadow-md overflow-hidden  rounded-lg md:max-w-5xl ">
 
         <div
             class="lg:grid      lg:grid-cols-3     mt-6 px-2 md:px-4 py-4   ">
@@ -229,7 +230,7 @@ export default {
     this.form.name = this.data.name;
     this.form.link = this.data.link;
     this.$refs.categorySelector.selected = this.form.category_id = this.data.category_id;
-    this.$refs.tags.preLoad(this.data.tags);
+    this.$refs.tags.set(this.data.tags);
     this.form.description = this.data.description;
     this.$refs.langSelector.selected = this.data.lang;
   },

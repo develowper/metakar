@@ -49,21 +49,6 @@
                      tabindex="-1" role="menu" aria-orientation="vertical" aria-label="Actions menu"
 
                      aria-labelledby="dropdownActionsSetting">
-                  <li role="menuitem" @click="bulkAction('bulk.start-view')"
-                      class=" cursor-pointer  block  p-4 text-sm text-success-700 transition-colors hover:bg-gray-100 dark:text-light dark:hover:bg-primary">
-                    <div class="flex items-center  px-6   justify-between ">
-                      <span class="bg-success mx-1  animate-pulse px-1 py-1 rounded "></span>
-                      {{ __('start_view') }}
-                    </div>
-                  </li>
-                  <li role="menuitem" @click="bulkAction('bulk.stop-view')"
-                      class=" cursor-pointer   block  p-4 text-sm text-danger-700 transition-colors hover:bg-gray-100 dark:text-light dark:hover:bg-primary">
-                    <div class="flex items-center  px-6   justify-between ">
-                      <span class="bg-danger mx-1  animate-pulse px-1 py-1 rounded "></span>
-                      {{ __('stop_view') }}
-                    </div>
-                  </li>
-                  <hr class="border-gray-200 dark:border-gray-700 ">
 
                 </div>
               </div>
@@ -143,21 +128,13 @@
 
               <th scope="col"
                   class="px-2 py-3   cursor-pointer duration-300 hover:text-gray-500 hover:scale-[105%]"
-                  @click="params.order_by='views';params.dir=params.dir=='ASC'? 'DESC':'ASC'; params.page=1;getData()">
+                  @click="params.order_by='view';params.dir=params.dir=='ASC'? 'DESC':'ASC'; params.page=1;getData()">
                 <div class="flex items-center justify-center">
-                  <span class="px-2">    {{ __('views') }} </span>
+                  <span class="px-2">    {{ __('view') }} </span>
                   <ArrowsUpDownIcon class="w-4 h-4 "/>
                 </div>
               </th>
-              <th v-if="hasWallet()" scope="col"
-                  class="px-2 py-3   cursor-pointer duration-300 hover:text-gray-500 hover:scale-[105%]"
-                  @click="params.order_by='view_fee';params.dir=params.dir=='ASC'? 'DESC':'ASC'; params.page=1;getData()">
-                <div class="flex items-center justify-center">
-                  <span class="px-2">    {{ __('view_fee') }} </span>
-                  <ArrowsUpDownIcon class="w-4 h-4 "/>
 
-                </div>
-              </th>
               <th scope="col"
                   class="px-2 py-3   cursor-pointer duration-300 hover:text-gray-500 hover:scale-[105%]"
                   @click="params.order_by='status';params.dir=params.dir=='ASC'? 'DESC':'ASC'; params.page=1;getData()">
@@ -166,22 +143,7 @@
                   <ArrowsUpDownIcon class="w-4 h-4 "/>
                 </div>
               </th>
-              <th scope="col" v-if="hasWallet()"
-                  class="px-2 py-3   cursor-pointer duration-300 hover:text-gray-500 hover:scale-[105%]"
-                  @click="params.order_by='charge';params.dir=params.dir=='ASC'? 'DESC':'ASC'; params.page=1;getData()">
-                <div class="flex items-center justify-center">
-                  <span class="px-2">    {{ __('charge') }}  </span>
-                  <ArrowsUpDownIcon class="w-4 h-4 "/>
-                </div>
-              </th>
-              <th scope="col"
-                  class="px-2 py-3   cursor-pointer duration-300 hover:text-gray-500 hover:scale-[105%]"
-                  @click="params.order_by='meta';params.dir=params.dir=='ASC'? 'DESC':'ASC'; params.page=1;getData()">
-                <div class="flex items-center justify-center">
-                  <span class="px-2">    {{ __('meta_charge') }}  </span>
-                  <ArrowsUpDownIcon class="w-4 h-4 "/>
-                </div>
-              </th>
+
               <th scope="col"
                   class="px-2 py-3   cursor-pointer duration-300 hover:text-gray-500 hover:scale-[105%]"
                   @click="params.order_by='category_id';params.dir=params.dir=='ASC'? 'DESC':'ASC'; params.page=1;getData()">
@@ -190,14 +152,7 @@
                   <ArrowsUpDownIcon class="w-4 h-4 "/>
                 </div>
               </th>
-              <th scope="col"
-                  class="px-2 py-3  cursor-pointer duration-300 hover:text-gray-500 hover:scale-[105%]"
-                  @click="params.order_by='link';params.dir=params.dir=='ASC'? 'DESC':'ASC'; params.page=1;getData()">
-                <div class="flex items-center justify-center">
-                  <span class="px-2">   {{ __('link') }} </span>
-                  <ArrowsUpDownIcon class="w-4 h-4 "/>
-                </div>
-              </th>
+
               <th scope="col" class="px-2 py-3">
                 {{ __('actions') }}
               </th>
@@ -265,60 +220,18 @@
               </td>
               <td
                   class="flex  items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                <Image class="w-10 h-10 rounded-full" :src="`${route('storage.sites')}/${d.id}.jpg`"
+                <Image class="w-10 h-10 rounded-full" :src="`${route('storage.businesses')}/${d.id}/1.jpg`"
                        :alt="cropText(d.name,5)"/>
-                <Link class="px-3 hover:text-gray-500" :href="route('panel.site.edit',d.id)">
+                <Link class="px-3 hover:text-gray-500" :href="route('panel.business.edit',d.id)">
                   <div class="text-base font-semibold">{{ cropText(d.name, 40) }}</div>
                   <div class="font-normal text-gray-500">{{ }}</div>
                 </Link>
               </td>
 
               <td class="px-2 py-4">
-                {{ d.views }}
+                {{ d.view }}
               </td>
-              <td v-if="hasWallet()"
-                  class="px-2 py-4    " data-te-dropdown-ref>
-                <button
-                    id="dropdownViewFee"
-                    data-te-dropdown-toggle-ref
-                    aria-expanded="false"
-                    data-te-ripple-init
-                    data-te-ripple-color="light"
-                    class="  min-w-[5rem]  px-1 cursor-pointer items-center text-center rounded-md py-[.2rem]"
-                >
-                  {{ asPrice(d.view_fee) }}
-                </button>
-                <ul ref="dropdownViewFeeMenu" data-te-dropdown-menu-ref
-                    class="p-4  absolute z-[1000]    hidden   list-none overflow-hidden rounded-lg border-none bg-white bg-clip-padding text-center text-base shadow-lg dark:bg-neutral-700 [&[data-te-dropdown-show]]:block"
-                    tabindex="-1" role="menu" aria-orientation="vertical" aria-label="User menu"
-                    aria-labelledby="dropdownViewFee">
-                  <li v-if="d.status!='block'"
-                      class="   text-sm  ">
-                    <span class="text-xs py-2 text-danger-500">{{ __('will_subtract_for_view_from_charge') }}</span>
-                    <div class="flex items-center ">
-                      <input @keydown.enter="edit({'idx':idx,'id':d.id,'cmnd':'view-fee','view_fee':d.view_fee})"
-                             type="number" min="0" class="grow my-2  p-1 rounded-lg border-gray-400"
-                             v-model="d.view_fee">
-                      <span class="text-xs ms-1 font-light text-gray-400">{{ __('currency') }}</span>
-                    </div>
-                  </li>
 
-                  <li v-if="d.status!='block'">
-                    <button class="bg-success-100 text-success-700 p-2 rounded-lg  hover:bg-success-50 w-full"
-                            @click="edit({'idx':idx,'id':d.id,'cmnd':'view-fee','view_fee':d.view_fee})">
-                      {{ __('reg') }}
-                    </button>
-                  </li>
-                  <li v-if="  d.status=='block'  " role="menuitem"
-                      class="   cursor-pointer   text-sm text-gray-700 transition-colors hover:bg-gray-100 dark:text-light dark:hover:bg-primary">
-                    <div class="flex items-center  px-6 py-2 justify-between ">
-                      <span>{{ __('not_available') }}</span>
-                    </div>
-                    <hr class="border-gray-200 dark:border-gray-700 ">
-                  </li>
-
-                </ul>
-              </td>
               <td class="px-2 py-4    " data-te-dropdown-ref>
                 <button
                     id="dropdownStatusSetting"
@@ -378,107 +291,21 @@
                   </li>
                 </ul>
               </td>
-              <td v-if="hasWallet()"
-                  class="px-2 py-4    " data-te-dropdown-ref>
-                <button
-                    id="dropdownViewCharge"
-                    data-te-dropdown-toggle-ref
-                    aria-expanded="false"
-                    data-te-ripple-init
-                    data-te-ripple-color="light"
-                    class="  min-w-[5rem]  px-1 cursor-pointer items-center text-center rounded-md py-[.2rem]"
-                >
-                  {{ asPrice(d.charge) }}
-                </button>
-                <ul ref="dropdownViewChargeMenu" data-te-dropdown-menu-ref
-                    class="  absolute z-[1000]   p-4  hidden   list-none overflow-hidden rounded-lg border-none bg-white bg-clip-padding text-center text-base shadow-lg dark:bg-neutral-700 [&[data-te-dropdown-show]]:block"
-                    tabindex="-1" role="menu" aria-orientation="vertical" aria-label="User menu"
-                    aria-labelledby="dropdownViewCharge">
-                  <li v-if="d.status!='block'"
-                      class="     text-sm flex flex-col">
-                    <span class="text-xs py-3 text-danger-500">{{ __('will_subtract_from_wallet') }}</span>
-                    <div class="flex items-center">
-                      <input @keydown.enter="edit({'idx':idx,'id':d.id,'cmnd':'charge','charge':d.charge})"
-                             type="number" min="0" class="grow my-2  p-1 rounded-lg border-gray-400" v-model="d.charge">
-                      <span class="text-xs ms-1 font-light text-gray-400">{{ __('currency') }}</span>
-                    </div>
-                  </li>
 
-                  <li v-if="d.status!='block'">
-                    <button class="bg-success-100 text-success-700 p-2 rounded-lg  hover:bg-success-50 w-full"
-                            @click="edit({'idx':idx,'id':d.id,'cmnd':'charge','charge':d.charge})">
-                      {{ __('charge') }}
-                    </button>
-                  </li>
-                  <li v-if="  d.status=='block'  " role="menuitem"
-                      class="   cursor-pointer   text-sm text-gray-700 transition-colors hover:bg-gray-100 dark:text-light dark:hover:bg-primary">
-                    <div class="flex items-center  px-6 py-2 justify-between ">
-                      <span>{{ __('not_available') }}</span>
-                    </div>
-                    <hr class="border-gray-200 dark:border-gray-700 ">
-                  </li>
 
-                </ul>
-              </td>
-              <td
-                  class="px-2 py-4    " data-te-dropdown-ref>
-                <button
-                    id="dropdownViewCharge"
-                    data-te-dropdown-toggle-ref
-                    aria-expanded="false"
-                    data-te-ripple-init
-                    data-te-ripple-color="light"
-                    class="  min-w-[5rem]  px-1 cursor-pointer items-center text-center rounded-md py-[.2rem]"
-                >
-                  {{ asPrice(d.meta) }}
-                </button>
-                <ul ref="dropdownViewChargeMenu" data-te-dropdown-menu-ref
-                    class="  absolute z-[1000]   p-4  hidden   list-none overflow-hidden rounded-lg border-none bg-white bg-clip-padding text-center text-base shadow-lg dark:bg-neutral-700 [&[data-te-dropdown-show]]:block"
-                    tabindex="-1" role="menu" aria-orientation="vertical" aria-label="User menu"
-                    aria-labelledby="dropdownViewCharge">
-                  <li v-if="d.status!='block'"
-                      class="     text-sm flex flex-col">
-                    <span class="text-xs py-3 text-danger-500">{{ __('will_subtract_from_meta') }}</span>
-                    <div class="flex items-center">
-                      <input @keydown.enter="edit({'idx':idx,'id':d.id,'cmnd':'meta','meta':d.meta})"
-                             type="number" min="0" class="grow my-2  p-1 rounded-lg border-gray-400" v-model="d.meta">
-
-                    </div>
-                  </li>
-
-                  <li v-if="d.status!='block'">
-                    <button class="bg-success-100 text-success-700 p-2 rounded-lg  hover:bg-success-50 w-full"
-                            @click="edit({'idx':idx,'id':d.id,'cmnd':'meta','meta':d.meta})">
-                      {{ __('charge') }}
-                    </button>
-                  </li>
-                  <li v-if="  d.status=='block'  " role="menuitem"
-                      class="   cursor-pointer   text-sm text-gray-700 transition-colors hover:bg-gray-100 dark:text-light dark:hover:bg-primary">
-                    <div class="flex items-center  px-6 py-2 justify-between ">
-                      <span>{{ __('not_available') }}</span>
-                    </div>
-                    <hr class="border-gray-200 dark:border-gray-700 ">
-                  </li>
-
-                </ul>
-              </td>
               <td class="px-2 py-4 ">
                 <div>
                   {{ getCategory(d.category_id) }}
                 </div>
               </td>
-              <td class="px-2 py-4 ">
-                <a target="_blank" class="text-primary-500" :href="d.link">
-                  {{ cropText(d.link, 20) }}
-                </a>
-              </td>
+
               <td class="px-2 py-4">
                 <!-- Actions Group -->
                 <div
                     class=" inline-flex rounded-md shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
                     role="group">
                   <Link
-                      type="button" :href="route('panel.site.edit',d.id)"
+                      type="button" :href="route('panel.business.edit',d.id)"
                       class="inline-block rounded  bg-orange-500 text-white px-6  py-2 text-xs font-medium uppercase leading-normal text-white transition duration-150 ease-in-out hover:bg-orange-400   focus:outline-none focus:ring-0  "
                       data-te-ripple-init
                       data-te-ripple-color="light">
@@ -566,7 +393,7 @@ export default {
 
       this.loading = true;
       this.data = [];
-      window.axios.get(route('panel.site.search'), {
+      window.axios.get(route('panel.business.search'), {
         params: this.params
       }, {
         onUploadProgress: function (axiosProgressEvent) {
@@ -643,7 +470,7 @@ export default {
     },
     edit(params) {
       this.isLoading(true);
-      window.axios.patch(route('site.update'), params,
+      window.axios.patch(route('business.update'), params,
           {
             onUploadProgress: function (axiosProgressEvent) {
               // console.log(axiosProgressEvent);
@@ -732,7 +559,7 @@ export default {
         }, [])
       };
 
-      window.axios.patch(route('site.update'), params,
+      window.axios.patch(route('business.update'), params,
           {
             onUploadProgress: function (axiosProgressEvent) {
             },

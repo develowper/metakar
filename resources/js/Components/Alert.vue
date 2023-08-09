@@ -1,22 +1,22 @@
 <template>
 
-    <div id="alert"
-         :class="`bg-${status}-100  text-${status}-700`"
-         class="cursor-pointer flex  z-[999999]  mb-3 fixed top-0 start-0 end-0  duration-500 transition-all w-full items-center   px-6 py-5     data-[te-alert-show]:inline-flex"
-         role="alert"
-         data-te-alert-init
-         data-te-delay="500"
-         data-te-autohide="false"
-         @click="hide"
-    >
-        <strong class="mx-1"> {{ message }}</strong>
-        <button
-            @click="hide"
-            :class="`bg-${status}-100 text-${status} hover:text-${status}-900` "
-            type="button"
-            class="ml-auto box-content rounded-none border-none p-1   opacity-50  hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none"
+  <div v-show="showing" id="alert"
+       :class="`bg-${status}-100  text-${status}-700`"
+       class="cursor-pointer flex  z-[999999]  mb-3 fixed top-0 start-0 end-0  duration-500 transition-all w-full items-center   px-6 py-5     data-[te-alert-show]:inline-flex"
+       role="alert"
+       data-te-alert-init
+       data-te-delay="500"
+       data-te-autohide="false"
+       @click="hide"
+  >
+    <strong class="mx-1"> {{ message }}</strong>
+    <button
+        @click="hide"
+        :class="`bg-${status}-100 text-${status} hover:text-${status}-900` "
+        type="button"
+        class="ml-auto box-content rounded-none border-none p-1   opacity-50  hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none"
 
-            aria-label="Close">
+        aria-label="Close">
     <span
         class="w-[1em] focus:opacity-100 disabled:pointer-events-none disabled:select-none disabled:opacity-25 [&.disabled]:pointer-events-none [&.disabled]:select-none [&.disabled]:opacity-25">
       <svg
@@ -30,36 +30,39 @@
             clip-rule="evenodd"/>
       </svg>
     </span>
-        </button>
-    </div>
+    </button>
+  </div>
 </template>
 <script>
 import {Alert, initTE,} from "tw-elements";
 
 export default {
-    data() {
-        return {
-            alert: null,
-            status: 'primary',
-            message: null,
-        }
-    },
-    props: [],
-    methods: {
-        show(status, message) {
-
-            this.status = status;
-            this.message = message;
-            window.Alert.show();
-
-        },
-        hide() {
-            window.Alert.hide();
-        },
-    },
-    mounted() {
-
-
+  data() {
+    return {
+      alert: null,
+      status: 'primary',
+      message: null,
+      showing: false,
     }
+  },
+  props: [],
+  methods: {
+    show(status, message) {
+      this.showing = true;
+      this.status = status;
+      this.message = message;
+      window.Alert.show();
+
+    },
+    hide() {
+
+      window.Alert.hide();
+      this.showing = false;
+    },
+  },
+  mounted() {
+
+
+  }
 }
 </script>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Helpers;
 
+use Illuminate\Support\Facades\DB;
 use Medianasms\Client;
 use Medianasms\Errors\Error;
 use Medianasms\Errors\HttpException;
@@ -25,6 +26,18 @@ class SMSHelper
     }
 
     const URL = "https://ippanel.com/services.jspd";
+
+    public static function deleteCode(mixed $phone)
+    {
+        DB::table('sms_verify')->where('phone', $phone)->delete();
+    }
+
+    public static function addCode($phone, $code)
+    {
+        DB::table('sms_verify')->insert(
+            ['code' => $code, 'phone' => $phone]
+        );
+    }
 
     public function sendOTPSMS($to, $msg, $cmnd = 'register')
     {

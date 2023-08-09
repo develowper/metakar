@@ -16,7 +16,7 @@
             <input :placeholder="__('name_example')"
                    v-model="data.name"
                    class=" grow  placeholder:text-xs placeholder:text-gray-400 rounded-e  border border-solid border-neutral-300    px-3   text-neutral-700   transition duration-200 ease-in-out focus:z-[3]  focus:border-primary focus:text-neutral-700   dark:border-neutral-600 dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:focus:border-primary"
-                   ref="input"/>
+            />
           </div>
 
           <div class="  my-1  flex  ">
@@ -30,7 +30,7 @@
             <input
                 v-model="data.value" :placeholder="__('link_example')"
                 class=" grow placeholder:text-xs placeholder:text-gray-400 rounded-e  border border-solid border-neutral-300    px-3   text-neutral-700   transition duration-200 ease-in-out focus:z-[3] focus:border-primary focus:text-neutral-700   dark:border-neutral-600 dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:focus:border-primary"
-                ref="input"/>
+            />
           </div>
         </div>
         <span @click="socials.length>1? socials.splice(idx,1): socials=[{name: null, value: null}]"
@@ -87,7 +87,23 @@ export default {
     // this.isLoading(true);
   },
   mounted() {
+
+  }, updated() {
+
   },
-  methods: {},
+  methods: {
+    get() {
+      for (let i in this.socials) {
+        if (this.socials[i].name == null && this.socials[i].value == null)
+          this.socials.splice(i, 1);
+      }
+      return JSON.stringify(this.socials);
+    },
+    set(data) {
+      if (data)
+        this.socials = JSON.parse(data);
+
+    }
+  },
 }
 </script>

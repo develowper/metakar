@@ -1,17 +1,18 @@
 <template>
 
-  <div class="  ">
+  <div class="  h-full ">
 
-    <div class="">
+    <div class=" h-full">
 
       <label :for="id"
-             class=" text-center d-none"> </label>
-      <!--<div :style="'width:'+(cropRatio*height)+'rem;height:'+height+'rem'"-->
+             class=" text-center d-none  "> </label>
+
+      <!--           :style="'width:'+(cropRatio*height)+'rem;height:'+height+'rem'"-->
       <div v-show="!doc"
-           :style="'height:'+height+'rem; ' "
-           class="  flex justify-center  items-center  uploader-container w-100 rounded-lg p-3 "
+           class=" flex  h-full md:min-w-[150px]  items-center justify-center  uploader-container  rounded-lg p-3 "
+
            :id="'container-' + this.id"
-           style="border:dashed"
+           style="border:dashed; "
            role="form" @mouseover="uploader.classList.add('hover');"
            @dragover.prevent="uploader.classList.add('hover');"
            @dragleave.prevent="uploader.classList.remove('hover');"
@@ -25,31 +26,36 @@
           </div>
         </div>
 
-        <input v-show="false" :id="id+'-file'" class="col-12    " accept=".png, .jpg, .jpeg" type="file"
+        <input v-show="false" :id="id+'-file'" class="w-full   " accept=".png, .jpg, .jpeg" type="file"
                :key="id"
                :name="id+'-file'" @input="  filePreview($event,id )"/>
         <input :id="id" class="col-12" :name="id" type="hidden"/>
 
 
       </div>
-      <div v-show="doc" class="    rounded-lg  w-100" style="overflow-x: auto">
-        <img v-show="doc" :id="'img-'+id" class=""
+      <div v-show="doc" class="  rounded-lg flex flex-col justify-between   " :style="`width:${width}`">
+
+        <img v-show="doc" :id="'img-'+id" class="block max-w-full    "
              @error="errorImage"
              @load="  uploadContainer.classList.add('d-none');initCropper()"
              :src="doc"
-             :style="'height:'+height+'rem; ' "
+
              alt=""/>
+
         <div class="flex my-1 w-100   " role="group">
           <div v-if="mode=='edit'"
-               class="text-center rounded  cursor-pointer hover:bg-danger-600  p-2 bg-danger text-white grow "
+               class="text-center flex rounded-s grow  cursor-pointer hover:bg-danger-600  p-2 bg-danger text-white grow "
                :title="__('remove')"
-               @click="clearImage()  ;">
-            <XMarkIcon class="w-4 h-4  mx-auto text-white bg-danger text-white"/>
+               @click="!preload ? clearImage():  showDialog('danger',__('remove_image?'), __('remove') , removeImage )  ;">
+            <XMarkIcon class="w-4 h-4  mx-auto text-white  text-white" v-if="!removing"/>
+            <LoadingIcon class="w-4 h-4 mx-auto " v-if="removing"/>
           </div>
-          <div v-if="false && mode=='edit'" class="cursor-pointer hover:bg-success-600  p-2 bg-success text-white grow"
+          <div v-if="  mode=='edit'"
+               class="cursor-pointer grow rounded-e hover:bg-success-600  p-2 bg-success text-white grow"
                :title="__('upload')"
-               @click="uploadImage()">
-            <CheckIcon class="w-4 h-4  mx-auto text-white bg-success text-white"/>
+               @click="  showDialog('primary',__('new_image_save_and_active_after_review'), __('upload') , uploadImage )">
+            <CheckIcon class="w-4 h-4  mx-auto text-white   text-white" v-if="!uploading"/>
+            <LoadingIcon class="w-4 h-4 mx-auto " v-if="uploading"/>
           </div>
           <div v-if="false && mode!='edit'"
                class="cursor-pointer hover:bg-success-600 p-2 bg-success text-white grow rounded-s "
@@ -58,29 +64,16 @@
             <CheckIcon class="w-4 h-4   mx-auto text-white bg-success text-white"/>
           </div>
           <div v-if="mode!='edit'"
-               class="  cursor-pointer hover:bg-danger-600 p-2 bg-danger text-white grow rounded-lg"
+               class="  cursor-pointer hover:bg-danger-600 p-2  text-white grow rounded-lg"
                :title="__('remove')"
                @click="refresh()">
-            <XMarkIcon class="w-4 h-4  mx-auto text-white bg-danger text-white"/>
+            <XMarkIcon class="w-4 h-4  mx-auto text-white   text-white"/>
           </div>
         </div>
       </div>
 
     </div>
 
-
-    <div class="  row col-12 ">
-
-
-      <!--cropper and qr canvas-->
-      <!--<canvas id="myCanvas"></canvas>-->
-      <!--<input id="x" name="x" type="hidden"/>-->
-      <!--<input id="y" name="y" type="hidden"/>-->
-      <!--<input id="width" name="width" type="hidden"/>-->
-      <!--<input id="height" name="height" type="hidden"/>-->
-
-
-    </div>
 
   </div>
 
@@ -99,12 +92,13 @@ let canvas;
 import Cropper from 'cropperjs';
 import Tooltip from "@/Components/Tooltip.vue";
 import {XMarkIcon, CheckIcon,} from "@heroicons/vue/24/solid";
+import LoadingIcon from "@/Components/LoadingIcon.vue";
 
 export default {
 
 
-  props: ['link', 'id', 'type', 'height', 'required', 'preload', 'label', 'mode', 'forId', 'callback', 'images', 'limit', 'cropRatio'],
-  components: {Tooltip, XMarkIcon, CheckIcon},
+  props: ['link', 'id', 'type', 'height', 'width', 'required', 'preload', 'label', 'mode', 'forId', 'callback', 'images', 'limit', 'cropRatio'],
+  components: {Tooltip, XMarkIcon, CheckIcon, LoadingIcon,},
   data() {
     return {
       componentKey: 1,
@@ -114,6 +108,7 @@ export default {
       cropper: null,
 
       loading: false,
+      uploading: false,
 
 
       creating: false,
@@ -178,9 +173,7 @@ export default {
   }
   ,
   methods: {
-    showDialog(type, message, click) {
-      window.showDialog(type, message, onclick = () => click);
-    },
+
     errorImage() {
       this.doc = null;
       this.uploadContainer.classList.remove('d-none');
@@ -256,74 +249,61 @@ export default {
 
     },
     removeImage() {
+      this.removing = true;
 
-      axios.post(this.link, {
+      axios.patch(this.link, {
         'id': this.forId,
         'cmnd': 'delete-img',
-        'type': this.type,
-        'data_id': this.id,
-        'replace': !!this.required,
+        'path': this.preload,
       },)
           .then((response) => {
 //                        console.log(response);
-            this.loading = false;
+
             if (response.status === 200)
               window.location.reload();
             else {
-              window.showToast('danger', response, onclick = null);
+              this.showToast('danger', response, onclick = null);
 
             }
           }).catch((error) => {
-
-        this.loading = false;
-        if (error.response && error.response.status === 422)
-          for (let idx in error.response.data.errors)
-            this.errors += error.response.data.errors[idx] + '<br>';
-        else {
-          this.errors = error;
-        }
-        window.showToast('danger', this.errors, onclick = null);
-      });
+        this.errors = this.getErrors(error);
+        this.showToast('danger', this.errors, onclick = null);
+      }).finally(() => {
+        this.removing = false;
+      })
     }
     ,
 
     async uploadImage() {
 //                console.log(this.$refs.dropdown.selected.length);
 
-      this.loading = true;
-
+      this.uploading = true;
+      const canvas = this.cropper.getCroppedCanvas();
 //                this.cropper.crop();
-
-
+      if (!canvas)
+        this.initCropper();
       let fd = {
         'img': this.cropper.getCroppedCanvas().toDataURL(),
-        'type': this.type,
-        'data_id': this.id,
         'id': this.forId,
-        'replace': (!!this.required) || this.preload, //if true : replace with before image
+        'path': this.preload,
         'cmnd': 'upload-img',
       };
-
-      axios.post(this.link, fd,)
+      axios.patch(this.link, fd,)
           .then((response) => {
 //                        console.log(response);
-            this.loading = false;
             if (response.status === 200) {
-              window.location.reload();
+              // window.location.reload();
+              this.showToast('success', response.data.message, onclick = null);
             } else {
-              window.showToast('danger', response.data, onclick = null);
-
+              this.showToast('danger', response.data, onclick = null);
             }
 
           }).catch((error) => {
-        this.loading = false;
-        if (error.response && error.response.status === 422)
-          for (let idx in error.response.data.errors)
-            this.errors += error.response.data.errors[idx] + '<br>';
-        else {
-          this.errors = error;
-        }
-        window.showToast('danger', this.errors, onclick = null);
+        this.errors = this.getErrors(error);
+        this.showToast('danger', this.errors, onclick = null);
+
+      }).finally(() => {
+        this.uploading = false;
       });
 
 
@@ -341,11 +321,16 @@ export default {
         autoCropArea: 1,
         viewMode: 2, responsive: false,
 //                    autoCrop: true,
-        style: {height: '100%', width: '100%', 'overflow-x': 'auto'},
+//         style: {height: '200px', width: '100px' /*,'overflow-x': 'auto'*/},
         aspectRatio: this.cropRatio,
+        initialAspectRatio: this.cropRatio,
+        minContainerWidth: 150,
+        // minCanvasWidth: 150,
+        // minCropBoxWidth: 150,
         highlight: true,
         restore: true,
         cropBoxMovable: true,
+        dragMode: 'move',
         zoomable: true,
 //                    dragMode: 'move',
         cropBoxResizable: true,
@@ -442,6 +427,7 @@ export default {
 <style type="text/css" lang="scss">
 @import "cropperjs/dist/cropper.min.css";
 
+
 $color: #6f42c1;
 .uploader-container {
   /*display: flex;*/
@@ -455,5 +441,12 @@ $color: #6f42c1;
     cursor: pointer;
   }
 
+  //.cropper-container {
+  //  width: 100px !important;
+  //  display: block;
+  //}
+
 }
+
+
 </style>

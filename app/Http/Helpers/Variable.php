@@ -7,6 +7,7 @@ use App\Models\Setting;
 use App\Models\Site;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Hash;
 
 class Variable
@@ -42,7 +43,7 @@ class Variable
     const SITE_ALLOWED_MIMES = ['jpeg', 'jpg', 'png'];
     const LOGS = [72534783];
     const PAGINATE = [24, 50, 100];
-    const IMAGE_FOLDERS = [Site::class => 'sites'];
+    const IMAGE_FOLDERS = [Site::class => 'sites', Business::class => 'businesses',];
     const SITE_STATUSES = [
         ["name" => 'inactive', "color" => 'danger'],
         ["name" => 'need_charge', "color" => 'orange'],

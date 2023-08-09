@@ -16,9 +16,8 @@ class MainController extends Controller
         $code = Util::generateRandomNumber(5);
         $res = (new SMSHelper())->sendOTPSMS("$request->phone", "$code", "register");
         if ($res) {
-            DB::table('sms_verify')->insert(
-                ['code' => $code, 'phone' => $request->phone]
-            );
+            SMSHelper::addCode($request->phone,$code);
+
 
             return response(['message' => __('sms_send_to_phone')]);
         }

@@ -51,6 +51,7 @@ Route::get('test', function () {
 Route::get('storage')->name('storage');
 Route::get('storage/sites')->name('storage.sites');
 Route::get('storage/users')->name('storage.users');
+Route::get('storage/businesses')->name('storage.businesses');
 
 Route::get('/', function () {
     return Inertia::render('Main', [
@@ -76,11 +77,16 @@ Route::middleware(['auth', 'verified'])->prefix('panel')->group(function ($route
         'categories' => Business::categories(),
         'max_images_limit' => Variable::BUSINESS_IMAGE_LIMIT,
     ]);
-    PanelController::makeInertiaRoute('get', 'business/index', 'panel.business.index', 'Panel/Business/Index');
+    PanelController::makeInertiaRoute('get', 'business/index', 'panel.business.index', 'Panel/Business/Index', [
+        'categories' => Business::categories('parents'),
+        'statuses' => Variable::BUSINESS_STATUSES]);
     PanelController::makeInertiaRoute('get', 'article/index', 'panel.article.index', 'Panel/Business/Index');
     PanelController::makeInertiaRoute('get', 'article/create', 'panel.article.create', 'Panel/Business/Create');
-    PanelController::makeInertiaRoute('get', 'site/index', 'panel.site.index', 'Panel/Site/Index', ['categories' => Site::categories('parents'), 'site_statuses' => Variable::SITE_STATUSES]);
-    PanelController::makeInertiaRoute('get', 'site/create', 'panel.site.create', 'Panel/Site/Create', ['categories' => Site::categories('parents'),]);
+    PanelController::makeInertiaRoute('get', 'site/index', 'panel.site.index', 'Panel/Site/Index', [
+        'categories' => Site::categories('parents'),
+        'statuses' => Variable::SITE_STATUSES]);
+    PanelController::makeInertiaRoute('get', 'site/create', 'panel.site.create', 'Panel/Site/Create', [
+        'categories' => Site::categories('parents'),]);
     PanelController::makeInertiaRoute('get', 'text/index', 'panel.text.index', 'Panel/Text/Index');
     PanelController::makeInertiaRoute('get', 'text/create', 'panel.text.create', 'Panel/Text/Create');
     PanelController::makeInertiaRoute('get', 'image/index', 'panel.image.index', 'Panel/Image/Index');
@@ -116,10 +122,14 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('panel/site/search', [SiteController::class, 'searchPanel'])->name('panel.site.search');
+    Route::get('panel/business/search', [BusinessController::class, 'searchPanel'])->name('panel.business.search');
 
 
     Route::get('site/edit/{site}', [SiteController::class, 'edit'])->name('panel.site.edit');
     Route::patch('site/update', [SiteController::class, 'update'])->name('site.update');
+
+    Route::get('business/edit/{site}', [BusinessController::class, 'edit'])->name('panel.business.edit');
+    Route::patch('business/update', [BusinessController::class, 'update'])->name('business.update');
 
 });
 Route::post('transaction/storesite', [\App\Http\Controllers\TransactionController::class, 'storeSite'])->name('transaction.site.view');

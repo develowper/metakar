@@ -28,7 +28,7 @@ onMounted(() => {
 
 
 });
-const preLoad = (data) => {
+const set = (data) => {
 
   if (data) {
     const tmp = data.split(",");
@@ -37,7 +37,7 @@ const preLoad = (data) => {
     emit('update:modelValue', items.join(","))
   }
 };
-defineExpose({focus: () => input.value.focus(), preLoad});
+defineExpose({focus: () => input.value.focus(), set});
 
 
 const add = () => {

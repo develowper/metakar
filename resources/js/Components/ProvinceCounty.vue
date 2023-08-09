@@ -14,7 +14,8 @@
         </span>
 
         <span class="grow ">
-            <select id="province" class=" " v-model="selectedProvince" @change="selectedCounty=null" name="province_id"
+            <select id="province" class=" " :value="provinceData" name="province_id"
+                    @change="$emit('update:provinceData', $event.target.value);  $emit('update:countyData',null);   "
                     data-te-select-filter="true"
                     data-te-select-search-placeholder="..."
                     data-te-select-clear-button="true"
@@ -35,7 +36,8 @@
                     data-te-select-class="text-center"
                     data-te-select-init>
                 <option value="" hidden></option>
-                <option class="text-end" v-for="d in provincesData" :value="d.id"> {{ __(d.name) }}</option>
+                <option class="text-end" v-for="d in provincesData "
+                        :value="d.id"> {{ __(d.name) }}</option>
 
             </select>
           <!--            <label data-te-select-label-ref> {{ label }}</label>-->
@@ -58,7 +60,8 @@
         </span>
 
         <span class="grow ">
-            <select id="county" class=" " v-model="selectedCounty" name="county_id"
+            <select id="county" class=" " :value="countyData" name="county_id"
+                    @change="$emit('update:countyData', $event.target.value)"
                     data-te-select-filter="true"
                     data-te-select-search-placeholder="..."
                     data-te-select-clear-button="true"
@@ -79,7 +82,7 @@
                     data-te-select-class="text-center"
                     data-te-select-init>
                 <option value="" hidden></option>
-                <option class="text-end" v-for="d in countiesData.filter(e=>e.province_id==selectedProvince)"
+                <option class="text-end" v-for="d in countiesData.filter(e=>e.province_id==provinceData)"
                         :value="d.id"> {{ __(d.name) }}</option>
 
             </select>
@@ -105,26 +108,40 @@ export default {
       selected: null,
       provinces: this.provincesData,
       counties: this.countiesData,
-      selectedProvince: this.provinceData,
-      selectedCounty: this.countyData,
+
     }
   },
+  emits: ['update:provinceData', 'update:countyData',],
   props: ['provincesData', 'countiesData', 'provinceData', 'countyData', 'provinceError', 'countyError'],
   components: {InputLabel, FlagIcon, InputError,},
-  mounted() {
+  updated() {
 
+
+  },
+  mounted() {
+    // document.getElementById('province').value = this.provinceData
+    // this.$emit('update:provinceData', this.provinceData);
+    // this.$emit('update:countyData', this.countyData);
     // initTE({Select})
 
     // if (!window.Select) {
     // this.$forceUpdate();
     // this.$nextTick(function () {
-    //     initTE({Select})
-    //     window.Select = Select;
+    // this.$emit('update:provinceData', this.provinceData);
+    // this.$emit('update:countyData', this.countyData);
     // });
     // }
 
   },
-  watch: {},
+  watch: {
+
+    // provinceData(_new, _old) {
+    //   // console.log(_old)
+    //   // console.log(_new)
+    //   // console.log(this.provinceData)
+    //   console.log(document.getElementById('province').value = _new)
+    // }
+  },
   methods: {},
 }
 </script>

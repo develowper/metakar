@@ -29,9 +29,9 @@ export default {
             this.emitter.emit('showAlert', {type, message});
 
         },
-        showDialog(type, message, onClick) {
+        showDialog(type, message, button, action) {
 
-            this.emitter.emit('showDialog', {type, message});
+            this.emitter.emit('showDialog', {type, message, button, action});
 
         },
         isLoading(loading) {
@@ -78,11 +78,11 @@ export default {
             return '';
         },
         getStatus(type, id) {
-            if (id == null || type == null || usePage().props[`${type}_statuses`] == null) return {
+            if (id == null || type == null || usePage().props[`statuses`] == null) return {
                 name: '',
                 color: 'primary'
             };
-            for (const el of usePage().props[`${type}_statuses`])
+            for (const el of usePage().props[`statuses`])
                 if (el.name == id)
                     return {name: this.__(el.name), color: el.color || 'primary'};
 

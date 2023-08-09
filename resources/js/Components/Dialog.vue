@@ -30,10 +30,11 @@
           <h5
               class="text-xl font-medium leading-normal text-neutral-800 dark:text-neutral-200"
               id="exampleModalLabel">
-            Modal title
+
           </h5>
           <!--Close button-->
           <button
+              :class="`text-${status}`"
               type="button"
               class="box-content rounded-none border-none hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none"
               data-te-modal-dismiss
@@ -54,27 +55,32 @@
         </div>
 
         <!--Modal body-->
-        <div class="relative flex-auto p-4" data-te-modal-body-ref>
-          Modal body text goes here.
+        <div class="relative flex-auto p-4" :class="`text-${status}`" data-te-modal-body-ref>
+          {{ message }}
         </div>
 
         <!--Modal footer-->
         <div
             class="flex flex-shrink-0 flex-wrap items-center justify-end rounded-b-md border-t-2 border-neutral-100 border-opacity-100 p-4 dark:border-opacity-50">
           <button
+              :class="`text-gray  bg-gray-100 hover:bg-gray-200`"
               type="button"
-              class="inline-block rounded bg-primary-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-100 focus:bg-primary-accent-100 focus:outline-none focus:ring-0 active:bg-primary-accent-200"
+              class="inline-block rounded-s   px-6 pb-2 pt-2.5 text-xs font-medium   leading-normal   transition duration-150 ease-in-out    focus:outline-none focus:ring-0  "
               data-te-modal-dismiss
               data-te-ripple-init
               data-te-ripple-color="light">
-            Close
+            {{ __('cancel') }}
           </button>
           <button
+              :class="`bg-${status} hover:bg-${status}-600`"
               type="button"
-              class="ml-1 inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
+              class="ml-1 rounded-e inline-block    px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out   hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]   focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0  active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
               data-te-ripple-init
+              data-te-modal-dismiss
+              @click="action"
               data-te-ripple-color="light">
-            Save changes
+            {{ button }}
+
           </button>
         </div>
       </div>
@@ -90,14 +96,19 @@ export default {
       alert: null,
       status: 'primary',
       message: null,
+      button: null,
+      action: null,
     }
   },
   props: [],
   methods: {
-    show(status, message) {
+    show(status, message, button, action) {
 
       this.status = status;
       this.message = message;
+      this.button = button;
+      this.action = action;
+
       window.Modal.show();
 
     },
