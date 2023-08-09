@@ -27,6 +27,7 @@ class Business extends Model
         'email_verified_at',
         'tags',
         'socials',
+        'view',
         'status',
         'created_at',
         'updated_at',

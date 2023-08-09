@@ -77,6 +77,21 @@ export default {
                     return this.__(el.name);
             return '';
         },
+        getProvince(id) {
+
+            if (id == null || usePage().props.provinces == null) return '';
+            for (const el of usePage().props.provinces)
+                if (el.id == id)
+                    return this.__(el.name);
+            return '';
+        },
+        getCounty(id) {
+            if (id == null || usePage().props.counties == null) return '';
+            for (const el of usePage().props.counties)
+                if (el.id == id)
+                    return this.__(el.name);
+            return '';
+        },
         getStatus(type, id) {
             if (id == null || type == null || usePage().props[`statuses`] == null) return {
                 name: '',

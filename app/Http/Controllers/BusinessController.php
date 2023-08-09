@@ -200,15 +200,15 @@ class BusinessController extends Controller
         $user = auth()->user();
         $search = $request->search;
         $page = $request->page ?: 1;
-        $orderBy = 'view_fee';
+        $orderBy = 'created_at';
         $dir = $request->dir ?: 'DESC';
         $paginate = $request->paginate ?: 24;
         $query = Business::query();
 //        $seen = session()->get('site_views', []);
-        $query = $query->select('id', 'name', 'status', 'category_id', 'created_at',);
-        $query = $query->whereStatus('view')->whereLang(app()->getLocale());
+        $query = $query->select('id', 'name', 'view', 'status', 'category_id', 'province_id', 'created_at',);
+        $query = $query->whereStatus('active')->whereLang(app()->getLocale());
         if ($search)
-            $query = $query->where('name', 'like', "%$search%")->orWhere('link', 'like', "%$search%");
+            $query = $query->where('name', 'like', "%$search%");
 
         return $query->orderBy($orderBy, $dir)->paginate($paginate, ['*'], 'page', $page);
     }

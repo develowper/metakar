@@ -1,7 +1,7 @@
 <template>
-  <Scaffold>
+  <Scaffold navbar-theme="dark">
     <template v-slot:header>
-      <title>{{__('sites')}}</title>
+      <title>{{__('businesses')}}</title>
 
     </template>
 
@@ -44,7 +44,7 @@
 
 
             </div>
-            <div class="  px-3    flex  items-center">
+            <div v-if="false" class="  px-3    flex  items-center">
               <PrimaryButton class="mx-2 p-2 grow  ">{{ __('register_site') }}</PrimaryButton>
               <SecondaryButton class="mx-2 p-2 grow">{{ __('make_money') }}</SecondaryButton>
             </div>
@@ -79,15 +79,15 @@
       </div>
     </div>
 
-    <section class="flex justify-center  p-5 max-w-7xl  mx-auto">
-      <div class=" w-80 p-3   mx-2  bg-white rounded-lg     lg:flex md:hidden sm:hidden xs:hidden"></div>
+    <section class="flex justify-center  p-1 max-w-8xl py-32  ">
+      <!--      <div class=" w-80 p-3   mx-2  bg-white rounded-lg     lg:flex md:hidden sm:hidden xs:hidden"></div>-->
 
 
       <div
-          class="   grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4  gap-4     max-w-6xl">
-        <Link v-for="(d,idx) in data" :href="route('site',d.id)"
+          class="   grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4  gap-4     max-w-6xl">
+        <Link v-for="(d,idx) in data" :href="route('business',d.id)"
               class="flex-col items-stretch cursor-pointer hover:scale-[101%] duration-300 rounded-lg overflow-hidden shadow-lg">
-          <Image :src="route('storage.sites')+`/${d.id}.jpg`" classes="object-cover h-48   w-full"/>
+          <Image :src="route('storage.businesses')+`/${d.id}/1.jpg`" classes="object-cover rounded-lg h-48   w-full"/>
           <div class="p-2  text-gray-700">{{ cropText(d.name, 30) }}</div>
           <div class="px-4 py-2 text-sm   text-gray-400">{{ getCategory(d.category_id) }}</div>
           <hr class="border-gray-200 dark:border-gray-700  ">
@@ -95,27 +95,27 @@
             <div class="flex items-center">
               <!--              <EyeIcon class="w-4 h-4"/>-->
               <span class="px-1">{{ __('view') }}:</span>
-              <span class="px-1">{{ d.views }}</span>
+              <span class="px-1">{{ d.view }}</span>
             </div>
             <div class=" border-s   py-4"></div>
-            <div v-if="!hasWallet()" class="flex items-center">
+            <!--            <div v-if="!hasWallet()" class="flex items-center">-->
+            <!--              &lt;!&ndash;              <EyeIcon class="w-4 h-4"/>&ndash;&gt;-->
+            <!--              <span class="px-1">{{ __('reward') }}:</span>-->
+            <!--              <span class="px-1">{{ $page.props.site_view_meta_reward }} {{ __('meta') }}</span>-->
+            <!--            </div>-->
+            <div class="flex items-center">
               <!--              <EyeIcon class="w-4 h-4"/>-->
-              <span class="px-1">{{ __('reward') }}:</span>
-              <span class="px-1">{{ $page.props.site_view_meta_reward }} {{ __('meta') }}</span>
-            </div>
-            <div v-else class="flex items-center">
-              <!--              <EyeIcon class="w-4 h-4"/>-->
-              <span class="px-1">{{ __('reward') }}:</span>
-              <span class="px-1">{{ asPrice(d.view_fee) }} {{ __('currency_symbol') }}</span>
+              <!--              <span class="px-1">{{ __('location') }}:</span>-->
+              <span class="px-1">{{ getProvince(d.province_id) }} </span>
             </div>
 
           </div>
         </Link>
       </div>
     </section>
-
     <LoadingIcon v-show="loading" ref="loader" type="linear"/>
   </Scaffold>
+
 </template>
 
 <script>
@@ -150,7 +150,7 @@ export default {
   setup(props) {
 
   }, mounted() {
-    this.setScroll(this.$refs.loader.$el);
+    // this.setScroll(this.$refs.loader.$el);
     this.getData();
   },
   methods: {
@@ -159,7 +159,7 @@ export default {
       if (this.total > 0 && this.total <= this.data.length) return;
       this.loading = true;
 
-      window.axios.get(route('site.search'), {
+      window.axios.get(route('business.search'), {
         params: this.params
       })
           .then((response) => {

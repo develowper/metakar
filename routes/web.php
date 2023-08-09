@@ -148,6 +148,9 @@ Route::get('/sites', [SiteController::class, 'index'])->name('site.index');
 Route::get('/site/search', [SiteController::class, 'search'])->name('site.search');
 Route::get('site/{site}', [SiteController::class, 'view'])->name('site');
 
+Route::get('/business/search', [BusinessController::class, 'search'])->name('business.search');
+Route::get('business/{business}', [BusinessController::class, 'view'])->name('business');
+
 
 Route::get('language/{language}', function ($language) {
     session()->put('locale', $language);

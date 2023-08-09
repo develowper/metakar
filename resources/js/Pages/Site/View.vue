@@ -110,10 +110,11 @@
             </p>
 
           </div>
-          <div class="block sm:flex items-center justify-between     text-white bg-primary px-4 py-2 ">
+          <div
+              class=" flex  flex-wrap sm:flex-nowrap items-center justify-between     text-white bg-primary px-4 py-2 ">
 
             <div
-                class=" flex w-full justify-start  items-center  text-sm  ">
+                class=" flex flex-wrap w-full justify-start  items-center  text-sm  ">
               <div class="flex items-center">
                 <EyeIcon class="w-4 h-4"/>
                 <span class="px-1">{{ __('view') }}:</span>
