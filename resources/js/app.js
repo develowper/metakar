@@ -4,6 +4,8 @@ import '../scss/app.scss';
 import '../fonts/tanha/Farsi-Digits/font-face.css';
 import '../fonts/shabnam/Farsi-Digits/font-face.css';
 import 'tw-elements';
+import 'lity';
+import 'lity/dist/lity.min.css';
 import {createApp, h} from 'vue';
 import {createInertiaApp} from '@inertiajs/vue3';
 import {resolvePageComponent} from 'laravel-vite-plugin/inertia-helpers';

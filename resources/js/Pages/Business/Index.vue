@@ -7,7 +7,7 @@
 
     <div class="relative  bg-gradient-to-t from-pink-300 via-purple-300 to-indigo-400">
       <!--Hero-->
-      <div class="py-24       mx-auto    ">
+      <div class="py-12  xl:py-20       mx-auto    ">
         <div class="  px-3  sm:px-1  flex   flex-col md:flex-row items-center ">
           <!--                    Right Col-->
           <!--          <div class="  md:w-2/5 py-6 text-center">-->
@@ -79,7 +79,7 @@
       </div>
     </div>
 
-    <section class="flex justify-center  p-1 max-w-8xl py-32  ">
+    <section class="flex justify-center  p-1 max-w-8xl  py-8  ">
       <!--      <div class=" w-80 p-3   mx-2  bg-white rounded-lg     lg:flex md:hidden sm:hidden xs:hidden"></div>-->
 
 

@@ -212,4 +212,31 @@ class BusinessController extends Controller
 
         return $query->orderBy($orderBy, $dir)->paginate($paginate, ['*'], 'page', $page);
     }
+
+    public function view(Request $request, $site)
+    {
+
+
+        $message = null;
+        $link = null;
+        $user = auth()->user();
+        $data = Business::where('id', $site)->with('owner:id,fullname,phone')->first();
+        if ($data)
+            $data->images = array_filter(Business::getImages($data->id), fn($e) => $e != null);
+
+        if (!$data || $data->status != 'active') {
+            $message = __('no_results');
+            $link = route('business.index');
+            $data = ['name' => __('no_results'),];
+        }
+        return Inertia::render('Business/View', [
+            'error_message' => $message,
+            'error_link' => $link,
+            'data' => $data,
+            'provinces' => Province::all(),
+            'counties' => County::all(),
+            'categories' => Business::categories(),
+        ]);
+
+    }
 }
