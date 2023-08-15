@@ -38,7 +38,7 @@
               </div>
               <div class="my-2">
                 <Podcast
-                    :preload="{name:$page.props.data.name,url:route('storage.podcasts')+`/${$page.props.data.id}.mp3`}"
+                    :preload="{name:$page.props.data.name,artist: $page.props.data.narrator, url:route('storage.podcasts')+`/${$page.props.data.id}.mp3`}"
                     view="linear" mode="edit" :link="route('podcast.update')" :for-id="$page.props.data.id"
                     ref="podcast" :label="__('podcast_file_mp3')"/>
                 <InputError class="mt-1 " :message="form.errors.podcast"/>

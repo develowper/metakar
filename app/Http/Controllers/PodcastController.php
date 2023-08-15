@@ -201,4 +201,24 @@ class PodcastController extends Controller
         return $query->orderBy($orderBy, $dir)->paginate($paginate, ['*'], 'page', $page);
     }
 
+    public function view(Request $request, $podcast)
+    {
+        $message = null;
+        $link = null;
+
+        $data = Podcast::where('id', $podcast)->with('owner:id,fullname,phone')->first();
+
+        if (!$data || $data->status != 'active') {
+            $message = __('no_results');
+            $link = route('podcast.index');
+            $data = ['name' => __('no_results'),];
+        }
+        return Inertia::render('Podcast/View', [
+            'error_message' => $message,
+            'error_link' => $link,
+            'data' => $data,
+            'categories' => Podcast::categories(),
+        ]);
+
+    }
 }

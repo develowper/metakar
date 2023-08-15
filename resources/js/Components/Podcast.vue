@@ -37,9 +37,12 @@
 
         <div class="flex flex-col">
           <span data-amplitude-song-info="name"
-                class="font-sans text-sm  text-slate-900 dark:text-white">{{ song.name }}</span>
+                class="font-sans text-sm  text-slate-900 dark:text-white">{{ song.name }}
+          </span>
           <span data-amplitude-song-info="artist"
-                class="font-sans text-base font-medium leading-6 text-gray-500 dark:text-gray-400"></span>
+                class="font-sans text-sm my-2  text-gray-500 dark:text-gray-400">
+            {{ song.artist }}
+          </span>
           <span data-amplitude-song-info="album"
                 class="font-sans text-base font-medium leading-6 text-gray-500 dark:text-gray-400"></span>
         </div>
