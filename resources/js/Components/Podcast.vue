@@ -26,7 +26,8 @@
   <div v-if=" song  "
        class="bg-white dark:bg-[#0A1122] w-full    flex flex-col  ">
     <div
-        class="relative w-player flex flex-col rounded-xl shadow-player-light bg-player-light-background border border-player-light-border dark:shadow-player-dark dark:bg-player-dark-background dark:border-player-dark-border dark:backdrop-blur-xl">
+        :class="classes || 'rounded-xl'"
+        class="relative w-player flex flex-col   shadow-player-light bg-player-light-background border border-player-light-border dark:shadow-player-dark dark:bg-player-dark-background dark:border-player-dark-border dark:backdrop-blur-xl">
 
       <!--      <div>-->
       <!--        <XCircleIcon @click="player.stop();song=null"-->
@@ -198,7 +199,7 @@ import {
 
 export default {
   name: "Podcast",
-  props: ['view', 'preload', 'label', 'mode', 'link', 'forId'],
+  props: ['view', 'preload', 'label', 'mode', 'link', 'forId', 'classes'],
   components: {
     SpeakerXMarkIcon,
     SpeakerWaveIcon,

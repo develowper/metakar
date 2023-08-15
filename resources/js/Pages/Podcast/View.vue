@@ -18,11 +18,14 @@
           <div class="px-4 py-2 text-white bg-primary">{{ data.name }}</div>
           <div v-if="data" class="    p-4 flex flex-col  m-4">
 
-            <div class="my-2">
-              <Podcast
-                  :preload="{name: data.name,artist: data.narrator,url:route('storage.podcasts')+`/${data.id}.mp3`}"
-                  view="linear" mode="view"
-                  ref="podcast" :label="__('podcast_file_mp3')"/>
+            <div class="grid grid-cols-1 sm:grid-cols-2 items-center my-2 ">
+              <Image :src="route('storage.podcasts')+`/${data.id}.jpg`"
+                     classes="object-cover rounded-none rounded-t sm:rounded-none sm:rounded-s   h-full   w-full"/>
+
+              <Podcast classes="rounded-none rounded-b sm:rounded-none sm:rounded-e"
+                       :preload="{name: data.name,artist: data.narrator,url:route('storage.podcasts')+`/${data.id}.mp3`}"
+                       view="linear" mode="view"
+                       ref="podcast" :label="__('podcast_file_mp3')"/>
             </div>
 
             <p v-if="data.owner" class="text-sm bg-gray-200 p-4 rounded">
