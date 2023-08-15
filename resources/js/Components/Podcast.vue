@@ -183,7 +183,7 @@
 <script>
 import * as Amplitude from 'amplitudejs';
 import 'amplitudejs/dist/visualizations/bar.js';
-import LoadingIcon from '@/components/LoadingIcon.vue';
+import LoadingIcon from "@/Components/LoadingIcon.vue";
 import {
   SpeakerXMarkIcon,
   SpeakerWaveIcon,
