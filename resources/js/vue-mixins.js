@@ -118,6 +118,28 @@ export default {
         hasWallet() {
 
             return this.user ? this.user.wallet_active : false;
+        },
+        f2e(num) {
+
+            return window.f2e(num);
+        },
+        getDuration(sec) {
+            if (sec == null || sec == 0) return '0';
+            var sec_num = parseInt(sec, 10); // don't forget the second param
+            var hours = Math.floor(sec_num / 3600);
+            var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+            var seconds = sec_num - (hours * 3600) - (minutes * 60);
+
+            if (hours < 10) {
+                hours = "0" + hours;
+            }
+            if (minutes < 10) {
+                minutes = "0" + minutes;
+            }
+            if (seconds < 10) {
+                seconds = "0" + seconds;
+            }
+            return hours + ':' + minutes + ':' + seconds;
         }
     },
 

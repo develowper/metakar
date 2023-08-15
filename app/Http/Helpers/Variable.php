@@ -3,6 +3,7 @@
 namespace App\Http\Helpers;
 
 use App\Models\Business;
+use App\Models\Podcast;
 use App\Models\Setting;
 use App\Models\Site;
 use App\Models\User;
@@ -41,9 +42,10 @@ class Variable
     const SITE_IMAGE_LIMIT_MB = 4;
     const BUSINESS_IMAGE_LIMIT = 4;
     const SITE_ALLOWED_MIMES = ['jpeg', 'jpg', 'png'];
+    const PODCAST_ALLOWED_MIMES = ['mp3', 'mpga'];
     const LOGS = [72534783];
     const PAGINATE = [24, 50, 100];
-    const IMAGE_FOLDERS = [Site::class => 'sites', Business::class => 'businesses',];
+    const IMAGE_FOLDERS = [Site::class => 'sites', Business::class => 'businesses', Podcast::class => 'podcasts',];
     const SITE_STATUSES = [
         ["name" => 'inactive', "color" => 'danger'],
         ["name" => 'need_charge', "color" => 'orange'],
@@ -53,6 +55,12 @@ class Variable
         ["name" => 'review', "color" => 'gray'],
     ];
     const BUSINESS_STATUSES = [
+        ["name" => 'active', "color" => 'success'],
+        ["name" => 'inactive', "color" => 'danger'],
+        ["name" => 'block', "color" => 'gray'],
+        ["name" => 'review', "color" => 'gray'],
+    ];
+    const  STATUSES = [
         ["name" => 'active', "color" => 'success'],
         ["name" => 'inactive', "color" => 'danger'],
         ["name" => 'block', "color" => 'gray'],

@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Models\Business;
+use App\Models\Podcast;
 use App\Models\Site;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -67,6 +68,7 @@ class UserPolicy
                 break;
             case Site::class  :
             case Business::class  :
+            case Podcast::class  :
                 if (in_array($user->role, ['us', 'ad',]))
                     return true;
                 break;
@@ -91,6 +93,7 @@ class UserPolicy
                 break;
             case $item instanceof Site :
             case $item instanceof Business :
+            case $item instanceof Podcast :
                 return $user->role == 'us' && optional($item)->owner_id == $user->id || in_array($user->role, ['ad',]);
                 break;
         }
@@ -120,6 +123,7 @@ class UserPolicy
                 break;
             case $item instanceof Site  :
             case $item instanceof Business  :
+            case $item instanceof Podcast  :
                 return $user->role == 'us' && optional($item)->owner_id == $user->id || in_array($user->role, ['ad',]);
                 break;
         }

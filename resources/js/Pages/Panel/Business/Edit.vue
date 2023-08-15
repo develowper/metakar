@@ -29,7 +29,6 @@
             <div v-for="(data,idx) in $page.props.max_images_limit"
                  class="m-1 md:max-w-[150px] lg:max-w-xs  ">
               <ImageUploader mode="edit"
-
                              :link="route('business.update')"
                              :preload="$page.props.data.images[idx]" ref="imageCropper"
                              :label="__('image_jpg')" :for-id="$page.props.data.id"
@@ -95,7 +94,7 @@
                 <Selector ref="categorySelector" :data="$page.props.categories" :label="__('category')"
                           id="category_id" v-model="form.category_id">
                   <template v-slot:append>
-                    <div class="p-1 px-4">
+                    <div class="  p-3">
                       <Squares2X2Icon class="h-5 w-5"/>
                     </div>
                   </template>

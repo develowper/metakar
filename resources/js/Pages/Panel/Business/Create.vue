@@ -89,7 +89,7 @@
                 <Selector ref="categorySelector" :data="$page.props.categories" :label="__('category')"
                           id="category_id" v-model="form.category_id">
                   <template v-slot:append>
-                    <div class="p-1 px-4">
+                    <div class="  p-3">
                       <Squares2X2Icon class="h-5 w-5"/>
                     </div>
                   </template>

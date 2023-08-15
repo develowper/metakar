@@ -25,6 +25,7 @@
     "dependencies": {
         "@heroicons/vue": "^2.0.18",
         "@vitejs/plugin-legacy": "^4.1.1",
+        "amplitudejs": "^5.3.2",
         "chart.js": "^4.3.0",
         "cropperjs": "^1.5.13",
         "lity": "^2.4.1",

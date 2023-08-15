@@ -46,14 +46,14 @@
           <div v-if="mode=='edit'"
                class="text-center flex rounded-s grow  cursor-pointer hover:bg-danger-600  p-2 bg-danger text-white grow "
                :title="__('remove')"
-               @click="!preload ? clearImage():  showDialog('danger',__('remove_image?'), __('remove') , removeImage )  ;">
+               @click="!preload || replace ? clearImage():  showDialog('danger',__('remove_image?'), __('remove') , removeImage )  ;">
             <XMarkIcon class="w-4 h-4  mx-auto text-white  text-white" v-if="!removing"/>
             <LoadingIcon class="w-4 h-4 mx-auto " v-if="removing"/>
           </div>
           <div v-if="  mode=='edit'"
                class="cursor-pointer grow rounded-e hover:bg-success-600  p-2 bg-success text-white grow"
                :title="__('upload')"
-               @click="  showDialog('primary',__('new_image_save_and_active_after_review'), __('upload') , uploadImage )">
+               @click="  showDialog('primary',__('new_file_replace_and_active_after_review'), __('upload') , uploadImage )">
             <CheckIcon class="w-4 h-4  mx-auto text-white   text-white" v-if="!uploading"/>
             <LoadingIcon class="w-4 h-4 mx-auto " v-if="uploading"/>
           </div>
@@ -97,7 +97,7 @@ import LoadingIcon from "@/Components/LoadingIcon.vue";
 export default {
 
 
-  props: ['link', 'id', 'type', 'height', 'width', 'required', 'preload', 'label', 'mode', 'forId', 'callback', 'images', 'limit', 'cropRatio'],
+  props: ['link', 'id', 'type', 'replace', 'height', 'width', 'required', 'preload', 'label', 'mode', 'forId', 'callback', 'images', 'limit', 'cropRatio'],
   components: {Tooltip, XMarkIcon, CheckIcon, LoadingIcon,},
   data() {
     return {

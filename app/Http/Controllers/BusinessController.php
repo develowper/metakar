@@ -25,10 +25,10 @@ use Inertia\Inertia;
 
 class BusinessController extends Controller
 {
-    public function edit(Request $request, $site)
+    public function edit(Request $request, $business)
     {
 
-        $data = Business::with('category')->find($site);
+        $data = Business::with('category')->find($business);
         if ($data)
             $data->images = Business::getImages($data->id);
         $this->authorize('edit', [User::class, $data]);
@@ -36,7 +36,7 @@ class BusinessController extends Controller
             'provinces' => Province::all(),
             'counties' => County::all(),
             'categories' => Business::categories(),
-            'statuses' => Variable::BUSINESS_STATUSES,
+            'statuses' => Variable::STATUSES,
             'data' => $data,
             'max_images_limit' => Variable::BUSINESS_IMAGE_LIMIT,
         ]);
@@ -197,7 +197,7 @@ class BusinessController extends Controller
 
     public function search(Request $request)
     {
-        $user = auth()->user();
+//        $user = auth()->user();
         $search = $request->search;
         $page = $request->page ?: 1;
         $orderBy = 'created_at';

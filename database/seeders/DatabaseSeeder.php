@@ -7,6 +7,7 @@ use App\Models\Business;
 use App\Models\Category;
 use App\Models\County;
 use App\Models\Doc;
+use App\Models\Podcast;
 use App\Models\Site;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
@@ -33,12 +34,42 @@ class DatabaseSeeder extends Seeder
 
         $this->createSites(50);
         $this->createBusinesses(50);
+        $this->createPodcasts(50);
         // \App\Models\User::factory(10)->create();
 
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+    }
+
+    private function createPodcasts($count = 30)
+    {
+        File::deleteDirectory("storage/app/public/podcasts");
+        File::makeDirectory("storage/app/public/podcasts");
+        DB::table('podcasts')->truncate();
+
+        for ($i = 0; $i < $count; $i++) {
+
+            $name = $this->faker->company;
+            $data = Podcast::create([
+                'name' => $name,
+                'narrator' => $this->faker->name,
+                'slug' => str_slug($name),
+                'duration' => $this->faker->numberBetween(60, 250),
+
+                'status' => $this->faker->randomElement(["active", "active", "active", "review"]),
+                'owner_id' => $this->faker->numberBetween(1, 2),
+                'category_id' => $this->faker->randomElement(Category::pluck('id')),
+                'view' => 0,
+                'lang' => 'fa',
+                'description' => $this->faker->realText($this->faker->numberBetween(200, 1024)),
+                'created_at' => Carbon::now(),
+                'tags' => implode(",", $this->faker->randomElements(["پادکست", "بازدید", "صدا", "تست", "گوینده", "پادکست",], $this->faker->numberBetween(0, 5))),
+            ]);
+            $this->makeFile("podcasts", $data->id);
+            $this->makeFile("podcasts", $data->id, '.mp3');
+        }
     }
 
     private function createBusinesses($count = 30)
@@ -109,15 +140,15 @@ class DatabaseSeeder extends Seeder
         }
     }
 
-    private function makeFile($type, $id)
+    private function makeFile($type, $id, $extension = '.jpg')
     {
-        $allFiles = Storage::allFiles("public/faker/$type");
+        $allFiles = array_filter(Storage::allFiles("public/faker/$type"), fn($e) => str_contains($e, $extension));
 
         $path = storage_path('app/' . $allFiles[array_rand($allFiles)]);
         //profile picture
         $file = new UploadedFile(
             $path,
-            File::name($path) . '.' . File::extension($path),
+            File::name($path) . "$extension"/* '.' . File::extension($path)*/,
             File::mimeType($path),
             null,
             true
@@ -129,7 +160,7 @@ class DatabaseSeeder extends Seeder
             File::makeDirectory(Storage::path("public/$type"), $mode = 0755,);
         }
 
-        copy($file->path(), (storage_path("app/public/$type/") . "$id.jpg" /*. $file->extension()*/));
+        copy($file->path(), (storage_path("app/public/$type/") . "$id$extension" /*. $file->extension()*/));
 
     }
 

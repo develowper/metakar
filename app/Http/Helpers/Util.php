@@ -8,11 +8,19 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
+use Intervention\Image\Facades\Image;
 use Spatie\Browsershot\Browsershot;
 use Spatie\Browsershot\Exceptions\CouldNotTakeBrowsershot;
 
 class Util
 {
+    public static function createFile(array|\Illuminate\Http\UploadedFile|null $file, string $type, $name)
+    {
+        if (!Storage::exists("public/$type")) {
+            File::makeDirectory(Storage::path("public/$type"), $mode = 0755,);
+        }
+        $file->move(storage_path("app/public/$type"), "$name." . $file->extension());
+    }
 
     static function createImage($img, $type, $name = null, $folder = null)
     {
@@ -174,4 +182,6 @@ class Util
         }
         return $random;
     }
+
+
 }

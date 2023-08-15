@@ -12,13 +12,13 @@
           class="flex items-center justify-between px-4 py-2 text-primary-500 border-b md:py-4 dark:border-primary-darker">
         <div class="flex">
           <Bars2Icon class="h-7 w-7 mx-3"/>
-          <h1 class="text-2xl font-semibold">{{ __('sites_list') }}</h1>
+          <h1 class="text-2xl font-semibold">{{ __('businesses_list') }}</h1>
         </div>
         <div>
-          <Link :href="route('panel.site.create')"
+          <Link :href="route('panel.business.create')"
                 class="inline-flex items-center  justify-center px-4 py-2 bg-green-500 border border-transparent rounded-md font-semibold  transition-all duration-500 text-white     hover:bg-green-600 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150"
           >
-            {{ __('new_site') }}
+            {{ __('new_business') }}
           </Link>
         </div>
       </div>
@@ -240,8 +240,8 @@
                     data-te-ripple-init
                     data-te-ripple-color="light"
                     class="  min-w-[5rem]  px-1 cursor-pointer items-center text-center rounded-md py-[.2rem]"
-                    :class="`bg-${getStatus('site', d.status).color}-100 hover:bg-${getStatus('site', d.status).color}-200 text-${getStatus('site', d.status).color}-500`">
-                  {{ getStatus('site', d.status).name }}
+                    :class="`bg-${getStatus('business', d.status).color}-100 hover:bg-${getStatus('business', d.status).color}-200 text-${getStatus('business', d.status).color}-500`">
+                  {{ getStatus('business', d.status).name }}
                 </button>
                 <ul ref="statusMenu" data-te-dropdown-menu-ref
                     class="  absolute z-[1000]   m-0 hidden   list-none overflow-hidden rounded-lg border-none bg-white bg-clip-padding text-center text-base shadow-lg dark:bg-neutral-700 [&[data-te-dropdown-show]]:block"

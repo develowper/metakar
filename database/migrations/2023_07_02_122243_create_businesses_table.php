@@ -34,7 +34,7 @@ return new class extends Migration {
             $table->json('socials')->nullable();
 //            $table->boolean('is_active', 200)->default(true);
 //            $table->boolean('is_blocked', 200)->default(false);
-            $table->enum('status', array_column(Variable::BUSINESS_STATUSES, 'name'))->nullable();
+            $table->enum('status', array_column(Variable::STATUSES, 'name'))->nullable();
             $table->string('lang', 2)->nullable();
 
             $table->timestamps();
