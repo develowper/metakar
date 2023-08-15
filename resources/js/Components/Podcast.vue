@@ -230,7 +230,8 @@ export default {
 
       if (!this.song && this.player)
         this.player.pause();
-    }
+    },
+
   },
   mounted() {
     this.uploader = document.querySelector('#podcast');
@@ -242,13 +243,36 @@ export default {
     if (this.song)
       this.initPlayer();
 
-
+    this.$inertia.on('start', (event) => {
+      // this.destroyPlayer();
+    })
     // this.player.registerVisualization("bar_visualization");
 
   },
   updated() {
   },
+
+  beforeUnmount() {
+    this.destroyPlayer();
+  },
+
   methods: {
+    destroyPlayer() {
+
+      let anode = this.player.getAnalyser();
+
+      // this.log(this.file);
+
+      this.player.stop();
+      this.playing = false;
+      if (anode) {
+        anode.context.close().then(() => {
+          this.player = null;
+        });
+      } else {
+        this.player = null;
+      }
+    },
     initPlayer() {
 
       const songEl = document.getElementById('song-percentage-played');
@@ -425,6 +449,7 @@ export default {
 
 
     },
+
   },
 }
 </script>

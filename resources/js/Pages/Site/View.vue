@@ -268,6 +268,9 @@ export default {
     SecondaryButton,
     UserIcon,
   },
+  beforeUnmount() {
+    clearInterval(this.intervalId);
+  },
   created() {
     // this.isLoading(true);
     window.addEventListener("beforeunload", () => {
