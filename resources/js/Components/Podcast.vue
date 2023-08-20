@@ -2,7 +2,7 @@
   <div v-show="mode!='view' && !song"
        class=" flex  h-full md:min-w-[150px]  items-center justify-center  uploader-container  rounded-lg p-3 "
 
-       id="container-podcast"
+       :id="`container-podcast-${forId}`"
        style="border:dashed; "
        role="form" @mouseover="uploader.classList.add('hover');"
        @dragover.prevent="uploader.classList.add('hover');"
@@ -16,7 +16,7 @@
         {{ label }}
       </div>
     </div>
-    <input v-show="false" id="podcast" class="w-full   " accept=".mp3," type="file"
+    <input v-show="false" :id="`podcast-${forId}`" class="w-full   " accept=".mp3," type="file"
            name="podcast" @input="  filePreview($event, 'file' )"/>
 
 
@@ -199,7 +199,7 @@ import {
 
 export default {
   name: "Podcast",
-  props: ['view', 'preload', 'label', 'mode', 'link', 'forId', 'classes'],
+  props: ['view', 'preload', 'label', 'mode', 'link', 'forId', 'classes',],
   components: {
     SpeakerXMarkIcon,
     SpeakerWaveIcon,
@@ -234,8 +234,8 @@ export default {
 
   },
   mounted() {
-    this.uploader = document.querySelector('#podcast');
-    this.uploadContainer = document.querySelector('#container-podcast');
+    this.uploader = document.querySelector(`#podcast-${this.forId}`);
+    this.uploadContainer = document.querySelector(`#container-podcast-${this.forId}`);
 
     this.player = Amplitude;
     if (this.preload)

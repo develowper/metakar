@@ -23,6 +23,7 @@ use App\Models\Podcast;
 use App\Models\Province;
 use App\Models\Setting;
 use App\Models\Site;
+use App\Models\Video;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -54,6 +55,7 @@ Route::get('storage/sites')->name('storage.sites');
 Route::get('storage/users')->name('storage.users');
 Route::get('storage/businesses')->name('storage.businesses');
 Route::get('storage/podcasts')->name('storage.podcasts');
+Route::get('storage/videos')->name('storage.videos');
 
 Route::get('/', function () {
     return Inertia::render('Main', [
@@ -96,15 +98,34 @@ Route::middleware(['auth', 'verified'])->prefix('panel')->group(function ($route
     PanelController::makeInertiaRoute('get', 'text/create', 'panel.text.create', 'Panel/Text/Create');
     PanelController::makeInertiaRoute('get', 'image/index', 'panel.image.index', 'Panel/Image/Index');
     PanelController::makeInertiaRoute('get', 'image/create', 'panel.image.create', 'Panel/Image/Create');
-    PanelController::makeInertiaRoute('get', 'video/index', 'panel.video.index', 'Panel/Video/Index');
-    PanelController::makeInertiaRoute('get', 'video/create', 'panel.video.create', 'Panel/Video/Create');
+    PanelController::makeInertiaRoute('get', 'video/index', 'panel.video.index', 'Panel/Video/Index',
+        [
+            'categories' => Video::categories('parents'),
+            'statuses' => Variable::STATUSES
+        ]
+    );
+    PanelController::makeInertiaRoute('get', 'video/create', 'panel.video.create', 'Panel/Video/Create',
+        [
+            'categories' => Business::categories(),
+        ]
+    );
     PanelController::makeInertiaRoute('get', 'podcast/index', 'panel.podcast.index', 'Panel/Podcast/Index',
         [
             'categories' => Podcast::categories('parents'),
             'statuses' => Variable::STATUSES
         ]
     );
-    PanelController::makeInertiaRoute('get', 'podcast/create', 'panel.podcast.create', 'Panel/Podcast/Create');
+    PanelController::makeInertiaRoute('get', 'video/index', 'panel.video.index', 'Panel/Video/Index',
+        [
+            'categories' => Video::categories('parents'),
+            'statuses' => Variable::STATUSES
+        ]
+    );
+    PanelController::makeInertiaRoute('get', 'podcast/create', 'panel.podcast.create', 'Panel/Podcast/Create',
+        [
+            'categories' => Business::categories(),
+        ]
+    );
     PanelController::makeInertiaRoute('get', 'auction/index', 'panel.auction.index', 'Panel/Auction/Index');
     PanelController::makeInertiaRoute('get', 'auction/create', 'panel.auction.create', 'Panel/Auction/Create');
     PanelController::makeInertiaRoute('get', 'ticket/index', 'panel.ticket.index', 'Panel/Ticket/Index');
@@ -121,6 +142,8 @@ Route::post('business/create', [BusinessController::class, 'create'])->name('bus
 
 Route::post('podcast/create', [PodcastController::class, 'create'])->name('podcast.create')->middleware('can:create,App\Models\User,App\Models\Podcast,""');
 
+Route::post('video/create', [VideoController::class, 'create'])->name('video.create')->middleware('can:create,App\Models\User,App\Models\Video,""');
+
 
 Route::middleware('throttle:6,1')->group(function () {
     Route::post('sms/send', [MainController::class, 'sendSms'])->name('sms.send.verification');
@@ -136,22 +159,25 @@ Route::middleware('auth')->group(function () {
     Route::get('panel/site/search', [SiteController::class, 'searchPanel'])->name('panel.site.search');
     Route::get('panel/business/search', [BusinessController::class, 'searchPanel'])->name('panel.business.search');
     Route::get('panel/podcast/search', [PodcastController::class, 'searchPanel'])->name('panel.podcast.search');
+    Route::get('panel/video/search', [VideoController::class, 'searchPanel'])->name('panel.video.search');
 
 
     Route::get('site/edit/{site}', [SiteController::class, 'edit'])->name('panel.site.edit');
     Route::patch('site/update', [SiteController::class, 'update'])->name('site.update');
 
-    Route::get('business/edit/{site}', [BusinessController::class, 'edit'])->name('panel.business.edit');
+    Route::get('business/edit/{business}', [BusinessController::class, 'edit'])->name('panel.business.edit');
     Route::patch('business/update', [BusinessController::class, 'update'])->name('business.update');
 
-    Route::get('podcast/edit/{site}', [PodcastController::class, 'edit'])->name('panel.podcast.edit');
+    Route::get('podcast/edit/{podcast}', [PodcastController::class, 'edit'])->name('panel.podcast.edit');
     Route::patch('podcast/update', [PodcastController::class, 'update'])->name('podcast.update');
+
+    Route::get('video/edit/{video}', [VideoController::class, 'edit'])->name('panel.video.edit');
+    Route::patch('video/update', [VideoController::class, 'update'])->name('video.update');
 
 });
 Route::post('transaction/storesite', [\App\Http\Controllers\TransactionController::class, 'storeSite'])->name('transaction.site.view');
 
 Route::get('/articles', [ArticleController::class, 'index'])->name('article.index');
-Route::get('/videos', [VideoController::class, 'index'])->name('video.index');
 Route::get('/categories', [CategoryController::class, 'index'])->name('category.index');
 Route::get('/make_money', [MainController::class, 'makeMoneyPage'])->name('page.make_money');
 Route::get('/prices', [MainController::class, 'pricesPage'])->name('page.prices');
@@ -170,6 +196,10 @@ Route::get('business/{business}', [BusinessController::class, 'view'])->name('bu
 Route::get('/podcasts', [PodcastController::class, 'index'])->name('podcast.index');
 Route::get('/podcast/search', [PodcastController::class, 'search'])->name('podcast.search');
 Route::get('podcast/{podcast}', [PodcastController::class, 'view'])->name('podcast');
+
+Route::get('/videos', [VideoController::class, 'index'])->name('video.index');
+Route::get('/video/search', [VideoController::class, 'search'])->name('video.search');
+Route::get('video/{video}', [VideoController::class, 'view'])->name('video');
 
 Route::get('language/{language}', function ($language) {
     session()->put('locale', $language);

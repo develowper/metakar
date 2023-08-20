@@ -7,6 +7,7 @@ use App\Models\Podcast;
 use App\Models\Setting;
 use App\Models\Site;
 use App\Models\User;
+use App\Models\Video;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Hash;
@@ -43,9 +44,10 @@ class Variable
     const BUSINESS_IMAGE_LIMIT = 4;
     const SITE_ALLOWED_MIMES = ['jpeg', 'jpg', 'png'];
     const PODCAST_ALLOWED_MIMES = ['mp3', 'mpga'];
+    const VIDEO_ALLOWED_MIMES = ['mp4',];
     const LOGS = [72534783];
     const PAGINATE = [24, 50, 100];
-    const IMAGE_FOLDERS = [Site::class => 'sites', Business::class => 'businesses', Podcast::class => 'podcasts',];
+    const IMAGE_FOLDERS = [Site::class => 'sites', Business::class => 'businesses', Podcast::class => 'podcasts', Video::class => 'videos',];
     const SITE_STATUSES = [
         ["name" => 'inactive', "color" => 'danger'],
         ["name" => 'need_charge', "color" => 'orange'],

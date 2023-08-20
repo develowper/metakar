@@ -5,9 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Helpers\Telegram;
 use App\Http\Helpers\Util;
 use App\Http\Helpers\Variable;
-use App\Http\Requests\BusinessRequest;
 use App\Http\Requests\PodcastRequest;
-use App\Models\Business;
 use App\Models\County;
 use App\Models\Podcast;
 use App\Models\Province;
@@ -24,8 +22,7 @@ class PodcastController extends Controller
     {
 
         $data = Podcast::with('category')->find($site);
-        if ($data)
-            $data->images = Business::getImages($data->id);
+
         $this->authorize('edit', [User::class, $data]);
         return Inertia::render('Panel/Podcast/Edit', [
             'categories' => Podcast::categories(),
@@ -108,7 +105,7 @@ class PodcastController extends Controller
     public function index()
     {
         return Inertia::render('Podcast/Index', [
-            'categories' => Business::categories(),
+            'categories' => Podcast::categories(),
         ]);
 
     }

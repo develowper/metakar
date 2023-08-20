@@ -64,7 +64,7 @@
             <CheckIcon class="w-4 h-4   mx-auto text-white bg-success text-white"/>
           </div>
           <div v-if="mode!='edit'"
-               class="  cursor-pointer hover:bg-danger-600 p-2  text-white grow rounded-lg"
+               class="  cursor-pointer bg-danger hover:bg-danger-600 p-2  text-white grow rounded-lg"
                :title="__('remove')"
                @click="refresh()">
             <XMarkIcon class="w-4 h-4  mx-auto text-white   text-white"/>

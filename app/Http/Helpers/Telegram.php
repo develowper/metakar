@@ -562,8 +562,8 @@ class Telegram
                     $msg .= $data->title . PHP_EOL;
                     $msg .= " ⭐ " . "دسته" . PHP_EOL;
                     $msg .= Category::find($data->category_id)->name . PHP_EOL;
-                    $msg .= url('') . '/storage/' . Helper::$docsMap['videos'] . '/' . $data->id . '.jpg' . '?r=' . random_int(10, 1000) . PHP_EOL;
-                    $msg .= url('') . '/storage/' . Helper::$docsMap['videos'] . '/' . $data->id . '.mp4' . '?r=' . random_int(10, 1000) . PHP_EOL;
+                    $msg .= route('storage.videos') . '/' . $data->id . '.jpg' . '?r=' . random_int(10, 1000) . PHP_EOL;
+                    $msg .= route('storage.videos') . '/' . $data->id . '.mp4' . '?r=' . random_int(10, 1000) . PHP_EOL;
                     $msg .= " 📌 " . url('video') . "/$data->id/" . PHP_EOL;
                     break;
                 case 'agency_created':

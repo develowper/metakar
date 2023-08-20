@@ -6,6 +6,7 @@ use App\Models\Business;
 use App\Models\Podcast;
 use App\Models\Site;
 use App\Models\User;
+use App\Models\Video;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Termwind\Components\Dd;
 
@@ -69,6 +70,7 @@ class UserPolicy
             case Site::class  :
             case Business::class  :
             case Podcast::class  :
+            case Video::class  :
                 if (in_array($user->role, ['us', 'ad',]))
                     return true;
                 break;
@@ -94,6 +96,7 @@ class UserPolicy
             case $item instanceof Site :
             case $item instanceof Business :
             case $item instanceof Podcast :
+            case $item instanceof Video :
                 return $user->role == 'us' && optional($item)->owner_id == $user->id || in_array($user->role, ['ad',]);
                 break;
         }
@@ -124,6 +127,7 @@ class UserPolicy
             case $item instanceof Site  :
             case $item instanceof Business  :
             case $item instanceof Podcast  :
+            case $item instanceof Video  :
                 return $user->role == 'us' && optional($item)->owner_id == $user->id || in_array($user->role, ['ad',]);
                 break;
         }

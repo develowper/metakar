@@ -2,7 +2,7 @@
 
   <Panel>
     <template v-slot:header>
-      <title>{{__('new_video')}}</title>
+      <title>{{__('edit_video')}}</title>
     </template>
 
 
@@ -10,9 +10,9 @@
       <!-- Content header -->
       <div
           class="flex items-center justify-start px-4 py-2 text-primary-500 border-b md:py-4 dark:border-primary-darker">
-        <FolderPlusIcon class="h-7 w-7 mx-3"/>
+        <PencilSquareIcon class="h-7 w-7 mx-3"/>
 
-        <h1 class="text-2xl font-semibold">{{ __('new_video') }}</h1>
+        <h1 class="text-2xl font-semibold">{{ __('edit_video') }}</h1>
 
       </div>
 
@@ -28,13 +28,20 @@
 
             <div class="flex-col   m-2 items-center rounded-lg max-w-xs  w-full mx-auto lg:mx-2   ">
               <div class="my-2">
-                <ImageUploader ref="imageCropper" :label="__('image_cover_jpg')" cropRatio="1.25" id="img"
+                <ImageUploader :replace="$page.props.max_images_limit==1"
+                               :preload="route('storage.videos')+`/${$page.props.data.id}.jpg`"
+                               mode="edit" :for-id="$page.props.data.id"
+                               :link="route('video.update')"
+                               ref="imageCropper" :label="__('image_cover_jpg')" cropRatio="1.25" id="img"
                                height="10" class="grow "/>
                 <InputError class="mt-1 " :message="form.errors.img"/>
               </div>
               <div class="my-2">
-                <Video :lang="$page.props.locale" for-id="video" view="linear" mode="create" ref="video"
-                       :label="__('video_file_mp4')"/>
+                <Video
+                    :lang="$page.props.locale"
+                    :preload="{name:$page.props.data.name, url:route('storage.videos')+`/${$page.props.data.id}.mp4`}"
+                    view="linear" mode="edit" :link="route('video.update')" :for-id="$page.props.data.id"
+                    ref="video" :label="__('video_file_mp4')"/>
                 <InputError class="mt-1 " :message="form.errors.video"/>
               </div>
             </div>
@@ -84,6 +91,7 @@
 
               <div class="my-2">
                 <TagInput
+                    ref="tags"
                     id="tags"
                     :placeholder="__('tags')"
                     classes="  "
@@ -157,6 +165,7 @@ import {
   Bars2Icon,
   LinkIcon,
   Squares2X2Icon,
+  PencilSquareIcon,
   SignalIcon,
 
 } from "@heroicons/vue/24/outline";
@@ -179,25 +188,26 @@ import PhoneFields from "@/Components/PhoneFields.vue";
 import SocialFields from "@/Components/SocialFields.vue";
 import Video from "@/Components/Video.vue";
 
-
 export default {
 
   data() {
     return {
-
+      data: this.$page.props.data || {},
       form: useForm({
+        id: this.$page.props.data.id,
+        phone: null,
+        phone_verify: null,
         lang: null,
         name: null,
-        socials: null,
+        link: null,
         category_id: null,
-        tags: '',
+        socials: null,
+        tags: null,
         description: '',
 
       }),
       img: null,
       video: null,
-      duration: null,
-
     }
   },
   components: {
@@ -228,72 +238,59 @@ export default {
     ProvinceCounty,
     PhoneFields,
     SocialFields,
-    SignalIcon,
+    PencilSquareIcon,
     Video,
+    SignalIcon,
+
+  },
+  created() {
 
   },
   mounted() {
-    // this.log(this.$page.props)
+
+
+    this.form.name = this.data.name;
+    this.form.phone = this.data.phone;
+    this.form.link = this.data.link;
+    this.form.narrator = this.data.narrator;
+    this.form.category_id = this.data.category_id;
+    this.$refs.tags.set(this.data.tags);
+    this.form.description = this.data.description;
+    this.$refs.langSelector.selected = this.data.lang;
   },
   methods: {
     submit() {
-      this.img = this.$refs.imageCropper.getCroppedData();
-      this.video = this.$refs.video.file;
-      this.duration = parseInt(this.$refs.video.getDuration());
-      this.form.uploading = false;
+
+
       this.form.lang = this.$refs.langSelector.selected;
       // this.form.category_id = this.$refs.categorySelector.selected;
       this.form.clearErrors();
 
       // this.isLoading(true, this.form.progress ? this.form.progress.percentage : null);
-
-      this.form.post(route('video.create'), {
+      // this.images = [];
+      // for (let i = 0; i < this.$page.props.max_images_limit; i++) {
+      //   let tmp = this.$refs.imageCropper[i].getCroppedData();
+      //   if (tmp) this.images.push(tmp);
+      // }
+      this.form.patch(route('video.update'), {
         preserveScroll: false,
 
         onSuccess: (data) => {
+          if (this.$page.props.flash.status)
+            this.showAlert(this.$page.props.flash.status, this.$page.props.flash.message);
 
-          if (!this.form.uploading) {
-            this.form.uploading = true;
-
-            this.form.transform((data) => ({
-              ...data,
-              uploading: true,
-              img: this.img,
-              video: this.video,
-              duration: this.duration,
-            }))
-                .post(route('video.create'), {
-                  preserveScroll: false,
-                  onSuccess: (data) => {
-
-                    // else {
-                    //   this.showAlert(this.$page.props.flash.status, this.$page.props.flash.message);
-                    //   this.form.reset();
-                    // }
-                  },
-                  onError: () => {
-
-                    this.showToast('danger', Object.values(this.form.errors).join("<br/>"));
-                  },
-                  onFinish: (data) => {
-                    // this.isLoading(false,);
-                  },
-                });
-          }
-          // else {
-          //   this.showAlert(this.$page.props.flash.status, this.$page.props.flash.message);
-          //   this.form.reset();
-          // }
         },
         onError: () => {
           this.showToast('danger', Object.values(this.form.errors).join("<br/>"));
         },
         onFinish: (data) => {
           // this.isLoading(false,);
+          if (this.$page.props.flash.status)
+            this.showAlert(this.$page.props.flash.status, this.$page.props.flash.message);
         },
       });
     }
   },
-  watch: {},
+
 }
 </script>
