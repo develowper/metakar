@@ -9,6 +9,7 @@ use App\Models\County;
 use App\Models\Doc;
 use App\Models\Podcast;
 use App\Models\Site;
+use App\Models\Video;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Http\UploadedFile;
@@ -53,7 +54,7 @@ class DatabaseSeeder extends Seeder
         for ($i = 0; $i < $count; $i++) {
 
             $name = $this->faker->company;
-            $data = Podcast::create([
+            $data = Video::create([
                 'name' => $name,
                 'slug' => str_slug($name),
                 'duration' => $this->faker->numberBetween(60, 250),
@@ -64,7 +65,7 @@ class DatabaseSeeder extends Seeder
                 'lang' => 'fa',
                 'description' => $this->faker->realText($this->faker->numberBetween(200, 1024)),
                 'created_at' => Carbon::now(),
-                'tags' => implode(",", $this->faker->randomElements(["پادکست", "بازدید", "صدا", "تست", "گوینده", "پادکست",], $this->faker->numberBetween(0, 5))),
+                'tags' => implode(",", $this->faker->randomElements(["ویدیو", "بازدید", "صدا", "تست", "تصویر", "ویدیو",], $this->faker->numberBetween(0, 5))),
             ]);
             $this->makeFile("videos", $data->id);
             $this->makeFile("videos", $data->id, '.mp4');
