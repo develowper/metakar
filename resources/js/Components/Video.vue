@@ -266,7 +266,7 @@ export default {
 
 
       this.player.on('ended', function () {
-        console.log('Awww...over so soon?!');
+        // console.log('Awww...over so soon?!');
       });
 
 

@@ -38,7 +38,7 @@
               </div>
               <div class="my-2">
                 <Video
-                    :lang="$page.props.locale"
+                    :lang="$page.props.locale" classes="w-full h-64"
                     :preload="{name:$page.props.data.name, url:route('storage.videos')+`/${$page.props.data.id}.mp4`}"
                     view="linear" mode="edit" :link="route('video.update')" :for-id="$page.props.data.id"
                     ref="video" :label="__('video_file_mp4')"/>

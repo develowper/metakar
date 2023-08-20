@@ -34,7 +34,7 @@
               </div>
               <div class="my-2">
                 <Video :lang="$page.props.locale" for-id="video" view="linear" mode="create" ref="video"
-                       :label="__('video_file_mp4')"/>
+                       :label="__('video_file_mp4')" classes="w-full h-64"/>
                 <InputError class="mt-1 " :message="form.errors.video"/>
               </div>
             </div>
