@@ -91,7 +91,7 @@
               class="max-w-xs flex-col relative items-stretch cursor-pointer hover:scale-[101%] duration-300 rounded-lg overflow-hidden shadow-lg">
           <Image :src="route('storage.banners')+`/${d.id}.jpg`" classes="object-cover rounded-lg h-48   w-full"/>
           <div class="absolute text-gray-500 rounded-full p-4 mx-4 top-[10rem] bg-white   shadow-lg">
-            <MicrophoneIcon class="w-5 h-5 "/>
+            <PhotoIcon class="w-5 h-5 "/>
           </div>
 
           <div class="p-2 mt-4  text-gray-700">{{ cropText(d.name, 30) }}</div>
@@ -135,7 +135,7 @@ import {loadScript} from "vue-plugin-load-script";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
 import {EyeIcon} from "@heroicons/vue/24/outline";
-import {MicrophoneIcon} from "@heroicons/vue/24/solid";
+import {PhotoIcon} from "@heroicons/vue/24/solid";
 
 export default {
   data() {
@@ -162,7 +162,7 @@ export default {
     Image,
     EyeIcon,
     Link,
-    MicrophoneIcon,
+    PhotoIcon,
   },
   // mixins: [Mixin],
   setup(props) {
