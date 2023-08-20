@@ -35,12 +35,40 @@ class DatabaseSeeder extends Seeder
         $this->createSites(50);
         $this->createBusinesses(50);
         $this->createPodcasts(50);
+        $this->createVideos(50);
         // \App\Models\User::factory(10)->create();
 
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+    }
+
+    private function createVideos($count = 30)
+    {
+        File::deleteDirectory("storage/app/public/videos");
+        File::makeDirectory("storage/app/public/videos");
+        DB::table('videos')->truncate();
+
+        for ($i = 0; $i < $count; $i++) {
+
+            $name = $this->faker->company;
+            $data = Podcast::create([
+                'name' => $name,
+                'slug' => str_slug($name),
+                'duration' => $this->faker->numberBetween(60, 250),
+                'status' => $this->faker->randomElement(["active", "active", "active", "review"]),
+                'owner_id' => $this->faker->numberBetween(1, 2),
+                'category_id' => $this->faker->randomElement(Category::pluck('id')),
+                'view' => 0,
+                'lang' => 'fa',
+                'description' => $this->faker->realText($this->faker->numberBetween(200, 1024)),
+                'created_at' => Carbon::now(),
+                'tags' => implode(",", $this->faker->randomElements(["پادکست", "بازدید", "صدا", "تست", "گوینده", "پادکست",], $this->faker->numberBetween(0, 5))),
+            ]);
+            $this->makeFile("videos", $data->id);
+            $this->makeFile("videos", $data->id, '.mp4');
+        }
     }
 
     private function createPodcasts($count = 30)
