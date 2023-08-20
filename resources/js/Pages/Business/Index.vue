@@ -7,7 +7,7 @@
 
     <div class="relative  bg-gradient-to-t from-pink-300 via-purple-300 to-indigo-400">
       <!--Hero-->
-      <div class="py-12  xl:py-20       mx-auto    ">
+      <div class="py-4  xl:py-20       mx-auto    ">
         <div class="  px-3  sm:px-1  flex   flex-col md:flex-row items-center ">
           <!--                    Right Col-->
           <!--          <div class="  md:w-2/5 py-6 text-center">-->
@@ -27,10 +27,10 @@
               <div class="relative  px-6 mx-auto  ">
                 <div
                     class="absolute top-0 bottom-0 start-0 flex items-center opacity-60  ps-10  ">
-                  <svg
-                      class="w-4 h-4 text-gray-600 fill-current   "
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 20 20">
+                  <svg v-if="false"
+                       class="w-4 h-4 text-gray-600 fill-current   "
+                       xmlns="http://www.w3.org/2000/svg"
+                       viewBox="0 0 20 20">
                     <path
                         d="M12.9 14.32a8 8 0 1 1 1.41-1.41l5.35 5.33-1.42 1.42-5.33-5.34zM8 14A6 6 0 1 0 8 2a6 6 0 0 0 0 12z"></path>
                   </svg>
@@ -44,16 +44,18 @@
 
 
             </div>
-            <div v-if="false" class="  px-3    flex  items-center">
-              <PrimaryButton class="mx-2 p-2 grow  ">{{ __('register_site') }}</PrimaryButton>
-              <SecondaryButton class="mx-2 p-2 grow">{{ __('make_money') }}</SecondaryButton>
+            <div class="  px-3    flex  items-center justify-center">
+              <!--              <PrimaryButton class="mx-2 p-2 grow  ">{{ __('register_video') }}</PrimaryButton>-->
+              <SecondaryButton @click="$inertia.visit(route('panel.business.create'))" class="mx-2 p-2  ">
+                {{ __('register_business') }}
+              </SecondaryButton>
             </div>
           </div>
 
         </div>
       </div>
       <!--wave-->
-      <div class="absolute  bottom-0 start-0 end-0">
+      <div v-if="false" class="absolute  bottom-0 start-0 end-0">
         <svg viewBox="0 0 1428 174" xmlns="http://www.w3.org/2000/svg"
              xmlns:xlink="http://www.w3.org/1999/xlink">
           <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
