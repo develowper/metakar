@@ -93,7 +93,7 @@
           <div class="px-4 py-2 text-white bg-primary">{{ data.name }}</div>
           <div v-if="data" class="border-t   p-4 flex flex-col space-y-4 m-4">
 
-            <p v-if="data.owner" class="text-sm">
+            <p v-if="data.owner" class="text-sm flex flex-wrap">
               <span class="text-gray-500 ">{{ __('owner') }}: </span>
               <span>{{ data.owner.fullname }}</span>
               <span class="border-s mx-2">  </span>

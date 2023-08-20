@@ -18,14 +18,10 @@
           <div class="px-4 py-2 text-white bg-primary">{{ data.name }}</div>
           <div v-if="data" class="    p-4 flex flex-col  m-4">
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 items-center my-2    ">
-              <Image :src="route('storage.videos')+`/${data.id}.jpg`"
-                     classes="object-cover rounded-none rounded-t sm:rounded-none sm:rounded-s   h-64   w-full"/>
+            <div class="grid grid-cols-1   items-center my-2  h-64 w-fit mx-auto ">
+              <Image :src="route('storage.banners')+`/${data.id}.jpg`"
+                     classes="object-cover rounded-none rounded-t sm:rounded-none sm:rounded-s   h-[inherit]   w-full"/>
 
-              <Video classes="rounded-none rounded-b sm:rounded-none sm:rounded-e h-64 w-full"
-                     :preload="{name: data.name, url:route('storage.videos')+`/${data.id}.mp4`}"
-                     mode="view"
-                     ref="video" :label="__('video_file_mp4')"/>
             </div>
 
             <p v-if="data.owner" class="text-sm bg-gray-200 p-4 rounded flex flex-wrap">
@@ -55,9 +51,9 @@
     </section>
     <section>
       <div class=" w-full px-3 my-8   flex  items-center justify-center">
-        <PrimaryButton @click="$inertia.visit(route(($page.props.auth.user?'panel.video.create':'login')  ))"
+        <PrimaryButton @click="$inertia.visit(route(($page.props.auth.user?'panel.banner.create':'login')  ))"
                        class="mx-2 py-2  px-6  ">
-          {{ __('register_video') }}
+          {{ __('register_banner') }}
         </PrimaryButton>
       </div>
     </section>
@@ -72,7 +68,7 @@ import SecondaryButton from "@/Components/SecondaryButton.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import {Head, Link} from "@inertiajs/vue3";
 import LoadingIcon from "@/Components/LoadingIcon.vue";
-import Video from "@/Components/Video.vue";
+import Banner from "@/Components/Banner.vue";
 import Image from "@/Components/Image.vue";
 import {} from "@heroicons/vue/24/outline";
 import {EyeIcon, CurrencyDollarIcon, UserIcon} from "@heroicons/vue/24/solid";
@@ -109,7 +105,7 @@ export default {
     PrimaryButton,
     SecondaryButton,
     UserIcon,
-    Video,
+    Banner,
   },
   created() {
     // this.isLoading(true);

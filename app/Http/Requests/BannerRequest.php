@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Validation\Rules\File;
 use App\Http\Helpers\Variable;
 use App\Models\Business;
 use App\Models\Category;
@@ -11,7 +12,7 @@ use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class BusinessRequest extends FormRequest
+class BannerRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -35,34 +36,27 @@ class BusinessRequest extends FormRequest
         $editMode = (bool)$this->id;
         $request = $this;
         $tmp = [];
-        $phoneChanged = $this->id && Business::findOrNew($this->id)->phone != $this->phone;
+        if (!$this->cmnd)
+            $tmp = array_merge($tmp, [
+                'lang' => ['required', Rule::in(Variable::LANGS)],
+                'name' => ['required', 'max:100', Rule::unique('banners', 'name')->ignore($this->id)],
+                'designer' => ['nullable', 'max:100',],
+                'tags' => ['nullable', 'max:1024'],
+                'category_id' => ['nullable', Rule::in($types)],
+                'description' => ['nullable', 'max:2048'],
+            ]);
 
-        $tmp = [
-            'lang' => ['required', Rule::in(Variable::LANGS)],
-            'name' => ['required', 'max:100', Rule::unique('businesses', 'name')->ignore($this->id)],
-            'tags' => ['nullable', 'max:1024'],
-            'province_id' => 'required|in:' . County::where('id', $this->county_id)->firstOrNew()->province_id,
-            'county_id' => 'required|' . Rule::in(County::pluck('id')),
-            'category_id' => ['nullable', Rule::in($types)],
-            'description' => ['nullable', 'max:2048'],
-            'phone' => ['required', 'numeric', 'digits:11', 'regex:/^09[0-9]+$/', Rule::unique('businesses', 'phone')->ignore($this->id)],
-            'phone_verify' => [Rule::requiredIf(function () use ($request, $user, $phoneChanged, $editMode) {
-
-                return $phoneChanged
-                    || !$user || (!$editMode && $request->phone != $user->phone);
-            }), !$user || (!$editMode && $request->phone != $user->phone) ? Rule::exists('sms_verify', 'code')->where(function ($query) use ($request) {
-                return $query->where('phone', $request->phone);
-            }) : '',],
-        ];
         if ($request->uploading)
             $tmp = array_merge($tmp, [
-                'images' => 'required|array|min:1|max:' . Variable::BUSINESS_IMAGE_LIMIT,
-                'images.*' => ['nullable', 'base64_image_size:' . Variable::SITE_IMAGE_LIMIT_MB * 1024, 'base64_image_mime:' . implode(",", Variable::SITE_ALLOWED_MIMES)],
+                'img' => ['required', 'base64_image_size:' . Variable::BANNER_IMAGE_LIMIT_MB * 1024, 'base64_image_mime:' . implode(",", Variable::BANNER_ALLOWED_MIMES)],
+                'banner' => ['required', 'mimes:' . implode(",", Variable::BANNER_ALLOWED_MIMES), 'max:' . Variable::BANNER_IMAGE_LIMIT_MB * 1024],
+
             ]);
         if ($this->cmnd)
             $tmp = array_merge($tmp, [
-                'images' => 'sometimes|array|min:1|max:' . Variable::BUSINESS_IMAGE_LIMIT,
-                'images.*' => ['nullable', 'base64_image_size:' . Variable::SITE_IMAGE_LIMIT_MB * 1024, 'base64_image_mime:' . implode(",", Variable::SITE_ALLOWED_MIMES)],
+                'img' => ['sometimes', 'base64_image_size:' . Variable::SITE_IMAGE_LIMIT_MB * 1024, 'base64_image_mime:' . implode(",", Variable::SITE_ALLOWED_MIMES)],
+                'banner' => ['sometimes', 'mimes:' . implode(",", Variable::BANNER_ALLOWED_MIMES), 'max:' . Variable::BANNER_IMAGE_LIMIT_MB * 1024],
+
             ]);
         return $tmp;
     }
@@ -76,6 +70,9 @@ class BusinessRequest extends FormRequest
 
             'name.required' => sprintf(__("validator.required"), __('title')),
             'name.max' => sprintf(__("validator.max_len"), 2048, mb_strlen($this->name)),
+
+            'designer.required' => sprintf(__("validator.required"), __('designer')),
+            'designer.max' => sprintf(__("validator.max_len"), 2048, mb_strlen($this->designer)),
 
             'phone.required' => sprintf(__("validator.required"), __('phone')),
             'phone.unique' => sprintf(__("validator.unique"), __('phone')),
@@ -101,12 +98,13 @@ class BusinessRequest extends FormRequest
 
             'description.max' => sprintf(__("validator.max_len"), 2048, mb_strlen($this->description)),
 
+            'img.required' => sprintf(__("validator.required"), __('image_cover')),
+            'img.base64_image_size' => sprintf(__("validator.max_size"), __('image_cover'), Variable::SITE_IMAGE_LIMIT_MB),
+            'img.base64_image_mime' => sprintf(__("validator.invalid_format"), __('image_cover'), implode(",", Variable::SITE_ALLOWED_MIMES)),
 
-            'images.max' => sprintf(__("validator.max_images"), Variable::BUSINESS_IMAGE_LIMIT),
+            'banner.required' => sprintf(__("validator.required"), __('banner_file')),
+            'banner.mimes' => sprintf(__("validator.invalid_format"), __("banner_file"), implode(",", Variable::BANNER_ALLOWED_MIMES)),
 
-            'images.required' => sprintf(__("validator.min_images"), 1),
-            'images.*.base64_image_size' => sprintf(__("validator.max_size"),__("image"), Variable::SITE_IMAGE_LIMIT_MB),
-            'images.*.base64_image_mime' => sprintf(__("validator.invalid_format"),__("image"), implode(",", Variable::SITE_ALLOWED_MIMES)),
         ];
     }
 }

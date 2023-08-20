@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Banner;
 use App\Models\Business;
 use App\Models\Category;
 use App\Models\County;
@@ -37,12 +38,40 @@ class DatabaseSeeder extends Seeder
         $this->createBusinesses(50);
         $this->createPodcasts(50);
         $this->createVideos(50);
+        $this->createBanners(50);
         // \App\Models\User::factory(10)->create();
 
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+    }
+
+    private function createBanners($count = 30)
+    {
+        File::deleteDirectory("storage/app/public/banners");
+        File::makeDirectory("storage/app/public/banners");
+        DB::table('banners')->truncate();
+
+        for ($i = 0; $i < $count; $i++) {
+
+            $name = $this->faker->company;
+            $data = Banner::create([
+                'name' => $name,
+                'designer' => $this->faker->name,
+                'slug' => str_slug($name),
+                'status' => $this->faker->randomElement(["active", "active", "active", "review"]),
+                'owner_id' => $this->faker->numberBetween(1, 2),
+                'category_id' => $this->faker->randomElement(Category::pluck('id')),
+                'view' => 0,
+                'lang' => 'fa',
+                'description' => $this->faker->realText($this->faker->numberBetween(200, 1024)),
+                'created_at' => Carbon::now(),
+                'tags' => implode(",", $this->faker->randomElements(["بنر", "بازدید", "صدا", "تست", "بنر", "بنر",], $this->faker->numberBetween(0, 5))),
+            ]);
+            $this->makeFile("banners", "$data->id-cover");
+            $this->makeFile("banners", $data->id, null);
+        }
     }
 
     private function createVideos($count = 30)
@@ -86,7 +115,6 @@ class DatabaseSeeder extends Seeder
                 'narrator' => $this->faker->name,
                 'slug' => str_slug($name),
                 'duration' => $this->faker->numberBetween(60, 250),
-
                 'status' => $this->faker->randomElement(["active", "active", "active", "review"]),
                 'owner_id' => $this->faker->numberBetween(1, 2),
                 'category_id' => $this->faker->randomElement(Category::pluck('id')),
@@ -171,13 +199,14 @@ class DatabaseSeeder extends Seeder
 
     private function makeFile($type, $id, $extension = '.jpg')
     {
-        $allFiles = array_filter(Storage::allFiles("public/faker/$type"), fn($e) => str_contains($e, $extension));
+        $allFiles = array_filter(Storage::allFiles("public/faker/$type"), fn($e) => !$extension || str_contains($e, $extension));
 
         $path = storage_path('app/' . $allFiles[array_rand($allFiles)]);
+        $extension = $extension ?? "." . File::extension($path);
         //profile picture
         $file = new UploadedFile(
             $path,
-            File::name($path) . "$extension"/* '.' . File::extension($path)*/,
+            File::name($path) . ($extension),
             File::mimeType($path),
             null,
             true

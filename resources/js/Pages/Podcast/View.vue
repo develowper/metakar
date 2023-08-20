@@ -28,7 +28,7 @@
                        ref="podcast" :label="__('podcast_file_mp3')"/>
             </div>
 
-            <p v-if="data.owner" class="text-sm bg-gray-200 p-4 rounded">
+            <p v-if="data.owner" class="text-sm bg-gray-200 p-4 rounded flex flex-wrap">
               <span class="text-gray-500 ">{{ __('owner') }}: </span>
               <span>{{ data.owner.fullname }}</span>
               <span class="border-s mx-2">  </span>

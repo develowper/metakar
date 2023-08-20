@@ -100,11 +100,11 @@ class VideoRequest extends FormRequest
             'description.max' => sprintf(__("validator.max_len"), 2048, mb_strlen($this->description)),
 
             'img.required' => sprintf(__("validator.required"), __('image')),
-            'img.base64_image_size' => sprintf(__("validator.max_size"), Variable::SITE_IMAGE_LIMIT_MB),
-            'img.base64_image_mime' => sprintf(__("validator.invalid_format"), implode(",", Variable::SITE_ALLOWED_MIMES)),
+            'img.base64_image_size' => sprintf(__("validator.max_size"), __("image"), Variable::SITE_IMAGE_LIMIT_MB),
+            'img.base64_image_mime' => sprintf(__("validator.invalid_format"), __("image"), implode(",", Variable::SITE_ALLOWED_MIMES)),
 
             'video.required' => sprintf(__("validator.required"), __('video_file')),
-            'video.mimes' => sprintf(__("validator.invalid_format"), implode(",", Variable::VIDEO_ALLOWED_MIMES)),
+            'video.mimes' => sprintf(__("validator.invalid_format"), __("video_file"), implode(",", Variable::VIDEO_ALLOWED_MIMES)),
             'duration.integer' => sprintf(__("validator.invalid"), __('file_duration')),
             'duration.min' => sprintf(__("validator.invalid"), __('file_duration')),
         ];

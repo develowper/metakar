@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdController;
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\BannerController;
 use App\Http\Controllers\BusinessController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\Controller;
@@ -16,6 +17,7 @@ use App\Http\Helpers\SMSHelper;
 use App\Http\Helpers\Telegram;
 use App\Http\Helpers\Util;
 use App\Http\Helpers\Variable;
+use App\Models\Banner;
 use App\Models\Business;
 use App\Models\Category;
 use App\Models\County;
@@ -45,6 +47,7 @@ use Inertia\Inertia;
 */
 Route::get('test', function () {
 
+
 //    File::makeDirectory(Storage::path("public/sites"), $mode = 0755,);
 //    return Telegram::log(null, 'site_created', Site::find(2));
 
@@ -56,6 +59,7 @@ Route::get('storage/users')->name('storage.users');
 Route::get('storage/businesses')->name('storage.businesses');
 Route::get('storage/podcasts')->name('storage.podcasts');
 Route::get('storage/videos')->name('storage.videos');
+Route::get('storage/banners')->name('storage.banners');
 
 Route::get('/', function () {
     return Inertia::render('Main', [
@@ -96,8 +100,17 @@ Route::middleware(['auth', 'verified'])->prefix('panel')->group(function ($route
         'categories' => Site::categories('parents'),]);
     PanelController::makeInertiaRoute('get', 'text/index', 'panel.text.index', 'Panel/Text/Index');
     PanelController::makeInertiaRoute('get', 'text/create', 'panel.text.create', 'Panel/Text/Create');
-    PanelController::makeInertiaRoute('get', 'image/index', 'panel.image.index', 'Panel/Image/Index');
-    PanelController::makeInertiaRoute('get', 'image/create', 'panel.image.create', 'Panel/Image/Create');
+    PanelController::makeInertiaRoute('get', 'banner/index', 'panel.banner.index', 'Panel/Banner/Index',
+        [
+            'categories' => Banner::categories('parents'),
+            'statuses' => Variable::STATUSES
+        ]
+    );
+    PanelController::makeInertiaRoute('get', 'banner/create', 'panel.banner.create', 'Panel/Banner/Create',
+        [
+            'categories' => Business::categories(),
+        ]
+    );
     PanelController::makeInertiaRoute('get', 'video/index', 'panel.video.index', 'Panel/Video/Index',
         [
             'categories' => Video::categories('parents'),
@@ -144,6 +157,8 @@ Route::post('podcast/create', [PodcastController::class, 'create'])->name('podca
 
 Route::post('video/create', [VideoController::class, 'create'])->name('video.create')->middleware('can:create,App\Models\User,App\Models\Video,""');
 
+Route::post('banner/create', [BannerController::class, 'create'])->name('banner.create')->middleware('can:create,App\Models\User,App\Models\Banner,""');
+
 
 Route::middleware('throttle:6,1')->group(function () {
     Route::post('sms/send', [MainController::class, 'sendSms'])->name('sms.send.verification');
@@ -160,6 +175,7 @@ Route::middleware('auth')->group(function () {
     Route::get('panel/business/search', [BusinessController::class, 'searchPanel'])->name('panel.business.search');
     Route::get('panel/podcast/search', [PodcastController::class, 'searchPanel'])->name('panel.podcast.search');
     Route::get('panel/video/search', [VideoController::class, 'searchPanel'])->name('panel.video.search');
+    Route::get('panel/banner/search', [BannerController::class, 'searchPanel'])->name('panel.banner.search');
 
 
     Route::get('site/edit/{site}', [SiteController::class, 'edit'])->name('panel.site.edit');
@@ -173,6 +189,9 @@ Route::middleware('auth')->group(function () {
 
     Route::get('video/edit/{video}', [VideoController::class, 'edit'])->name('panel.video.edit');
     Route::patch('video/update', [VideoController::class, 'update'])->name('video.update');
+
+    Route::get('banner/edit/{banner}', [BannerController::class, 'edit'])->name('panel.banner.edit');
+    Route::patch('banner/update', [BannerController::class, 'update'])->name('banner.update');
 
 });
 Route::post('transaction/storesite', [\App\Http\Controllers\TransactionController::class, 'storeSite'])->name('transaction.site.view');
@@ -200,6 +219,10 @@ Route::get('podcast/{podcast}', [PodcastController::class, 'view'])->name('podca
 Route::get('/videos', [VideoController::class, 'index'])->name('video.index');
 Route::get('/video/search', [VideoController::class, 'search'])->name('video.search');
 Route::get('video/{video}', [VideoController::class, 'view'])->name('video');
+
+Route::get('/banners', [BannerController::class, 'index'])->name('banner.index');
+Route::get('/banner/search', [BannerController::class, 'search'])->name('banner.search');
+Route::get('banner/{banner}', [BannerController::class, 'view'])->name('banner');
 
 Route::get('language/{language}', function ($language) {
     session()->put('locale', $language);

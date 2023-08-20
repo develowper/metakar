@@ -201,13 +201,13 @@
             </ul>
           </li>
 
-          <!-- Image links -->
+          <!-- Banner links -->
           <li class="relative  ">
-            <a :class="{'bg-primary-50 text-primary-500':menuIsActive ( 'panel.image.*' )}"
+            <a :class="{'bg-primary-50 text-primary-500':menuIsActive ( 'panel.banner.*' )}"
                class="flex   cursor-pointer items-center truncate  px-3 py-4 text-[0.875rem] text-gray-600 outline-none transition duration-300 ease-linear hover:bg-primary-100 hover:text-inherit hover:outline-none focus:bg-slate-50 focus:text-inherit focus:outline-none active:bg-slate-50 active:text-inherit active:outline-none data-[te-sidenav-state-active]:text-inherit data-[te-sidenav-state-focus]:outline-none motion-reduce:transition-none dark:text-gray-300 dark:hover:bg-white/10 dark:focus:bg-white/10 dark:active:bg-white/10"
                data-te-sidenav-link-ref>
               <PhotoIcon class="w-5 h-5  "/>
-              <span class="mx-2 text-sm "> {{ __('images') }} </span>
+              <span class="mx-2 text-sm "> {{ __('banners') }} </span>
               <span
                   class="  right-0 ml-auto mr-[0.8rem] transition-transform duration-300 ease-linear motion-reduce:transition-none [&>svg]:text-gray-600 dark:[&>svg]:text-gray-300"
                   data-te-sidenav-rotate-icon-ref>
@@ -215,19 +215,19 @@
                                              </span>
             </a>
             <ul
-                v-bind="{ 'data-te-collapse-show':menuIsActive ( 'panel.image.*' )?true:null }"
+                v-bind="{ 'data-te-collapse-show':menuIsActive ( 'panel.banner.*' )?true:null }"
                 class="  !visible relative m-0 hidden list-none    data-[te-collapse-show]:block "
                 data-te-collapse-item data-te-sidenav-collapse-ref>
               <li class="relative ps-7">
 
-                <Link :href="route('panel.image.index')" role="menuitem"
+                <Link :href="route('panel.banner.index')" role="menuitem"
                       :class="subMenuIsActive( 'panel.image.index' )"
                       class="flex   border-s-2 hover:border-primary-500  items-center p-2   text-sm  transition-all duration-200   dark:text-light dark:hover:text-light hover:text-primary-700 hover:bg-primary-50">
                   <Bars2Icon class="w-5 h-5 mx-1"/>
                   {{ __('list') }}
                 </Link>
-                <Link :href="route('panel.image.create')" role="menuitem"
-                      :class="subMenuIsActive ( 'panel.image.create' )"
+                <Link :href="route('panel.banner.create')" role="menuitem"
+                      :class="subMenuIsActive ( 'panel.banner.create' )"
                       class="flex   border-s-2 hover:border-primary-500  items-center p-2   text-sm  transition-all duration-200   dark:text-light dark:hover:text-light hover:text-primary-700 hover:bg-primary-50">
                   <PlusSmallIcon class="w-5 h-5 mx-1"/>
                   {{ __('new') }}

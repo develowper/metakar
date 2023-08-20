@@ -2,6 +2,7 @@
 
 namespace App\Http\Helpers;
 
+use App\Models\Banner;
 use App\Models\Business;
 use App\Models\Podcast;
 use App\Models\Setting;
@@ -40,6 +41,8 @@ class Variable
     const ERROR_STATUS = 422;
 
 
+    const BANNER_IMAGE_LIMIT_MB = 10;
+    const BANNER_ALLOWED_MIMES = ['jpeg', 'jpg', 'png'];
     const SITE_IMAGE_LIMIT_MB = 4;
     const BUSINESS_IMAGE_LIMIT = 4;
     const SITE_ALLOWED_MIMES = ['jpeg', 'jpg', 'png'];
@@ -47,7 +50,7 @@ class Variable
     const VIDEO_ALLOWED_MIMES = ['mp4',];
     const LOGS = [72534783];
     const PAGINATE = [24, 50, 100];
-    const IMAGE_FOLDERS = [Site::class => 'sites', Business::class => 'businesses', Podcast::class => 'podcasts', Video::class => 'videos',];
+    const IMAGE_FOLDERS = [Site::class => 'sites', Business::class => 'businesses', Podcast::class => 'podcasts', Video::class => 'videos', Banner::class => 'banners',];
     const SITE_STATUSES = [
         ["name" => 'inactive', "color" => 'danger'],
         ["name" => 'need_charge', "color" => 'orange'],
