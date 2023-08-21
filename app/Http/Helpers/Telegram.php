@@ -551,20 +551,35 @@ class Telegram
 
                     break;
 
-                case 'video_edited':
-                    $user = \App\Models\User::firstOrNew(['id' => $data->user_id]);
-                    $msg .= " 🟢 " . "یک ویدیو ویرایش شد" . PHP_EOL;
+                case 'video_created':
+
+                    $msg .= " 🟢 " . "یک ویدیو ثبت شد" . PHP_EOL;
                     $msg .= "\xD8\x9C" . "➖➖➖➖➖➖➖➖➖➖➖" . PHP_EOL;
                     $msg .= " 🆔 " . "شناسه: " . $data->id . PHP_EOL;
                     $msg .= " 👤 " . "نویسنده: " . PHP_EOL;
-                    $msg .= ($user->name ? "$user->name $user->family" : "$user->username") . PHP_EOL;
+                    $msg .= ($us->fullname) . PHP_EOL;
                     $msg .= " 📃 " . "عنوان" . PHP_EOL;
-                    $msg .= $data->title . PHP_EOL;
+                    $msg .= $data->name . PHP_EOL;
                     $msg .= " ⭐ " . "دسته" . PHP_EOL;
                     $msg .= Category::find($data->category_id)->name . PHP_EOL;
                     $msg .= route('storage.videos') . '/' . $data->id . '.jpg' . '?r=' . random_int(10, 1000) . PHP_EOL;
                     $msg .= route('storage.videos') . '/' . $data->id . '.mp4' . '?r=' . random_int(10, 1000) . PHP_EOL;
-                    $msg .= " 📌 " . url('video') . "/$data->id/" . PHP_EOL;
+                    $msg .= " 📌 " . url('video') . "/$data->id" . PHP_EOL;
+                    break;
+                case 'video_edited':
+                    $msg .= " 🟢 " . "یک ویدیو ویرایش شد" . PHP_EOL;
+                    $msg .= "\xD8\x9C" . "➖➖➖➖➖➖➖➖➖➖➖" . PHP_EOL;
+                    $msg .= " 🆔 " . "شناسه: " . $data->id . PHP_EOL;
+                    $msg .= " 👤 " . "نویسنده: " . PHP_EOL;
+                    $msg .= ($us->fullname) . PHP_EOL;
+                    $msg .= " 📃 " . "عنوان" . PHP_EOL;
+                    $msg .= $data->name . PHP_EOL;
+                    $msg .= " ⭐ " . "دسته" . PHP_EOL;
+                    $msg .= Category::find($data->category_id)->name . PHP_EOL;
+                    $msg .= route('storage.videos') . '/' . $data->id . '.jpg' . '?r=' . random_int(10, 1000) . PHP_EOL;
+                    $msg .= route('storage.videos') . '/' . $data->id . '.mp4' . '?r=' . random_int(10, 1000) . PHP_EOL;
+                    $msg .= " 📌 " . url('video') . "/$data->id" . PHP_EOL;
+                    break;
                     break;
                 case 'agency_created':
                     $msg .= " 🟢 " . "یک نمایندگی ساخته شد" . PHP_EOL;
