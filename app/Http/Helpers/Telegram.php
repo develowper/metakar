@@ -965,11 +965,12 @@ class Telegram
             }
             if ($to) {
                 self::sendMessage($to, $msg, null);
-                Bale::sendMessage(Bale::LOGS[0], $msg, null);
-//                Bale::sendMessage(Bale::LOGS[1], $msg, null);
-                Eitaa::sendMessage(Eitaa::LOGS[0], $msg, $type);
-            } else
-                return self::logAdmins($msg, null);
+
+            } else {
+                self::logAdmins($msg, null);
+                Bale::logAdmins($msg, null);
+                Eitaa::logAdmins($msg, null, $type);
+            }
 
         } catch (\Exception $e) {
             return self::sendMessage(Variable::LOGS[0], $e->getMessage(), null);
