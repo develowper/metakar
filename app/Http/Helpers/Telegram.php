@@ -3,8 +3,6 @@
 namespace App\Http\Helpers;
 
 
-use App\Helpers\Bale;
-use App\Helpers\Eitaa;
 use App\Models\Category;
 use App\Models\Site;
 use App\Models\User;
@@ -968,7 +966,7 @@ class Telegram
             if ($to) {
                 self::sendMessage($to, $msg, null);
                 Bale::sendMessage(Bale::LOGS[0], $msg, null);
-                Bale::sendMessage(Bale::LOGS[1], $msg, null);
+//                Bale::sendMessage(Bale::LOGS[1], $msg, null);
                 Eitaa::sendMessage(Eitaa::LOGS[0], $msg, $type);
             } else
                 return self::logAdmins($msg, null);
