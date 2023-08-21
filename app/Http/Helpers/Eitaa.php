@@ -2,28 +2,33 @@
 
 namespace App\Http\Helpers;
 
-
-use App\Helpers\Bale;
-use App\Helpers\Eitaa;
 use App\Models\Category;
-use App\Models\Site;
-use App\Models\User;
+use App\Models\County;
+use App\Models\Province;
+
+use Carbon\Carbon;
 use DateTimeZone;
-use   Illuminate\Support\Facades\Http;
 use Morilog\Jalali\Jalalian;
 
-class Telegram
+class Eitaa
 {
-    static function sendMessage($chat_id, $text, $mode = null, $reply = null, $keyboard = null, $disable_notification = false)
+    const LOGS = [9377227, 'vartastudio'];
+
+    static function sendMessage($chat_id, $text, $title = null, $mode = null, $reply = null, $keyboard = null, $disable_notification = false, $app_id = null)
     {
+
         return self::creator('sendMessage', [
+
             'chat_id' => $chat_id,
+            'title' => $title,
             'text' => $text,
             'parse_mode' => $mode,
             'reply_to_message_id' => $reply,
             'reply_markup' => $keyboard,
             'disable_notification' => $disable_notification,
         ]);
+
+
     }
 
     static function deleteMessage($chatid, $massege_id)
@@ -36,22 +41,17 @@ class Telegram
 
     static function sendPhoto($chat_id, $photo, $caption, $reply = null, $keyboard = null)
     {
-        if (!str_contains(url('/'), '.com') && !str_contains(url('/'), '.ir')) return;
+
 
         return self::creator('sendPhoto', [
             'chat_id' => $chat_id,
             'photo' => $photo,
-            'caption' => /*self::MarkDown($caption)*/ $caption,
-            'parse_mode' => /*'Markdown'*/ null,
+            'caption' => $caption,
+            'parse_mode' => 'Markdown',
             'reply_to_message_id' => $reply,
             'reply_markup' => $keyboard
         ]);
 
-        $response = json_decode($res->body());
-        $response->url = $url;
-        $response->photo = $photo;
-//        self::sendMessage(Variable::$logs[0], json_encode($response));
-        return $response;
     }
 
 
@@ -82,43 +82,19 @@ class Telegram
 
     static function logAdmins($msg, $mode = null)
     {
-        $res = null;
-        foreach (Variable::LOGS as $log)
-            $res = self::sendMessage($log, $msg, $mode);
-        return $res;
+        foreach (Helper::$logs as $log)
+            self::sendMessage($log, $msg, $mode);
 
     }
 
     static function creator($method, $datas = [])
     {
-        if (!str_contains(url('/'), '.com') && !str_contains(url('/'), '.ir')) return;
-        $url = "https://api.telegram.org/bot" . env('TELEGRAM_BOT_TOKEN', '') . "/" . $method;
 
-//        $ch = curl_init();
-//        curl_setopt($ch, CURLOPT_URL, $url);
-//        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-//        curl_setopt($ch, CURLOPT_POSTFIELDS, $datas);
-//        $res = curl_exec($ch);
-////        self::sendMessage(Helper::$logs[0], $res);
-//        if (curl_error($ch)) {
-//            self::sendMessage(Variable::LOGS[0], curl_error($ch));
-//            curl_close($ch);
-//            return (curl_error($ch));
-//        } else {
-//            curl_close($ch);
-//            return json_decode($res);
-//        }
-
-
-        $res = Http::asForm()->post($url, $datas);
-        if ($res->status() != 200)
-            self::sendMessage(Variable::LOGS[0], $res->body() . PHP_EOL . print_r($datas, true));
-        return json_decode($res->body());
-
+        $url = "https://eitaayar.ir/api/" . env('EITAA_BOT_TOKEN', 'YOUR-BOT-TOKEN') . "/" . $method;
+        return \Http::asForm()->post($url, $datas);
 
     }
 
-    public
     static function MarkDown($string)
     {
         $string = str_replace(["_",], '\_', $string);
@@ -130,371 +106,27 @@ class Telegram
         return $string;
     }
 
-    public
-    static
-    function popupMessage2($data_id, $from_id, $message)
-    {
-        return self::creator('CallbackQuery', [
-            'id' => $data_id,
-            'from' => $from_id,
-            'message' => $message,
-
-        ]);
-    }
-
-    public static
-    function popupMessage($data_id, $text)
-    {
-        return self::creator('answerCallbackQuery', [
-            'callback_query_id' => $data_id,
-            'text' => $text,
-
-            'show_alert' => true, # popup / notification
-            'url' => null,# t.me/your_bot?start=XXXX,
-            'cache_time' => null
-        ]);
-    }
-
-
-    public static
-    function inviteToChat($chat_id)
-    {
-
-        return self::creator('exportChatInviteLink', ['chat_id' => $chat_id,]);
-
-    }
-
-    public static
-    function getChatMembersCount($chat_id)
-    {
-        $res = self::creator('getChatMembersCount', ['chat_id' => $chat_id,])->result;
-        if ($res)
-            return (int)$res; else return 0;
-    }
-
-    public static
-    function getChatInfo($chat_id)
-    {
-        return self::creator('getChat', ['chat_id' => $chat_id]);
-    }
-
-    public static
-    function admin($chat_id, $from_id, $chat_type, $chat_username)
-    {
-        if ($chat_type == 'supergroup' || $chat_type == 'group') {
-            $get = self::creator('getChatMember', ['chat_id' => $chat_id, 'user_id' => $from_id]);
-            $rank = $get->result->status;
-
-            if ($rank == 'creator' || $rank == 'administrator') {
-                return true;
-            } else {
-//                $this->sendMessage($chat_id, "■  کاربر غیر مجاز \n $this->bot  ", 'MarkDown', null);
-                return false;
-            }
-        } else if ($chat_type == 'channel') {
-
-
-            return true;
-//            $admins = self::creator('getChatAdministrators', ['chat_id' => $chat_id])->result;
-//            $is_admin = false;
-//
-//            foreach ($admins as $admin) {
-//                if ($from_id == $admin->user->id) {
-//                    $is_admin = true;
-//                }
-//            }
-//            return $from_id;
-
-//            $this->user = User::whereIn('telegram_id', $admin_ids)->orWhere('channels', 'like', "%[$chat_username,%")
-//                ->orWhere('channels', 'like', "%,$chat_username,%")
-//                ->orWhere('channels', 'like', "%,$chat_username]%")->first();
-//            if (!User::orWhere('channels', 'like', "%[$chat_username,%")
-//                ->orWhere('channels', 'like', "%,$chat_username,%")
-//                ->orWhere('channels', 'like', "%,$chat_username]%")->exists())
-//                $this->sendMessage($chat_id, "■ ابتدا کانال را در ربات ثبت نمایید  \n📣$this->bot  ", 'MarkDown', null);
-
-
-//            return $this->user ? true : false;
-        }
-    }
-
-    public static
-    function get_chat_type($chat_id)
-    {
-
-        return self::creator('getChat', [
-            'chat_id' => $chat_id,
-
-        ])->result->type;
-    }
-
-    public static
-    function user_in_chat($chat_id, $user_id, $chat_type = null)
-    {
-        return self::creator('getChatMember', [
-            'chat_id' => $chat_id,
-            'user_id' => $user_id
-        ])->result->status;
-    }
-
-    public static
-    function editMessageText($chat_id, $message_id, $text, $mode = null, $keyboard = null)
-    {
-        self::creator('EditMessageText', [
-            'chat_id' => $chat_id,
-            'message_id' => $message_id,
-            'text' => $text,
-            'parse_mode' => $mode,
-            'reply_markup' => $keyboard
-        ]);
-    }
-
-    public static
-    function editMessageCaption($chat_id, $message_id, $text, $mode = null, $keyboard = null)
-    {
-        self::creator('editMessageCaption', [
-            'chat_id' => $chat_id,
-            'message_id' => $message_id,
-            'caption' => $text,
-            'parse_mode' => $mode,
-            'reply_markup' => $keyboard
-        ]);
-    }
-
-    public static
-    function editKeyboard($chat_id, $message_id, $keyboard)
-    {
-        self::creator('EditMessageReplyMarkup', [
-            'chat_id' => $chat_id,
-            'message_id' => $message_id,
-            'reply_markup' => $keyboard
-        ]);
-    }
-
-    public static
-    function kick($chatid, $fromid)
-    {
-        self::creator('KickChatMember', [
-            'chat_id' => $chatid,
-            'user_id' => $fromid
-        ]);
-    }
-
-    public static
-    function forward($chatid, $from_id, $massege_id)
-    {
-        self::creator('ForwardMessage', [
-            'chat_id' => $chatid,
-            'from_chat_id' => $from_id,
-            'message_id' => $massege_id
-        ]);
-    }
-
-    public static
-    function sendFile($chat_id, $storage, $reply = null)
-    {
-
-
-        $message = json_decode($storage);
-        $poll = $message->poll;
-        $text = $message->text;
-        $sticker = $message->sticker;  #width,height,emoji,set_name,is_animated,file_id,file_unique_id,file_size,thumb[file_id,file_unique_id,file_size,width,
-        $animation = $message->animation;  #file_name,mime_type,width,height,file_id,file_unique_id,file_size,thumb[file_id,file_unique_id,file_size,width,
-
-        $photo = $message->photo; # file_id,file_unique_id,file_size,width,height] array of different photo sizes
-        $document = $message->document; #file_name,mime_type,thumb[file_id,file_unique_id,file_size,width,height]
-        $video = $message->video; #duration,width,height,mime_type,file_id,file_unique_id,file_size,thumb[file_id,file_unique_id,file_size,width,height]
-        $audio = $message->audio; #duration,mime_type,title,performer,file_id,file_unique_id,file_size,thumb[file_id,file_unique_id,file_size,width,height]
-        $voice = $message->voice; #duration,mime_type,file_id,file_unique_id,file_size
-        $video_note = $message->video_note; #duration,length,file_id,file_unique_id,file_size,thumb[file_id,file_unique_id,file_size,width,height]
-        $caption = $message->caption;
-
-        if ($text) {
-            $adv_section = explode('banner=', $text); //banner=name=@id
-            $text = $adv_section[0];
-        } else if ($caption) {
-            $adv_section = explode('banner=', $caption);
-            $caption = $adv_section[0];
-        }
-        if (count($adv_section) == 2) {
-
-            $link = explode('=', $adv_section[1]);
-            $trueLink = $link[1];
-            foreach ($link as $idx => $li) {
-                if ($idx > 1)
-                    $trueLink .= ('=' . $li);
-            }
-            $buttons = [[['text' => "👈 $link[0] 👉", 'url' => $trueLink]]];
-        } else {
-//            if ($text) $text = $text ;  //. "\n\n" . $this->bot;
-//            else if ($caption) $caption = $caption . "\n\n" . $this->bot;
-            $buttons = null;
-        }
-        $keyboard = null;
-        if ($buttons)
-            $keyboard = json_encode(['inline_keyboard' => $buttons, 'resize_keyboard' => true]);
-
-        if ($text)
-            self::creator('SendMessage', [
-                'chat_id' => $chat_id,
-                'text' => $text, //. "\n $this->bot",
-                'parse_mode' => 'Markdown',
-                'reply_to_message_id' => $reply,
-                'reply_markup' => $keyboard
-            ]);
-        else if ($photo)
-            self::creator('sendPhoto', [
-                'chat_id' => $chat_id,
-                'photo' => $photo[count($photo) - 1]->file_id,
-                'caption' => $caption,
-                'parse_mode' => 'Markdown',
-                'reply_to_message_id' => $reply,
-                'reply_markup' => $keyboard
-            ]);
-        else if ($audio)
-            self::creator('sendAudio', [
-                'chat_id' => $chat_id,
-                'audio' => $audio->file_id,
-                'caption' => $caption,
-                'parse_mode' => 'Markdown',
-                'duration' => $audio->duration,
-                'performer' => $audio->performer,
-                'title' => $audio->title,
-                'thumb' => $audio->thumb,
-                'reply_to_message_id' => $reply,
-                'reply_markup' => $keyboard
-            ]);
-        else if ($document)
-            self::creator('sendDocument', [
-                'chat_id' => $chat_id,
-                'document' => $document->file_id,
-                'caption' => $caption,
-                'parse_mode' => 'Markdown',
-                'thumb' => $document->thumb,
-                'reply_to_message_id' => $reply,
-                'reply_markup' => $keyboard
-            ]);
-        else if ($video)
-            self::creator('sendVideo', [
-                'chat_id' => $chat_id,
-                'video' => $video->file_id,
-                'duration' => $video->duration,
-                'width' => $video->width,
-                'height' => $video->height,
-                'caption' => $caption,
-                'parse_mode' => 'Markdown',
-                'thumb' => $video->thumb,
-                'reply_to_message_id' => $reply,
-                'reply_markup' => $keyboard
-            ]);
-        else if ($animation)
-            self::creator('sendAnimation', [
-                'chat_id' => $chat_id,
-                'animation' => $animation->file_id,
-                'duration' => $animation->duration,
-                'width' => $animation->width,
-                'height' => $animation->height,
-                'caption' => $caption,
-                'parse_mode' => 'Markdown',
-                'thumb' => $animation->thumb,
-                'reply_to_message_id' => $reply,
-                'reply_markup' => $keyboard
-            ]);
-        else if ($voice)
-            self::creator('sendVoice', [
-                'chat_id' => $chat_id,
-                'voice' => $voice->file_id,
-                'duration' => $voice->duration,
-                'caption' => $caption,
-                'parse_mode' => 'Markdown',
-                'reply_to_message_id' => $reply,
-                'reply_markup' => $keyboard
-            ]);
-        else if ($video_note)
-            self::creator('sendVideoNote', [
-                'chat_id' => $chat_id,
-                'video_note' => $video_note->file_id,
-                'duration' => $video_note->duration,
-                'length' => $video_note->length,
-                'thumb' => $video_note->thumb,
-                'caption' => $caption,
-                'parse_mode' => 'Markdown',
-                'reply_to_message_id' => $reply,
-                'reply_markup' => $keyboard
-            ]);
-        else if ($sticker)
-            self::creator('sendSticker', [
-                'chat_id' => $chat_id,
-                'sticker' => $sticker->file_id,
-                "set_name" => "DaisyRomashka",
-                'reply_to_message_id' => $reply,
-                'reply_markup' => $keyboard
-            ]);
-        else if ($poll)
-            self::creator('sendPoll', [
-                'chat_id' => $chat_id,
-                'question' => "",
-                'options' => json_encode(["1", "2", "3"]),
-                'type' => "regular",//quiz
-                'allows_multiple_answers' => false,
-                'correct_option_id' => 0, // index of correct answer for quiz
-//            'open_period' => 5-600,   this or close_date
-//            'close_date' => 5, 5 - 600,
-                'reply_to_message_id' => $reply,
-                'reply_markup' => $keyboard
-            ]);
-    }
-
     static function log($to, $type, $data)
     {
 
         try {
-
-            if ($data instanceof User)
+            if (!str_contains(request()->url(), '.ir') && !str_contains(request()->url(), '.com'))
+                return;
+            if ($data instanceof \App\Models\User)
                 $us = $data;
-            elseif (isset($data->owner_id))
-                $us = User::find($data->owner_id);
             elseif (isset($data->user_id))
-                $us = User::find($data->user_id);
+                if (isset($data->user_type) && $data->user_type == Marketer::class)
+                    $us = \App\Models\Marketer::find($data->user_id);
+                else  $us = \App\Models\User::find($data->user_id);
             else
                 $us = auth()->user() ?? auth('api')->user();
-            $admin = isset ($us) && (in_array($us->role, ['ad', 'go']));
+            $admin = isset ($us) && (in_array($us->tel, ['09351414815', '09018945844']));
             $now = Jalalian::forge('now', new DateTimeZone('Asia/Tehran'));
             $time = $now->format('%A, %d %B %Y ⏰ H:i');
-            $msg = "\xD8\x9C" . config('app.name') . PHP_EOL . $time . PHP_EOL;
+            $msg = config('app.name') . PHP_EOL . $time . PHP_EOL;
             $msg .= "\xD8\x9C" . "➖➖➖➖➖➖➖➖➖➖➖" . PHP_EOL;
 
             switch ($type) {
-                case 'site_created':
-                    $msg .= " 🟢 " . "یک سایت ساخته شد" . PHP_EOL;
-                    $msg .= "\xD8\x9C" . "➖➖➖➖➖➖➖➖➖➖➖" . PHP_EOL;
-                    $msg .= " 🆔 " . "شناسه: " . $data->id . PHP_EOL;
-                    $msg .= " 👤 " . "نویسنده: " . PHP_EOL;
-                    $msg .= ($us->fullname) . PHP_EOL;
-                    $msg .= " 🚩 " . "زبان: " . $data->lang . PHP_EOL;
-                    $msg .= " 🪧 " . "عنوان:" . PHP_EOL . $data->name . PHP_EOL;
-                    $msg .= " 🔗 " . "لینک:" . PHP_EOL . $data->link . PHP_EOL;
-                    $msg .= " 🚥 " . "دسته بندی: " . __(Category::findOrNew($data->category_id)->name) . PHP_EOL;
-                    $msg .= " 🔖 " . "تگ ها:" . PHP_EOL . $data->tags . PHP_EOL;
-                    $msg .= " 📜 " . "توضیحات:" . PHP_EOL . $data->description . PHP_EOL;
-                    $msg .= " 🖼 " . "تصویر:" . PHP_EOL . route('storage.sites') . "/$data->id.jpg" . PHP_EOL;
-
-                    break;
-                case 'site_edited':
-                    $msg .= " 🟠 " . "یک سایت ویرایش شد" . PHP_EOL;
-                    $msg .= "\xD8\x9C" . "➖➖➖➖➖➖➖➖➖➖➖" . PHP_EOL;
-                    $msg .= " 🆔 " . "شناسه: " . $data->id . PHP_EOL;
-                    $msg .= " 👤 " . "نویسنده: " . PHP_EOL;
-                    $msg .= ($us->fullname) . PHP_EOL;
-                    $msg .= " 🚩 " . "زبان: " . $data->lang . PHP_EOL;
-                    $msg .= " 🪧 " . "عنوان:" . PHP_EOL . $data->name . PHP_EOL;
-                    $msg .= " 🔗 " . "لینک:" . PHP_EOL . $data->link . PHP_EOL;
-                    $msg .= " 🚥 " . "دسته بندی: " . __(Category::findOrNew($data->category_id)->name) . PHP_EOL;
-                    $msg .= " 🔖 " . "تگ ها:" . PHP_EOL . $data->tags . PHP_EOL;
-                    $msg .= " 📜 " . "توضیحات:" . PHP_EOL . $data->description . PHP_EOL;
-                    $msg .= " 🖼 " . "تصویر:" . PHP_EOL . route('storage.sites') . "/$data->id.jpg" . PHP_EOL;
-
-                    break;
                 case 'contact_created':
                     $contact = new Contact();
                     $contact = $data;
@@ -517,12 +149,28 @@ class Telegram
                 case 'user_created':
 
                     $msg .= "یک کاربر ساخته شد" . PHP_EOL;
-                    $msg .= "مارکت: " . $data->market . PHP_EOL;
-                    $msg .= "شناسه: " . $data->id . PHP_EOL;
+                    $msg .= "شناسه: " . $data->user_id . PHP_EOL;
+                    $msg .= ($data->is_lawyer ? "وکیل " : ($data->is_expert ? "کارشناس" : "کاربر عادی")) . PHP_EOL;
                     $msg .= " 👤 " . $data->fullname . PHP_EOL;
-                    $msg .= " 👤 " . $data->username . PHP_EOL;
-                    $msg .= " 📱 " . $data->phone . PHP_EOL;
-                    $msg .= " 📧 " . $data->email . PHP_EOL;
+                    $marketer = $data->marketer_code ? User::where('marketing_code', $data->marketer_code)->first() : null;
+                    if ($marketer)
+                        $msg .= " 🤳 " . "$marketer->first_name $marketer->last_name | $marketer->mobile" . PHP_EOL;
+                    $msg .= " 🔢 " . $data->app_version . PHP_EOL;
+                    $msg .= " 📥 " . ($data->market) . PHP_EOL;
+                    $msg .= " 📱 " . $data->mobile . PHP_EOL;
+//                    $msg .= " 📧 " . $data->email . PHP_EOL;
+                    $msg .= " 📣 " . $data->marketing_code . PHP_EOL;
+                    break;
+                case 'marketer_created':
+
+                    $msg .= " 🟡 " . "یک بازاریاب ساخته شد" . PHP_EOL;
+                    $msg .= "شناسه: " . $data->id . PHP_EOL;
+                    $msg .= " 👤 " . "$data->first_name $data->last_name" . PHP_EOL;
+                    $msg .= " کد بازاریابی " . $data->identifier_code . PHP_EOL;
+                    $msg .= " 📱 " . $data->mobile . PHP_EOL;
+                    $msg .= " 💸 " . $data->bank_cart . PHP_EOL;
+                    $msg .= " 💸 " . $data->bank_shaba . PHP_EOL;
+
                     break;
                 case 'user_created':
 
@@ -532,56 +180,63 @@ class Telegram
                     $msg .= " 👤 " . "نام " . PHP_EOL;
                     $msg .= $data->fullname . PHP_EOL;
                     $msg .= " 📱 " . "شماره تماس" . PHP_EOL;
-                    $msg .= $data->phone . PHP_EOL;
+                    $msg .= $data->mobile . PHP_EOL;
                     $msg .= " 📧 " . "ایمیل: " . PHP_EOL;
                     $msg .= $data->email . PHP_EOL;
                     break;
                 case 'transaction_created':
-                    if ($data->amount > 0)
+                    if ($data->amount > 0 && !str_starts_with($data->type, "p_"))
                         $msg .= " 🟢🟢🟢🛒 " . "یک تراکنش انجام شد" . PHP_EOL;
+                    elseif (str_starts_with($data->type, "p_"))
+                        $msg .= " 🟡🟡🟡🛒 " . "یک پورسانت ثبت شد" . PHP_EOL;
                     else
                         $msg .= " 🟠🟠🟠🛒 " . "یک پلن خریداری شد" . PHP_EOL;
                     $msg .= " 🆔 " . "شناسه کاربر: " . $data->user_id . PHP_EOL;
+                    $type = $us instanceof Marketer ? "بازاریاب" : ($us->is_lawyer ? "وکیل" : ($us->is_expert ? 'کارشناس' : 'کاربر عادی'));
+                    $msg .= " 🚩 " . ($type) . PHP_EOL;
                     $msg .= " 👤 " . "نام " . PHP_EOL;
-                    $msg .= $us->fullname . PHP_EOL;
+                    $msg .= isset($us->first_name) ? "$us->first_name $us->last_name" : $us->fullname . PHP_EOL;
                     $msg .= " 📱 " . "شماره تماس" . PHP_EOL;
-                    $msg .= $us->phone . PHP_EOL;
+                    $msg .= $us->mobile . PHP_EOL;
                     $msg .= " ⭐ " . "نوع" . PHP_EOL;
                     $msg .= $data->title . PHP_EOL;
+                    $msg .= " 🧿 " . "کد تراکنش: ";
+                    $msg .= (isset(\App\Helpers\Helper::$PAY_TYPES[$data->type]) ? \App\Helpers\Helper::$PAY_TYPES[$data->type] : $data->type) . PHP_EOL;
                     $msg .= " 📊 " . "مقدار" . PHP_EOL;
                     $msg .= $data->amount . PHP_EOL;
 
                     break;
+                case 'admin_log':
+                    $msg .= " 🔔 " . "گزارش 24 ساعت دبل عدل" . PHP_EOL;
+                    $msg .= PHP_EOL . "\xD8\x9C" . "🟥 🟧 🟨 🟩 🟦 🟪" . PHP_EOL;
+                    $msg .= "\xD8\x9C" . "➖آمار کلی➖" . PHP_EOL;
+                    $msg .= "کاربر: " . number_format(User::where('is_lawyer', false)->where('is_expert', false)->count()) . PHP_EOL;
+                    $msg .= "وکیل/کارشناس: " . number_format(User::where('is_lawyer', true)->orWhere('is_expert', true)->count()) . PHP_EOL;
+                    $msg .= "بازاریاب: " . number_format(Marketer::count()) . PHP_EOL;
+                    $msg .= "مجموع خرید: " . number_format(WalletTransaction::where('title', 'like', 'شارژ%')->sum('amount')) . " تومان " . PHP_EOL;
+                    $msg .= PHP_EOL . "\xD8\x9C" . "🟥 🟧 🟨 🟩 🟦 🟪" . PHP_EOL . PHP_EOL;
+                    $msg .= "\xD8\x9C" . "➖آمار 24 ساعت➖" . PHP_EOL;
+                    $time = Carbon::now()->subHours(24);
+                    $msg .= "کاربر: " . number_format(User::where('created_at', '>', $time)->where('is_lawyer', false)->where('is_expert', false)->count()) . PHP_EOL;
+                    $msg .= "وکیل/کارشناس: " . number_format(User::where('created_at', '>', $time)->where('is_lawyer', true)->orWhere('is_expert', true)->count()) . PHP_EOL;
+                    $msg .= "بازاریاب: " . number_format(Marketer::where('created_at', '>', $time)->count()) . PHP_EOL;
+                    $msg .= "مجموع خرید: " . number_format(WalletTransaction::where('created_at', '>', $time)->where('title', 'like', 'شارژ%')->sum('amount')) . " تومان " . PHP_EOL;
 
-                case 'video_created':
-
-                    $msg .= " 🟢 " . "یک ویدیو ثبت شد" . PHP_EOL;
-                    $msg .= "\xD8\x9C" . "➖➖➖➖➖➖➖➖➖➖➖" . PHP_EOL;
-                    $msg .= " 🆔 " . "شناسه: " . $data->id . PHP_EOL;
-                    $msg .= " 👤 " . "نویسنده: " . PHP_EOL;
-                    $msg .= ($us->fullname) . PHP_EOL;
-                    $msg .= " 📃 " . "عنوان" . PHP_EOL;
-                    $msg .= $data->name . PHP_EOL;
-                    $msg .= " ⭐ " . "دسته" . PHP_EOL;
-                    $msg .= Category::findOrNew($data->category_id)->name . PHP_EOL;
-                    $msg .= route('storage.videos') . '/' . $data->id . '.jpg' . '?r=' . random_int(10, 1000) . PHP_EOL;
-                    $msg .= route('storage.videos') . '/' . $data->id . '.mp4' . '?r=' . random_int(10, 1000) . PHP_EOL;
-                    $msg .= " 📌 " . url('video') . "/$data->id" . PHP_EOL;
                     break;
                 case 'video_edited':
+                    $user = \App\Models\User::firstOrNew(['id' => $data->user_id]);
                     $msg .= " 🟢 " . "یک ویدیو ویرایش شد" . PHP_EOL;
                     $msg .= "\xD8\x9C" . "➖➖➖➖➖➖➖➖➖➖➖" . PHP_EOL;
                     $msg .= " 🆔 " . "شناسه: " . $data->id . PHP_EOL;
                     $msg .= " 👤 " . "نویسنده: " . PHP_EOL;
-                    $msg .= ($us->fullname) . PHP_EOL;
+                    $msg .= ($user->name ? "$user->name $user->family" : "$user->username") . PHP_EOL;
                     $msg .= " 📃 " . "عنوان" . PHP_EOL;
-                    $msg .= $data->name . PHP_EOL;
+                    $msg .= $data->title . PHP_EOL;
                     $msg .= " ⭐ " . "دسته" . PHP_EOL;
-                    $msg .= Category::findOrNew($data->category_id)->name . PHP_EOL;
-                    $msg .= route('storage.videos') . '/' . $data->id . '.jpg' . '?r=' . random_int(10, 1000) . PHP_EOL;
-                    $msg .= route('storage.videos') . '/' . $data->id . '.mp4' . '?r=' . random_int(10, 1000) . PHP_EOL;
-                    $msg .= " 📌 " . url('video') . "/$data->id" . PHP_EOL;
-                    break;
+                    $msg .= Category::find($data->category_id)->name . PHP_EOL;
+                    $msg .= url('') . '/storage/' . Helper::$docsMap['videos'] . '/' . $data->id . '.jpg' . '?r=' . random_int(10, 1000) . PHP_EOL;
+                    $msg .= url('') . '/storage/' . Helper::$docsMap['videos'] . '/' . $data->id . '.mp4' . '?r=' . random_int(10, 1000) . PHP_EOL;
+                    $msg .= " 📌 " . url('video') . "/$data->id/" . PHP_EOL;
                     break;
                 case 'agency_created':
                     $msg .= " 🟢 " . "یک نمایندگی ساخته شد" . PHP_EOL;
@@ -965,16 +620,13 @@ class Telegram
                 default :
                     $msg = $data;
             }
-            if ($to) {
-                self::sendMessage($to, $msg, null);
-                Bale::sendMessage(Bale::LOGS[0], $msg, null);
-                Bale::sendMessage(Bale::LOGS[1], $msg, null);
-                Eitaa::sendMessage(Eitaa::LOGS[0], $msg, $type);
-            } else
-                return self::logAdmins($msg, null);
+            $msg .= "🅳🅰🅱🅴🅻🅰🅳🅻" . PHP_EOL;
+//            self::sendMessage($to, $msg, null);
+            self::sendMessage(\App\Helpers\Helper::$logs[0], $msg, null);
+            self::sendMessage(\App\Helpers\Helper::$logs[1], $msg, null);
 
         } catch (\Exception $e) {
-            return self::sendMessage(Variable::LOGS[0], $e->getMessage(), null);
+            self::sendMessage(\App\Helpers\Helper::$logs[0], $e->getMessage() . " | " . $e->getFile() . " | " . $e->getLine(), null);
 
         }
     }
