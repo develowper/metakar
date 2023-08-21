@@ -20,7 +20,7 @@
 
             <div class="grid grid-cols-1   items-center my-2  h-64 w-fit mx-auto ">
               <Image :src="route('storage.banners')+`/${data.id}.jpg`"
-                     classes="object-cover rounded-none rounded-t sm:rounded-none sm:rounded-s   h-[inherit]   w-full"/>
+                     classes="object-cover   rounded     h-[inherit]   w-full"/>
 
             </div>
 
