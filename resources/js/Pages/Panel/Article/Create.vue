@@ -22,6 +22,7 @@
         <div
             class="    mx-auto md:max-w-5xl   mt-6 px-2 md:px-4 py-4 bg-white shadow-md overflow-hidden  rounded-lg  ">
 
+          
           <div
               class="flex flex-col mx-2   col-span-2 w-full     px-2"
           >
