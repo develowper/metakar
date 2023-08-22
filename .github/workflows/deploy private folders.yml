@@ -10,10 +10,10 @@ jobs:
       - name: Sync files
         uses: SamKirkland/FTP-Deploy-Action@4.3.3
         with:
-          #          server: ftp.metakar.ir
-          server: 195.214.235.12
-          protocol: ftps
-          port: 21
+          server: ftp.metakar.ir
+          #          server: 195.214.235.12
+          protocol: ftp
+          port: 22
           username: metakar
           password: ${{ secrets.FTP_PASSWORD }}
           server-dir: /metakar/
