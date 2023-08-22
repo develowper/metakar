@@ -13,7 +13,7 @@ jobs:
           server: ftp.metakar.ir
           #          server: 195.214.235.12
           protocol: ftp
-          port: 22
+          port: 21
           username: metakar
           password: ${{ secrets.FTP_PASSWORD }}
           server-dir: /metakar/
