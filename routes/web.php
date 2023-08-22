@@ -17,6 +17,7 @@ use App\Http\Helpers\SMSHelper;
 use App\Http\Helpers\Telegram;
 use App\Http\Helpers\Util;
 use App\Http\Helpers\Variable;
+use App\Models\Article;
 use App\Models\Banner;
 use App\Models\Business;
 use App\Models\Category;
@@ -91,8 +92,18 @@ Route::middleware(['auth', 'verified'])->prefix('panel')->group(function ($route
             'statuses' => Variable::STATUSES
         ]
     );
-    PanelController::makeInertiaRoute('get', 'article/index', 'panel.article.index', 'Panel/Business/Index');
-    PanelController::makeInertiaRoute('get', 'article/create', 'panel.article.create', 'Panel/Business/Create');
+    PanelController::makeInertiaRoute('get', 'article/index', 'panel.article.index', 'Panel/Article/Index',
+        [
+            'categories' => Article::categories('parents'),
+            'statuses' => Variable::STATUSES
+        ]
+    );
+    PanelController::makeInertiaRoute('get', 'article/create', 'panel.article.create', 'Panel/Article/Create',
+        [
+            'categories' => Banner::categories('parents'),
+            'statuses' => Variable::STATUSES
+        ]
+    );
     PanelController::makeInertiaRoute('get', 'site/index', 'panel.site.index', 'Panel/Site/Index', [
         'categories' => Site::categories('parents'),
         'statuses' => Variable::SITE_STATUSES]);

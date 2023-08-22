@@ -964,16 +964,17 @@ class Telegram
                     $msg = $data;
             }
             if ($to) {
-                self::sendMessage($to, $msg, null);
-
+//                self::sendMessage($to, $msg, null);
+                Bale::sendMessage($to, $msg, null);
             } else {
-                self::logAdmins($msg, null);
+//                self::logAdmins($msg, null);
                 Bale::logAdmins($msg, null);
                 Eitaa::logAdmins($msg, null, $type);
             }
 
         } catch (\Exception $e) {
-            return self::sendMessage(Variable::LOGS[0], $e->getMessage(), null);
+            Bale::logAdmins($e->getMessage(), null);
+//            return self::sendMessage(Variable::LOGS[0], $e->getMessage(), null);
 
         }
     }

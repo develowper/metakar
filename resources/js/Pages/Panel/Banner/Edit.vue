@@ -134,7 +134,7 @@
                 >
                   <template v-slot:prepend>
                     <div class="p-3">
-                      <LinkIcon class="h-5 w-5"/>
+                      <ChatBubbleBottomCenterTextIcon class="h-5 w-5"/>
                     </div>
                   </template>
 
@@ -183,7 +183,7 @@ import {
   EyeIcon,
   FolderPlusIcon,
   Bars2Icon,
-  LinkIcon,
+  ChatBubbleBottomCenterTextIcon,
   Squares2X2Icon,
   PencilSquareIcon,
   PaintBrushIcon,
@@ -251,7 +251,7 @@ export default {
     Tooltip,
     FolderPlusIcon,
     Bars2Icon,
-    LinkIcon,
+    ChatBubbleBottomCenterTextIcon,
     TagInput,
     QuestionMarkCircleIcon,
     Selector,
