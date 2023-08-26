@@ -2,6 +2,7 @@
 
 namespace App\Http\Helpers;
 
+use App\Models\Article;
 use App\Models\Banner;
 use App\Models\Business;
 use App\Models\Podcast;
@@ -50,7 +51,7 @@ class Variable
     const VIDEO_ALLOWED_MIMES = ['mp4',];
     const LOGS = [72534783];
     const PAGINATE = [24, 50, 100];
-    const IMAGE_FOLDERS = [Site::class => 'sites', Business::class => 'businesses', Podcast::class => 'podcasts', Video::class => 'videos', Banner::class => 'banners',];
+    const IMAGE_FOLDERS = [Site::class => 'sites', Business::class => 'businesses', Podcast::class => 'podcasts', Video::class => 'videos', Banner::class => 'banners', Article::class => 'articles',];
     const SITE_STATUSES = [
         ["name" => 'inactive', "color" => 'danger'],
         ["name" => 'need_charge', "color" => 'orange'],

@@ -171,6 +171,8 @@ class PodcastController extends Controller
         $paginate = $request->paginate ?: 24;
 
         $query = Podcast::query();
+        $query = $query->select('id', 'name', 'narrator', 'status', 'view', 'category_id');
+
         if ($user->role == 'us')
             $query = $query->where('owner_id', $user->id);
 

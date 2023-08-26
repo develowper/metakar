@@ -2,7 +2,7 @@
 
   <Panel>
     <template v-slot:header>
-      <title>{{__('edit_podcast')}}</title>
+      <title>{{__('new_article')}}</title>
     </template>
 
 
@@ -10,45 +10,34 @@
       <!-- Content header -->
       <div
           class="flex items-center justify-start px-4 py-2 text-primary-500 border-b md:py-4 dark:border-primary-darker">
-        <PencilSquareIcon class="h-7 w-7 mx-3"/>
+        <FolderPlusIcon class="h-7 w-7 mx-3"/>
 
-        <h1 class="text-2xl font-semibold">{{ __('edit_podcast') }}</h1>
+        <h1 class="text-2xl font-semibold">{{ __('new_article') }}</h1>
 
       </div>
 
-      <!-- Content -->
+
       <div class="px-2  md:px-4">
 
         <div
-            class="lg:grid      lg:grid-cols-3  mx-auto md:max-w-5xl   mt-6 px-2 md:px-4 py-4 bg-white shadow-md overflow-hidden  rounded-lg  ">
-          <div
-              class="lg:flex-col  flex flex-wrap   self-center  md:m-2  lg:mx-2 md:items-center lg:items-stretch rounded-lg    ">
-            <!--            <InputLabel class="m-2 w-full md:text-start lg:text-center"-->
-            <!--                        :value="__('podcast_images_max_%s_item').replace('%s',$page.props.max_images_limit)"/>-->
+            class="    mx-auto md:max-w-5xl   mt-6 px-2 md:px-4 py-4 bg-white shadow-md overflow-hidden  rounded-lg  ">
 
-            <div class="flex-col   m-2 items-center rounded-lg max-w-xs  w-full mx-auto lg:mx-2   ">
+
+          <div
+              class="flex flex-col mx-2   col-span-2 w-full     px-2"
+          >
+            <div class="flex-col   m-2 items-center rounded-lg max-w-xs  w-full mx-auto    ">
               <div class="my-2">
                 <ImageUploader :replace="$page.props.max_images_limit==1"
-                               :preload="route('storage.podcasts')+`/${$page.props.data.id}.jpg`"
+                               :preload="route('storage.articles')+`/${$page.props.data.id}.jpg`"
                                mode="edit" :for-id="$page.props.data.id"
-                               :link="route('podcast.update')"
+                               :link="route('article.update')"
                                ref="imageCropper" :label="__('image_cover_jpg')" cropRatio="1.25" id="img"
                                height="10" class="grow "/>
                 <InputError class="mt-1 " :message="form.errors.img"/>
               </div>
-              <div class="my-2">
-                <Podcast
-                    :preload="{name:$page.props.data.name,artist: $page.props.data.narrator, url:route('storage.podcasts')+`/${$page.props.data.id}.mp3`}"
-                    view="linear" mode="edit" :link="route('podcast.update')" :for-id="$page.props.data.id"
-                    ref="podcast" :label="__('podcast_file_mp3')"/>
-                <InputError class="mt-1 " :message="form.errors.podcast"/>
-              </div>
-            </div>
 
-          </div>
-          <div
-              class="flex flex-col mx-2   col-span-2 w-full   lg:border-s px-2"
-          >
+            </div>
             <form @submit.prevent="submit">
 
               <div class="flex items-center">
@@ -57,15 +46,17 @@
                 </Tooltip>
                 <RadioGroup ref="langSelector" class="grow" name="lang" :items="$page.props.langs"/>
               </div>
+
+
               <div class="my-2">
                 <TextInput
-                    id="name"
+                    id="title"
                     type="text"
                     :placeholder="__('title')"
                     classes="  "
-                    v-model="form.name"
-                    autocomplete="name"
-                    :error="form.errors.name"
+                    v-model="form.title"
+                    autocomplete="title"
+                    :error="form.errors.title"
                 >
                   <template v-slot:prepend>
                     <div class="p-3">
@@ -76,27 +67,25 @@
                 </TextInput>
 
               </div>
-
               <div class="my-2">
                 <TextInput
-                    id="narrator"
+                    id="author"
                     type="text"
-                    :placeholder="__('narrator')"
+                    :placeholder="__('author')"
                     classes="  "
-                    v-model="form.narrator"
-                    autocomplete="name"
-                    :error="form.errors.narrator"
+                    v-model="form.author"
+                    autocomplete="author"
+                    :error="form.errors.author"
                 >
                   <template v-slot:prepend>
                     <div class="p-3">
-                      <SignalIcon class="h-5 w-5"/>
+                      <PencilIcon class="h-5 w-5"/>
                     </div>
                   </template>
 
                 </TextInput>
 
               </div>
-
 
               <div class="my-2">
                 <Selector ref="categorySelector" :data="$page.props.categories" :label="__('category')"
@@ -111,8 +100,8 @@
 
               <div class="my-2">
                 <TagInput
-                    ref="tags"
                     id="tags"
+                    ref="tags"
                     :placeholder="__('tags')"
                     classes="  "
                     v-model="form.tags"
@@ -124,22 +113,28 @@
               <div class="my-2">
                 <TextInput
                     :multiline="true"
-                    id="description"
+                    id="summary"
                     type="text"
-                    :placeholder="__('description')"
+                    :placeholder="__('summary')"
                     classes="  "
-                    v-model="form.description"
-                    autocomplete="description"
-                    :error="form.errors.description"
+                    v-model="form.summary"
+                    autocomplete="summary"
+                    :error="form.errors.summary"
                 >
                   <template v-slot:prepend>
                     <div class="p-3">
-                      <LinkIcon class="h-5 w-5"/>
+                      <ChatBubbleBottomCenterTextIcon class="h-5 w-5"/>
                     </div>
                   </template>
 
                 </TextInput>
 
+              </div>
+
+              <!--                article content-->
+              <div class="my-2">
+                <Article mode="edit" ref="article" :placeholder="__('article_content')"
+                         :error="form.errors.content"/>
               </div>
               <div v-if="form.progress" class="shadow w-full bg-grey-light m-2   bg-gray-200 rounded-full">
                 <div
@@ -149,6 +144,7 @@
                   <span class="animate-bounce">{{ form.progress.percentage }}</span>
                 </div>
               </div>
+
               <div class="    mt-4">
 
                 <PrimaryButton class="w-full  "
@@ -187,7 +183,8 @@ import {
   Squares2X2Icon,
   PencilSquareIcon,
   SignalIcon,
-
+  ChatBubbleBottomCenterTextIcon,
+  PencilIcon,
 } from "@heroicons/vue/24/outline";
 import {QuestionMarkCircleIcon,} from "@heroicons/vue/24/solid";
 import Checkbox from '@/Components/Checkbox.vue';
@@ -206,7 +203,8 @@ import Selector from "@/Components/Selector.vue";
 import ProvinceCounty from "@/Components/ProvinceCounty.vue";
 import PhoneFields from "@/Components/PhoneFields.vue";
 import SocialFields from "@/Components/SocialFields.vue";
-import Podcast from "@/Components/Podcast.vue";
+import Article from "@/Components/Article.vue";
+
 
 export default {
 
@@ -215,19 +213,18 @@ export default {
       data: this.$page.props.data || {},
       form: useForm({
         id: this.$page.props.data.id,
-        phone: null,
-        phone_verify: null,
         lang: null,
-        name: null,
+        title: null,
+        author: null,
         link: null,
         category_id: null,
         socials: null,
         tags: null,
-        description: '',
+        content: null,
+        summary: '',
 
       }),
       img: null,
-      podcast: null,
     }
   },
   components: {
@@ -259,9 +256,10 @@ export default {
     PhoneFields,
     SocialFields,
     PencilSquareIcon,
-    Podcast,
+    Article,
     SignalIcon,
-
+    ChatBubbleBottomCenterTextIcon,
+    PencilIcon,
   },
   created() {
 
@@ -270,13 +268,15 @@ export default {
 
     // console.log(this.data);
 
-    this.form.name = this.data.name;
+
+    this.form.title = this.data.title;
+    this.form.author = this.data.author;
     this.form.phone = this.data.phone;
     this.form.link = this.data.link;
-    this.form.narrator = this.data.narrator;
     this.form.category_id = this.data.category_id;
     this.$refs.tags.set(this.data.tags);
-    this.form.description = this.data.description;
+    this.$refs.article.setContent(this.data.content);
+    this.form.summary = this.data.summary;
     this.$refs.langSelector.selected = this.data.lang;
   },
   methods: {
@@ -284,6 +284,8 @@ export default {
 
 
       this.form.lang = this.$refs.langSelector.selected;
+      this.form.content = this.$refs.article.getContent();
+
       // this.form.category_id = this.$refs.categorySelector.selected;
       this.form.clearErrors();
 
@@ -293,7 +295,7 @@ export default {
       //   let tmp = this.$refs.imageCropper[i].getCroppedData();
       //   if (tmp) this.images.push(tmp);
       // }
-      this.form.patch(route('podcast.update'), {
+      this.form.patch(route('article.update'), {
         preserveScroll: false,
 
         onSuccess: (data) => {

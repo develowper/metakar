@@ -22,13 +22,13 @@
         <div
             class="    mx-auto md:max-w-5xl   mt-6 px-2 md:px-4 py-4 bg-white shadow-md overflow-hidden  rounded-lg  ">
 
-          
+
           <div
               class="flex flex-col mx-2   col-span-2 w-full     px-2"
           >
             <div class="flex-col   m-2 items-center rounded-lg max-w-xs  w-full mx-auto    ">
               <div class="my-2">
-                <ImageUploader ref="imageCropper" :label="__('arti_cover_jpg')" cropRatio="1.25" id="img"
+                <ImageUploader ref="imageCropper" :label="__('image_cover_jpg')" cropRatio="1.25" id="img"
                                height="10" class="grow "/>
                 <InputError class="mt-1 " :message="form.errors.img"/>
               </div>
@@ -43,19 +43,39 @@
                 <RadioGroup ref="langSelector" class="grow" name="lang" :items="$page.props.langs"/>
               </div>
 
+
               <div class="my-2">
                 <TextInput
-                    id="name"
+                    id="title"
                     type="text"
                     :placeholder="__('title')"
                     classes="  "
-                    v-model="form.name"
-                    autocomplete="name"
-                    :error="form.errors.name"
+                    v-model="form.title"
+                    autocomplete="title"
+                    :error="form.errors.title"
                 >
                   <template v-slot:prepend>
                     <div class="p-3">
                       <Bars2Icon class="h-5 w-5"/>
+                    </div>
+                  </template>
+
+                </TextInput>
+
+              </div>
+              <div class="my-2">
+                <TextInput
+                    id="author"
+                    type="text"
+                    :placeholder="__('author')"
+                    classes="  "
+                    v-model="form.author"
+                    autocomplete="author"
+                    :error="form.errors.author"
+                >
+                  <template v-slot:prepend>
+                    <div class="p-3">
+                      <PencilIcon class="h-5 w-5"/>
                     </div>
                   </template>
 
@@ -103,12 +123,11 @@
                   </template>
 
                 </TextInput>
-
-                <!--                article content-->
-                <div class="my-2">
-                  <Article/>
-                </div>
-
+              </div>
+              <!--                article content-->
+              <div class="my-2">
+                <Article mode="create" ref="article" :placeholder="__('article_content')"
+                         :error="form.errors.content"/>
               </div>
               <div v-if="form.progress" class="shadow w-full bg-grey-light m-2   bg-gray-200 rounded-full">
                 <div
@@ -156,6 +175,7 @@ import {
   ChatBubbleBottomCenterTextIcon,
   Squares2X2Icon,
   SignalIcon,
+  PencilIcon,
 
 } from "@heroicons/vue/24/outline";
 import {QuestionMarkCircleIcon,} from "@heroicons/vue/24/solid";
@@ -185,17 +205,14 @@ export default {
 
       form: useForm({
         lang: null,
-        name: null,
-        narrator: null,
-        socials: null,
+        title: null,
+        content: null,
         category_id: null,
         tags: '',
-        description: '',
+        summary: '',
 
       }),
       img: null,
-      article: null,
-      duration: null,
 
     }
   },
@@ -229,6 +246,7 @@ export default {
     SocialFields,
     SignalIcon,
     Article,
+    PencilIcon,
 
   },
   mounted() {
@@ -237,8 +255,8 @@ export default {
   methods: {
     submit() {
       this.img = this.$refs.imageCropper.getCroppedData();
-      this.article = this.$refs.article.file;
-      this.duration = parseInt(this.$refs.article.player.getSongDuration());
+
+      this.form.content = this.$refs.article.getContent();
       this.form.uploading = false;
       this.form.lang = this.$refs.langSelector.selected;
       // this.form.category_id = this.$refs.categorySelector.selected;

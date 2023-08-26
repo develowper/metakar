@@ -9,6 +9,25 @@ class Article extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'id',
+        'lang',
+        'slug',
+        'owner_id',
+        'category_id',
+        'author',
+        'title',
+        'content',
+        'duration',
+        'summary',
+        'tags',
+        'view',
+        'status',
+        'created_at',
+        'updated_at',
+    ];
+
+
     public function owner()
     {
         return $this->belongsTo(User::class, 'owner_id');

@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Http\Helpers\Util;
+use App\Models\Article;
 use App\Models\Banner;
 use App\Models\Business;
 use App\Models\Category;
@@ -39,12 +41,58 @@ class DatabaseSeeder extends Seeder
         $this->createPodcasts(50);
         $this->createVideos(50);
         $this->createBanners(50);
+        $this->createArticles(50);
         // \App\Models\User::factory(10)->create();
 
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+    }
+
+    private function createArticles($count = 30)
+    {
+        File::deleteDirectory("storage/app/public/articles");
+        File::makeDirectory("storage/app/public/articles");
+        DB::table('articles')->truncate();
+
+        for ($i = 0; $i < $count; $i++) {
+
+            $elements = $this->faker->randomElements(["text", "text", "podcast", "banner", "video", "text", "text", "podcast", "banner", "video", "text", "text", "podcast", "banner", "video",], $this->faker->numberBetween(3, 5));
+
+            $content = [];
+            $duration = 0;
+            foreach ($elements as $element) {
+                if ($element != 'text') {
+                    $item = DB::table("{$element}s")->inRandomOrder()->first();
+                    $content[] = ['id' => $item->id, 'type' => $element, 'value' => $item->name];
+                    $duration += $item->duration ?? 0;
+                } else {
+                    $html = $this->faker->randomHtml;
+                    $duration += Util::estimateReadingTime($html);
+                    $content[] = ['id' => time(), 'type' => $element, 'value' => $html];
+                }
+            }
+
+            $title = $this->faker->realText($this->faker->numberBetween(60, 120));
+            $data = Article::create([
+                'title' => $title,
+                'slug' => str_slug($title),
+                'status' => $this->faker->randomElement(["active", "active", "active", "review"]),
+                'owner_id' => $this->faker->numberBetween(1, 2),
+                'category_id' => $this->faker->randomElement(Category::pluck('id')),
+                'author' => $this->faker->name,
+                'duration' => $duration,
+                'view' => $this->faker->numberBetween(0, 10),
+                'lang' => 'fa',
+                'content' => json_encode($content),
+                'summary' => $this->faker->realText($this->faker->numberBetween(200, 1024)),
+                'created_at' => Carbon::now(),
+                'tags' => implode(",", $this->faker->randomElements(["مقاله", "متن", "تبلیغ", "مقاله", "مقاله", "تست",], $this->faker->numberBetween(0, 5))),
+            ]);
+            $this->makeFile("articles", $data->id);
+
+        }
     }
 
     private function createBanners($count = 30)
@@ -69,8 +117,8 @@ class DatabaseSeeder extends Seeder
                 'created_at' => Carbon::now(),
                 'tags' => implode(",", $this->faker->randomElements(["بنر", "بازدید", "صدا", "تست", "بنر", "بنر",], $this->faker->numberBetween(0, 5))),
             ]);
-            $this->makeFile("banners", "$data->id-cover");
-            $this->makeFile("banners", $data->id, null);
+            $this->makeFile("banners", "$data->id");
+            $this->makeFile("banners", "$data->id-file", null);
         }
     }
 

@@ -7,7 +7,7 @@
 
     <div class="relative  bg-gradient-to-t from-pink-300 via-purple-300 to-indigo-400">
       <!--Hero-->
-      <div class="py-4  xl:py-20       mx-auto    ">
+      <div class="py-4         mx-auto    ">
         <div class="  px-3  sm:px-1  flex   flex-col md:flex-row items-center ">
           <!--                    Right Col-->
           <!--          <div class="  md:w-2/5 py-6 text-center">-->

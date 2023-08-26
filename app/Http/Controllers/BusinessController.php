@@ -186,6 +186,8 @@ class BusinessController extends Controller
         $paginate = $request->paginate ?: 24;
 
         $query = Business::query();
+        $query = $query->select('id', 'name', 'status', 'view', 'category_id');
+
         if ($user->role == 'us')
             $query = $query->where('owner_id', $user->id);
 

@@ -19,7 +19,7 @@
 
   </div>
 
-  <div v-if="file">
+  <div v-if="file" class=" ">
     <video
 
         :id="`video-${forId}`"

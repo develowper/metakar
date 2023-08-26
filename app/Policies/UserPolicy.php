@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Models\Article;
 use App\Models\Banner;
 use App\Models\Business;
 use App\Models\Podcast;
@@ -73,6 +74,7 @@ class UserPolicy
             case Podcast::class  :
             case Video::class  :
             case Banner::class  :
+            case Article::class  :
                 if (in_array($user->role, ['us', 'ad',]))
                     return true;
                 break;
@@ -100,6 +102,8 @@ class UserPolicy
             case $item instanceof Podcast :
             case $item instanceof Video :
             case $item instanceof Banner :
+            case $item instanceof Article :
+
                 return $user->role == 'us' && optional($item)->owner_id == $user->id || in_array($user->role, ['ad',]);
                 break;
         }
@@ -132,6 +136,7 @@ class UserPolicy
             case $item instanceof Podcast  :
             case $item instanceof Video  :
             case $item instanceof Banner  :
+            case $item instanceof Article  :
                 return $user->role == 'us' && optional($item)->owner_id == $user->id || in_array($user->role, ['ad',]);
                 break;
         }

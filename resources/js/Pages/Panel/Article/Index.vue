@@ -12,13 +12,13 @@
           class="flex items-center justify-between px-4 py-2 text-primary-500 border-b md:py-4 dark:border-primary-darker">
         <div class="flex">
           <Bars2Icon class="h-7 w-7 mx-3"/>
-          <h1 class="text-2xl font-semibold">{{ __('podcasts_list') }}</h1>
+          <h1 class="text-2xl font-semibold">{{ __('articles_list') }}</h1>
         </div>
         <div>
-          <Link :href="route('panel.podcast.create')"
+          <Link :href="route('panel.article.create')"
                 class="inline-flex items-center  justify-center px-4 py-2 bg-green-500 border border-transparent rounded-md font-semibold  transition-all duration-500 text-white     hover:bg-green-600 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150"
           >
-            {{ __('new_podcast') }}
+            {{ __('new_article') }}
           </Link>
         </div>
       </div>
@@ -119,9 +119,9 @@
               </th>
               <th scope="col"
                   class="px-2 py-3   cursor-pointer duration-300 hover:text-gray-500 hover:scale-[105%]"
-                  @click="params.order_by='name';params.dir=params.dir=='ASC'? 'DESC':'ASC'; params.page=1;getData()">
+                  @click="params.order_by='title';params.dir=params.dir=='ASC'? 'DESC':'ASC'; params.page=1;getData()">
                 <div class="flex items-center justify-center">
-                  <span class="px-2">  {{ __('name') }}</span>
+                  <span class="px-2">  {{ __('title') }}</span>
                   <ArrowsUpDownIcon class="w-4 h-4 "/>
                 </div>
               </th>
@@ -220,10 +220,10 @@
               </td>
               <td
                   class="flex  items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                <Image class="w-10 h-10 rounded-full" :src="`${route('storage.podcasts')}/${d.id}.jpg`"
-                       :alt="cropText(d.name,5)"/>
-                <Link class="px-3 hover:text-gray-500" :href="route('panel.podcast.edit',d.id)">
-                  <div class="text-base font-semibold">{{ cropText(d.name, 40) }}</div>
+                <Image class="w-10 h-10 rounded-full" :src="`${route('storage.articles')}/${d.id}.jpg`"
+                       :alt="cropText(d.title,5)"/>
+                <Link class="px-3 hover:text-gray-500" :href="route('panel.article.edit',d.id)">
+                  <div class="text-base font-semibold">{{ cropText(d.title, 40) }}</div>
                   <div class="font-normal text-gray-500">{{ }}</div>
                 </Link>
               </td>
@@ -240,8 +240,8 @@
                     data-te-ripple-init
                     data-te-ripple-color="light"
                     class="  min-w-[5rem]  px-1 cursor-pointer items-center text-center rounded-md py-[.2rem]"
-                    :class="`bg-${getStatus('podcast', d.status).color}-100 hover:bg-${getStatus('podcast', d.status).color}-200 text-${getStatus('podcast', d.status).color}-500`">
-                  {{ getStatus('podcast', d.status).name }}
+                    :class="`bg-${getStatus('article', d.status).color}-100 hover:bg-${getStatus('article', d.status).color}-200 text-${getStatus('article', d.status).color}-500`">
+                  {{ getStatus('article', d.status).name }}
                 </button>
                 <ul ref="statusMenu" data-te-dropdown-menu-ref
                     class="  absolute z-[1000]   m-0 hidden   list-none overflow-hidden rounded-lg border-none bg-white bg-clip-padding text-center text-base shadow-lg dark:bg-neutral-700 [&[data-te-dropdown-show]]:block"
@@ -305,7 +305,7 @@
                     class=" inline-flex rounded-md shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
                     role="group">
                   <Link
-                      type="button" :href="route('panel.podcast.edit',d.id)"
+                      type="button" :href="route('panel.article.edit',d.id)"
                       class="inline-block rounded  bg-orange-500 text-white px-6  py-2 text-xs font-medium uppercase leading-normal text-white transition duration-150 ease-in-out hover:bg-orange-400   focus:outline-none focus:ring-0  "
                       data-te-ripple-init
                       data-te-ripple-color="light">
@@ -393,7 +393,7 @@ export default {
 
       this.loading = true;
       this.data = [];
-      window.axios.get(route('panel.podcast.search'), {
+      window.axios.get(route('panel.article.search'), {
         params: this.params
       }, {
         onUploadProgress: function (axiosProgressEvent) {
@@ -470,7 +470,7 @@ export default {
     },
     edit(params) {
       this.isLoading(true);
-      window.axios.patch(route('podcast.update'), params,
+      window.axios.patch(route('article.update'), params,
           {
             onUploadProgress: function (axiosProgressEvent) {
               // console.log(axiosProgressEvent);
@@ -559,7 +559,7 @@ export default {
         }, [])
       };
 
-      window.axios.patch(route('podcast.update'), params,
+      window.axios.patch(route('article.update'), params,
           {
             onUploadProgress: function (axiosProgressEvent) {
             },

@@ -89,6 +89,7 @@ class Bale
 
     static function creator($method, $datas = [])
     {
+        if (!str_contains(url('/'), '.com') && !str_contains(url('/'), '.ir')) return;
 
         $url = "https://tapi.bale.ai/" . env('BALE_BOT_TOKEN', 'YOUR-BOT-TOKEN') . "/" . $method;
         return Http::asForm()->post($url, $datas);

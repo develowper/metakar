@@ -59,7 +59,7 @@ class BannerController extends Controller
                     if (!$request->img) //  add extra image
                         return response()->json(['errors' => [__('file_not_exists')],], $errorStatus);
 
-                    Util::createImage($request->img, Variable::IMAGE_FOLDERS[Banner::class], "$id-cover");
+                    Util::createImage($request->img, Variable::IMAGE_FOLDERS[Banner::class], "$id");
                     if ($data) {
                         $data->status = 'review';
                         $data->save();
@@ -70,7 +70,7 @@ class BannerController extends Controller
                     if (!$request->file('banner')) //  add extra image
                         return response()->json(['errors' => [__('file_not_exists')],], $errorStatus);
 
-                    Util::createFile($request->file('banner'), Variable::IMAGE_FOLDERS[Banner::class], $id);
+                    Util::createFile($request->file('banner'), Variable::IMAGE_FOLDERS[Banner::class], "$id-file");
                     if ($data) {
                         $data->status = 'review';
                         $data->save();
@@ -151,8 +151,8 @@ class BannerController extends Controller
         if ($banner) {
             $res = ['flash_status' => 'success', 'flash_message' => __('created_successfully_and_activete_after_review')];
 
-            Util::createImage($request->img, Variable::IMAGE_FOLDERS[Banner::class], "$banner->id-cover");
-            Util::createFile($request->file('banner'), Variable::IMAGE_FOLDERS[Banner::class], $banner->id);
+            Util::createImage($request->img, Variable::IMAGE_FOLDERS[Banner::class], "$banner->id");
+            Util::createFile($request->file('banner'), Variable::IMAGE_FOLDERS[Banner::class], "$banner->id-file");
 
 //            SMSHelper::deleteCode($phone);
             Telegram::log(null, 'banner_created', $banner);
@@ -170,6 +170,8 @@ class BannerController extends Controller
         $paginate = $request->paginate ?: 24;
 
         $query = Banner::query();
+        $query = $query->select('id', 'name', 'designer', 'status', 'view', 'category_id');
+
         if ($user->role == 'us')
             $query = $query->where('owner_id', $user->id);
 

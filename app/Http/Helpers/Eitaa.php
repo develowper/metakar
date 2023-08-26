@@ -90,9 +90,10 @@ class Eitaa
 
     static function creator($method, $datas = [])
     {
+        if (!str_contains(url('/'), '.com') && !str_contains(url('/'), '.ir')) return;
 
         $url = "https://eitaayar.ir/api/" . env('EITAA_BOT_TOKEN', 'YOUR-BOT-TOKEN') . "/" . $method;
-        return  Http::asForm()->post($url, $datas);
+        return Http::asForm()->post($url, $datas);
 
     }
 

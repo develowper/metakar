@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Helpers\Variable;
+use App\Models\Banner;
+use App\Models\Podcast;
 use App\Models\Ticket;
 use App\Models\Transaction;
 use App\Models\User;
+use App\Models\Video;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
@@ -62,5 +65,49 @@ class PanelController extends Controller
         }
 
         return Inertia::render($component, $params);
+    }
+
+    public function searchMergedItems(Request $request)
+    {
+        $paginate = $request->paginate ?? 24;
+        $order = $request->order ?? 'id';
+        $dir = $request->dir ?? 'DESC';
+        $search = $request->search;
+        $type = $request->type;
+        $banners = null;
+        $podcasts = null;
+        $videos = null;
+
+        if (!$request->type || $type == 'banner')
+            $banners = Banner::select(array_merge(['id', 'name',], [DB::raw(" 'banner'" . ' as type '), DB::raw(' 0 as duration '), DB::raw('"" as extra')]))
+                ->where('status', 'active')
+                ->where(function ($query) use ($search) {
+                    $query->where('name', 'like', "%$search%");
+                });
+
+        if (!$request->type || $type == 'podcast')
+            $podcasts = Podcast::select(array_merge(['id', 'name',], [DB::raw("'podcast'" . ' as type'), DB::raw('duration as duration'), DB::raw('"" as extra')]))
+                ->where('status', 'active')
+                ->where(function ($query) use ($search) {
+                    $query->where('name', 'like', "%$search%");
+                });
+
+        if (!$request->type || $type == 'video')
+            $videos = Video::select(array_merge(['id', 'name'], [DB::raw("'video'" . ' as type'), DB::raw('duration as duration'), DB::raw('"" as extra')]))
+                ->where('status', 'active')
+                ->where(function ($query) use ($search) {
+                    $query->where('name', 'like', "%$search%");
+                });
+
+        $res = null;
+        if ($banners)
+            $res = $banners;
+        if ($podcasts)
+            if ($res) $res->union($podcasts); else $res = $podcasts;
+        if ($videos)
+            if ($res) $res->union($videos); else $res = $videos;
+
+        if ($res)
+            return $res->orderBy($order, $dir)->paginate($paginate);
     }
 }

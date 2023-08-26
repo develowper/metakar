@@ -29,7 +29,7 @@
             <div class="flex-col   m-2 items-center rounded-lg max-w-xs  w-full mx-auto lg:mx-2   ">
               <div class="my-2">
                 <ImageUploader :replace="$page.props.max_images_limit==1"
-                               :preload="route('storage.banners')+`/${$page.props.data.id}-cover.jpg`"
+                               :preload="route('storage.banners')+`/${$page.props.data.id}.jpg`"
                                mode="edit" :for-id="$page.props.data.id"
                                :link="route('banner.update')"
                                ref="imageCropper" :label="__('image_cover_jpg')" cropRatio="1.25" id="img"

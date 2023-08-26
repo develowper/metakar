@@ -19,9 +19,10 @@ return new class extends Migration {
             $table->foreign('owner_id')->references('id')->on('users')->onDelete('no action');
             $table->unsignedInteger('category_id')->nullable();
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('no action');
-            $table->string('name', 200);
+            $table->string('author', 200);
+            $table->string('title', 1024);
             $table->string('summary', 2048)->nullable();
-            $table->string('slug', 200)->nullable();
+            $table->string('slug', 2048)->nullable();
             $table->unsignedInteger('view')->default(0);
             $table->unsignedInteger('duration')->default(0);
             $table->string('tags', 200)->nullable();

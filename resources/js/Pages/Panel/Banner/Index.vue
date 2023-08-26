@@ -220,7 +220,7 @@
               </td>
               <td
                   class="flex  items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                <Image class="w-10 h-10 rounded-full" :src="`${route('storage.banners')}/${d.id}-cover.jpg`"
+                <Image class="w-10 h-10 rounded-full" :src="`${route('storage.banners')}/${d.id}.jpg`"
                        :alt="cropText(d.name,5)"/>
                 <Link class="px-3 hover:text-gray-500" :href="route('panel.banner.edit',d.id)">
                   <div class="text-base font-semibold">{{ cropText(d.name, 40) }}</div>

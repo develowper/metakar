@@ -34,7 +34,16 @@
         <FolderIcon class="w-10 h-10 "/>
 
       </div>
-      <div v-show="doc" class="  rounded-lg flex flex-col justify-between   "
+      <div v-show="doc && mode=='view'" class="h-[inherit]">
+        <img :id="'banner-'+id"
+             class="     "
+             :class="classes"
+             @error="errorImage"
+             @load="  uploadContainer.classList.add('d-none'); "
+             :src="doc"
+             alt=""/>
+      </div>
+      <div v-show="doc && mode !='view'" class="  rounded-lg flex flex-col justify-between   "
            :style="`width:${width}`">
 
         <div class="backdrop-blur relative flex justify-center p-2 items-center h-32">
@@ -49,12 +58,12 @@
           <FolderIcon class="w-10 h-10 opacity-50 text-[#fff]"/>
         </div>
 
-        <div v-show="doc && mode=='view'" :class="classes"
-             class=" backdrop-blur relative flex justify-center p-2 items-center">
-          <div class="absolute bg-black opacity-10 w-full h-full rounded"></div>
-          <FolderIcon class="w-10 h-10 "/>
+        <!--        <div v-show="doc && mode=='view'" :class="classes"-->
+        <!--             class=" backdrop-blur relative flex justify-center p-2 items-center">-->
+        <!--          <div class="absolute bg-black opacity-10 w-full h-full rounded"></div>-->
+        <!--          <FolderIcon class="w-10 h-10 "/>-->
 
-        </div>
+        <!--        </div>-->
 
         <div class="flex my-1 w-100   " role="group">
           <div v-if="mode=='edit'" :class="file? ' rounded-s' :'rounded'"
