@@ -68,9 +68,9 @@ class DatabaseSeeder extends Seeder
                     $content[] = ['id' => $item->id, 'type' => $element, 'value' => $item->name];
                     $duration += $item->duration ?? 0;
                 } else {
-                    $html = $this->faker->randomHtml;
+                    $html = "<p><strong>تست متن</strong> " . $this->faker->realText($this->faker->numberBetween(60, 500)) . "</p><h2>" . $this->faker->realText($this->faker->numberBetween(10, 30)) . "</h2>";
                     $duration += Util::estimateReadingTime($html);
-                    $content[] = ['id' => time(), 'type' => $element, 'value' => $html];
+                    $content[] = ['id' => microtime(true), 'type' => $element, 'value' => $html];
                 }
             }
 

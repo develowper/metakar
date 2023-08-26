@@ -10,7 +10,7 @@
 
       <div class="flex">
         <div class="grow">
-          <div v-if="mode=='create' && d.type==null"
+          <div v-if="  d.type==null"
                class="h-24 border border-dashed border-gray-400 border-2 rounded flex flex-wrap">
             <div @click="d.type='text';d.id= Date.now()"
                  class="grow hover:bg-gray-200 cursor-pointer flex flex-col items-center justify-center">
