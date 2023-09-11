@@ -29,7 +29,7 @@
 
 <script>
 import Scaffold from "@/Layouts/Scaffold.vue";
-import Panel from "@/Layouts/Panel/User.vue";
+import Panel from "@/Layouts/Panel.vue";
 import {Head, Link} from "@inertiajs/vue3";
 import {ChevronDownIcon, HomeIcon} from "@heroicons/vue/24/outline";
 

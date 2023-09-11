@@ -181,7 +181,7 @@
     </section>
     <section>
       <div class=" w-full px-3 my-8   flex  items-center justify-center">
-        <PrimaryButton @click="$inertia.visit(route(($page.props.auth.user?'panel.':'')+'site.create' ))"
+        <PrimaryButton @click="$inertia.visit(route($page.props.auth.user?'panel.site.create':'site.new' ))"
                        class="mx-2 py-2  px-6  ">
           {{ __('register_site') }}
         </PrimaryButton>

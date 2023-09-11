@@ -2,7 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Helpers\Telegram;
+use App\Http\Helpers\Util;
+use App\Http\Helpers\Variable;
+use App\Http\Requests\ProfileRequest;
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\Podcast;
+use App\Models\User;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -27,16 +33,36 @@ class ProfileController extends Controller
     /**
      * Update the user's profile information.
      */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
+    public function update(ProfileRequest $request)
     {
         $request->user()->fill($request->validated());
+        $user = auth()->user();
+
+        switch ($request->cmnd) {
+            case   'upload-img':
+                if (!$request->img) //  add extra image
+                    return response()->json(['errors' => [__('file_not_exists')], 422]);
+
+                Util::createImage($request->img, Variable::IMAGE_FOLDERS[User::class], $user->id);
+//                $user->is_active = false;
+//                $user->save();
+                Telegram::log(null, 'user_edited', $user);
+                return response()->json(['message' => __('updated_successfully')], 200);
+
+        }
+        if (!$request->user()->isDirty()) return back();
 
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
         }
+        if ($request->card && $request->user()->isDirty('card')) {
+            $request->user()->wallet_active = true;
+        }
 
         $request->user()->save();
-
+        $res = ['extra' => ['wallet_active' => $user->wallet_active], 'flash_status' => 'success', 'flash_message' => __('updated_successfully')];
+        Telegram::log(null, 'user_edited', $user);
+        return back()->with($res);
         return Redirect::route('profile.edit');
     }
 

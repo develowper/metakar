@@ -27,9 +27,9 @@ return new class extends Migration {
             $table->string('slug', 200)->nullable();
             $table->unsignedInteger('view')->default(0);
 
-//            $table->timestamp('phone_verified_at')->nullable();
+            $table->boolean('phone_verified')->default(false);
 //            $table->string('email', 50)->nullable();
-//            $table->timestamp('email_verified_at')->nullable();
+//            $table->timestamp('email_verified')->nullable();
             $table->string('tags', 200)->nullable();
             $table->json('socials')->nullable();
 //            $table->boolean('is_active', 200)->default(true);

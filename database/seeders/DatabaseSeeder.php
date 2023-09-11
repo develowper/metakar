@@ -4,12 +4,14 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Http\Helpers\Util;
+use App\Http\Helpers\Variable;
 use App\Models\Article;
 use App\Models\Banner;
 use App\Models\Business;
 use App\Models\Category;
 use App\Models\County;
 use App\Models\Doc;
+use App\Models\Notification;
 use App\Models\Podcast;
 use App\Models\Site;
 use App\Models\Video;
@@ -42,12 +44,37 @@ class DatabaseSeeder extends Seeder
         $this->createVideos(50);
         $this->createBanners(50);
         $this->createArticles(50);
+        $this->createNotifications(50);
         // \App\Models\User::factory(10)->create();
 
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+    }
+
+    private function createNotifications($count = 30)
+    {
+
+        DB::table('notifications')->truncate();
+        for ($i = 0; $i < $count; $i++) {
+            $ownerId = $this->faker->numberBetween(1, 2);
+            $element = $this->faker->randomElement(["article", "site", "business", "podcast", "banner", "video",]);
+            $for = DB::table("{$element}" . ($element == 'business' ? 'es' : 's'))->where('owner_id', $ownerId)->inRandomOrder()->first()->id;
+            $description = $this->faker->realText($this->faker->numberBetween(128, 512));
+            $type = $this->faker->randomElement(["pay", "ticket_answer", "{$element}_approve", "{$element}_reject"]);
+
+            $data = Notification::create([
+                'owner_id' => $ownerId,
+                'type' => $type,
+                'subject' => __($type),
+                'description' => $description,
+                'data_id' => !in_array($type, ['pay', 'ticket_answer']) ? $for : null,
+                'created_at' => Carbon::now(),
+            ]);
+            $this->makeFile("articles", $data->id);
+
+        }
     }
 
     private function createArticles($count = 30)

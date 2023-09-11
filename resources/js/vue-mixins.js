@@ -21,9 +21,14 @@ export default {
     },
 
     methods: {
+        isAdmin() {
+            return this.user && (this.user.role == 'go' || this.user.role == 'ad');
+        },
+        showWalletChargeDialog() {
+            this.emitter.emit('showWalletChargeDialog', null);
+        },
         showToast(type, message) {
             this.emitter.emit('showToast', {type, message});
-
         },
         showAlert(type, message) {
             this.emitter.emit('showAlert', {type, message});
@@ -65,7 +70,9 @@ export default {
         },
         asPrice(price) {
             if (!price) return 0;
-            return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            // return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+            return price.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
         },
         cropText(str, len, trailing = "...") {
             return str && str.length >= len ? `${str.substring(0, len)}${trailing}` : str
@@ -140,7 +147,39 @@ export default {
                 seconds = "0" + seconds;
             }
             return hours + ':' + minutes + ':' + seconds;
+        },
+        toShamsi(day, time = false) {
+            var t = new Date().getTime();
+            if (!day) return '';
+            else
+                var today = new Date(day);
+            let options = {
+                hour12: false,
+
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+
+                calendar: 'persian',
+            };
+            if (time)
+                options = {
+                    ...options,
+                    hour: '2-digit',
+                    minute: '2-digit',
+                }
+//                var dd = String(today.getDate()).padStart(2, '0');
+//                var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+//                var yyyy = today.getFullYear();
+//                return yyyy + '/' + mm + '/' + dd;
+
+            return f2e(today.toLocaleDateString('fa-IR', options));
         }
+        ,
+        replaceAll(str, find, replace) {
+            return str.replace(new RegExp(find, 'g'), replace);
+
+        },
     },
 
 

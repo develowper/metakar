@@ -534,7 +534,7 @@ class Telegram
                     $msg .= " 📧 " . "ایمیل: " . PHP_EOL;
                     $msg .= $data->email . PHP_EOL;
                     break;
-                case 'transaction_created':
+                case 'payment':
                     if ($data->amount > 0)
                         $msg .= " 🟢🟢🟢🛒 " . "یک تراکنش انجام شد" . PHP_EOL;
                     else
@@ -966,14 +966,16 @@ class Telegram
             if ($to) {
 //                self::sendMessage($to, $msg, null);
                 Bale::sendMessage($to, $msg, null);
+                Eitaa::logAdmins($msg, $type,);
             } else {
 //                self::logAdmins($msg, null);
                 Bale::logAdmins($msg, null);
-                Eitaa::logAdmins($msg, null, $type);
+                Eitaa::logAdmins($msg, $type,);
             }
 
         } catch (\Exception $e) {
-            Bale::logAdmins($e->getMessage(), null);
+            Bale::logAdmins($e->getMessage(), $type);
+            Eitaa::logAdmins($e->getMessage(), $type,);
 //            return self::sendMessage(Variable::LOGS[0], $e->getMessage(), null);
 
         }

@@ -2,7 +2,7 @@
 
   <Panel>
     <template v-slot:header>
-      <title>{{__('new_article')}}</title>
+      <title>{{__('edit_article')}}</title>
     </template>
 
 
@@ -10,9 +10,9 @@
       <!-- Content header -->
       <div
           class="flex items-center justify-start px-4 py-2 text-primary-500 border-b md:py-4 dark:border-primary-darker">
-        <FolderPlusIcon class="h-7 w-7 mx-3"/>
+        <PencilSquareIcon class="h-7 w-7 mx-3"/>
 
-        <h1 class="text-2xl font-semibold">{{ __('new_article') }}</h1>
+        <h1 class="text-2xl font-semibold">{{ __('edit_article') }}</h1>
 
       </div>
 
@@ -170,7 +170,7 @@
 
 <script>
 import Scaffold from "@/Layouts/Scaffold.vue";
-import Panel from "@/Layouts/Panel/User.vue";
+import Panel from "@/Layouts/Panel.vue";
 import {Head, Link, useForm} from "@inertiajs/vue3";
 import {
   ChevronDownIcon,

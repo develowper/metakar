@@ -28,25 +28,38 @@
             >
               <span class="w-full text-gray-500"> {{ __('dashboard') }}</span>
             </Link>
-            <hr class="border-gray-200 dark:border-gray-700 my-2 mx-4">
+            <hr class="border-gray-200 dark:border-gray-700 py-2 mx-4">
 
-            <div v-if="hasWallet()"
-                 class="flex text-primary mx-2 justify-center items-center text-sm text-gray-500">
-              <span class="">{{ __('wallet') + ' :' }}</span>
-              <strong class="mx-2">{{ asPrice(user.wallet) }} </strong>
-              <span class=""> {{ __('currency') }}</span>
+            <div
+                class="flex text-primary mx-2 justify-center items-center text-sm text-gray-500">
 
-              <span
-                  class="mx-2   text-center  bg-success-200 text-success-700 hover:bg-success-100 cursor-pointer px-2 py-[.1rem] rounded-lg transition-all duration-300"> {{
-                  __('charge')
-                }}</span>
+              <Tooltip v-if="!hasWallet()" class="p-2 " :content="__('help_activate_wallet')">
+                <QuestionMarkCircleIcon class="text-gray-500 hover:bg-gray-50 w-4 h-4"/>
+              </Tooltip>
+              <span class="text-gray-700">{{ __('wallet') + ' :' }}</span>
+
+              <div v-if="hasWallet()" class="flex items-center ">
+                <strong class="mx-2 text-primary">{{ asPrice(user.wallet) }} </strong>
+                <span class="text-xs text-gray-500"> {{ __('currency') }}</span>
+                <span @click="showWalletChargeDialog"
+                      class="mx-2   text-center  bg-success-200 text-success-700 hover:bg-success-100 cursor-pointer px-2 py-[.1rem] rounded-lg transition-all duration-300">
+                   {{ __('charge') }}
+                  </span>
+              </div>
+              <div v-else class="flex">
+
+                <span class="text-danger-700 bg-danger-200 hover:bg-danger-100 rounded-lg px-2 py-1 cursor-pointer">
+                  {{ __('inactive') }}
+                </span>
+              </div>
+
             </div>
             <hr v-if="hasWallet()" class="border-gray-200 dark:border-gray-700 my-2 mx-4">
             <div class="flex text-primary mx-2 justify-center items-center text-sm text-gray-500">
               <Tooltip class="p-2 " :content="__('help_meta')">
                 <QuestionMarkCircleIcon class="text-gray-500 hover:bg-gray-50 w-4 h-4"/>
               </Tooltip>
-              <span class="">{{ __('meta') + ' :' }}</span>
+              <span class="text-gray-700">{{ __('meta') + ' :' }}</span>
               <strong class="mx-2">{{ asPrice(user.meta) }} </strong>
               <span
                   class="mx-2   text-center  bg-success-200 text-success-700 hover:bg-success-100 cursor-pointer px-2 py-[.1rem] rounded-lg transition-all duration-300"> {{
@@ -364,6 +377,12 @@
                 data-te-collapse-item data-te-sidenav-collapse-ref>
               <li class="relative ps-7">
 
+                <Link :href="route('panel.notification.index')" role="menuitem"
+                      :class="subMenuIsActive( 'panel.notification.index' )"
+                      class="flex   border-s-2 hover:border-primary-500  items-center p-2   text-sm  transition-all duration-200   dark:text-light dark:hover:text-light hover:text-primary-700 hover:bg-primary-50">
+                  <Bars2Icon class="w-5 h-5 mx-1"/>
+                  {{ __('notifications') }}
+                </Link>
                 <Link :href="route('panel.ticket.index')" role="menuitem"
                       :class="subMenuIsActive( 'panel.ticket.index' )"
                       class="flex   border-s-2 hover:border-primary-500  items-center p-2   text-sm  transition-all duration-200   dark:text-light dark:hover:text-light hover:text-primary-700 hover:bg-primary-50">
@@ -489,7 +508,6 @@ export default {
   created() {
   },
   mounted() {
-
     // this.$nextTick(function () {
     //     console.log(this.$parent.toast);
     // });

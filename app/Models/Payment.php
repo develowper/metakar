@@ -13,8 +13,19 @@ class Payment extends Model
     public $timestamps = true;
     protected $table = 'payments';
     protected $fillable = [
-        'id', 'user_id', 'info', 'app_version', /*'inviter_user_id', 'coupon',*/
-        'order_id', 'amount', 'pay_market', 'pay_for', 'pay_result', 'is_success', 'created_at', 'updated_at'
+        'id',
+        'user_id',
+        'title',
+        'transaction_id',
+        'order_id',
+        'type',
+        'market',
+        'gateway',
+        'coupon',
+        'info',
+        'amount',
+        'is_success',
+
     ];
     protected $casts = [
 

@@ -19,7 +19,7 @@ return new class extends Migration {
             $table->boolean('user_seen')->default(false);
             $table->boolean('admin_seen')->default(false);
 
-            $table->string('message', 2048);
+            $table->text('message', 2048);
             $table->timestamp('created_at')->useCurrent();
             $table->foreign('ticket_id')->references('id')->on('tickets')->onDelete('no action');
             $table->foreign('from_id')->references('id')->on('users')->onDelete('no action');

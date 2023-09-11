@@ -40,6 +40,7 @@ class ArticleRequest extends FormRequest
         if (!$this->cmnd)
             $tmp = array_merge($tmp, [
                 'lang' => ['required', Rule::in(Variable::LANGS)],
+                'author' => ['required', 'max:200',],
                 'title' => ['required', 'max:1024', Rule::unique('articles', 'title')->ignore($this->id)],
                 'tags' => ['nullable', 'max:1024'],
                 'content' => ['nullable', 'array'],
@@ -68,6 +69,9 @@ class ArticleRequest extends FormRequest
 
             'title.required' => sprintf(__("validator.required"), __('title')),
             'title.max' => sprintf(__("validator.max_len"), 1024, mb_strlen($this->title)),
+
+            'author.required' => sprintf(__("validator.required"), __('author')),
+            'author.max' => sprintf(__("validator.max_len"), 200, mb_strlen($this->author)),
 
             'phone.required' => sprintf(__("validator.required"), __('phone')),
             'phone.unique' => sprintf(__("validator.unique"), __('phone')),

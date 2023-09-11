@@ -35,6 +35,11 @@ class TicketChat extends Model
         'admin_seen' => 'boolean'
     ];
 
+    public function owner()
+    {
+        return $this->belongsTo(User::class, 'from_id');
+    }
+
     public function getCreatedAtAttribute($value)
     {
         if (!$value) return $value;

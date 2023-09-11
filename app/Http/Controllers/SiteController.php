@@ -194,7 +194,7 @@ class SiteController extends Controller
             $res = ['flash_status' => 'danger', 'flash_message' => __('response_error')];
             return back()->with($res);
         }
-        if ($user->is_blocked) {
+        if ($user->is_block) {
             $res = ['flash_status' => 'danger', 'flash_message' => __('user_is_blocked')];
             return back()->with($res);
         }

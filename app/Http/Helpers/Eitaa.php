@@ -81,16 +81,16 @@ class Eitaa
     }
 
 
-    static function logAdmins($msg, $mode = null, $title = null,)
+    static function logAdmins($msg, $title = null,)
     {
         foreach (self::LOGS as $log)
-            self::sendMessage($log, $msg, $mode, $title);
+            self::sendMessage($log, $msg, null, $title);
 
     }
 
     static function creator($method, $datas = [])
     {
-        if (!str_contains(url('/'), '.com') && !str_contains(url('/'), '.ir')) return;
+//        if (!str_contains(url('/'), '.com') && !str_contains(url('/'), '.ir')) return;
 
         $url = "https://eitaayar.ir/api/" . env('EITAA_BOT_TOKEN', 'YOUR-BOT-TOKEN') . "/" . $method;
         return Http::asForm()->post($url, $datas);

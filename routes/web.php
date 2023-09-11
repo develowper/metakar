@@ -8,11 +8,15 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\ExchangeController;
 use App\Http\Controllers\MainController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PanelController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PodcastController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SiteController;
+use App\Http\Controllers\TicketController;
 use App\Http\Controllers\VideoController;
+use App\Http\Helpers\Pay;
 use App\Http\Helpers\SMSHelper;
 use App\Http\Helpers\Telegram;
 use App\Http\Helpers\Util;
@@ -53,7 +57,7 @@ Route::get('test', function () {
 //    return Telegram::log(null, 'site_created', Site::find(2));
 
 });
-
+Route::get('panel')->name('panel');
 Route::get('storage')->name('storage');
 Route::get('storage/sites')->name('storage.sites');
 Route::get('storage/users')->name('storage.users');
@@ -62,6 +66,7 @@ Route::get('storage/podcasts')->name('storage.podcasts');
 Route::get('storage/videos')->name('storage.videos');
 Route::get('storage/banners')->name('storage.banners');
 Route::get('storage/articles')->name('storage.articles');
+Route::get('storage/tickets')->name('storage.tickets');
 
 Route::get('/', function () {
     return Inertia::render('Main', [
@@ -152,16 +157,37 @@ Route::middleware(['auth', 'verified'])->prefix('panel')->group(function ($route
             'categories' => Business::categories(),
         ]
     );
+
+    PanelController::makeInertiaRoute('get', 'notification/index', 'panel.notification.index', 'Panel/Notification/Index',
+        [
+
+        ]
+    );
+
     PanelController::makeInertiaRoute('get', 'auction/index', 'panel.auction.index', 'Panel/Auction/Index');
     PanelController::makeInertiaRoute('get', 'auction/create', 'panel.auction.create', 'Panel/Auction/Create');
-    PanelController::makeInertiaRoute('get', 'ticket/index', 'panel.ticket.index', 'Panel/Ticket/Index');
-    PanelController::makeInertiaRoute('get', 'ticket/create', 'panel.ticket.create', 'Panel/Ticket/Create');
+    PanelController::makeInertiaRoute('get', 'ticket/index', 'panel.ticket.index', 'Panel/Ticket/Index',
+        [
+            'statuses' => Variable::TICKET_STATUSES
+
+        ]);
+    PanelController::makeInertiaRoute('get', 'ticket/create', 'panel.ticket.create', 'Panel/Ticket/Create',
+        [
+            'attachment_allowed_mimes' => implode(',.', Variable::TICKET_ATTACHMENT_ALLOWED_MIMES),
+        ]);
     PanelController::makeInertiaRoute('get', 'transaction/index', 'panel.financial.transaction.index', 'Panel/Financial/Transaction/Index');
 
+    PanelController::makeInertiaRoute('get', 'profile/edit', 'panel.profile.edit', 'Panel/Profile/Edit',
+        [
 
+        ]);
+    PanelController::makeInertiaRoute('get', 'password/edit', 'panel.profile.password.edit', 'Panel/Profile/PasswordEdit',
+        [
+
+        ]);
 });
 
-Route::get('site/create', [SiteController::class, 'new'])->name('site.create');
+Route::get('site/create', [SiteController::class, 'new'])->name('site.new');
 Route::post('site/create', [SiteController::class, 'create'])->name('site.create')/*->middleware('can:create,App\Models\User,App\Models\Site,""')*/
 ;
 Route::post('business/create', [BusinessController::class, 'create'])->name('business.create')->middleware('can:create,App\Models\User,App\Models\Business,""');
@@ -173,6 +199,8 @@ Route::post('video/create', [VideoController::class, 'create'])->name('video.cre
 Route::post('banner/create', [BannerController::class, 'create'])->name('banner.create')->middleware('can:create,App\Models\User,App\Models\Banner,""');
 
 Route::post('article/create', [ArticleController::class, 'create'])->name('article.create')->middleware('can:create,App\Models\User,App\Models\Article,""');
+
+Route::post('ticket/create', [TicketController::class, 'create'])->name('ticket.create');
 
 
 Route::middleware('throttle:6,1')->group(function () {
@@ -192,6 +220,8 @@ Route::middleware('auth')->group(function () {
     Route::get('panel/video/search', [VideoController::class, 'searchPanel'])->name('panel.video.search');
     Route::get('panel/banner/search', [BannerController::class, 'searchPanel'])->name('panel.banner.search');
     Route::get('panel/article/search', [ArticleController::class, 'searchPanel'])->name('panel.article.search');
+    Route::get('panel/notification/search', [NotificationController::class, 'searchPanel'])->name('panel.notification.search');
+    Route::get('panel/ticket/search', [TicketController::class, 'searchPanel'])->name('panel.ticket.search');
     Route::get('panel/merged/search', [PanelController::class, 'searchMergedItems'])->name('panel.merged.search');
 
 
@@ -212,6 +242,14 @@ Route::middleware('auth')->group(function () {
 
     Route::get('article/edit/{article}', [ArticleController::class, 'edit'])->name('panel.article.edit');
     Route::patch('article/update', [ArticleController::class, 'update'])->name('article.update');
+
+    Route::get('notification/edit/{article}', [NotificationController::class, 'edit'])->name('panel.notification.edit');
+    Route::patch('notification/update', [NotificationController::class, 'update'])->name('notification.update');
+
+    Route::get('ticket/{ticket}', [TicketController::class, 'edit'])->name('panel.ticket.edit');
+    Route::patch('ticket/update', [TicketController::class, 'update'])->name('ticket.update');
+
+    Route::post('payment/url', [PaymentController::class, 'makeUrl'])->name('payment.url');
 
 });
 Route::post('transaction/storesite', [\App\Http\Controllers\TransactionController::class, 'storeSite'])->name('transaction.site.view');
@@ -252,5 +290,8 @@ Route::get('language/{language}', function ($language) {
     session()->put('locale', $language);
     return;
 })->name('language');
+
+Route::get('payment/confirm', [PaymentController::class, 'confirm'])->name('payment.confirm');
+
 
 require __DIR__ . '/auth.php';

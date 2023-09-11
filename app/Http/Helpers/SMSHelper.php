@@ -15,13 +15,13 @@ class SMSHelper
     public function __construct()
     {
         $this->register_pattern = '8v0sqgbhws7s5u6';
-        $this->forget_password_pattern = '43z2ci5l612ro0x';
+        $this->forget_password_pattern = 'tkchniox2rcubuy';
 //        $this->server_number = '+985000125475';
         $this->server_number = '+983000505';
 //        $this->server_number = '+9850004150400040';
 //        $this->server_number = '+9850004150001232';
         $this->apiKey = env('SMS_API');
-        $this->client = new \IPPanel\Client($this->apiKey);
+        $this->client = new \IPPanel\Client("0MLDSWA9mxVNXDHfR5go2GyXMFCU_Kx92b3AwK8jgHc=");
 
     }
 
@@ -34,6 +34,7 @@ class SMSHelper
 
     public static function addCode($phone, $code)
     {
+        self::deleteCode($phone);
         DB::table('sms_verify')->insert(
             ['code' => $code, 'phone' => $phone]
         );
@@ -50,7 +51,7 @@ class SMSHelper
             "name" => "string",
             "code" => "integer",
         ];
-        if ($cmnd == 'forget') {
+        if ($cmnd == 'forget' || $cmnd == 'verification') {
             $pattern = $this->forget_password_pattern;
             $send = "رمز یکبار مصرف: " . "%code%" . PHP_EOL . "%name%";
         } else {
@@ -80,11 +81,13 @@ class SMSHelper
                 "$to",  // recipient
                 $patternValues  // pattern values
             );
-        } catch (\IPPanel\Errors\Error $e) {
-            Telegram::sendMessage(Variable::LOGS[0], $e->getMessage());
-        } catch (\IPPanel\Errors\HttpException $e) {
-            Telegram::sendMessage(Variable::LOGS[0], $e->getMessage());
 
+        } catch (\IPPanel\Errors\Error $e) {
+//            Telegram::sendMessage(Variable::LOGS[0], $e->getMessage());
+            Eitaa::logAdmins($e->getMessage(), 'sms_fail');
+        } catch (\IPPanel\Errors\HttpException $e) {
+//            Telegram::sendMessage(Variable::LOGS[0], $e->getMessage());
+            Eitaa::logAdmins($e->getMessage(), 'sms_fail');
         }
 //        Telegram::sendMessage(Helper::$logs[0], $messageId);
 

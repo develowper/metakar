@@ -12,7 +12,7 @@ class Ticket extends Model
     protected $table = 'tickets';
     public $timestamps = true;
     protected $fillable = [
-        'subject', 'status', 'user_id', 'created_at', 'updated_at'
+        'subject', 'status', 'owner_id', 'created_at', 'updated_at'
     ];
 
     /**
@@ -35,7 +35,7 @@ class Ticket extends Model
 
     public function chats()
     {
-        $this->hasMany(TicketChat::class, 'ticket_id');
+        return $this->hasMany(TicketChat::class, 'ticket_id')->orderBy('id', 'DESC');
     }
 
     public function getUpdatedAtAttribute($value)

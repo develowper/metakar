@@ -64,7 +64,7 @@ class TransactionController extends Controller
             $data->save();
             return response()->json(['message' => __('login_or_register_for_get_reward'), 'next' => $next,], $errorStatus);
         }
-        if ($user->is_blocked || !$user->is_active) {
+        if ($user->is_block || !$user->is_active) {
             return response()->json(['message' => __('user_is_inactive'),], $errorStatus);
         }
         if ($user->id == $data->owner_id) {

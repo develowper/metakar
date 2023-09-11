@@ -52,7 +52,7 @@ class LoginRequest extends FormRequest
                 'password' => $this->password,
 //                 fn (Builder $query) => $query->has('activeSubscription'),
             ], function (User $user) use ($errorMessage) {
-            if ($user->is_blocked) {
+            if ($user->is_block) {
                 $errorMessage = __('user_is_blocked');
                 return false;
             }

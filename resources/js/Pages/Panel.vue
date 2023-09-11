@@ -51,7 +51,7 @@
                                         <span
                                             :class="idx==0?'bg-red-100 text-red-500':idx==1?'bg-primary-100 text-primary-500':'bg-green-100 text-green-500'"
                                             class="   mx-1 px-2 py-1    text-xs  rounded-md">
-                                   {{ t.title }}
+                                   {{ __(t.title) }}
                                         </span>
                                 </span>
               </div>
@@ -203,7 +203,7 @@
 </template>
 
 <script>
-import Panel from "@/Layouts/Panel/User.vue";
+import Panel from "@/Layouts/Panel.vue";
 
 import {Head, Link} from "@inertiajs/vue3";
 import {loadScript} from "vue-plugin-load-script";

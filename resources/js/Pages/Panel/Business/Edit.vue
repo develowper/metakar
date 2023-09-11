@@ -74,6 +74,7 @@
                     v-model:phone="form.phone"
                     v-model:phone-verify="form.phone_verify"
                     :phone-error="form.errors.phone"
+                    for="businesses"
                     :phone-verify-error="form.errors.phone_verify"
                 />
               </div>
@@ -176,7 +177,7 @@
 
 <script>
 import Scaffold from "@/Layouts/Scaffold.vue";
-import Panel from "@/Layouts/Panel/User.vue";
+import Panel from "@/Layouts/Panel.vue";
 import {Head, Link, useForm} from "@inertiajs/vue3";
 import {
   ChevronDownIcon,

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Helpers\Variable;
 use App\Models\Banner;
+use App\Models\Notification;
 use App\Models\Podcast;
 use App\Models\Ticket;
 use App\Models\Transaction;
@@ -23,6 +24,7 @@ class PanelController extends Controller
 
     public static function makeInertiaRoute(string $method, string $route, string $name, string $component, array $params = [], $middleware = [])
     {
+
         return Route::match([$method], $route, function () use ($component, $params) {
 
             return Inertia::render($component, $params);
@@ -34,37 +36,32 @@ class PanelController extends Controller
         $params = [];
         $user = auth()->user();
         $role = optional($user)->role;
-        if ($role == 'go') {
-            $component = 'Panel/God';
+
+        if ($role == 'go' || $role == 'ad') {
+            $tickets = Ticket::select('status', DB::raw('COUNT(*) AS count'))->groupBy('status')->get();
+
             $params = [
                 'users' => User::select('role', DB::raw('COUNT(*) AS count'))->groupBy('role')->get(),
                 'transactions' => Transaction::select('type', DB::raw('COUNT(*) AS count'))->groupBy('type')->get(),
-                'tickets' => Ticket::select('status', DB::raw('COUNT(*) AS count'))->groupBy('status')->get(),
-
-            ];
-
-        } elseif ($role == 'ad') {
-            $component = 'Panel/Admin';
-            $params = [
-                'users' => User::select('role', DB::raw('COUNT(*) AS count'))->groupBy('role')->get(),
-                'transactions' => Transaction::select('type', DB::raw('COUNT(*) AS count'))->groupBy('type')->get(),
-                'tickets' => Ticket::select('status', DB::raw('COUNT(*) AS count'))->groupBy('status')->get(),
-
-            ];
-        } else {
-
-            $component = 'Panel/User';
-            $tickets = Ticket::select('status', DB::raw('COUNT(*) AS count'))->where('user_id', optional($user)->id)->groupBy('status')->get();
-            $params = [
-                'transactions' => Transaction::select('type', DB::raw('COUNT(*) AS count'))->where('user_id', optional($user)->id)->groupBy('type')->get(),
-                'tickets' => array_map(function ($el) {
-                    return ['title' => $el, 'value' => $tickets[$el] ?? 0];
+                'tickets' => array_map(function ($el) use ($tickets) {
+                    return ['title' => $el['name'], 'value' => optional($tickets->where('status', $el['name'])->first())->count ?? 0];
                 }, Variable::TICKET_STATUSES),
+//                'notifications' => $notifications,
+            ];
 
+        } else {
+            $tickets = Ticket::select('status', DB::raw('COUNT(*) AS count'))->where('owner_id', optional($user)->id)->groupBy('status')->get();
+
+            $params = [
+                'transactions' => Transaction::select('type', DB::raw('COUNT(*) AS count'))->where('owner_id', optional($user)->id)->groupBy('type')->get(),
+                'tickets' => array_map(function ($el) use ($tickets) {
+                    return ['title' => $el['name'], 'value' => optional($tickets->where('status', $el['name'])->first())->count ?? 0];
+                }, Variable::TICKET_STATUSES),
+//                'notifications' => $notifications,
             ];
         }
 
-        return Inertia::render($component, $params);
+        return Inertia::render('Panel', $params);
     }
 
     public function searchMergedItems(Request $request)

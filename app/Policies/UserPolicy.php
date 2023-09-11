@@ -5,8 +5,10 @@ namespace App\Policies;
 use App\Models\Article;
 use App\Models\Banner;
 use App\Models\Business;
+use App\Models\Notification;
 use App\Models\Podcast;
 use App\Models\Site;
+use App\Models\Ticket;
 use App\Models\User;
 use App\Models\Video;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -60,7 +62,7 @@ class UserPolicy
         if (!$user->is_active) {
             return abort(403, __("user_is_inactive"));
         }
-        if ($user->is_blocked) {
+        if ($user->is_block) {
             return abort(403, __("user_is_blocked"));
         }
 
@@ -88,7 +90,7 @@ class UserPolicy
     public function edit(User $user, $item, $abort = true, $data = null)
     {
 //        dd(request()->route()->parameter('site'));
-        if ($user->is_blocked) {
+        if ($user->is_block) {
             return abort(403, __("user_is_blocked"));
         }
 
@@ -103,6 +105,8 @@ class UserPolicy
             case $item instanceof Video :
             case $item instanceof Banner :
             case $item instanceof Article :
+            case $item instanceof Notification :
+            case $item instanceof Ticket :
 
                 return $user->role == 'us' && optional($item)->owner_id == $user->id || in_array($user->role, ['ad',]);
                 break;
@@ -118,14 +122,13 @@ class UserPolicy
         if (!$user->is_active) {
             return abort(403, __("user_is_inactive"));
         }
-        if ($user->is_blocked) {
+        if ($user->is_block) {
             return abort(403, __("user_is_blocked"));
         }
 
         if ($item && $item->status == 'block') {
             return abort(403, __("item_is_blocked"));
         }
-
         switch ($item) {
             case $item instanceof User  :
                 if (in_array($user->role, ['ad',]))
@@ -137,6 +140,8 @@ class UserPolicy
             case $item instanceof Video  :
             case $item instanceof Banner  :
             case $item instanceof Article  :
+            case $item instanceof Notification  :
+            case $item instanceof Ticket  :
                 return $user->role == 'us' && optional($item)->owner_id == $user->id || in_array($user->role, ['ad',]);
                 break;
         }

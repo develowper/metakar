@@ -6,6 +6,7 @@
     <Alert ref="alert"/>
     <Dialog ref="modal"/>
     <Toast ref="toast"/>
+    <WalletCharge ref="walletChargeModal"/>
     <div class="  flex h-screen antialiased text-gray-900 bg-gray-100 dark:bg-dark dark:text-light">
       <!-- Loading screen -->
       <div v-if="loading" class="  fixed w-screen h-screen backdrop-blur-sm     z-[999999]">
@@ -79,38 +80,7 @@
               </button>
 
               <!-- Notification button -->
-              <div class="relative mx-1" data-te-dropdown-ref>
-                <button
-                    class="flex p-2 items-center whitespace-nowrap rounded bg-primary  rounded-full text-primary-500 bg-primary-50 hover:text-primary hover:bg-primary-100    text-xs font-medium   leading-normal     transition duration-150 ease-in-out   hover:shadow-lg focus:bg-primary-200 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-primary-200 active:shadow-lg motion-reduce:transition-none dark:shadow-lg dark:hover:shadow-lg dark:focus:shadow-lg"
-                    type="button"
-                    id="dropdownNotidicationSetting"
-                    data-te-dropdown-toggle-ref
-                    aria-expanded="false"
-                    data-te-ripple-init
-                    data-te-ripple-color="light">
-                  <span class="sr-only">Open notidications panel</span>
-                  <span v-if="$page.props.auth.user.notifications>0"
-                        class="bg-red-500 rounded-full text-white px-[.3rem] absolute top-0 start-0  ">
-                                    {{ $page.props.auth.user.notifications }}
-                                </span>
-                  <BellAlertIcon class="w-7 h-7"/>
-                </button>
-                <ul
-                    class="absolute z-[1000] float-start m-0 hidden min-w-max list-none overflow-hidden rounded-lg border-none bg-white bg-clip-padding text-start text-base shadow-lg dark:bg-neutral-700 [&[data-te-dropdown-show]]:block"
-                    aria-labelledby="dropdownNotidicationSetting"
-                    data-te-dropdown-menu-ref>
-                  <li>
-                    <a
-                        class="block w-full whitespace-nowrap bg-transparent px-4 py-2 text-sm font-normal text-neutral-700 hover:bg-neutral-100 active:text-neutral-800 active:no-underline disabled:pointer-events-none disabled:bg-transparent disabled:text-neutral-400 dark:text-neutral-200 dark:hover:bg-neutral-600"
-                        href="#"
-                        data-te-dropdown-item-ref
-                    >Action</a
-                    >
-                  </li>
-
-
-                </ul>
-              </div>
+              <NotificaionButton/>
 
 
               <!-- Settings button -->
@@ -168,17 +138,17 @@
                      tabindex="-1" role="menu" aria-orientation="vertical" aria-label="User menu"
 
                      aria-labelledby="dropdownUserSetting">
-                  <Link href="#" role="menuitem"
+                  <Link :href="route('panel.profile.edit')" role="menuitem"
                         class="  block  p-4 text-sm text-gray-700 transition-colors hover:bg-gray-100 dark:text-light dark:hover:bg-primary">
                     {{ __('profile_setting') }}
                   </Link>
                   <hr class="border-gray-200 dark:border-gray-700 ">
-                  <a href="#" role="menuitem"
-                     class="block p-4 text-sm text-gray-700 transition-colors hover:bg-gray-100 dark:text-light dark:hover:bg-primary">
+                  <Link :href="route('panel.profile.password.edit')" role="menuitem"
+                        class="block p-4 text-sm text-gray-700 transition-colors hover:bg-gray-100 dark:text-light dark:hover:bg-primary">
                     {{ __('change_password') }}
-                  </a>
+                  </Link>
                   <hr class="border-gray-200 dark:border-gray-700 ">
-                  <Link :href="route('logout')" class="flex ">
+                  <Link methods="post" :href="route('logout')" class="flex ">
                     <button class="flex items-center justify-center p-4 m-3  w-full  hover:scale-110 focus:outline-none     px-4 py-2 rounded font-bold cursor-pointer
         hover:bg-red-700 hover:text-red-100  bg-red-100 text-red-500  border duration-200 ease-in-out border-red-600  ">
                       {{ __('signout') }}
@@ -234,15 +204,19 @@ import {router} from '@inertiajs/vue3'
 import mitt from 'mitt'
 import Alert from "@/Components/Alert.vue";
 import LoadingIcon from "@/Components/LoadingIcon.vue";
+import NotificaionButton from "@/Components/NotificaionButton.vue";
+import WalletCharge from "@/Components/WalletCharge.vue";
 
 export const emitter = mitt()
 
 export default {
   components: {
+    WalletCharge,
+    NotificaionButton,
     LoadingIcon,
     Alert,
     Dialog,
-    Head, Link, Navbar, Footer, Toast, Bars3Icon, BellAlertIcon, Cog6ToothIcon, Image, ArrowRightOnRectangleIcon
+    Head, Link, Navbar, Footer, Toast, Bars3Icon, Cog6ToothIcon, Image, ArrowRightOnRectangleIcon
   },
 
   created() {
@@ -286,6 +260,11 @@ export default {
         this.$refs.modal.show(e.type, e.message, e.button, e.action);
     });
 
+    this.emitter.on('showWalletChargeDialog', (e) => {
+      if (this.$refs.walletChargeModal)
+        this.$refs.walletChargeModal.show();
+    });
+
     this.emitter.on('loading', (e, percentage) => {
       this.loading = e;
       this.percentage = percentage;
@@ -295,6 +274,7 @@ export default {
 
       this.$refs.alert.show(this.$page.props.flash.status, this.$page.props.flash.message);
     }
+
   },
 
   methods: {

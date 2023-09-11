@@ -499,14 +499,17 @@ const Mixins = {
       this.user = usePage().props.auth.user;
   },
   methods: {
+    isAdmin() {
+      return this.user && (this.user.role == "go" || this.user.role == "ad");
+    },
     showToast(type, message) {
       this.emitter.emit("showToast", { type, message });
     },
     showAlert(type, message) {
       this.emitter.emit("showAlert", { type, message });
     },
-    showDialog(type, message, onClick) {
-      this.emitter.emit("showDialog", { type, message });
+    showDialog(type, message, button, action) {
+      this.emitter.emit("showDialog", { type, message, button, action });
     },
     isLoading(loading) {
       this.emitter.emit("loading", loading);
@@ -551,13 +554,29 @@ const Mixins = {
           return this.__(el.name);
       return "";
     },
+    getProvince(id) {
+      if (id == null || usePage().props.provinces == null)
+        return "";
+      for (const el of usePage().props.provinces)
+        if (el.id == id)
+          return this.__(el.name);
+      return "";
+    },
+    getCounty(id) {
+      if (id == null || usePage().props.counties == null)
+        return "";
+      for (const el of usePage().props.counties)
+        if (el.id == id)
+          return this.__(el.name);
+      return "";
+    },
     getStatus(type, id) {
-      if (id == null || type == null || usePage().props[`${type}_statuses`] == null)
+      if (id == null || type == null || usePage().props[`statuses`] == null)
         return {
           name: "",
           color: "primary"
         };
-      for (const el of usePage().props[`${type}_statuses`])
+      for (const el of usePage().props[`statuses`])
         if (el.name == id)
           return { name: this.__(el.name), color: el.color || "primary" };
     },
@@ -575,6 +594,48 @@ const Mixins = {
     },
     hasWallet() {
       return this.user ? this.user.wallet_active : false;
+    },
+    f2e(num) {
+      return window.f2e(num);
+    },
+    getDuration(sec) {
+      if (sec == null || sec == 0)
+        return "0";
+      var sec_num = parseInt(sec, 10);
+      var hours = Math.floor(sec_num / 3600);
+      var minutes = Math.floor((sec_num - hours * 3600) / 60);
+      var seconds = sec_num - hours * 3600 - minutes * 60;
+      if (hours < 10) {
+        hours = "0" + hours;
+      }
+      if (minutes < 10) {
+        minutes = "0" + minutes;
+      }
+      if (seconds < 10) {
+        seconds = "0" + seconds;
+      }
+      return hours + ":" + minutes + ":" + seconds;
+    },
+    toShamsi(day, time = false) {
+      (/* @__PURE__ */ new Date()).getTime();
+      if (!day)
+        return "";
+      else
+        var today = new Date(day);
+      let options = {
+        hour12: false,
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        calendar: "persian"
+      };
+      if (time)
+        options = {
+          ...options,
+          hour: "2-digit",
+          minute: "2-digit"
+        };
+      return f2e(today.toLocaleDateString("fa-IR", options));
     }
   }
 };
@@ -584,7 +645,7 @@ createServer(
     page,
     render: renderToString,
     title: (title) => `${title} - ${appName}`,
-    resolve: (name) => resolvePageComponent(`./Pages/${name}.vue`, /* @__PURE__ */ Object.assign({ "./Pages/Ad/Index.vue": () => import("./assets/Index-4a55c4dd.mjs"), "./Pages/Admin/Panel.vue": () => import("./assets/Panel-75165c9f.mjs"), "./Pages/Article/Index.vue": () => import("./assets/Index-8550e097.mjs"), "./Pages/Auth/ConfirmPassword.vue": () => import("./assets/ConfirmPassword-2fe7c0d9.mjs"), "./Pages/Auth/ForgotPassword.vue": () => import("./assets/ForgotPassword-eec0f30e.mjs"), "./Pages/Auth/Login.vue": () => import("./assets/Login-4fb242b0.mjs"), "./Pages/Auth/Register.vue": () => import("./assets/Register-32e0632c.mjs"), "./Pages/Auth/ResetPassword.vue": () => import("./assets/ResetPassword-64856946.mjs"), "./Pages/Auth/VerifyEmail.vue": () => import("./assets/VerifyEmail-b1d24eca.mjs"), "./Pages/Business/Index.vue": () => import("./assets/Index-d080d362.mjs"), "./Pages/ContactUs.vue": () => import("./assets/ContactUs-3753b09b.mjs"), "./Pages/Dashboard.vue": () => import("./assets/Dashboard-2e889b97.mjs"), "./Pages/Dashboard/Index.vue": () => import("./assets/Index-0e53ebde.mjs"), "./Pages/God/Panel.vue": () => import("./assets/Panel-64e2603c.mjs"), "./Pages/Main.vue": () => import("./assets/Main-e31948a0.mjs"), "./Pages/MakeMoney.vue": () => import("./assets/MakeMoney-a8a64da3.mjs"), "./Pages/Panel/Admin.vue": () => import("./assets/Admin-acaa0a2c.mjs"), "./Pages/Panel/Auction/Create.vue": () => import("./assets/Create-6a2b4b35.mjs"), "./Pages/Panel/Auction/Index.vue": () => import("./assets/Index-2766ca3b.mjs"), "./Pages/Panel/Business/Create.vue": () => import("./assets/Create-6e20e9b2.mjs"), "./Pages/Panel/Business/Index.vue": () => import("./assets/Index-5bac3f34.mjs"), "./Pages/Panel/BusinessArticle/Create.vue": () => import("./assets/Create-c85cd489.mjs"), "./Pages/Panel/BusinessArticle/Index.vue": () => import("./assets/Index-3cc26d88.mjs"), "./Pages/Panel/Financial/Transaction/Create.vue": () => import("./assets/Create-48bf3971.mjs"), "./Pages/Panel/Financial/Transaction/Index.vue": () => import("./assets/Index-28a7f85c.mjs"), "./Pages/Panel/God.vue": () => import("./assets/God-384a8c54.mjs"), "./Pages/Panel/Image/Create.vue": () => import("./assets/Create-e29c927b.mjs"), "./Pages/Panel/Image/Index.vue": () => import("./assets/Index-5ec7ef10.mjs"), "./Pages/Panel/Podcast/Create.vue": () => import("./assets/Create-c0699b77.mjs"), "./Pages/Panel/Podcast/Index.vue": () => import("./assets/Index-dde8ab5e.mjs"), "./Pages/Panel/Site/Create.vue": () => import("./assets/Create-57875d11.mjs"), "./Pages/Panel/Site/Edit.vue": () => import("./assets/Edit-59b0f1b3.mjs"), "./Pages/Panel/Site/Index.vue": () => import("./assets/Index-4bf85281.mjs"), "./Pages/Panel/Support/Create.vue": () => import("./assets/Create-6b3285b8.mjs"), "./Pages/Panel/Support/Index.vue": () => import("./assets/Index-2a4cc2cd.mjs"), "./Pages/Panel/Text/Create.vue": () => import("./assets/Create-1542bff1.mjs"), "./Pages/Panel/Text/Index.vue": () => import("./assets/Index-fdac5ecd.mjs"), "./Pages/Panel/Ticket/Create.vue": () => import("./assets/Create-251bb56b.mjs"), "./Pages/Panel/Ticket/Index.vue": () => import("./assets/Index-8c09836b.mjs"), "./Pages/Panel/User.vue": () => import("./assets/User-b5994095.mjs"), "./Pages/Panel/Video/Create.vue": () => import("./assets/Create-f9b861f6.mjs"), "./Pages/Panel/Video/Index.vue": () => import("./assets/Index-0a8e12be.mjs"), "./Pages/Podcast/Index.vue": () => import("./assets/Index-3c997291.mjs"), "./Pages/Prices.vue": () => import("./assets/Prices-3fd2d882.mjs"), "./Pages/Profile/Edit.vue": () => import("./assets/Edit-61ec4c55.mjs"), "./Pages/Profile/Partials/DeleteUserForm.vue": () => import("./assets/DeleteUserForm-6618f416.mjs"), "./Pages/Profile/Partials/UpdatePasswordForm.vue": () => import("./assets/UpdatePasswordForm-8d76c777.mjs"), "./Pages/Profile/Partials/UpdateProfileInformationForm.vue": () => import("./assets/UpdateProfileInformationForm-f58ce7c6.mjs"), "./Pages/Site/Index.vue": () => import("./assets/Index-c7ce7060.mjs"), "./Pages/Site/View.vue": () => import("./assets/View-a3887830.mjs"), "./Pages/Video/Index.vue": () => import("./assets/Index-b9bcf614.mjs"), "./Pages/Welcome.vue": () => import("./assets/Welcome-5959a246.mjs") })),
+    resolve: (name) => resolvePageComponent(`./Pages/${name}.vue`, /* @__PURE__ */ Object.assign({ "./Pages/Ad/Index.vue": () => import("./assets/Index-1a84112d.mjs"), "./Pages/Article/Index.vue": () => import("./assets/Index-9b982e6e.mjs"), "./Pages/Article/View.vue": () => import("./assets/View-93317425.mjs"), "./Pages/Auth/ConfirmPassword.vue": () => import("./assets/ConfirmPassword-e264fb49.mjs"), "./Pages/Auth/ForgotPassword.vue": () => import("./assets/ForgotPassword-091a8a01.mjs"), "./Pages/Auth/Login.vue": () => import("./assets/Login-e25c4b38.mjs"), "./Pages/Auth/Register.vue": () => import("./assets/Register-2a195c4a.mjs"), "./Pages/Auth/ResetPassword.vue": () => import("./assets/ResetPassword-af7e6341.mjs"), "./Pages/Auth/VerifyEmail.vue": () => import("./assets/VerifyEmail-b1d24eca.mjs"), "./Pages/Banner/Index.vue": () => import("./assets/Index-a622a279.mjs"), "./Pages/Banner/View.vue": () => import("./assets/View-8cab798a.mjs"), "./Pages/Business/Index.vue": () => import("./assets/Index-4cf3977f.mjs"), "./Pages/Business/View.vue": () => import("./assets/View-2991f18c.mjs"), "./Pages/ContactUs.vue": () => import("./assets/ContactUs-43693dba.mjs"), "./Pages/Dashboard.vue": () => import("./assets/Dashboard-2e889b97.mjs"), "./Pages/Dashboard/Index.vue": () => import("./assets/Index-0e53ebde.mjs"), "./Pages/Main.vue": () => import("./assets/Main-e5b51ed6.mjs"), "./Pages/MakeMoney.vue": () => import("./assets/MakeMoney-7e96f7a2.mjs"), "./Pages/Panel.vue": () => import("./assets/Panel-fdd54e34.mjs"), "./Pages/Panel/Article/Create.vue": () => import("./assets/Create-49673a0f.mjs"), "./Pages/Panel/Article/Edit.vue": () => import("./assets/Edit-02440b8b.mjs"), "./Pages/Panel/Article/Index.vue": () => import("./assets/Index-938440cf.mjs"), "./Pages/Panel/Auction/Create.vue": () => import("./assets/Create-ab03db82.mjs"), "./Pages/Panel/Auction/Index.vue": () => import("./assets/Index-2979ab1e.mjs"), "./Pages/Panel/Banner/Create.vue": () => import("./assets/Create-b6fa0f83.mjs"), "./Pages/Panel/Banner/Edit.vue": () => import("./assets/Edit-8e1909b0.mjs"), "./Pages/Panel/Banner/Index.vue": () => import("./assets/Index-34fbb2fb.mjs"), "./Pages/Panel/Business/Create.vue": () => import("./assets/Create-a372b448.mjs"), "./Pages/Panel/Business/Edit.vue": () => import("./assets/Edit-9cabce0d.mjs"), "./Pages/Panel/Business/Index.vue": () => import("./assets/Index-75c2982f.mjs"), "./Pages/Panel/Financial/Transaction/Create.vue": () => import("./assets/Create-4c807583.mjs"), "./Pages/Panel/Financial/Transaction/Index.vue": () => import("./assets/Index-5b702b6b.mjs"), "./Pages/Panel/Notification/Index.vue": () => import("./assets/Index-f396f3d3.mjs"), "./Pages/Panel/Podcast/Create.vue": () => import("./assets/Create-2dff3c33.mjs"), "./Pages/Panel/Podcast/Edit.vue": () => import("./assets/Edit-7a9ad58f.mjs"), "./Pages/Panel/Podcast/Index.vue": () => import("./assets/Index-8880710d.mjs"), "./Pages/Panel/Profile/Edit.vue": () => import("./assets/Edit-a47db02f.mjs"), "./Pages/Panel/Profile/PasswordEdit.vue": () => import("./assets/PasswordEdit-a5ad1094.mjs"), "./Pages/Panel/Site/Create.vue": () => import("./assets/Create-d3326b7c.mjs"), "./Pages/Panel/Site/Edit.vue": () => import("./assets/Edit-efd6a64b.mjs"), "./Pages/Panel/Site/Index.vue": () => import("./assets/Index-41bed69a.mjs"), "./Pages/Panel/Support/Create.vue": () => import("./assets/Create-3b364f59.mjs"), "./Pages/Panel/Support/Index.vue": () => import("./assets/Index-604c9c91.mjs"), "./Pages/Panel/Text/Create.vue": () => import("./assets/Create-dc73d5f9.mjs"), "./Pages/Panel/Text/Index.vue": () => import("./assets/Index-7eabc62b.mjs"), "./Pages/Panel/Ticket/Create.vue": () => import("./assets/Create-824476d2.mjs"), "./Pages/Panel/Ticket/Edit.vue": () => import("./assets/Edit-37b49a90.mjs"), "./Pages/Panel/Ticket/Index.vue": () => import("./assets/Index-eff976a7.mjs"), "./Pages/Panel/Video/Create.vue": () => import("./assets/Create-d2826d07.mjs"), "./Pages/Panel/Video/Edit.vue": () => import("./assets/Edit-3089f531.mjs"), "./Pages/Panel/Video/Index.vue": () => import("./assets/Index-cafabf4d.mjs"), "./Pages/Podcast/Index.vue": () => import("./assets/Index-2831ea65.mjs"), "./Pages/Podcast/View.vue": () => import("./assets/View-d342d14e.mjs"), "./Pages/Prices.vue": () => import("./assets/Prices-c205ee8c.mjs"), "./Pages/Profile/Edit.vue": () => import("./assets/Edit-1d134ea9.mjs"), "./Pages/Profile/Partials/DeleteUserForm.vue": () => import("./assets/DeleteUserForm-6064b25b.mjs"), "./Pages/Profile/Partials/UpdatePasswordForm.vue": () => import("./assets/UpdatePasswordForm-130b867f.mjs"), "./Pages/Profile/Partials/UpdateProfileInformationForm.vue": () => import("./assets/UpdateProfileInformationForm-7128b6b4.mjs"), "./Pages/Site/Create.vue": () => import("./assets/Create-78b6c0a4.mjs"), "./Pages/Site/Index.vue": () => import("./assets/Index-8404590a.mjs"), "./Pages/Site/View.vue": () => import("./assets/View-46aa7343.mjs"), "./Pages/Video/Index.vue": () => import("./assets/Index-915d1d86.mjs"), "./Pages/Video/View.vue": () => import("./assets/View-0fda9874.mjs"), "./Pages/Welcome.vue": () => import("./assets/Welcome-5959a246.mjs") })),
     setup({ App, props, plugin }) {
       return createSSRApp({ render: () => h$1(App, props) }).use(plugin).use($, {
         ...page.props.ziggy,

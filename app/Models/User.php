@@ -22,10 +22,29 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'fullname',
-        'phone',
-        'ref_id',
         'email',
+        'email_verified_at',
+        'phone',
+        'phone_verified',
+        'ref_id',
+        'push_id',
+        'telegram_id',
+        'eitaa_id',
+        'bale_id',
+        'soroush_id',
+        'is_active',
+        'is_block',
+        'wallet_active',
         'password',
+        'role',
+        'card',
+        'notifications',
+        'wallet',
+        'meta_wallet',
+        'settings',
+        'expires_at',
+        'created_at',
+        'updated_at',
     ];
 
     /**
@@ -46,7 +65,7 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'is_active' => 'boolean',
-        'is_blocked' => 'boolean',
+        'is_block' => 'boolean',
         'wallet_active' => 'boolean',
     ];
 

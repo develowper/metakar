@@ -1,11 +1,11 @@
 <template>
 
-
-  <div :id="id" :ref="id" class="h-24">
+  <InputLabel class="my-2" :for="id" :value="label"/>
+  <div :id="id" :ref="id" class="   ">
 
 
   </div>
-
+  <InputError class="my-13" :message="error"/>
 </template>
 
 <script>
@@ -39,7 +39,8 @@ import {
 import {Table, TableToolbar} from '@ckeditor/ckeditor5-table';
 
 import {markRaw} from 'vue';
-
+import InputLabel from "@/Components/InputLabel.vue";
+import InputError from "@/Components/InputError.vue";
 
 window.global = window;
 /*
@@ -71,8 +72,11 @@ npm install --save @ckeditor/vite-plugin-ckeditor5
 
 export default {
   name: "TextEditor",
-  props: ['id', 'lang', 'mode', 'preload'],
-  components: {},
+  props: ['id', 'lang', 'mode', 'preload', 'label', 'error'],
+  components: {
+    InputLabel,
+    InputError,
+  },
   data() {
     return {
       editor: null,
@@ -95,7 +99,7 @@ export default {
           // Note that you do not have to specify the plugin and toolbar configuration — using defaults from the build.
           .create(this.$refs[this.id], {
             resize_enabled: true,
-            height: '300px',
+            height: '800px',
             uiColor: '#000',
             resize_minHeight: 300,
             colorButton_foreStyle: {
@@ -142,23 +146,32 @@ export default {
               TableToolbar,
             ],
             toolbar: {
-              items: [
-                // 'exportPDF', 'exportWord', '|',
-                'undo', 'redo',
-                'selectAll', '|',
-                'heading', '|',
-                'bold', 'italic', 'strikethrough', 'underline', 'code',/* 'subscript', 'superscript',*/  '|',
-                'bulletedList', 'numberedList', 'todoList', '|',
-                'outdent', 'indent', '|',
+              items: this.mode == 'simple' ? ['undo', 'redo',
 
-                // '-',
-                'fontSize', /*'fontFamily',*/ 'fontColor', 'fontBackgroundColor', 'highlight', '|',
-                'alignment', '|',
-                'link', 'insertImage', 'blockQuote', 'insertTable', /*'mediaEmbed', 'codeBlock',  'htmlEmbed',*/ '|',
-                /*  'specialCharacters',*/'findAndReplace', 'horizontalLine', /*'pageBreak',*/ '|',
-                /*'textPartLanguage',*/ '|', 'removeFormat',
-                // 'sourceEditing'
-              ], shouldNotGroupWhenFull: true,
+                    'bold', 'italic', 'strikethrough', 'underline', 'code',/* 'subscript', 'superscript',*/  '|',
+                    'bulletedList', 'numberedList', 'todoList', '|',
+                    'fontSize', /*'fontFamily',*/ 'fontColor', 'fontBackgroundColor', 'highlight', '|',
+
+                    'alignment', '|',
+                    'link', 'blockQuote', 'removeFormat',
+                  ] :
+                  [
+                    // 'exportPDF', 'exportWord', '|',
+                    'undo', 'redo',
+                    'selectAll', '|',
+                    'heading', '|',
+                    'bold', 'italic', 'strikethrough', 'underline', 'code',/* 'subscript', 'superscript',*/  '|',
+                    'bulletedList', 'numberedList', 'todoList', '|',
+                    'outdent', 'indent', '|',
+
+                    // '-',
+                    'fontSize', /*'fontFamily',*/ 'fontColor', 'fontBackgroundColor', 'highlight', '|',
+                    'alignment', '|',
+                    'link', 'insertImage', 'blockQuote', 'insertTable', /*'mediaEmbed', 'codeBlock',  'htmlEmbed',*/ '|',
+                    /*  'specialCharacters',*/'findAndReplace', 'horizontalLine', /*'pageBreak',*/ '|',
+                    /*'textPartLanguage',*/ '|', 'removeFormat',
+                    // 'sourceEditing'
+                  ], shouldNotGroupWhenFull: true,
             },
             heading: {
               options: [
@@ -289,11 +302,17 @@ export default {
             // console.log('Editor was initialized', editor);
             this.$nextTick(() => {
               this.editor = markRaw(editor);
+
               const label = document.querySelector('.ck-powered-by-balloon');
               if (label)
                 label.classList.add('d-none')
               if (this.preload)
                 this.editor.setData(this.preload);
+
+              editor.editing.view.change(writer => {
+                writer.setStyle('height', '200px', editor.editing.view.document.getRoot());
+                writer.setStyle('color', '#222', editor.editing.view.document.getRoot());
+              });
             });
 
 
@@ -307,6 +326,9 @@ export default {
     },
     setData(data) {
       return this.editor.setData(data);
+    },
+    reset(data) {
+      return this.editor.resetDirty();
     }
   }
 }
@@ -314,6 +336,7 @@ export default {
 
 <style scoped lang="scss">
 .ck .ck-powered-by {
-  display: none !important;
+  //display: none !important;
+  //opacity: 0 !important;
 }
 </style>
