@@ -18,7 +18,7 @@ module.exports = {
             },
             colors: {
 
-                primary: colors.indigo,
+                primary: colors.sky,
 
 
             },

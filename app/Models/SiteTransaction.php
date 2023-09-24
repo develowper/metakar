@@ -12,10 +12,13 @@ class SiteTransaction extends Model
     public $timestamps = false;
     protected $table = 'site_transactions';
     protected $fillable = [
+        'ip',
         'title',
+        'type',
         'is_meta',
         'owner_id',
-        'site_id',
+        'ip',
+        'data_id',
         'amount',
     ];
     protected $casts = [

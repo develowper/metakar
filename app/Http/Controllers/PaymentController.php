@@ -19,7 +19,7 @@ class PaymentController extends Controller
         $amount = $request->amount;
         $phone = $user->phone;
         $fullname = $user->fullname;
-        $type = "{$userId}_charge";
+        $type = "charge";
         $market = $request->market ?? 'site';
         $dataId = null;
         $coupon = null;

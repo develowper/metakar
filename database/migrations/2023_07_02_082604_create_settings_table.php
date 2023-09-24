@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Helpers\Variable;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
@@ -19,12 +21,9 @@ return new class extends Migration {
             $table->string('value', 1024)->nullable();
             $table->timestamps();
         });
-        \Illuminate\Support\Facades\DB::table('settings')->insert([
-            ['key' => 'hero_main_page', 'value' => __('hero_main_page'), 'lang' => app()->getLocale(), "created_at" => \Carbon\Carbon::now(),],
-            ['key' => 'site_min_view_fee', 'value' => 100, "created_at" => \Carbon\Carbon::now(), 'lang' => null],
-            ['key' => 'site_view_commission', 'value' => 70, "created_at" => \Carbon\Carbon::now(), 'lang' => null],
-
-        ]);
+        DB::table('settings')->insert(
+            Variable::getSettings()
+        );
     }
 
     /**

@@ -12,8 +12,11 @@ use App\Models\Category;
 use App\Models\County;
 use App\Models\Doc;
 use App\Models\Notification;
+use App\Models\Payment;
 use App\Models\Podcast;
 use App\Models\Site;
+use App\Models\Transaction;
+use App\Models\User;
 use App\Models\Video;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
@@ -45,12 +48,64 @@ class DatabaseSeeder extends Seeder
         $this->createBanners(50);
         $this->createArticles(50);
         $this->createNotifications(50);
+        $this->createPayments(50);
         // \App\Models\User::factory(10)->create();
 
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+    }
+
+    private function createPayments($count = 30)
+    {
+        User::whereNotNull('id')->update(['wallet' => 0]);
+        DB::table('payments')->truncate();
+        DB::table('transactions')->truncate();
+        for ($i = 0; $i < $count; $i++) {
+            $ownerId = $this->faker->numberBetween(1, 2);
+            $user = User::find($ownerId);
+            $amount = $this->faker->randomElement([10000, 5000, 3000, 22000, 12000]);
+            $orderId = "{$ownerId}-" . floor(microtime(true) * 1000);
+            $data = Payment::create([
+                'owner_id' => $ownerId,
+                'order_id' => $orderId,
+                'amount' => $amount,
+                'is_success' => true,
+                'transaction_id' => $this->faker->regexify("[A-Za-z0-9]{10}"),
+                'title' => __('charge') . " $amount " . __('currency'),
+                'type' => 'charge',
+                'market' => $this->faker->randomElement(Variable::MARKETS),
+                'gateway' => $this->faker->randomElement(Variable::GATEWAYS),
+                'coupon' => null,
+                'created_at' => Carbon::now()->subMinutes($this->faker->numberBetween(2000, 360000)),
+            ]);
+
+            $data = Transaction::create([
+                'owner_id' => $data->owner_id,
+                'amount' => $data->amount,
+                'type' => $data->type,
+                'title' => $data->title,
+                'payment_id' => $data->id
+            ]);
+            $user->wallet += $amount;
+
+            if ($this->faker->randomElement([false, false, true,])) {
+                $type = $this->faker->randomElement(['buy_article', 'buy_video', 'buy_podcast', 'buy_banner',]);
+                $table = explode('_', $type)[1] . "s";
+                $id = DB::table($table)->inRandomOrder()->first()->id;
+                $data = Transaction::create([
+                    'owner_id' => $data->owner_id,
+                    'amount' => $this->faker->randomElement([-1200, -4200, -3400, -2300, -11000]),
+                    'type' => "{$type}_$id",
+                    'title' => __($type) . " $id ",
+                    'payment_id' => null,
+                    'created_at' => Carbon::now()->subMinutes($this->faker->numberBetween(2000, 360000)),
+
+                ]);
+            }
+            $user->save();
+        }
     }
 
     private function createNotifications($count = 30)
@@ -102,10 +157,14 @@ class DatabaseSeeder extends Seeder
             }
 
             $title = $this->faker->realText($this->faker->numberBetween(60, 120));
+            $status = $this->faker->randomElement(["active", "need_charge", "active", "review"]);
+            $viewFee = $this->faker->numberBetween(0, 600);
             $data = Article::create([
                 'title' => $title,
                 'slug' => str_slug($title),
-                'status' => $this->faker->randomElement(["active", "active", "active", "review"]),
+                'status' => $status,
+                'view_fee' => $viewFee,
+                'charge' => $status == 'need_charge' ? $viewFee - intval($viewFee / 3) : $viewFee + $this->faker->numberBetween(200, 500),
                 'owner_id' => $this->faker->numberBetween(1, 2),
                 'category_id' => $this->faker->randomElement(Category::pluck('id')),
                 'author' => $this->faker->name,

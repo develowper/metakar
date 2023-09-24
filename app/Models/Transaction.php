@@ -33,9 +33,21 @@ class Transaction extends Model
 
     ];
 
-    public function getCreatedAtAttribute($value)
+//    public function getCreatedAtAttribute($value)
+//    {
+//        if (!$value) return $value;
+//        return \Morilog\Jalali\CalendarUtils::strftime('Y/m/d | H:i', strtotime($value));
+//    }
+    public static function fillAllOwnerIds(string $ip, $userId)
     {
-        if (!$value) return $value;
-        return \Morilog\Jalali\CalendarUtils::strftime('Y/m/d | H:i', strtotime($value));
+        SiteTransaction::where('ip', $ip)->where('owner_id', null)->update(['owner_id' => $userId]);
+        ArticleTransaction::where('ip', $ip)->where('owner_id', null)->update(['owner_id' => $userId]);
+        BannerTransaction::where('ip', $ip)->where('owner_id', null)->update(['owner_id' => $userId]);
+        BusinessTransaction::where('ip', $ip)->where('owner_id', null)->update(['owner_id' => $userId]);
+        PodcastTransaction::where('ip', $ip)->where('owner_id', null)->update(['owner_id' => $userId]);
+        VideoTransaction::where('ip', $ip)->where('owner_id', null)->update(['owner_id' => $userId]);
+
+        UserTransaction::where('ip', $ip)->where('owner_id', null)->update(['owner_id' => $userId]);
+
     }
 }

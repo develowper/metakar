@@ -534,12 +534,12 @@ class Telegram
                     $msg .= " 📧 " . "ایمیل: " . PHP_EOL;
                     $msg .= $data->email . PHP_EOL;
                     break;
-                case 'payment':
+                case 'transaction_created':
                     if ($data->amount > 0)
                         $msg .= " 🟢🟢🟢🛒 " . "یک تراکنش انجام شد" . PHP_EOL;
                     else
                         $msg .= " 🟠🟠🟠🛒 " . "یک پلن خریداری شد" . PHP_EOL;
-                    $msg .= " 🆔 " . "شناسه کاربر: " . $data->user_id . PHP_EOL;
+                    $msg .= " 🆔 " . "شناسه کاربر: " . $us->id . PHP_EOL;
                     $msg .= " 👤 " . "نام " . PHP_EOL;
                     $msg .= $us->fullname . PHP_EOL;
                     $msg .= " 📱 " . "شماره تماس" . PHP_EOL;
@@ -815,15 +815,17 @@ class Telegram
 
                     break;
                 case 'user_edited':
-                    $msg .= " 🟥 " . ($admin ? "ادمین *$admin* یک کاربر را ویرایش کرد" : "یک کاربر ویرایش شد") . PHP_EOL;
+                    $msg .= " 🟧 " . ($admin ? "ادمین *$admin* یک کاربر را ویرایش کرد" : "یک کاربر ویرایش شد") . PHP_EOL;
                     $msg .= " 👤 " . "نام: " . PHP_EOL;
-                    $msg .= $data->name . ' ' . $data->family . PHP_EOL;
+                    $msg .= $data->fullname . PHP_EOL;
                     $msg .= " 📧 " . "ایمیل: " . PHP_EOL;
                     $msg .= $data->email . PHP_EOL;
-                    $msg .= " ⚙️ " . "نام کاربری" . PHP_EOL;
-                    $msg .= $data->username . PHP_EOL;
                     $msg .= " 📱 " . "شماره تماس" . PHP_EOL;
                     $msg .= $data->phone . PHP_EOL;
+                    $msg .= " 💰 " . "کیف پول" . PHP_EOL;
+                    $msg .= $data->wallet . PHP_EOL;
+                    $msg .= " 💳 " . "شماره کارت" . PHP_EOL;
+                    $msg .= $data->card . PHP_EOL;
                     break;
 
                 case 'player_edited':
@@ -974,10 +976,12 @@ class Telegram
             }
 
         } catch (\Exception $e) {
-            Bale::logAdmins($e->getMessage(), $type);
-            Eitaa::logAdmins($e->getMessage(), $type,);
+            try {
+                Bale::logAdmins($e->getMessage(), $type);
+                Eitaa::logAdmins($e->getMessage(), $type,);
 //            return self::sendMessage(Variable::LOGS[0], $e->getMessage(), null);
-
+            } catch (\Exception $e) {
+            };
         }
     }
 }

@@ -66,6 +66,10 @@ class SiteRequest extends FormRequest
                 'charge.gt' => sprintf(__("validator.invalid"), __('charge_amount')),
                 'charge.required_if' => sprintf(__("validator.invalid"), __('charge_amount')),
 
+                'view_fee.numeric' => sprintf(__("validator.invalid"), __('view_fee')),
+                'view_fee.gt' => sprintf(__("validator.invalid"), __('view_fee')),
+                'view_fee.required_if' => sprintf(__("validator.invalid"), __('view_fee')),
+
             ];
         return [
 
@@ -109,8 +113,8 @@ class SiteRequest extends FormRequest
             'description.max' => sprintf(__("validator.max_len"), 2048, mb_strlen($this->description)),
 
             'img.required' => sprintf(__("validator.required"), __('image')),
-            'img.base64_image_size' => sprintf(__("validator.max_size"),__("image"), Variable::SITE_IMAGE_LIMIT_MB),
-            'img.base64_image_mime' => sprintf(__("validator.invalid_format"),__("image"), implode(",", Variable::SITE_ALLOWED_MIMES)),
+            'img.base64_image_size' => sprintf(__("validator.max_size"), __("image"), Variable::SITE_IMAGE_LIMIT_MB),
+            'img.base64_image_mime' => sprintf(__("validator.invalid_format"), __("image"), implode(",", Variable::SITE_ALLOWED_MIMES)),
         ];
     }
 }

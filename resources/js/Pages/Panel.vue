@@ -17,7 +17,7 @@
       <!-- Content -->
       <div class="mt-2">
         <!-- State cards -->
-        <div class="grid grid-cols-1 gap-8 p-4 lg:grid-cols-2 xl:grid-cols-3">
+        <div class="grid   gap-4 p-4 grid-cols-1 lg:grid-cols-2 xl:grid-cols-3  ">
 
           <!-- wallet card -->
           <div :class="cardShadow"
@@ -43,8 +43,8 @@
                 {{ __('tickets') }}
               </h6>
 
-              <div class="justify-center flex  ">
-                                <span v-for="t,idx in tickets" class="align-middle flex  flex-col text-center  ">
+              <div class="justify-around flex  ">
+                                <span v-for="(t,idx) in tickets" class="align-middle flex  flex-col text-center  ">
                                         <span
                                             :class="idx==0?'text-red-500':idx==1?'text-primary-500':'text-green-500'"
                                             class="  text-xl font-semibold "> {{ t.value }}</span>
@@ -62,19 +62,46 @@
             </div>
 
           </Link>
+          <!-- items card -->
+          <div :class="cardShadow"
+               class="flex lg:col-span-2 xl:col-span-1 cursor-pointer   items-center justify-around   bg-white  rounded-lg dark:bg-darker">
+            <div class="flex flex-col grow">
+              <h6 class="text-xs font-bold    tracking-wider text-gray-500 uppercase dark:text-primary-light">
+                {{ }}
+              </h6>
+
+              <div class="    flex items-stretch  ">
+                <Link v-for="(i,idx) in items" :href="route(`panel.${i.type}.index`)"
+                      class="  flex flex-col  py-6 xl:pt-6 xl:pb-2 items-around justify-around hover:scale-[102%]     px-1  grow text-center hover:bg-gray-100  ">
+                                        <span
+                                            :class="idx==0?'text-pink-500':idx==1?'text-teal-500':idx==2?'text-fuchsia-500':'text-amber-500'"
+                                            class="  text-xl font-semibold "> {{ i.count }}</span>
+                  <span
+                      :class="idx==0?'bg-pink-100 text-pink-500':idx==1?'bg-teal-100 text-teal-500':idx==2?'bg-fuchsia-100 text-fuchsia-500':'bg-amber-100 text-amber-500'"
+                      class="   mx-1 px-2 py-1    text-xs  rounded-md">
+                                   {{ __(i.type) }}
+                                        </span>
+                </Link>
+              </div>
+
+            </div>
+
+
+          </div>
 
 
         </div>
 
         <!-- Charts -->
-        <div class="grid grid-cols-1 p-4 space-y-8 lg:gap-8 lg:space-y-0 lg:grid-cols-3">
+        <div class="grid-cols-1  px-4 space-y-2 gap-2     xl:grid-cols-2">
           <!-- Bar chart card -->
-          <div class="col-span-2 bg-white rounded-md dark:bg-darker" x-data="{ isOn: false }">
+          <div v-if="  $page.props.hasAdvertise" class="  bg-white rounded-md dark:bg-darker"
+               x-data="{ isOn: false }">
             <!-- Card header -->
             <div class="flex items-center justify-between p-4 border-b dark:border-primary">
-              <h4 class="text-lg font-semibold text-gray-500 dark:text-light">Bar Chart</h4>
-              <div class="flex items-center space-x-2">
-                <span class="text-sm text-gray-500 dark:text-light">Last year</span>
+              <h4 class="text-lg font-semibold text-gray-500 dark:text-light"> {{ __('advertises_statistics') }}</h4>
+              <div v-if="false" class="flex items-center space-x-2">
+                <span class="text-sm text-gray-500 dark:text-light"> </span>
                 <button class="relative focus:outline-none"
                         @click="isOn = !isOn;  ">
                   <div
@@ -86,7 +113,7 @@
               </div>
             </div>
             <!-- Chart -->
-            <div class="relative p-4 h-72">
+            <div class="relative px-4 ">
               <div class="chartjs-size-monitor">
                 <div class="chartjs-size-monitor-expand">
                   <div class=""></div>
@@ -95,19 +122,22 @@
                   <div class=""></div>
                 </div>
               </div>
-              <canvas id="barChart" style="display: block; width: 505px; height: 256px;"
-                      width="505" height="256" class="chartjs-render-monitor"></canvas>
+              <Chart id="advertises" :units="[__('view'),__('currency'),__('meta')]"
+                     :log-link="route('transaction.chart')"
+                     :parent-params="{user_id:user.id,type:'data'}"
+              />
             </div>
           </div>
-
-          <!-- Doughnut chart card -->
-          <div class="bg-white rounded-md dark:bg-darker" x-data="{ isOn: false }">
+          <!-- Bar chart card -->
+          <div class=" bg-white rounded-md dark:bg-darker"
+               x-data="{ isOn: false }">
             <!-- Card header -->
             <div class="flex items-center justify-between p-4 border-b dark:border-primary">
-              <h4 class="text-lg font-semibold text-gray-500 dark:text-light">Doughnut Chart</h4>
-              <div class="flex items-center">
+              <h4 class="text-lg font-semibold text-gray-500 dark:text-light"> {{ __('transaction_statistics') }}</h4>
+              <div v-if="false" class="flex items-center space-x-2">
+                <span class="text-sm text-gray-500 dark:text-light"> </span>
                 <button class="relative focus:outline-none"
-                        @click="isOn = !isOn; $parent.updateDoughnutChart(isOn)">
+                        @click="isOn = !isOn;  ">
                   <div
                       class="w-12 h-6 transition rounded-full outline-none bg-primary-100 dark:bg-primary-darker"></div>
                   <div
@@ -117,7 +147,7 @@
               </div>
             </div>
             <!-- Chart -->
-            <div class="relative p-4 h-72">
+            <div class="relative px-4 ">
               <div class="chartjs-size-monitor">
                 <div class="chartjs-size-monitor-expand">
                   <div class=""></div>
@@ -126,75 +156,15 @@
                   <div class=""></div>
                 </div>
               </div>
-              <canvas id="doughnutChart" width="505" height="256"
-                      style="display: block; width: 505px; height: 256px;"
-                      class="chartjs-render-monitor"></canvas>
-            </div>
-          </div>
-        </div>
-
-        <!-- Two grid columns -->
-        <div class="grid grid-cols-1 p-4 space-y-8 lg:gap-8 lg:space-y-0 lg:grid-cols-3">
-          <!-- Active users chart -->
-          <div class="col-span-1 bg-white rounded-md dark:bg-darker">
-            <!-- Card header -->
-            <div class="p-4 border-b dark:border-primary">
-              <h4 class="text-lg font-semibold text-gray-500 dark:text-light">Active users right
-                now</h4>
-            </div>
-            <p class="p-4">
-                                    <span class="text-2xl font-medium text-gray-500 dark:text-light"
-                                          id="usersCount">104</span>
-              <span class="text-sm font-medium text-gray-500 dark:text-primary">Users</span>
-            </p>
-            <!-- Chart -->
-            <div class="relative p-4">
-              <div class="chartjs-size-monitor">
-                <div class="chartjs-size-monitor-expand">
-                  <div class=""></div>
-                </div>
-                <div class="chartjs-size-monitor-shrink">
-                  <div class=""></div>
-                </div>
-              </div>
-              <canvas id="activeUsersChart" width="505" height="150"
-                      style="display: block; width: 505px; height: 150px;"
-                      class="chartjs-render-monitor"></canvas>
+              <Chart id="transactions" :units="[__('view'),__('currency'),__('meta')]"
+                     :log-link="route('transaction.chart')"
+                     :parent-params="{user_id:user.id,type:'user'}"
+              />
             </div>
           </div>
 
-          <!-- Line chart card -->
-          <div class="col-span-2 bg-white rounded-md dark:bg-darker" x-data="{ isOn: false }">
-            <!-- Card header -->
-            <div class="flex items-center justify-between p-4 border-b dark:border-primary">
-              <h4 class="text-lg font-semibold text-gray-500 dark:text-light">Line Chart</h4>
-              <div class="flex items-center">
-                <button class="relative focus:outline-none"
-                        @click="isOn = !isOn; $parent.updateLineChart()">
-                  <div
-                      class="w-12 h-6 transition rounded-full outline-none bg-primary-100 dark:bg-primary-darker"></div>
-                  <div
-                      class="absolute top-0 left-0 inline-flex items-center justify-center w-6 h-6 transition-all duration-200 ease-in-out transform scale-110 rounded-full shadow-sm translate-x-0 bg-white dark:bg-primary-100"
-                      :class="{ 'translate-x-0  bg-white dark:bg-primary-100': !isOn, 'translate-x-6 bg-primary-light dark:bg-primary': isOn }"></div>
-                </button>
-              </div>
-            </div>
-            <!-- Chart -->
-            <div class="relative p-4 h-72">
-              <div class="chartjs-size-monitor">
-                <div class="chartjs-size-monitor-expand">
-                  <div class=""></div>
-                </div>
-                <div class="chartjs-size-monitor-shrink">
-                  <div class=""></div>
-                </div>
-              </div>
-              <canvas id="lineChart" width="505" height="256"
-                      style="display: block; width: 505px; height: 256px;"
-                      class="chartjs-render-monitor"></canvas>
-            </div>
-          </div>
         </div>
+
       </div>
     </template>
 
@@ -229,6 +199,7 @@ import {
   TicketIcon,
 } from "@heroicons/vue/24/outline";
 import {inject, watchEffect} from "vue";
+import Chart from "@/Components/Chart.vue";
 
 export default {
   setup(props) {
@@ -247,11 +218,12 @@ export default {
       isOn: false,
       user: this.$page.props.auth.user,
       tickets: this.$page.props.tickets,
+      items: this.$page.props.items,
       cardShadow: 'shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)]',
     }
   },
   // emits: ['showToast'],
-  components: {Panel, CurrencyDollarIcon, TicketIcon, Head, Link},
+  components: {Chart, Panel, CurrencyDollarIcon, TicketIcon, Head, Link},
   mounted() {
     // console.log(this.$emit('showToast'))
 

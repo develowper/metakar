@@ -23,32 +23,13 @@
 
             </p>
             <!--                        search-->
-            <div v-if="false" class="w-full mx-auto mt-2 my-10">
-              <div class="relative  px-6 mx-auto  ">
-                <div
-                    class="absolute top-0 bottom-0 start-0 flex items-center opacity-60  ps-10  ">
-                  <svg v-if="false"
-                       class="w-4 h-4 text-gray-600 fill-current   "
-                       xmlns="http://www.w3.org/2000/svg"
-                       viewBox="0 0 20 20">
-                    <path
-                        d="M12.9 14.32a8 8 0 1 1 1.41-1.41l5.35 5.33-1.42 1.42-5.33-5.34zM8 14A6 6 0 1 0 8 2a6 6 0 0 0 0 12z"></path>
-                  </svg>
-                  <span class="absolute border-gray-300  border-s top-0 bottom-0 my-2 ms-6"></span>
-                </div>
-                <input id="search-toggle" type="search" :placeholder="__('hero_search_placeholder')"
-                       class="placeholder-gray-400 border-transparent block w-full py-3 ps-12 pe-4 font-bold text-gray-700 bg-gray-100 rounded-lg shadow-lg focus:outline-none focus:bg-white"
-                       onkeyup="updateSearchResults(this.value);">
 
-              </div>
-
-
-            </div>
-            <div class="  px-3    flex  items-center justify-center">
+            <div class="  px-3    flex  items-stretch justify-center">
               <!--              <PrimaryButton class="mx-2 p-2 grow  ">{{ __('register_banner') }}</PrimaryButton>-->
               <SecondaryButton @click="$inertia.visit(route('panel.banner.create'))" class="mx-2 p-2  ">
                 {{ __('register_banner') }}
               </SecondaryButton>
+              <SearchInput v-model="params.search" @search="getData(0)"/>
             </div>
           </div>
 
@@ -93,7 +74,10 @@
           <div class="absolute text-gray-500 rounded-full p-4 mx-4 top-[10rem] bg-white   shadow-lg">
             <PhotoIcon class="w-5 h-5 "/>
           </div>
-
+          <div v-if="d.status=='active'"
+               class="absolute text-gray-500 rounded-lg text-white bg-rose-500 p-1 px-2 m-2  end-0 top-0 bg-white   shadow-lg">
+            {{ `${d.view_fee} ⭐️` }}
+          </div>
           <div class="p-2 mt-4  text-gray-700">{{ cropText(d.name, 30) }}</div>
           <div class="px-2 py-2 text-sm   text-gray-400">{{ cropText(d.designer, 30) }}</div>
           <div class="px-4 py-2 text-xs   text-gray-400">{{ getCategory(d.category_id) }}</div>
@@ -136,6 +120,7 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
 import {EyeIcon} from "@heroicons/vue/24/outline";
 import {PhotoIcon} from "@heroicons/vue/24/solid";
+import SearchInput from "@/Components/SearchInput.vue";
 
 export default {
   data() {
@@ -154,6 +139,7 @@ export default {
   },
   props: ['heroText'],
   components: {
+    SearchInput,
     SecondaryButton,
     PrimaryButton,
     Scaffold,
@@ -172,7 +158,11 @@ export default {
     this.getData();
   },
   methods: {
-    getData() {
+    getData(page) {
+      if (page == 0) {
+        this.params.page = 1;
+        this.data = [];
+      }
 
       if (this.total > 0 && this.total <= this.data.length) return;
       this.loading = true;

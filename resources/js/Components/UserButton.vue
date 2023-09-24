@@ -49,7 +49,7 @@
 
           <hr class="border-gray-200 dark:border-gray-700 ">
 
-          <Link :href="route('logout')" class="flex ">
+          <Link method="post" :href="route('logout')" class="flex ">
             <button class="flex items-center justify-center p-4 m-3  w-full  hover:scale-110 focus:outline-none     px-4 py-2 rounded font-bold cursor-pointer
         hover:bg-red-700 hover:text-red-100  bg-red-100 text-red-500  border duration-200 ease-in-out border-red-600 transition">
               {{ __('signout') }}

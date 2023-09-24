@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Helpers\SMSHelper;
 use App\Http\Helpers\Telegram;
 use App\Http\Helpers\Util;
 use App\Http\Helpers\Variable;
@@ -13,6 +14,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -49,6 +51,13 @@ class ProfileController extends Controller
                 Telegram::log(null, 'user_edited', $user);
                 return response()->json(['message' => __('updated_successfully')], 200);
 
+            case 'password-reset':
+                $password = $request->new_password;
+                $user->password = Hash::make($password);
+                SMSHelper::deleteCode($user->phone);
+                $user->save();
+                $res = ['flash_status' => 'success', 'flash_message' => __('updated_successfully')];
+                return back()->with($res);
         }
         if (!$request->user()->isDirty()) return back();
 

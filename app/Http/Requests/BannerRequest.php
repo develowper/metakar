@@ -56,7 +56,8 @@ class BannerRequest extends FormRequest
             $tmp = array_merge($tmp, [
                 'img' => ['sometimes', 'base64_image_size:' . Variable::SITE_IMAGE_LIMIT_MB * 1024, 'base64_image_mime:' . implode(",", Variable::SITE_ALLOWED_MIMES)],
                 'banner' => ['sometimes', 'mimes:' . implode(",", Variable::BANNER_ALLOWED_MIMES), 'max:' . Variable::BANNER_IMAGE_LIMIT_MB * 1024],
-
+                'charge' => ['required_if:cmnd,charge', 'numeric', 'gt:0'],
+                'view_fee' => ['required_if:cmnd,view-fee', 'numeric', 'gt:0'],
             ]);
         return $tmp;
     }
@@ -104,6 +105,14 @@ class BannerRequest extends FormRequest
 
             'banner.required' => sprintf(__("validator.required"), __('banner_file')),
             'banner.mimes' => sprintf(__("validator.invalid_format"), __("banner_file"), implode(",", Variable::BANNER_ALLOWED_MIMES)),
+
+            'charge.numeric' => sprintf(__("validator.invalid"), __('charge_amount')),
+            'charge.gt' => sprintf(__("validator.invalid"), __('charge_amount')),
+            'charge.required_if' => sprintf(__("validator.invalid"), __('charge_amount')),
+
+            'view_fee.numeric' => sprintf(__("validator.invalid"), __('view_fee')),
+            'view_fee.gt' => sprintf(__("validator.invalid"), __('view_fee')),
+            'view_fee.required_if' => sprintf(__("validator.invalid"), __('view_fee')),
 
         ];
     }

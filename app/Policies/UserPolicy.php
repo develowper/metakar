@@ -33,9 +33,27 @@ class UserPolicy
      * @param \App\Models\User $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user, $type, $item = null, $abort = null)
     {
-        //
+        if (!$user->is_active) {
+            return abort(403, __("user_is_inactive"));
+        }
+        if ($user->is_block) {
+            return abort(403, __("user_is_blocked"));
+        }
+        switch ($type) {
+            case 'log'  :
+                if (in_array($user->role, ['ad',]) || (optional($item)->user_id == $user->id))
+                    return true;
+                break;
+
+
+        }
+
+        if ($abort)
+            return abort(403, __("access_denied"));
+        else return false;
+
     }
 
     /**
@@ -45,7 +63,7 @@ class UserPolicy
      * @param \App\Models\User $model
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, User $model)
+    public function view(User $user, $item)
     {
         //
     }
@@ -68,6 +86,7 @@ class UserPolicy
 
         switch ($item) {
             case User::class  :
+            case Notification::class  :
                 if (in_array($user->role, ['ad',]))
                     return true;
                 break;

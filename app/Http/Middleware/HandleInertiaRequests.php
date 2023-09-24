@@ -36,6 +36,8 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user(),
             ],
+            'isAdmin' => in_array(optional($request->user())->role, ['ad', 'go']),
+
             'location' => $request->url(),
 //            'user' => optional(auth()->user())->only(['id', 'fullname', 'username',]),
             'locale' => function () {

@@ -23,32 +23,13 @@
 
             </p>
             <!--                        search-->
-            <div v-if="false" class="w-full mx-auto mt-2 my-10">
-              <div class="relative  px-6 mx-auto  ">
-                <div
-                    class="absolute top-0 bottom-0 start-0 flex items-center opacity-60  ps-10  ">
-                  <svg v-if="false"
-                       class="w-4 h-4 text-gray-600 fill-current   "
-                       xmlns="http://www.w3.org/2000/svg"
-                       viewBox="0 0 20 20">
-                    <path
-                        d="M12.9 14.32a8 8 0 1 1 1.41-1.41l5.35 5.33-1.42 1.42-5.33-5.34zM8 14A6 6 0 1 0 8 2a6 6 0 0 0 0 12z"></path>
-                  </svg>
-                  <span class="absolute border-gray-300  border-s top-0 bottom-0 my-2 ms-6"></span>
-                </div>
-                <input id="search-toggle" type="search" :placeholder="__('hero_search_placeholder')"
-                       class="placeholder-gray-400 border-transparent block w-full py-3 ps-12 pe-4 font-bold text-gray-700 bg-gray-100 rounded-lg shadow-lg focus:outline-none focus:bg-white"
-                       onkeyup="updateSearchResults(this.value);">
 
-              </div>
-
-
-            </div>
-            <div class="  px-3    flex  items-center justify-center">
+            <div class="  px-3    flex  items-stretch justify-center">
               <!--              <PrimaryButton class="mx-2 p-2 grow  ">{{ __('register_video') }}</PrimaryButton>-->
               <SecondaryButton @click="$inertia.visit(route('panel.business.create'))" class="mx-2 p-2  ">
                 {{ __('register_business') }}
               </SecondaryButton>
+              <SearchInput v-model="params.search" @search="getData(0)"/>
             </div>
           </div>
 
@@ -88,8 +69,13 @@
       <div
           class="   grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4  gap-4     max-w-6xl">
         <Link v-for="(d,idx) in data" :href="route('business',d.id)"
-              class="flex-col items-stretch cursor-pointer hover:scale-[101%] duration-300 rounded-lg overflow-hidden shadow-lg">
+              class="flex-col relative items-stretch cursor-pointer hover:scale-[101%] duration-300 rounded-lg overflow-hidden shadow-lg">
           <Image :src="route('storage.businesses')+`/${d.id}/1.jpg`" classes="object-cover rounded-lg h-48   w-full"/>
+
+          <div v-if="d.status=='active'"
+               class="absolute text-gray-500 rounded-lg text-white bg-rose-500 p-1 px-2 m-2  end-0 top-0 bg-white   shadow-lg">
+            {{ `${d.view_fee} ⭐️` }}
+          </div>
           <div class="p-2  text-gray-700">{{ cropText(d.name, 30) }}</div>
           <div class="px-4 py-2 text-sm   text-gray-400">{{ getCategory(d.category_id) }}</div>
           <hr class="border-gray-200 dark:border-gray-700  ">
@@ -130,6 +116,7 @@ import {loadScript} from "vue-plugin-load-script";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
 import {EyeIcon} from "@heroicons/vue/24/outline";
+import SearchInput from "@/Components/SearchInput.vue";
 
 export default {
   data() {
@@ -147,7 +134,7 @@ export default {
     }
   },
   props: ['heroText'],
-  components: {SecondaryButton, PrimaryButton, Scaffold, Head, LoadingIcon, Image, EyeIcon, Link,},
+  components: {SearchInput, SecondaryButton, PrimaryButton, Scaffold, Head, LoadingIcon, Image, EyeIcon, Link,},
   // mixins: [Mixin],
   setup(props) {
 
@@ -156,7 +143,11 @@ export default {
     this.getData();
   },
   methods: {
-    getData() {
+    getData(page) {
+      if (page == 0) {
+        this.params.page = 1;
+        this.data = [];
+      }
 
       if (this.total > 0 && this.total <= this.data.length) return;
       this.loading = true;

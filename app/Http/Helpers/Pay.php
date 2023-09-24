@@ -3,7 +3,10 @@
 namespace App\Http\Helpers;
 
 use App\Models\Payment;
+use App\Models\Transaction;
 use App\Models\User;
+use Exception;
+use GuzzleHttp\Exception\ConnectException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Inertia\Inertia;
@@ -38,8 +41,12 @@ class Pay
                     'payer_name' => $fullname,
                     'auto_verify' => false,
                     'custom_json_fields' => json_encode(['user_id' => $user_id, 'data_id' => $data_id, 'type' => $for_type, 'coupon' => $coupon]),];
+                try {
+                    $response = Http::post(self::TOKEN_LINK, $params);
+                } catch (Exception $e) {
+                    return response()->json(['errors' => ['error' => [__('check_network_and_retry')]]], 422);
 
-                $response = Http::post(self::TOKEN_LINK, $params);
+                }
                 $response = $response->object() ?? null;
 
                 if ($response && $response->code == -1) { //send user to bank page
@@ -48,7 +55,7 @@ class Pay
 
                         'order_id' => $order_id,
                         'type' => $for_type,
-                        'user_id' => $user_id,
+                        'owner_id' => $user_id,
                         'gateway' => self::GATEWAY,
                         'market' => $market,
                         'amount' => $amount,
@@ -84,11 +91,12 @@ class Pay
                 'order_id' => $orderId,
                 'type' => $request->type,
                 'amount' => $request->amount,
-                'user_id' => $user->id,
+                'owner_id' => $user->id,
                 'coupon' => $request->coupon,
                 'is_success' => true,
                 'market' => $market,
             ]);
+
             $payment->code = 0;//success
         }
 
@@ -110,14 +118,22 @@ class Pay
                 $user = $user ?? User::find($payment->user_id);
 
                 $tmp = explode('_', $payment->type);
-                if (!$user || count($tmp) < 2) {
+                if (!$user /*|| count($tmp) < 2*/) {
                     $res = ['flash_status' => 'danger', 'flash_message' => __('pay_failed')];
                     return back()->with($res);
                 }
-                $payType = $tmp[1]; //charge
+//                $payType = $tmp[1]; //charge
                 $user->wallet += $payment->amount;
                 $user->save();
-                Telegram::log(null, 'payment', $payment);
+                $transaction = Transaction::create([
+                    'payment_id' => $payment->id,
+                    'title' => $payment->title,
+                    'type' => $payment->type,
+                    'amount' => $payment->amount,
+                    'owner_id' => $payment->owner_id,
+                    'coupon' => $payment->coupon,
+                ]);
+                Telegram::log(null, 'transaction_created', $transaction);
 
 //                if (!auth()->user())
 //                    auth()->login($user);

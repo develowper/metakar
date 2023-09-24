@@ -294,7 +294,7 @@
                     aria-labelledby="dropdownViewFee">
                   <li v-if="d.status!='block'"
                       class="   text-sm  ">
-                    <span class="text-xs py-2 text-danger-500">{{ __('will_subtract_for_view_from_charge') }}</span>
+                    <span class="text-xs py-2 text-danger-500">{{ __('help_view_fee') }}</span>
                     <div class="flex items-center ">
                       <input @keydown.enter="edit({'idx':idx,'id':d.id,'cmnd':'view-fee','view_fee':d.view_fee})"
                              type="number" min="0" class="grow my-2  p-1 rounded-lg border-gray-400"

@@ -56,6 +56,14 @@ class ProfileRequest extends FormRequest
                 'img' => ['required', 'base64_image_size:' . Variable::SITE_IMAGE_LIMIT_MB * 1024, 'base64_image_mime:' . implode(",", Variable::SITE_ALLOWED_MIMES)],
 
             ]);
+        if ($this->cmnd == 'password-reset')
+
+            $tmp = array_merge($tmp, [
+                'phone_verify' => ['required', Rule::exists('sms_verify', 'code')->where('phone', $user->phone)],
+                'new_password' => ['required', 'min:6', 'confirmed', 'regex:/^.*(?=.{6,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x]).*$/'],
+
+
+            ]);
         return $tmp;
     }
 
@@ -78,6 +86,11 @@ class ProfileRequest extends FormRequest
             'img.required' => sprintf(__("validator.required"), __('image')),
             'img.base64_image_size' => sprintf(__("validator.max_size"), __("image"), Variable::SITE_IMAGE_LIMIT_MB),
             'img.base64_image_mime' => sprintf(__("validator.invalid_format"), __("image"), implode(",", Variable::SITE_ALLOWED_MIMES)),
+
+            'new_password.required' => sprintf(__("validator.required"), __('new_password')),
+            'new_password.min' => sprintf(__("validator.min_len"), 6, mb_strlen($this->new_password)),
+            'new_password.regex' => sprintf(__("validator.password_regex"),),
+            'new_password.confirmed' => sprintf(__("validator.password_confirmed"),),
 
         ];
     }

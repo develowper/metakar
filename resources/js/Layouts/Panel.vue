@@ -48,9 +48,10 @@
               </div>
               <div v-else class="flex">
 
-                <span class="text-danger-700 bg-danger-200 hover:bg-danger-100 rounded-lg px-2 py-1 cursor-pointer">
+                <Link :href="route('panel.profile.edit')"
+                      class="text-danger-700 bg-danger-200 hover:bg-danger-100 rounded-lg px-2 py-1 cursor-pointer">
                   {{ __('inactive') }}
-                </span>
+                </Link>
               </div>
 
             </div>
@@ -67,6 +68,18 @@
                 }}</span>
             </div>
             <hr class="border-primary-200 dark:border-gray-700 m-2">
+
+          </li>
+          <!-- Admin links -->
+          <li v-if="isAdmin()" class="relative ">
+            <Link :href="route('panel.admin.index')"
+                  :class="{'bg-primary-50 text-primary-500':menuIsActive ( 'panel.admin.*' )}"
+                  class="flex   cursor-pointer items-center truncate   px-3 py-4 text-[0.875rem] text-gray-600 outline-none transition duration-300 ease-linear hover:bg-primary-100 hover:text-inherit hover:outline-none focus:bg-slate-50 focus:text-inherit focus:outline-none active:bg-slate-50 active:text-inherit active:outline-none data-[te-sidenav-state-active]:text-inherit data-[te-sidenav-state-focus]:outline-none motion-reduce:transition-none dark:text-gray-300 dark:hover:bg-white/10 dark:focus:bg-white/10 dark:active:bg-white/10"
+                  data-te-sidenav-link-ref>
+              <WrenchScrewdriverIcon class="w-5 h-5  "/>
+              <span class="mx-2 text-sm "> {{ __('admin') }} </span>
+
+            </Link>
 
           </li>
           <!-- Business links -->
@@ -234,7 +247,7 @@
               <li class="relative ps-7">
 
                 <Link :href="route('panel.banner.index')" role="menuitem"
-                      :class="subMenuIsActive( 'panel.image.index' )"
+                      :class="subMenuIsActive( 'panel.banner.index' )"
                       class="flex   border-s-2 hover:border-primary-500  items-center p-2   text-sm  transition-all duration-200   dark:text-light dark:hover:text-light hover:text-primary-700 hover:bg-primary-50">
                   <Bars2Icon class="w-5 h-5 mx-1"/>
                   {{ __('list') }}
@@ -468,6 +481,7 @@ import {
   BellAlertIcon,
   Cog6ToothIcon,
   ArrowRightOnRectangleIcon,
+  WrenchScrewdriverIcon,
 } from "@heroicons/vue/24/outline";
 import {
   QuestionMarkCircleIcon
@@ -550,6 +564,7 @@ export default {
     ArrowRightOnRectangleIcon,
     Tooltip,
     QuestionMarkCircleIcon,
+    WrenchScrewdriverIcon,
   },
   methods: {
     delay(time) {

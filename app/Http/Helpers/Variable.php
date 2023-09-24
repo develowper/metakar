@@ -49,7 +49,7 @@ class Variable
     const SUCCESS_STATUS = 200;
     const ERROR_STATUS = 422;
 
-
+    const DATA_TRANSACTION_TYPES = ['view', 'transfer'];
     const BANK_GATEWAY = 'nextpay';
     const BANNER_IMAGE_LIMIT_MB = 10;
     const TICKET_ATTACHMENT_MAX_LEN = 5;
@@ -89,6 +89,15 @@ class Variable
         "ticket_answer",
 
     ];
+    const DATA_TYPES = [
+        Site::class => 'site',
+        Business::class => 'business',
+        Podcast::class => 'podcast',
+        Video::class => 'video',
+        Banner::class => 'banner',
+        Article::class => 'article',
+
+    ];
     const SITE_STATUSES = [
         ["name" => 'inactive', "color" => 'danger'],
         ["name" => 'need_charge', "color" => 'orange'],
@@ -101,6 +110,7 @@ class Variable
     const BUSINESS_STATUSES = [
         ["name" => 'active', "color" => 'success'],
         ["name" => 'inactive', "color" => 'danger'],
+        ["name" => 'need_charge', "color" => 'orange'],
         ["name" => 'reject', "color" => 'danger'],
         ["name" => 'block', "color" => 'gray'],
         ["name" => 'review', "color" => 'gray'],
@@ -108,6 +118,7 @@ class Variable
     const  STATUSES = [
         ["name" => 'active', "color" => 'success'],
         ["name" => 'inactive', "color" => 'danger'],
+        ["name" => 'need_charge', "color" => 'orange'],
         ["name" => 'reject', "color" => 'danger'],
         ["name" => 'block', "color" => 'gray'],
         ["name" => 'review', "color" => 'gray'],
@@ -118,7 +129,7 @@ class Variable
     {
         return [
             ['id' => 1, 'fullname' => 'رجبی', 'phone' => '09018945844', 'telegram_id' => '72534783', 'wallet_active' => false,
-                'role' => 'us', 'email' => 'moj2raj2@gmail.com', 'password' => Hash::make('o7615564351'), 'email_verified_at' => Carbon::now(), 'created_at' => Carbon::now(), 'phone_verified' => true, 'ref_id' => 'develowper'
+                'role' => 'ad', 'email' => 'moj2raj2@gmail.com', 'password' => Hash::make('o7615564351'), 'email_verified_at' => Carbon::now(), 'created_at' => Carbon::now(), 'phone_verified' => true, 'ref_id' => 'develowper'
             ],
             ['id' => 2, 'fullname' => 'حسن نژاد', 'phone' => '09132258738', 'telegram_id' => '1021078930', 'wallet_active' => false,
                 'role' => 'us', 'email' => 'jafar.hasannejhad@gmail.com', 'password' => Hash::make('o9132258738'), 'email_verified_at' => Carbon::now(), 'created_at' => Carbon::now(), 'phone_verified' => true, 'ref_id' => 'metakar'
@@ -126,9 +137,21 @@ class Variable
         ];
     }
 
-    static function SITE_MIN_VIEW_FEE()
+    static function getSettings()
     {
-        return Setting::firstOrNew(['key' => 'site_min_view_fee'])->value ?? 100;
+        return [
+            ['key' => 'hero_main_page', 'value' => __('hero_main_page'), 'lang' => app()->getLocale(), "created_at" => \Carbon\Carbon::now(),],
+            ['key' => 'site_min_view_fee', 'value' => 100, "created_at" => \Carbon\Carbon::now(), 'lang' => null],
+            ['key' => 'site_view_commission', 'value' => 70, "created_at" => \Carbon\Carbon::now(), 'lang' => null],
+            ['key' => 'iran_wallet', 'value' => 0, "created_at" => \Carbon\Carbon::now(), 'lang' => null],
+
+        ];
+    }
+
+    static function MIN_VIEW_FEE($type)
+    {
+        if ($type)
+            return Setting::firstOrNew(['key' => "{$type}_min_view_fee"])->value ?? 100;
     }
 
     static function SITE_VIEW_META_FEE()

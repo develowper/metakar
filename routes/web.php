@@ -51,8 +51,10 @@ use Inertia\Inertia;
 |
 */
 Route::get('test', function () {
-
-
+    return \Illuminate\Support\Facades\Artisan::call('store:transactions');
+    return (new ArticleController())->search(new Request([]));
+    return;
+    return (new PanelController())->chartLogs(new Request(['user_id' => 1, 'dateFrom' => '1401/06/01', 'dateTo' => '1402/06/24']));
 //    File::makeDirectory(Storage::path("public/sites"), $mode = 0755,);
 //    return Telegram::log(null, 'site_created', Site::find(2));
 
@@ -81,6 +83,8 @@ Route::middleware(['auth', 'verified'])->prefix('panel')->group(function ($route
 
 
     Route::get('', [PanelController::class, 'index'])->name('panel.index');
+
+    Route::post('transaction/chart', [PanelController::class, 'chartLogs'])->name('transaction.chart');
 
 
 //    PanelController::makeInertiaRoute('get', 'site/edit/{site}', 'panel.site.edit', 'Panel/Site/Edit', ['categories' => Site::categories('parents'), 'site_statuses' => Variable::SITE_STATUSES, 'site' => $tmp = Site::with('category')->find(request()->segment(count(request()->segments())))], 'can:edit,App\Models\User,App\Models\Site,"","' . $tmp . '"');
@@ -185,6 +189,27 @@ Route::middleware(['auth', 'verified'])->prefix('panel')->group(function ($route
         [
 
         ]);
+    Route::middleware(['can:create,App\Models\User,App\Models\User,""',])->prefix('admin')->group(function ($route) {
+
+        Route::get('', [PanelController::class, 'admin'])->name('panel.admin.index');
+        PanelController::makeInertiaRoute('get', 'setting/index', 'panel.admin.setting.index', 'Panel/Admin/Setting/Index',
+            [
+
+            ]);
+        PanelController::makeInertiaRoute('get', 'user/index', 'panel.admin.user.index', 'Panel/Admin/User/Index',
+            [
+
+            ]);
+        PanelController::makeInertiaRoute('get', 'notification/index', 'panel.admin.notification.index', 'Panel/Admin/Notification/Index',
+            [
+
+            ]);
+        PanelController::makeInertiaRoute('get', 'queue/index', 'panel.admin.queue.index', 'Panel/Admin/Queue/Index',
+            [
+
+            ]);
+
+    });
 });
 
 Route::get('site/create', [SiteController::class, 'new'])->name('site.new');
@@ -213,6 +238,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::patch('/profile/reset-password', [ProfileController::class, 'resetPassword'])->name('profile.password.reset');
 
     Route::get('panel/site/search', [SiteController::class, 'searchPanel'])->name('panel.site.search');
     Route::get('panel/business/search', [BusinessController::class, 'searchPanel'])->name('panel.business.search');
@@ -250,6 +276,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('ticket/update', [TicketController::class, 'update'])->name('ticket.update');
 
     Route::post('payment/url', [PaymentController::class, 'makeUrl'])->name('payment.url');
+
 
 });
 Route::post('transaction/storesite', [\App\Http\Controllers\TransactionController::class, 'storeSite'])->name('transaction.site.view');

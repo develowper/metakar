@@ -58,6 +58,9 @@ class VideoRequest extends FormRequest
                 'video' => ['sometimes',/* File::types(['mp3', 'wav']) ->min(1024) ->max(12 * 1024),*/
                     'mimes:' . implode(",", Variable::VIDEO_ALLOWED_MIMES)],
                 'duration' => ['sometimes', 'integer', 'min:0'],
+                'charge' => ['required_if:cmnd,charge', 'numeric', 'gt:0'],
+                'view_fee' => ['required_if:cmnd,view-fee', 'numeric', 'gt:0'],
+
             ]);
         return $tmp;
     }
@@ -107,6 +110,15 @@ class VideoRequest extends FormRequest
             'video.mimes' => sprintf(__("validator.invalid_format"), __("video_file"), implode(",", Variable::VIDEO_ALLOWED_MIMES)),
             'duration.integer' => sprintf(__("validator.invalid"), __('file_duration')),
             'duration.min' => sprintf(__("validator.invalid"), __('file_duration')),
+
+            'charge.numeric' => sprintf(__("validator.invalid"), __('charge_amount')),
+            'charge.gt' => sprintf(__("validator.invalid"), __('charge_amount')),
+            'charge.required_if' => sprintf(__("validator.invalid"), __('charge_amount')),
+
+            'view_fee.numeric' => sprintf(__("validator.invalid"), __('view_fee')),
+            'view_fee.gt' => sprintf(__("validator.invalid"), __('view_fee')),
+            'view_fee.required_if' => sprintf(__("validator.invalid"), __('view_fee')),
+
         ];
     }
 }

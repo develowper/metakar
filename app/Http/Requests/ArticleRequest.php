@@ -56,6 +56,8 @@ class ArticleRequest extends FormRequest
         if ($this->cmnd)
             $tmp = array_merge($tmp, [
                 'img' => ['sometimes', 'base64_image_size:' . Variable::SITE_IMAGE_LIMIT_MB * 1024, 'base64_image_mime:' . implode(",", Variable::SITE_ALLOWED_MIMES)],
+                'charge' => ['required_if:cmnd,charge', 'numeric', 'gt:0'],
+                'view_fee' => ['required_if:cmnd,view-fee', 'numeric', 'gt:0'],
             ]);
         return $tmp;
     }
@@ -100,6 +102,14 @@ class ArticleRequest extends FormRequest
             'img.required' => sprintf(__("validator.required"), __('image')),
             'img.base64_image_size' => sprintf(__("validator.max_size"), __("image"), Variable::SITE_IMAGE_LIMIT_MB),
             'img.base64_image_mime' => sprintf(__("validator.invalid_format"), __("image"), implode(",", Variable::SITE_ALLOWED_MIMES)),
+
+            'charge.numeric' => sprintf(__("validator.invalid"), __('charge_amount')),
+            'charge.gt' => sprintf(__("validator.invalid"), __('charge_amount')),
+            'charge.required_if' => sprintf(__("validator.invalid"), __('charge_amount')),
+
+            'view_fee.numeric' => sprintf(__("validator.invalid"), __('view_fee')),
+            'view_fee.gt' => sprintf(__("validator.invalid"), __('view_fee')),
+            'view_fee.required_if' => sprintf(__("validator.invalid"), __('view_fee')),
 
         ];
     }

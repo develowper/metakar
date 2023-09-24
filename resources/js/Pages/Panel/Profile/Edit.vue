@@ -122,11 +122,12 @@
 
               <div class="my-4 text-gray-700">
                 <p class="text-sm my-1">{{ __('ref_link') }}</p>
-                <a target="_blank"
-                   class="text-left block w-full rounded bg-primary-100 hover:bg-primary-200 text-primary p-2"
-                   :href="route('/') + `?ref=${data.ref_id}`">{{
+                <div @click="copyToClipboard(route('/') + `?ref=${data.ref_id}`)"
+                     class="text-left cursor-pointer block w-full rounded bg-primary-100 hover:bg-primary-200 text-primary p-2"
+                >{{
                     route('/') + `?ref=${data.ref_id}`
-                  }}</a>
+                  }}
+                </div>
               </div>
 
               <div class="py-4"></div>
@@ -281,7 +282,7 @@ export default {
           if (this.$page.props.flash.status)
             this.showAlert(this.$page.props.flash.status, this.$page.props.flash.message);
 
-          if (this.$page.props.extra.wallet_active != null)
+          if (this.$page.props.extra && this.$page.props.extra.wallet_active != null)
             this.user.wallet_active = this.$page.props.extra.wallet_active;
 
         },

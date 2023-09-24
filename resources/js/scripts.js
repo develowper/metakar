@@ -19,6 +19,20 @@ import axios, {isCancel, AxiosError} from 'axios';
 
 
 window.axios = axios.create();
+window.axios.interceptors.response.use(undefined, function (error) {
+        error.handleGlobally = (error) => {
+            return () => {
+                const statusCode = error.response ? error.response.status : null;
+                if (statusCode === 419) {
+                    location.reload();
+                }
+
+            }
+        }
+
+        return Promise.reject(error);
+    }
+);
 window.onload = (event) => {
 
     // window.tailwindElements();

@@ -17,7 +17,7 @@ return new class extends Migration {
 //    'pay_type', 'pay_for', 'pay_result',
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('user_id')->unsigned()->nullable();
+            $table->bigInteger('owner_id')->unsigned()->nullable();
 //            $table->bigInteger('inviter_user_id')->unsigned()->nullable();
 //            $table->string('shaparak_id', 50)->nullable();
             $table->string('title', 100)->nullable();
@@ -31,7 +31,7 @@ return new class extends Migration {
             $table->string('info', 2048)->nullable();
             $table->integer('amount')->default(0);
             $table->boolean('is_success')->default(false);
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('no action');
+            $table->foreign('owner_id')->references('id')->on('users')->onDelete('no action');
 
             $table->timestamps();
         });

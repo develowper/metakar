@@ -23,6 +23,10 @@ return new class extends Migration {
             $table->string('description', 2048)->nullable();
             $table->string('slug', 200)->nullable();
             $table->unsignedInteger('view')->default(0);
+            $table->unsignedInteger('viewer')->default(0);
+            $table->unsignedInteger('charge',)->default(0);
+            $table->unsignedInteger('view_fee')->default(Variable::MIN_VIEW_FEE('video'))->nullable();
+            $table->unsignedInteger('meta')->default(0);
             $table->unsignedInteger('duration')->default(0);
             $table->string('tags', 200)->nullable();
 

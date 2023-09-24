@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\Viewed;
 use App\Http\Helpers\Telegram;
 use App\Http\Helpers\Util;
 use App\Http\Helpers\Variable;
 use App\Http\Requests\PodcastRequest;
+use App\Models\BusinessTransaction;
 use App\Models\County;
 use App\Models\Podcast;
+use App\Models\PodcastTransaction;
 use App\Models\Province;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -39,7 +42,7 @@ class PodcastController extends Controller
         $response = ['message' => __('response_error')];
         $errorStatus = Variable::ERROR_STATUS;
         $successStatus = Variable::SUCCESS_STATUS;
-
+        $charge = $request->charge;
         $id = $request->id;
         $cmnd = $request->cmnd;
         $data = Podcast::find($id);
@@ -53,6 +56,44 @@ class PodcastController extends Controller
                     $data->save();
                     return response()->json(['message' => __('updated_successfully'), 'status' => $data->status,], $successStatus);
 
+                case 'activate':
+                    if ($data->status == 'review')
+                        return response()->json(['message' => __('active_after_review'),], $errorStatus);
+                    $data->status = 'active';
+                    $data->save();
+                    return response()->json(['message' => __('updated_successfully'), 'status' => $data->status,], $successStatus);
+                case 'charge':
+
+                    if (!$user->wallet_active)
+                        return response()->json(['message' => __('help_activate_wallet'), 'charge' => $data->charge], $errorStatus);
+
+                    if ($user->wallet + $data->charge < $charge)
+                        return response()->json(['message' => __('low_wallet'), 'charge' => $data->charge], $errorStatus);
+                    else {
+                        $user->wallet -= ($charge - $data->charge);
+                        $data->charge = $charge;
+                        $data->status = $data->status == "need_charge" ? "active" : $data->status;
+                        $data->save();
+                        $user->save();
+                        return response()->json(['message' => __('charged_successfully'), 'charge' => $data->charge, 'status' => $data->status, 'wallet' => $user->wallet], $successStatus);
+
+                    }
+                case 'view-fee':
+                    $fee = $request->view_fee;
+                    $min = Variable::MIN_VIEW_FEE('podcast');
+                    if (!is_int($fee) || $fee < $min)
+                        return response()->json(['message' => sprintf(__('validator.min'), __('view_fee'), $min), 'view_fee' => $data->view_fee,], $errorStatus);
+                    if ($fee % 50 != 0)
+                        return response()->json(['message' => sprintf(__('validator.dividable'), 50), 'view_fee' => $data->view_fee,], $errorStatus);
+                    if ($data->charge < $fee)
+                        $data->status = 'need_charge';
+                    elseif ($data->status == 'need_charge')
+                        $data->status = 'active';
+                    $data->view_fee = $fee;
+
+                    $data->save();
+                    return response()->json(['message' => __('updated_successfully'), 'status' => $data->status, 'view_fee' => $data->view_fee,], $successStatus);
+                    break;
                 case  'upload-img' :
 
                     if (!$request->img) //  add extra image
@@ -192,12 +233,19 @@ class PodcastController extends Controller
         $paginate = $request->paginate ?: 24;
         $query = Podcast::query();
 //        $seen = session()->get('site_views', []);
-        $query = $query->select('id', 'name', 'narrator', 'duration', 'view', 'status', 'category_id', 'created_at',);
-        $query = $query->whereStatus('active')->whereLang(app()->getLocale());
-        if ($search)
-            $query = $query->where('name', 'like', "%$search%")->orWhere('narrator', 'like', "%$search%");
+        $query = $query->select('id', 'name', 'narrator', 'duration', 'view', 'view_fee', 'status', 'category_id', 'created_at',);
+        //        $query = $query->select('charge', 'status', 'view_fee');
+        $query = $query
+            ->whereIn('status', ['active', 'need_charge'])
+            ->whereLang(app()->getLocale());
 
-        return $query->orderBy($orderBy, $dir)->paginate($paginate, ['*'], 'page', $page);
+        if ($search)
+            $query = $query->where('name', 'like', "%$search%");
+
+        $query = $query
+            ->orderBy('status', 'ASC')
+            ->orderByRaw("IF(charge >= view_fee, view_fee, id) DESC");
+        return $query->paginate($paginate, ['*'], 'page', $page);
     }
 
     public function view(Request $request, $podcast)
@@ -207,10 +255,12 @@ class PodcastController extends Controller
 
         $data = Podcast::where('id', $podcast)->with('owner:id,fullname,phone')->first();
 
-        if (!$data || $data->status != 'active') {
+        if (!$data || !in_array($data->status, ['active', 'need_charge'])) {
             $message = __('no_results');
             $link = route('podcast.index');
             $data = ['name' => __('no_results'),];
+        } else {
+            event(new Viewed($data, PodcastTransaction::class, __('view_podcast')));
         }
         return Inertia::render('Podcast/View', [
             'error_message' => $message,

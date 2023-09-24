@@ -1,7 +1,8 @@
 <template>
   <div class="grid grid-cols-1   gap-2">
     <div>
-      <div class="flex items-center">
+      <div v-if="!disableEdit" class="flex items-center">
+
         <InputLabel class="my-2" for="phone" :value="__('phone')"/>
         <span v-if="verified==0" class="text-danger text-xs mx-1">({{ __('not_verified') }})</span>
         <span v-else-if="verified==1" class="text-success text-xs mx-1">({{ __('verified') }})</span>
@@ -16,7 +17,7 @@
             </div>
         </span>
         <input
-            :value="phone"
+            :value="phone" :disabled="disableEdit" :class="{ 'opacity-50':disableEdit}"
             @input="$emit('update:phone', $event.target.value); "
             class="  flex-auto rounded-0  border border-solid border-neutral-300    px-3   text-neutral-700   transition duration-200 ease-in-out focus:z-[3] focus:border-primary focus:text-neutral-700   dark:border-neutral-600 dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:focus:border-primary"
             @visibility.window="$el.type =  'text'  "
@@ -28,7 +29,7 @@
         >
           <LoadingIcon v-if="loading" class="w-4 h-4 mx-3 "/>
           <span v-if="timer<60 && timer>0" class="text-white">{{ timer }}</span>
-          <span v-else class="text-white">{{ __('activation') }}</span>
+          <span v-else class="text-white">{{ activeButtonText || __('activation') }}</span>
           <!--            <PaperAirplaneIcon class="h-5 w-5 text-white font-bold "/>-->
         </span>
       </div>
@@ -81,7 +82,7 @@ import {
 } from "@heroicons/vue/24/outline";
 
 export default {
-  props: ['phone', 'for', 'verified', 'type', 'phoneVerify', 'phoneError', 'phoneVerifyError',],
+  props: ['phone', 'for', 'verified', 'type', 'phoneVerify', 'phoneError', 'phoneVerifyError', 'disable', 'disableEdit', 'activeButtonText'],
   emits: ['update:phone', 'update:phoneVerify'],
   data() {
     return {
@@ -99,6 +100,8 @@ export default {
   },
   computed: {
     isDisabled: function () {
+      if (this.disable != null)
+        return this.disable;
       return this.loading || (this.timer < 60 && this.timer > 0) || (this.phone == this.oldPhone)
 
     }

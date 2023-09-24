@@ -59,6 +59,9 @@ class PodcastRequest extends FormRequest
                 'podcast' => ['sometimes',/* File::types(['mp3', 'wav']) ->min(1024) ->max(12 * 1024),*/
                     'mimes:' . implode(",", Variable::PODCAST_ALLOWED_MIMES)],
                 'duration' => ['sometimes', 'integer', 'min:0'],
+                'charge' => ['required_if:cmnd,charge', 'numeric', 'gt:0'],
+                'view_fee' => ['required_if:cmnd,view-fee', 'numeric', 'gt:0'],
+
             ]);
         return $tmp;
     }
@@ -101,13 +104,22 @@ class PodcastRequest extends FormRequest
             'description.max' => sprintf(__("validator.max_len"), 2048, mb_strlen($this->description)),
 
             'img.required' => sprintf(__("validator.required"), __('image')),
-            'img.base64_image_size' => sprintf(__("validator.max_size"),__("image"), Variable::SITE_IMAGE_LIMIT_MB),
-            'img.base64_image_mime' => sprintf(__("validator.invalid_format"),__("image"), implode(",", Variable::SITE_ALLOWED_MIMES)),
+            'img.base64_image_size' => sprintf(__("validator.max_size"), __("image"), Variable::SITE_IMAGE_LIMIT_MB),
+            'img.base64_image_mime' => sprintf(__("validator.invalid_format"), __("image"), implode(",", Variable::SITE_ALLOWED_MIMES)),
 
             'podcast.required' => sprintf(__("validator.required"), __('podcats_file')),
-            'podcast.mimes' => sprintf(__("validator.invalid_format"),__("podcast_file"), implode(",", Variable::PODCAST_ALLOWED_MIMES)),
+            'podcast.mimes' => sprintf(__("validator.invalid_format"), __("podcast_file"), implode(",", Variable::PODCAST_ALLOWED_MIMES)),
             'duration.integer' => sprintf(__("validator.invalid"), __('file_duration')),
             'duration.min' => sprintf(__("validator.invalid"), __('file_duration')),
+
+            'charge.numeric' => sprintf(__("validator.invalid"), __('charge_amount')),
+            'charge.gt' => sprintf(__("validator.invalid"), __('charge_amount')),
+            'charge.required_if' => sprintf(__("validator.invalid"), __('charge_amount')),
+
+            'view_fee.numeric' => sprintf(__("validator.invalid"), __('view_fee')),
+            'view_fee.gt' => sprintf(__("validator.invalid"), __('view_fee')),
+            'view_fee.required_if' => sprintf(__("validator.invalid"), __('view_fee')),
+
         ];
     }
 }

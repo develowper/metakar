@@ -22,7 +22,7 @@ export default {
 
     methods: {
         isAdmin() {
-            return this.user && (this.user.role == 'go' || this.user.role == 'ad');
+            return usePage().props.isAdmin;
         },
         showWalletChargeDialog() {
             this.emitter.emit('showWalletChargeDialog', null);
@@ -111,6 +111,8 @@ export default {
         },
         getErrors(error) {
             if (error.response) {
+                if (error.response.status == 419)
+                    location.reload();
                 if (error.response.data && error.response.data.errors)
                     return Object.values(error.response.data.errors).join("<br/>")
                 if (error.response.data && error.response.data.message)
@@ -179,6 +181,28 @@ export default {
         replaceAll(str, find, replace) {
             return str.replace(new RegExp(find, 'g'), replace);
 
+        },
+        copyToClipboard(text) {
+            var textArea = document.createElement("textarea");
+            textArea.value = text;
+
+            // Avoid scrolling to bottom
+            textArea.style.top = "0";
+            textArea.style.left = "0";
+            textArea.style.position = "fixed";
+
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+
+            try {
+                var successful = document.execCommand('copy');
+                this.showToast('success', this.__('copy_to_clipboard_successfully'))
+            } catch (err) {
+
+            }
+
+            document.body.removeChild(textArea);
         },
     },
 

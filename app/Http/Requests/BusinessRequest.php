@@ -36,24 +36,25 @@ class BusinessRequest extends FormRequest
         $request = $this;
         $tmp = [];
         $phoneChanged = $this->id && Business::findOrNew($this->id)->phone != $this->phone;
+        if (!$this->cmnd)
+            $tmp = array_merge($tmp, [
 
-        $tmp = [
-            'lang' => ['required', Rule::in(Variable::LANGS)],
-            'name' => ['required', 'max:100', Rule::unique('businesses', 'name')->ignore($this->id)],
-            'tags' => ['nullable', 'max:1024'],
-            'province_id' => 'required|in:' . County::where('id', $this->county_id)->firstOrNew()->province_id,
-            'county_id' => 'required|' . Rule::in(County::pluck('id')),
-            'category_id' => ['nullable', Rule::in($types)],
-            'description' => ['nullable', 'max:2048'],
-            'phone' => ['required', 'numeric', 'digits:11', 'regex:/^09[0-9]+$/', Rule::unique('businesses', 'phone')->ignore($this->id)],
-            'phone_verify' => [Rule::requiredIf(function () use ($request, $user, $phoneChanged, $editMode) {
+                'lang' => ['required', Rule::in(Variable::LANGS)],
+                'name' => ['required', 'max:100', Rule::unique('businesses', 'name')->ignore($this->id)],
+                'tags' => ['nullable', 'max:1024'],
+                'province_id' => 'required|in:' . County::where('id', $this->county_id)->firstOrNew()->province_id,
+                'county_id' => 'required|' . Rule::in(County::pluck('id')),
+                'category_id' => ['nullable', Rule::in($types)],
+                'description' => ['nullable', 'max:2048'],
+                'phone' => ['required', 'numeric', 'digits:11', 'regex:/^09[0-9]+$/', Rule::unique('businesses', 'phone')->ignore($this->id)],
+                'phone_verify' => [Rule::requiredIf(function () use ($request, $user, $phoneChanged, $editMode) {
 
-                return $phoneChanged
-                    || !$user || (!$editMode && $request->phone != $user->phone);
-            }), !$user || (!$editMode && $request->phone != $user->phone) ? Rule::exists('sms_verify', 'code')->where(function ($query) use ($request) {
-                return $query->where('phone', $request->phone);
-            }) : '',],
-        ];
+                    return $phoneChanged
+                        || !$user || (!$editMode && $request->phone != $user->phone);
+                }), !$user || (!$editMode && $request->phone != $user->phone) ? Rule::exists('sms_verify', 'code')->where(function ($query) use ($request) {
+                    return $query->where('phone', $request->phone);
+                }) : '',],
+            ]);
         if ($request->uploading)
             $tmp = array_merge($tmp, [
                 'images' => 'required|array|min:1|max:' . Variable::BUSINESS_IMAGE_LIMIT,
@@ -63,6 +64,8 @@ class BusinessRequest extends FormRequest
             $tmp = array_merge($tmp, [
                 'images' => 'sometimes|array|min:1|max:' . Variable::BUSINESS_IMAGE_LIMIT,
                 'images.*' => ['nullable', 'base64_image_size:' . Variable::SITE_IMAGE_LIMIT_MB * 1024, 'base64_image_mime:' . implode(",", Variable::SITE_ALLOWED_MIMES)],
+                'charge' => ['required_if:cmnd,charge', 'numeric', 'gt:0'],
+                'view_fee' => ['required_if:cmnd,view-fee', 'numeric', 'gt:0'],
             ]);
         return $tmp;
     }
@@ -105,8 +108,17 @@ class BusinessRequest extends FormRequest
             'images.max' => sprintf(__("validator.max_images"), Variable::BUSINESS_IMAGE_LIMIT),
 
             'images.required' => sprintf(__("validator.min_images"), 1),
-            'images.*.base64_image_size' => sprintf(__("validator.max_size"),__("image"), Variable::SITE_IMAGE_LIMIT_MB),
-            'images.*.base64_image_mime' => sprintf(__("validator.invalid_format"),__("image"), implode(",", Variable::SITE_ALLOWED_MIMES)),
+            'images.*.base64_image_size' => sprintf(__("validator.max_size"), __("image"), Variable::SITE_IMAGE_LIMIT_MB),
+            'images.*.base64_image_mime' => sprintf(__("validator.invalid_format"), __("image"), implode(",", Variable::SITE_ALLOWED_MIMES)),
+
+            'charge.numeric' => sprintf(__("validator.invalid"), __('charge_amount')),
+            'charge.gt' => sprintf(__("validator.invalid"), __('charge_amount')),
+            'charge.required_if' => sprintf(__("validator.invalid"), __('charge_amount')),
+
+            'view_fee.numeric' => sprintf(__("validator.invalid"), __('view_fee')),
+            'view_fee.gt' => sprintf(__("validator.invalid"), __('view_fee')),
+            'view_fee.required_if' => sprintf(__("validator.invalid"), __('view_fee')),
+
         ];
     }
 }
