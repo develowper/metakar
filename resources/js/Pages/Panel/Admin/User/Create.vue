@@ -2,7 +2,7 @@
 
   <Panel>
     <template v-slot:header>
-      <title>{{__('edit_banner')}}</title>
+      <title>{{__('create_user')}}</title>
     </template>
 
 
@@ -12,61 +12,30 @@
           class="flex items-center justify-start px-4 py-2 text-primary-500 border-b md:py-4 dark:border-primary-darker">
         <PencilSquareIcon class="h-7 w-7 mx-3"/>
 
-        <h1 class="text-2xl font-semibold">{{ __('edit_banner') }}</h1>
+        <h1 class="text-2xl font-semibold">{{ __('create_user') }}</h1>
 
       </div>
 
       <!-- Content -->
       <div class="px-2  md:px-4">
 
+
         <div
-            class="lg:grid      lg:grid-cols-3  mx-auto md:max-w-5xl   mt-6 px-2 md:px-4 py-4 bg-white shadow-md overflow-hidden  rounded-lg  ">
-          <div v-if="isAdmin()" class="border bg-sky-50 border-dashed rounded p-4 col-span-3">
-            <p class="border-b text-md w-fit flex mx-auto mb-2 text-primary font-bold ">{{ __('admin_section') }}</p>
-            <div class="flex items-center">
-
-              <RadioGroup :beforeSelected="form.status" ref="statusSelector" class="grow" name="status"
-                          v-model="form.status"
-                          :items="myMap($page.props.statuses,(e)=>e.name)"/>
-            </div>
-            <div v-show="form.status=='reject'">
-
-              <InputLabel class="text-red-500" for="editor" :value="__('reject_message')"/>
-              <TextEditor mode="create"
-                          :preload="form.message"
-                          :lang="$page.props.locale"
-                          :id="`editor`"
-                          :ref="`editor`"/>
-            </div>
-          </div>
-          <div v-else-if="!isAdmin() && form.message" v-html="form.message"
-               class="border text-sm text-rose-400 bg-rose-50 border-dashed rounded p-4">
-
-
-          </div>
-
+            class="lg:grid      lg:grid-cols-3  mx-auto md:max-w-5xl   my-6 px-2 md:px-4 py-4 bg-white shadow-md overflow-hidden  rounded-lg  ">
           <div
               class="lg:flex-col  flex flex-wrap   self-center  md:m-2  lg:mx-2 md:items-center lg:items-stretch rounded-lg    ">
             <!--            <InputLabel class="m-2 w-full md:text-start lg:text-center"-->
-            <!--                        :value="__('banner_images_max_%s_item').replace('%s',$page.props.max_images_limit)"/>-->
+            <!--                        :value="__('profile_images_max_%s_item').replace('%s',$page.props.max_images_limit)"/>-->
 
-            <div class="flex-col   m-2 items-center rounded-lg max-w-xs  w-full mx-auto lg:mx-2   ">
+            <div class="flex-col   m-2 items-center rounded-lg max-w-[8rem]  w-full mx-auto lg:mx-2   ">
               <div class="my-2">
-                <ImageUploader :replace="$page.props.max_images_limit==1"
-                               :preload="route('storage.banners')+`/${$page.props.data.id}.jpg`"
-                               mode="edit" :for-id="$page.props.data.id"
-                               :link="route('banner.update')"
-                               ref="imageCropper" :label="__('image_cover_jpg')" cropRatio="1.25" id="img"
+                <ImageUploader :replace="true"
+                               mode="create"
+                               ref="imageCropper" :label="__('image_cover_jpg')" cropRatio="1" id="img"
                                height="10" class="grow "/>
                 <InputError class="mt-1 " :message="form.errors.img"/>
               </div>
-              <div class="my-2">
-                <Banner :replace="$page.props.max_images_limit==1" classes="rounded max-h-24 object-contain"
-                        :preload="{name:$page.props.data.name,designer: $page.props.data.designer, url:$page.props.data.file_link}"
-                        view="linear" mode="edit" :link="route('banner.update')" :for-id="$page.props.data.id"
-                        ref="banner" :label="__('banner_file_jpg')"/>
-                <InputError class="mt-1 " :message="form.errors.banner"/>
-              </div>
+
             </div>
 
           </div>
@@ -76,20 +45,18 @@
             <form @submit.prevent="submit">
 
               <div class="flex items-center">
-                <Tooltip class="p-2 " :content="__('help_lang')">
-                  <QuestionMarkCircleIcon class="text-gray-500 hover:bg-gray-50 w-4 h-4"/>
-                </Tooltip>
-                <RadioGroup ref="langSelector" class="grow" name="lang" :items="$page.props.langs"/>
+
+                <RadioGroup ref="roleSelector" class="grow" name="role" :items="['active','inactive','block',]"/>
               </div>
-              <div class="my-2">
+              <div class="my-4">
                 <TextInput
-                    id="name"
+                    id="fullname"
                     type="text"
-                    :placeholder="__('title')"
+                    :placeholder="__('fullname')"
                     classes="  "
-                    v-model="form.name"
-                    autocomplete="name"
-                    :error="form.errors.name"
+                    v-model="form.fullname"
+                    autocomplete="fullname"
+                    :error="form.errors.fullname"
                 >
                   <template v-slot:prepend>
                     <div class="p-3">
@@ -98,22 +65,104 @@
                   </template>
 
                 </TextInput>
-
               </div>
 
-              <div class="my-2">
+
+              <div class="my-4">
                 <TextInput
-                    id="designer"
+                    id="phone"
                     type="text"
-                    :placeholder="__('designer')"
+                    :placeholder="__('phone')"
                     classes="  "
-                    v-model="form.designer"
-                    autocomplete="name"
-                    :error="form.errors.designer"
+                    v-model="form.phone"
+                    autocomplete="phone"
+                    v-model:verified="form.phone_verified"
+                    :admin="true"
+                    :error="form.errors.phone"
                 >
                   <template v-slot:prepend>
                     <div class="p-3">
-                      <PaintBrushIcon class="h-5 w-5"/>
+                      <PhoneIcon class="h-5 w-5"/>
+                    </div>
+                  </template>
+
+                </TextInput>
+
+              </div>
+              <div class="my-4">
+                <TextInput
+                    id="email"
+                    type="email"
+                    :placeholder="__('email')"
+                    classes="  "
+                    v-model="form.email"
+                    autocomplete="email"
+                    v-model:verified="form.email_verified"
+                    :admin="true"
+                    :error="form.errors.email"
+                >
+                  <template v-slot:prepend>
+                    <div class="p-3">
+                      <AtSymbolIcon class="h-5 w-5"/>
+                    </div>
+                  </template>
+
+                </TextInput>
+
+              </div>
+              <div class="my-4">
+                <TextInput
+                    id="card"
+                    type="text"
+                    :placeholder="__('card')"
+                    classes="  "
+                    v-model="form.card"
+                    autocomplete="card"
+                    v-model:verified="form.wallet_active"
+                    :admin="true"
+                    :error="form.errors.card"
+                >
+                  <template v-slot:prepend>
+                    <div class="p-3">
+                      <CreditCardIcon class="h-5 w-5"/>
+                    </div>
+                  </template>
+
+                </TextInput>
+
+              </div>
+              <div class="my-4">
+                <TextInput
+                    id="wallet"
+                    type="number"
+                    :placeholder="__('wallet')"
+                    classes="  "
+                    v-model="form.wallet"
+                    autocomplete="card"
+                    :error="form.errors.wallet"
+                >
+                  <template v-slot:prepend>
+                    <div class="p-3">
+                      <CreditCardIcon class="h-5 w-5"/>
+                    </div>
+                  </template>
+
+                </TextInput>
+
+              </div>
+              <div class="my-4">
+                <TextInput
+                    id="password"
+                    type="text"
+                    :placeholder="__('password')"
+                    classes="  "
+                    v-model="form.password"
+                    autocomplete="password"
+                    :error="form.errors.password"
+                >
+                  <template v-slot:prepend>
+                    <div class="p-3">
+                      <KeyIcon class="h-5 w-5"/>
                     </div>
                   </template>
 
@@ -122,49 +171,7 @@
               </div>
 
 
-              <div class="my-2">
-                <Selector ref="categorySelector" :data="$page.props.categories" :label="__('category')"
-                          id="category_id" v-model="form.category_id">
-                  <template v-slot:append>
-                    <div class="  p-3">
-                      <Squares2X2Icon class="h-5 w-5"/>
-                    </div>
-                  </template>
-                </Selector>
-              </div>
-
-              <div class="my-2">
-                <TagInput
-                    ref="tags"
-                    id="tags"
-                    :placeholder="__('tags')"
-                    classes="  "
-                    v-model="form.tags"
-                    autocomplete="tags"
-                    :error="form.errors.tags"
-                >
-                </TagInput>
-              </div>
-              <div class="my-2">
-                <TextInput
-                    :multiline="true"
-                    id="description"
-                    type="text"
-                    :placeholder="__('description')"
-                    classes="  "
-                    v-model="form.description"
-                    autocomplete="description"
-                    :error="form.errors.description"
-                >
-                  <template v-slot:prepend>
-                    <div class="p-3">
-                      <ChatBubbleBottomCenterTextIcon class="h-5 w-5"/>
-                    </div>
-                  </template>
-
-                </TextInput>
-
-              </div>
+              <div class="py-4"></div>
               <div v-if="form.progress" class="shadow w-full bg-grey-light m-2   bg-gray-200 rounded-full">
                 <div
                     class=" bg-primary rounded  text-xs leading-none py-[.1rem] text-center text-white duration-300 "
@@ -176,7 +183,6 @@
               <div class="    mt-4">
 
                 <PrimaryButton class="w-full  "
-                               @click.prevent="isAdmin()? submit():  showDialog('primary',__('will_active_after_review'), __('ok') , submit )"
                                :class="{ 'opacity-25': form.processing }"
                                :disabled="form.processing">
                   <LoadingIcon class="w-4 h-4 mx-3 " v-if="  form.processing"/>
@@ -212,6 +218,10 @@ import {
   Squares2X2Icon,
   PencilSquareIcon,
   PaintBrushIcon,
+  CreditCardIcon,
+  AtSymbolIcon,
+  PhoneIcon,
+  KeyIcon,
 
 } from "@heroicons/vue/24/outline";
 import {QuestionMarkCircleIcon,} from "@heroicons/vue/24/solid";
@@ -231,36 +241,33 @@ import Selector from "@/Components/Selector.vue";
 import ProvinceCounty from "@/Components/ProvinceCounty.vue";
 import PhoneFields from "@/Components/PhoneFields.vue";
 import SocialFields from "@/Components/SocialFields.vue";
-import Banner from "@/Components/Banner.vue";
-import TextEditor from "@/Components/TextEditor.vue";
+import EmailFields from "@/Components/EmailFields.vue";
 
 export default {
 
   data() {
     return {
-      data: this.$page.props.data || {},
+      data: this.data || {},
       form: useForm({
-        id: this.$page.props.data.id,
-        designer: null,
+        id: null,
+        fullname: null,
         phone: null,
-        phone_verify: null,
-        lang: null,
-        name: null,
-        link: null,
-        category_id: null,
-        socials: null,
-        tags: null,
-        description: '',
-        message: '',
-        status: this.$page.props.data.status,
+        phone_verified: 0,
+        email_verified: 0,
+        wallet_active: 0,
+        email: null,
+        card: null,
+        wallet: 0,
+        password: null,
+        status: null,
+        img: null,
 
       }),
-      img: null,
-      banner: null,
+      profile: null,
     }
   },
   components: {
-    TextEditor,
+    EmailFields,
     ImageUploader,
     LoadingIcon,
     Head,
@@ -289,37 +296,30 @@ export default {
     PhoneFields,
     SocialFields,
     PencilSquareIcon,
-    Banner,
     PaintBrushIcon,
+    CreditCardIcon,
+    AtSymbolIcon,
+    PhoneIcon,
+    KeyIcon,
 
   },
   created() {
-
   },
   mounted() {
-
+    this.$forceUpdate();
     // console.log(this.data);
 
-    this.form.name = this.data.name;
-    this.form.phone = this.data.phone;
-    this.form.link = this.data.link;
-    this.form.designer = this.data.designer;
-    this.form.category_id = this.data.category_id;
-    this.$refs.tags.set(this.data.tags);
-    this.form.description = this.data.description;
-    this.$refs.langSelector.selected = this.data.lang;
-    this.form.message = this.data.message;
 
   },
   methods: {
     submit() {
 
-      if (this.$refs.editor)
-        this.form.message = this.$refs.editor.getData();
 
-      this.form.lang = this.$refs.langSelector.selected;
       // this.form.category_id = this.$refs.categorySelector.selected;
       this.form.clearErrors();
+      this.form.status = this.$refs.roleSelector.selected;
+      this.form.img = this.$refs.imageCropper.getCroppedData();
+
 
       // this.isLoading(true, this.form.progress ? this.form.progress.percentage : null);
       // this.images = [];
@@ -327,12 +327,15 @@ export default {
       //   let tmp = this.$refs.imageCropper[i].getCroppedData();
       //   if (tmp) this.images.push(tmp);
       // }
-      this.form.patch(route('banner.update'), {
+      this.form.post(route('panel.admin.user.create'), {
         preserveScroll: false,
 
         onSuccess: (data) => {
           if (this.$page.props.flash.status)
             this.showAlert(this.$page.props.flash.status, this.$page.props.flash.message);
+
+          if (this.$page.props.extra && this.$page.props.extra.wallet_active != null)
+            this.user.wallet_active = this.$page.props.extra.wallet_active;
 
         },
         onError: () => {

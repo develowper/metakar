@@ -5,6 +5,7 @@
         <InputLabel class="my-2" for="email" :value="__('email')"/>
         <span v-if="verified==null" class="text-danger text-xs mx-1">({{ __('not_verified') }})</span>
         <span v-else class="text-success text-xs mx-1">({{ __('verified') }})</span>
+
       </div>
       <div class="relative mb-2 mt-2 flex flex-wrap items-stretch">
 
@@ -60,7 +61,7 @@ import {
 } from "@heroicons/vue/24/outline";
 
 export default {
-  props: ['email', 'for', 'verified', 'type', 'emailVerify', 'emailError', 'emailVerifyError',],
+  props: ['email', 'for', 'verified', 'type', 'emailVerify', 'emailError', 'emailVerifyError', 'admin'],
   emits: ['update:email', 'update:emailVerify'],
   data() {
     return {
@@ -77,7 +78,7 @@ export default {
   },
   computed: {
     isDisabled: function () {
-      return this.loading || (this.timer < 60 && this.timer > 0) || ( this.oldEmail == this.email)
+      return this.loading || (this.timer < 60 && this.timer > 0) || (this.oldEmail == this.email)
 
     }
   },

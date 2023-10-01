@@ -12,14 +12,10 @@
           class="flex items-center justify-between px-4 py-2 text-primary-500 border-b md:py-4 dark:border-primary-darker">
         <div class="flex">
           <Bars2Icon class="h-7 w-7 mx-3"/>
-          <h1 class="text-2xl font-semibold">{{ __('tickets_list') }}</h1>
+          <h1 class="text-2xl font-semibold">{{ __('review_list') }}</h1>
         </div>
         <div>
-          <Link :href="route(`panel.${isAdmin()?'admin.':''}ticket.create`)"
-                class="inline-flex items-center  justify-center px-4 py-2 bg-green-500 border border-transparent rounded-md font-semibold  transition-all duration-500 text-white     hover:bg-green-600 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150"
-          >
-            {{ __('new_ticket') }}
-          </Link>
+
         </div>
       </div>
       <!-- Content -->
@@ -28,7 +24,7 @@
         <div class="flex-col   bg-white  overflow-x-auto shadow-lg  rounded-lg">
           <div class="flex   items-center justify-between py-4 dark:bg-gray-800 p-4">
             <!--              Dropdown Actions-->
-            <div v-if="false">
+            <div>
               <div class="relative mx-1  " data-te-dropdown-ref>
                 <button
                     id="dropdownActionsSetting"
@@ -110,7 +106,7 @@
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <!--         table header-->
             <tr class="text-sm text-center">
-              <th v-if="false" scope="col" class="p-4" @click="toggleAll">
+              <th scope="col" class="p-4" @click="toggleAll">
                 <div class="flex items-center">
                   <input id="checkbox-all-search" type="checkbox" v-model="toggleSelect"
                          class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
@@ -119,54 +115,82 @@
               </th>
               <th scope="col"
                   class="px-2 py-3   cursor-pointer duration-300 hover:text-gray-500 hover:scale-[105%]"
-                  @click="params.order_by='subject';params.dir=params.dir=='ASC'? 'DESC':'ASC'; params.page=1;getData()">
+                  @click="params.order_by='name';params.dir=params.dir=='ASC'? 'DESC':'ASC'; params.page=1;getData()">
                 <div class="flex items-center justify-center">
-                  <span class="px-2">  {{ __('subject') }}</span>
+                  <span class="px-2">  {{ __('name') }}</span>
                   <ArrowsUpDownIcon class="w-4 h-4 "/>
                 </div>
               </th>
 
-
               <th scope="col"
                   class="px-2 py-3   cursor-pointer duration-300 hover:text-gray-500 hover:scale-[105%]"
-                  @click="params.order_by='status';params.dir=params.dir=='ASC'? 'DESC':'ASC'; params.page=1;getData()">
+                  @click="params.order_by='view';params.dir=params.dir=='ASC'? 'DESC':'ASC'; params.page=1;getData()">
                 <div class="flex items-center justify-center">
-                  <span class="px-2">    {{ __('status') }} </span>
+                  <span class="px-2">    {{ __('type') }} </span>
                   <ArrowsUpDownIcon class="w-4 h-4 "/>
                 </div>
               </th>
 
 
               <th scope="col" class="px-2 py-3">
-                {{ __('update') }}
+                {{ __('actions') }}
               </th>
             </tr>
             </thead>
             <tbody class=" ">
             <tr v-if="loading" v-for="i in 3"
                 class="animate-pulse bg-white text-center border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+              <td class="w-4 p-4">
+                <div class="flex items-center">
+                  <input id="checkbox-table-search-1" type="checkbox"
+                         class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
 
+                </div>
+              </td>
               <td
-                  class="flex justify-center items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-
-                <div class="text-base bg-gray-200 px-5 py-2 rounded-lg  "></div>
+                  class="flex  items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                <div class="w-10 h-10 rounded-full"
+                />
+                <div class="px-3">
+                  <div class="text-base bg-gray-200 px-5 py-2 rounded-lg  "></div>
+                  <div class="font-normal text-gray-500"></div>
+                </div>
               </td>
+              <td class="px-2 py-4 ">
+                <div class="bg-gray-200 px-5 py-2 rounded-lg">
 
+                </div>
+              </td>
+              <td class="px-2 py-4 ">
+                <div class="bg-gray-200 px-5 py-2 rounded-lg">
 
+                </div>
+              </td>
               <td class="px-2 py-4 ">
                 <div class="bg-gray-200 px-5 py-2 rounded-lg"></div>
               </td>
-              <td class="px-2 py-4 ">
+              <td class="px-2 py-4">
+                <div
+                    class="  justify-center bg-gray-200 px-5 py-3 rounded-lg  items-center text-center rounded-md "
+                >
+
+                </div>
+              </td>
+              <td class="px-2 py-4">
                 <div class="bg-gray-200 px-5 py-2 rounded-lg"></div>
               </td>
+              <td class="px-2 py-4">
+                <!-- Actions Group -->
+                <div
+                    class="  bg-gray-200 px-5 py-4 rounded-lg rounded-md   "
+                    role="group">
 
-
+                </div>
+              </td>
             </tr>
-
-            <tr v-for="(d,idx) in data" @click="$inertia.visit(route('panel.ticket.edit',d.id))"
-                class="bg-white cursor-pointer hover:bg-gray-400 text-center border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-
-              <td v-if="false" class="w-4 p-4" @click="d.selected=!d.selected">
+            <tr v-for="(d,idx) in data"
+                class="bg-white text-center border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+              <td class="w-4 p-4" @click="d.selected=!d.selected">
                 <div class="flex items-center">
                   <input id="checkbox-table-search-1" type="checkbox" v-model="d.selected"
                          class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
@@ -174,32 +198,41 @@
                 </div>
               </td>
               <td
-                  class="flex  items-center px-6 py-4 text-gray-700 whitespace-nowrap dark:text-white">
-
-                <Link class="px-3 hover:text-gray-500" :href="route('panel.ticket.edit',d.id)">
-                  <div class="text-base font-semibold">{{ cropText(d.subject, 40) }}</div>
+                  class="flex  items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                <Image class="w-10 h-10 rounded-full"
+                       :src="`${route(`storage.${d.storage}`)}/${d.id}${d.type=='business'?'/1.jpg':'.jpg'}`"
+                       :alt="cropText(d.name,5)"/>
+                <Link class="px-3 hover:text-gray-500" :href="route(`panel.${d.type}.edit`,d.id)">
+                  <div class="text-base font-semibold">{{ cropText(d.name, 40) }}</div>
                   <div class="font-normal text-gray-500">{{ }}</div>
                 </Link>
               </td>
 
-
-              <td class="px-2 py-4     ">
-                <div
-                    id="dropdownStatusSetting"
-                    class=" select-none  w-fit mx-auto  px-1    items-center text-center rounded-md py-[.2rem]"
-                    :class="`bg-${getStatus('ticket', d.status).color}-100 hover:bg-${getStatus('ticket', d.status).color}-200 text-${getStatus('ticket', d.status).color}-500`">
-                  {{ getStatus('ticket', d.status).name }}
-                </div>
-
+              <td class="px-2 py-4">
+                {{ __(d.type) }}
               </td>
 
 
               <td class="px-2 py-4">
                 <!-- Actions Group -->
                 <div
-                    class=" inline-flex text-xs"
+                    class=" inline-flex rounded-md shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
                     role="group">
-                  {{ d.updated_at }}
+                  <Link
+                      type="button" :href="route(`panel.${d.type}.edit`,d.id)"
+                      class="inline-block rounded  bg-orange-500 text-white px-6  py-2 text-xs font-medium uppercase leading-normal text-white transition duration-150 ease-in-out hover:bg-orange-400   focus:outline-none focus:ring-0  "
+                      data-te-ripple-init
+                      data-te-ripple-color="light">
+                    {{ __('edit') }}
+                  </Link>
+
+                  <!--                  <button -->
+                  <!--                      type="button"-->
+                  <!--                      class="inline-block rounded-e bg-teal-500 px-6 py-2 text-xs font-medium uppercase leading-normal text-white transition duration-150 ease-in-out hover:bg-teal-400   focus:outline-none focus:ring-0  "-->
+                  <!--                      data-te-ripple-init-->
+                  <!--                      data-te-ripple-color="light">-->
+                  <!--                    {{ __('charge') }}-->
+                  <!--                  </button>-->
                 </div>
               </td>
             </tr>
@@ -230,7 +263,8 @@ import {
   ArrowsUpDownIcon,
 
 } from "@heroicons/vue/24/outline";
-import Image from "@/Components/Image.vue"
+import Image from "@/Components/Image.vue";
+import Tooltip from "@/Components/Tooltip.vue";
 
 export default {
   data() {
@@ -261,6 +295,7 @@ export default {
     XMarkIcon,
     Pagination,
     ArrowsUpDownIcon,
+    Tooltip,
   },
   mounted() {
 
@@ -274,7 +309,7 @@ export default {
 
       this.loading = true;
       this.data = [];
-      window.axios.get(route('panel.ticket.search'), {
+      window.axios.get(route('panel.admin.review.search'), {
         params: this.params
       }, {
         onUploadProgress: function (axiosProgressEvent) {
@@ -351,7 +386,7 @@ export default {
     },
     edit(params) {
       this.isLoading(true);
-      window.axios.patch(route('ticket.update'), params,
+      window.axios.patch(route('business.update'), params,
           {
             onUploadProgress: function (axiosProgressEvent) {
               // console.log(axiosProgressEvent);
@@ -440,7 +475,7 @@ export default {
         }, [])
       };
 
-      window.axios.patch(route('ticket.update'), params,
+      window.axios.patch(route('business.update'), params,
           {
             onUploadProgress: function (axiosProgressEvent) {
             },

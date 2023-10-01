@@ -112,7 +112,8 @@ class UserPolicy
         if ($user->is_block) {
             return abort(403, __("user_is_blocked"));
         }
-
+        if (!$item)
+            return abort(403, __("item_not_found"));
         switch (true) {
             case $item instanceof User   :
                 if (in_array($user->role, ['ad',]))

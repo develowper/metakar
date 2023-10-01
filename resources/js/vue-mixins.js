@@ -34,9 +34,9 @@ export default {
             this.emitter.emit('showAlert', {type, message});
 
         },
-        showDialog(type, message, button, action) {
+        showDialog(type, message, button, action, items = null) {
 
-            this.emitter.emit('showDialog', {type, message, button, action});
+            this.emitter.emit('showDialog', {type, message, button, action, items});
 
         },
         isLoading(loading) {
@@ -204,6 +204,13 @@ export default {
 
             document.body.removeChild(textArea);
         },
+        myMap(arr, callbackFn) {
+            var tmp = [];
+            for (var i = 0; i < arr.length; i++) {
+                tmp.push(callbackFn(arr[i]));
+            }
+            return tmp;
+        }
     },
 
 

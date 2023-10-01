@@ -1,8 +1,8 @@
 <template>
 
-  <div class="  h-full ">
+  <div class="  h-fit ">
 
-    <div class=" h-full">
+    <div class=" h-fit">
 
       <label :for="id"
              class=" text-center d-none  "> </label>
@@ -35,7 +35,7 @@
       </div>
       <div v-show="doc" class="  rounded-lg flex flex-col justify-between   " :style="`width:${width}`">
 
-        <img v-show="doc" :id="'img-'+id" class="block max-w-full    "
+        <img v-show="doc" :id="'img-'+id" class="flex max-w-full    "
              @error="errorImage"
              @load="  uploadContainer.classList.add('d-none');initCropper()"
              :src="doc"
@@ -152,6 +152,7 @@ export default {
 
     this.uploader = document.querySelector('#' + this.id + '-file');
     this.uploadContainer = document.querySelector('#container-' + this.id);
+
 
   }
   ,

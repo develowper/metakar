@@ -20,11 +20,34 @@
       <div v-if="data"
            class="px-2 py-4 my-2 mx-auto md:px-4 bg-white shadow-md overflow-hidden  rounded-lg md:max-w-5xl ">
 
+        <div v-if="isAdmin()" class="border bg-sky-50 border-dashed rounded p-4">
+          <p class="border-b text-md w-fit flex mx-auto mb-2 text-primary font-bold ">{{ __('admin_section') }}</p>
+          <div class="flex items-center">
+
+            <RadioGroup :beforeSelected="form.status" ref="statusSelector" class="grow" name="status"
+                        v-model="form.status"
+                        :items="myMap($page.props.statuses,(e)=>e.name)"/>
+          </div>
+          <div v-show="form.status=='reject'">
+
+            <InputLabel class="text-red-500" for="editor" :value="__('reject_message')"/>
+            <TextEditor mode="create"
+                        :preload="form.message"
+                        :lang="$page.props.locale"
+                        :id="`editor`"
+                        :ref="`editor`"/>
+          </div>
+        </div>
+        <div v-else-if="!isAdmin() && form.message" v-html="form.message"
+             class="border text-sm text-rose-400 bg-rose-50 border-dashed rounded p-4">
+        </div>
+
         <div
             class="lg:grid      lg:grid-cols-3     mt-6 px-2 md:px-4 py-4   ">
           <div class="flex-col self-center  m-2 items-center rounded-lg max-w-xs   mx-auto lg:mx-2   ">
             <ImageUploader mode="edit" v-if="data" :preload="route('storage.sites')+`/${data.id}.jpg`"
                            ref="imageCropper"
+                           :for-id="data.id"
                            :label="__('image_jpg')"
                            cropRatio="1.25" id="img"
                            height="10" class="grow"/>
@@ -126,6 +149,7 @@
               <div class="    mt-4">
 
                 <PrimaryButton class="w-full  "
+                               @click.prevent="isAdmin()? submit():  showDialog('primary',__('will_active_after_review'), __('ok') , submit )"
                                :class="{ 'opacity-25': form.processing }"
                                :disabled="form.processing">
                   <LoadingIcon class="w-4 h-4 mx-3 " v-if="  form.processing"/>
@@ -177,6 +201,7 @@ import Tooltip from "@/Components/Tooltip.vue";
 import TagInput from "@/Components/TagInput.vue";
 import ImageUploader from "@/Components/ImageUploader.vue";
 import Selector from "@/Components/Selector.vue";
+import TextEditor from "@/Components/TextEditor.vue";
 
 export default {
 
@@ -192,11 +217,13 @@ export default {
         category_id: null,
         tags: '',
         description: '',
-
+        message: '',
+        status: this.$page.props.data.status,
       }),
     }
   },
   components: {
+    TextEditor,
     ImageUploader,
     LoadingIcon,
     Head,
@@ -224,14 +251,18 @@ export default {
     PencilSquareIcon,
 
   },
-  mounted() {
+  created() {
     this.data = this.$page.props.data;
+
+  },
+  mounted() {
     // console.log(this.data);
     this.form.name = this.data.name;
     this.form.link = this.data.link;
     this.$refs.categorySelector.selected = this.form.category_id = this.data.category_id;
     this.$refs.tags.set(this.data.tags);
     this.form.description = this.data.description;
+    this.form.message = this.data.message;
     this.$refs.langSelector.selected = this.data.lang;
   },
   methods: {
@@ -240,6 +271,8 @@ export default {
       this.form.img = this.$refs.imageCropper.getCroppedData();
       this.form.lang = this.$refs.langSelector.selected;
       this.form.category_id = this.$refs.categorySelector.selected;
+      if (this.$refs.editor)
+        this.form.message = this.$refs.editor.getData();
       this.form.clearErrors();
       this.form.patch(route('site.update'), {
         preserveScroll: false,

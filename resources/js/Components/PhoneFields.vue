@@ -6,6 +6,7 @@
         <InputLabel class="my-2" for="phone" :value="__('phone')"/>
         <span v-if="verified==0" class="text-danger text-xs mx-1">({{ __('not_verified') }})</span>
         <span v-else-if="verified==1" class="text-success text-xs mx-1">({{ __('verified') }})</span>
+
       </div>
       <div class="relative mb-2 mt-2 flex flex-wrap items-stretch">
 
@@ -82,8 +83,8 @@ import {
 } from "@heroicons/vue/24/outline";
 
 export default {
-  props: ['phone', 'for', 'verified', 'type', 'phoneVerify', 'phoneError', 'phoneVerifyError', 'disable', 'disableEdit', 'activeButtonText'],
-  emits: ['update:phone', 'update:phoneVerify'],
+  props: ['phone', 'for', 'verified', 'type', 'phoneVerify', 'phoneError', 'phoneVerifyError', 'disable', 'disableEdit', 'activeButtonText', 'admin'],
+  emits: ['update:phone', 'update:phoneVerify', 'update:verified',],
   data() {
     return {
       loading: false,
@@ -97,6 +98,11 @@ export default {
     PhoneIcon,
     InputLabel,
     InputError,
+  },
+  watch: {
+    // verified() {
+    //   this.log(this.verified)
+    // }
   },
   computed: {
     isDisabled: function () {
@@ -114,7 +120,7 @@ export default {
     this.$nextTick(() => {
       this.oldPhone = this.phone;
     });
-    // this.log('this.phoneVerified')
+    // this.log(this.phoneVerify)
     // this.log(this.phoneVerified)
   },
 

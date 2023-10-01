@@ -20,7 +20,30 @@
       <div v-if="$page.props.data" class="px-2  md:px-4">
 
         <div
-            class="lg:grid      lg:grid-cols-3  mx-auto md:max-w-5xl   mt-6 px-2 md:px-4 py-4 bg-white shadow-md overflow-hidden  rounded-lg  ">
+            class="lg:grid   gap-2    lg:grid-cols-3  mx-auto md:max-w-5xl   mt-6 px-2 md:px-4 py-4 bg-white shadow-md overflow-hidden  rounded-lg  ">
+
+          <div v-if="isAdmin()" class="border bg-sky-50 border-dashed rounded p-4 col-span-3">
+            <p class="border-b text-md w-fit flex mx-auto mb-2 text-primary font-bold ">{{ __('admin_section') }}</p>
+            <div class="flex items-center">
+
+              <RadioGroup :beforeSelected="form.status" ref="statusSelector" class="grow" name="status"
+                          v-model="form.status"
+                          :items="myMap($page.props.statuses,(e)=>e.name)"/>
+            </div>
+            <div v-show="form.status=='reject'">
+
+              <InputLabel class="text-red-500" for="editor" :value="__('reject_message')"/>
+              <TextEditor mode="create"
+                          :preload="form.message"
+                          :lang="$page.props.locale"
+                          :id="`editor`"
+                          :ref="`editor`"/>
+            </div>
+          </div>
+          <div v-else-if="!isAdmin() && form.message" v-html="form.message"
+               class="border text-sm text-rose-400 bg-rose-50 border-dashed rounded p-4">
+          </div>
+
           <div
               class="lg:flex-col  flex flex-wrap    md:m-2  lg:mx-2 items-stretch rounded-lg    ">
             <InputLabel class="m-2 w-full md:text-start lg:text-center"
@@ -154,7 +177,7 @@
               <div class="    mt-4">
 
                 <PrimaryButton class="w-full  "
-                               @click.prevent="  showDialog('primary',__('will_active_after_review'), __('ok') , submit ) "
+                               @click.prevent="isAdmin()? submit():  showDialog('primary',__('will_active_after_review'), __('ok') , submit ) "
                                :class="{ 'opacity-25': form.processing }"
                                :disabled="form.processing">
                   <LoadingIcon class="w-4 h-4 mx-3 " v-if="  form.processing"/>
@@ -208,6 +231,7 @@ import Selector from "@/Components/Selector.vue";
 import ProvinceCounty from "@/Components/ProvinceCounty.vue";
 import PhoneFields from "@/Components/PhoneFields.vue";
 import SocialFields from "@/Components/SocialFields.vue";
+import TextEditor from "@/Components/TextEditor.vue";
 
 export default {
 
@@ -227,12 +251,14 @@ export default {
         county_id: this.$page.props.data.county_id,
         tags: null,
         description: '',
-
+        message: '',
+        status: this.$page.props.data.status,
       }),
       images: [],
     }
   },
   components: {
+    TextEditor,
     ImageUploader,
     LoadingIcon,
     Head,
@@ -279,10 +305,15 @@ export default {
     this.$refs.socials.set(this.data.socials);
     this.$refs.tags.set(this.data.tags);
     this.form.description = this.data.description;
+    this.form.message = this.data.message;
+
     this.$refs.langSelector.selected = this.data.lang;
   },
   methods: {
     submit() {
+
+      if (this.$refs.editor)
+        this.form.message = this.$refs.editor.getData();
 
       this.form.socials = this.$refs.socials.get();
       this.form.uploading = false;

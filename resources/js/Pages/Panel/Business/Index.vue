@@ -490,7 +490,8 @@ import {
   ArrowsUpDownIcon,
 
 } from "@heroicons/vue/24/outline";
-import Image from "@/Components/Image.vue"
+import Image from "@/Components/Image.vue";
+import Tooltip from "@/Components/Tooltip.vue";
 
 export default {
   data() {
@@ -521,6 +522,7 @@ export default {
     XMarkIcon,
     Pagination,
     ArrowsUpDownIcon,
+    Tooltip,
   },
   mounted() {
 

@@ -41,7 +41,7 @@ class NotificationRequest extends FormRequest
                 'link' => ['nullable', 'max:512', 'url'],
                 'type' => ['nullable',
                     Rule::in(Variable::NOTIFICATION_TYPES)],
-                'description' => ['nullable', 'max:65535'],
+                'description' => ['required', 'max:65535'],
             ]);
 
 
@@ -69,6 +69,7 @@ class NotificationRequest extends FormRequest
             'link.starts_with' => sprintf(__("validator.starts_with"), __('link'), "http://"),
 
 
+            'description.required' => sprintf(__("validator.required"), __('message')),
             'description.max' => sprintf(__("validator.max_len"), 65535, mb_strlen($this->description)),
 
 

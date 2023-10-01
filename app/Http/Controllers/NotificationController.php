@@ -6,54 +6,84 @@ use App\Http\Helpers\Telegram;
 use App\Http\Helpers\Variable;
 use App\Http\Requests\NotificationRequest;
 use App\Models\Notification;
+use App\Models\Ticket;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class NotificationController extends Controller
 {
+    public function edit(Request $request, $notification)
+    {
+        $data = Notification::whereId($notification)->with('owner:id,fullname,phone')->first();
+
+        return Inertia::render('Panel/Admin/Notification/Edit', [
+            'types' => Variable::NOTIFICATION_TYPES,
+            'data' => $data,
+        ]);
+    }
+
     public function update(NotificationRequest $request)
     {
-        $user = auth()->user();
-//        $response = ['message' => __('done_successfully')];
-        $response = ['message' => __('response_error')];
-        $errorStatus = Variable::ERROR_STATUS;
-        $successStatus = Variable::SUCCESS_STATUS;
-
         $id = $request->id;
         $cmnd = $request->cmnd;
+        $user = auth()->user();
+        if ($cmnd == 'reset') {
+            if ($user->notifications == 0) return;
+            $user->notifications = 0;
+            $user->save();
+            return response()->json(['message' => __('updated_successfully')], Variable::SUCCESS_STATUS);
+
+        }
+
         $data = Notification::find($id);
-        if (!starts_with($cmnd, 'bulk') && $cmnd != 'reset')
-            $this->authorize('update', [User::class, $data]);
 
-        if ($cmnd) {
-            switch ($cmnd) {
-                case 'reset':
-                    if ($user->notifications == 0) return;
-                    $user->notifications = 0;
-                    $user->save();
-                    return response()->json(['message' => __('updated_successfully')], $successStatus);
 
+        if (!$data)
+            return back()->withErrors(['errors' => __('item_not_found')]);
+
+        $oldOwner = $data->owner_id;
+        if ($data->update($request->all())) {
+
+            if ($request->owner_id != $oldOwner) {
+                if ($data->owner_id)
+                    User::where('id', $oldOwner)->where('notifications', '>', 0)->decrement('notifications');
+                if ($request->notification)
+                    if ($request->owner_id)
+                        User::where('id', $request->owner_id)->increment('notifications');
+                    else
+                        User::increment('notifications');
 
             }
-        } elseif ($data) {
-
-
-            $request->merge([
-            ]);
-//            $data->name = $request->tags;
-//            $data->tags = $request->tags;
-//            dd($request->tags);
-            if ($data->update($request->all())) {
-
-                $res = ['flash_status' => 'success', 'flash_message' => __('updated_successfully')];
-//                dd($request->all());
-                Telegram::log(null, 'podcast_edited', $data);
-            } else    $res = ['flash_status' => 'danger', 'flash_message' => __('response_error')];
+            $res = ['flash_status' => 'success', 'flash_message' => __('updated_successfully')];
+            Telegram::log(null, 'notification_edited', $data);
             return back()->with($res);
         }
 
-        return response()->json($response, $errorStatus);
     }
+
+    public function create(NotificationRequest $request)
+    {
+
+
+        $notification = Notification::create([
+            'link' => $request->link,
+            'subject' => $request->subject,
+            'description' => $request->description,
+            'owner_id' => $request->owner_id,
+        ]);
+        if ($notification) {
+            if ($request->owner_id)
+                User::where('id', $request->owner_id)->increment('notifications');
+            else
+                User::increment('notifications');
+            $res = ['flash_status' => 'success', 'flash_message' => __('created_successfully')];
+            Telegram::log(null, 'notification_created', $notification);
+            return to_route('panel.admin.notification.index')->with($res);
+        } else    $res = ['flash_status' => 'danger', 'flash_message' => __('response_error')];
+        return back()->with($res);
+    }
+
 
     public function searchPanel(Request $request)
     {

@@ -7,7 +7,7 @@
     <Dialog ref="modal"/>
     <Toast ref="toast"/>
     <WalletCharge ref="walletChargeModal"/>
-    <div class="  flex h-screen antialiased text-gray-900 bg-gray-100 dark:bg-dark dark:text-light">
+    <div class="  flex  antialiased text-gray-900 bg-gray-100 dark:bg-dark dark:text-light">
       <!-- Loading screen -->
       <div v-if="loading" class="  fixed w-screen h-screen backdrop-blur-sm     z-[999999]">
 
@@ -20,14 +20,14 @@
       </div>
       <!--      Dynamic Colors need to be added statically-->
       <div
-          class="hidden border-success-200 border-success-300 border-danger-200 border-danger-300 border-warning-200 border-warning-300 border-orange-200 border-orange-300 border-primary-200 text-danger-500 text-success-500 text-danger bg-success-100 bg-orange-100 bg-danger-200 bg-danger-100  hover:bg-orange-200 hover:bg-danger hover:bg-danger-200 hover:bg-success-200    text-orange-500"></div>
+          class="hidden border-success-200 border-success-300 border-danger-200 border-danger-300 border-warning-200 border-warning-300 border-orange-200 border-orange-300 border-primary-200 text-danger-500 text-success-500 text-danger-700 text-success-700 text-danger bg-success-100 bg-orange-100 bg-danger-200 bg-danger-100  hover:bg-orange-200 hover:bg-danger hover:bg-danger-200 hover:bg-success-200    text-orange-500"></div>
 
       <!-- Sidebar -->
       <aside class="  overflow-x-hidden  ">
         <slot name="sidenav"></slot>
       </aside>
       <!--Panel Main Side-->
-      <div id="toggler" class="flex-1 h-full overflow-x-hidden overflow-y-auto">
+      <div id="toggler" class="flex-1 h-screen overflow-x-hidden overflow-y-auto">
         <!-- Navbar -->
         <header class="relative bg-white dark:bg-darker">
           <div class="flex items-center justify-between p-2 border-b dark:border-primary-darker">
@@ -236,7 +236,6 @@ export default {
   //   }
   // },
   mounted() {
-    window.tailwindElements();
     // initTE({Sidenav});
     // window.initSidenav();
 
@@ -244,6 +243,10 @@ export default {
       window.Dropdown = Dropdown;
       initTE({Dropdown});
     }
+    // this.$nextTick(() => {
+    window.tailwindElements();
+
+    // })
 
     this.emitter.on('showToast', (e) => {
       if (this.$refs.toast)
@@ -257,7 +260,7 @@ export default {
 
     this.emitter.on('showDialog', (e) => {
       if (this.$refs.modal)
-        this.$refs.modal.show(e.type, e.message, e.button, e.action);
+        this.$refs.modal.show(e.type, e.message, e.button, e.action, e.items);
     });
 
     this.emitter.on('showWalletChargeDialog', (e) => {
@@ -270,16 +273,30 @@ export default {
       this.percentage = percentage;
     });
 
-    if (this.$page.props.flash.message) {
+    if (this.$page.props.flash.message && this.$page.props.flash.message != undefined) {
+      this.$nextTick(() => {
 
-      this.$refs.alert.show(this.$page.props.flash.status, this.$page.props.flash.message);
+        this.showAlert(this.$page.props.flash.status, this.$page.props.flash.message);
+      });
     }
 
+    // document.addEventListener('hidden.te.sidenav', function () {
+    //   console.log('hi');
+    // });
   },
 
   methods: {
     toggleSideNav() {
-      // console.log((window.Sidenav.options.sidenavHidden));
+      return;
+      console.log((window.Sidenav.options));
+
+      if (window.sidenavHidden)
+        window.Sidenav.show();
+      else
+        window.Sidenav.hide();
+      window.sidenavHidden = !window.sidenavHidden;
+      // window.Sidenav.update();
+
       return;
       if (this.showSidenav) {
         window.Sidenav.changeMode("over");

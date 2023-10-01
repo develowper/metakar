@@ -22,11 +22,11 @@
         <ul id="scrollContainer" class="relative m-0 list-none    text-primary-500"
             data-te-sidenav-menu-ref>
           <li class="relative">
-            <Link :href="route('panel.index')"
+            <Link :href="isAdmin()?route('panel.admin.index'):route('panel.index')"
                   class="pt-2 pb-2 flex  px-3 outline-none transition duration-300 ease-linear hover:bg-slate-200 hover:text-inherit hover:outline-none focus:bg-slate-50 focus:text-inherit focus:outline-none active:bg-slate-50 active:text-inherit active:outline-none data-[te-sidenav-state-active]:text-inherit data-[te-sidenav-state-focus]:outline-none motion-reduce:transition-none dark:text-gray-300 dark:hover:bg-white/10 dark:focus:bg-white/10 dark:active:bg-white/10"
                   :class="{'  text-primary-500':menuIsActive ( 'panel.index' )}"
             >
-              <span class="w-full text-gray-500"> {{ __('dashboard') }}</span>
+              <span class="w-full text-gray-500"> {{ isAdmin() ? __('admin_dashboard') : __('dashboard') }}</span>
             </Link>
             <hr class="border-gray-200 dark:border-gray-700 py-2 mx-4">
 
@@ -72,15 +72,59 @@
           </li>
           <!-- Admin links -->
           <li v-if="isAdmin()" class="relative ">
-            <Link :href="route('panel.admin.index')"
-                  :class="{'bg-primary-50 text-primary-500':menuIsActive ( 'panel.admin.*' )}"
-                  class="flex   cursor-pointer items-center truncate   px-3 py-4 text-[0.875rem] text-gray-600 outline-none transition duration-300 ease-linear hover:bg-primary-100 hover:text-inherit hover:outline-none focus:bg-slate-50 focus:text-inherit focus:outline-none active:bg-slate-50 active:text-inherit active:outline-none data-[te-sidenav-state-active]:text-inherit data-[te-sidenav-state-focus]:outline-none motion-reduce:transition-none dark:text-gray-300 dark:hover:bg-white/10 dark:focus:bg-white/10 dark:active:bg-white/10"
-                  data-te-sidenav-link-ref>
+            <a
+                :class="{'bg-primary-50 text-primary-500':menuIsActive ( 'panel.admin.*' ) ||menuIsActive ( 'panel.ticket.*' ) }"
+                class="flex   cursor-pointer items-center truncate   px-3 py-4 text-[0.875rem] text-gray-600 outline-none transition duration-300 ease-linear hover:bg-primary-100 hover:text-inherit hover:outline-none focus:bg-slate-50 focus:text-inherit focus:outline-none active:bg-slate-50 active:text-inherit active:outline-none data-[te-sidenav-state-active]:text-inherit data-[te-sidenav-state-focus]:outline-none motion-reduce:transition-none dark:text-gray-300 dark:hover:bg-white/10 dark:focus:bg-white/10 dark:active:bg-white/10"
+                data-te-sidenav-link-ref>
               <WrenchScrewdriverIcon class="w-5 h-5  "/>
               <span class="mx-2 text-sm "> {{ __('admin') }} </span>
+              <span
+                  class="  right-0 ml-auto mr-[0.8rem] transition-transform duration-300 ease-linear motion-reduce:transition-none [&>svg]:text-gray-600 dark:[&>svg]:text-gray-300"
+                  data-te-sidenav-rotate-icon-ref>
+                <ChevronDownIcon class="h-5 w-5"/>
+              </span>
+            </a>
+            <ul
+                class="  !visible relative m-0 hidden list-none   data-[te-collapse-show]:block "
+                v-bind="{ 'data-te-collapse-show':menuIsActive ( 'panel.admin.*' )?true:null }"
+                data-te-collapse-item
+                data-te-sidenav-collapse-ref>
+              <li class="relative ps-7 ">
 
-            </Link>
+                <Link :href="route('panel.admin.setting.index')" role="menuitem"
+                      :class="subMenuIsActive( 'panel.admin.setting.index' )"
+                      class="flex   border-s-2 hover:border-primary-500  items-center p-2   text-sm  transition-all duration-200   dark:text-light dark:hover:text-light hover:text-primary-700 hover:bg-primary-50">
+                  <Bars2Icon class="w-5 h-5 mx-1"/>
+                  {{ __('settings') }}
+                </Link>
+                <Link :href="route('panel.admin.review.index')" role="menuitem"
+                      :class="subMenuIsActive( 'panel.admin.review.index' )"
+                      class="flex   border-s-2 hover:border-primary-500  items-center p-2   text-sm  transition-all duration-200   dark:text-light dark:hover:text-light hover:text-primary-700 hover:bg-primary-50">
+                  <Bars2Icon class="w-5 h-5 mx-1"/>
+                  {{ __('review_queue') }}
+                </Link>
+                <Link :href="route('panel.admin.user.index')" role="menuitem"
+                      :class="subMenuIsActive( 'panel.admin.user.index' )"
+                      class="flex   border-s-2 hover:border-primary-500  items-center p-2   text-sm  transition-all duration-200   dark:text-light dark:hover:text-light hover:text-primary-700 hover:bg-primary-50">
+                  <Bars2Icon class="w-5 h-5 mx-1"/>
+                  {{ __('users') }}
+                </Link>
+                <Link :href="route('panel.admin.notification.index')" role="menuitem"
+                      :class="subMenuIsActive( 'panel.admin.notification.index' )"
+                      class="flex   border-s-2 hover:border-primary-500  items-center p-2   text-sm  transition-all duration-200   dark:text-light dark:hover:text-light hover:text-primary-700 hover:bg-primary-50">
+                  <Bars2Icon class="w-5 h-5 mx-1"/>
+                  {{ __('notifications') }}
+                </Link>
+                <Link :href="route('panel.admin.ticket.index')" role="menuitem"
+                      :class="subMenuIsActive( 'panel.admin.ticket.index' )"
+                      class="flex   border-s-2 hover:border-primary-500  items-center p-2   text-sm  transition-all duration-200   dark:text-light dark:hover:text-light hover:text-primary-700 hover:bg-primary-50">
+                  <Bars2Icon class="w-5 h-5 mx-1"/>
+                  {{ __('tickets') }}
+                </Link>
 
+              </li>
+
+            </ul>
           </li>
           <!-- Business links -->
           <li class="relative ">
@@ -336,7 +380,7 @@
           </li>
 
           <!-- Auction links -->
-          <li class="relative  ">
+          <li v-if="false" class="relative  ">
             <a :class="{'bg-primary-50 text-primary-500':menuIsActive ( 'panel.auction.*' )}"
                class="flex   cursor-pointer items-center truncate  px-3 py-4 text-[0.875rem] text-gray-600 outline-none transition duration-300 ease-linear hover:bg-primary-100 hover:text-inherit hover:outline-none focus:bg-slate-50 focus:text-inherit focus:outline-none active:bg-slate-50 active:text-inherit active:outline-none data-[te-sidenav-state-active]:text-inherit data-[te-sidenav-state-focus]:outline-none motion-reduce:transition-none dark:text-gray-300 dark:hover:bg-white/10 dark:focus:bg-white/10 dark:active:bg-white/10"
                data-te-sidenav-link-ref>
@@ -372,7 +416,7 @@
           </li>
 
           <!-- Support links -->
-          <li class="relative  ">
+          <li v-if="!isAdmin()" class="relative  ">
             <a :class="{'bg-primary-50 text-primary-500':menuIsActive ( 'panel.ticket.*' )}"
                class="flex   cursor-pointer items-center truncate   px-3 py-4 text-[0.875rem] text-gray-600 outline-none transition duration-300 ease-linear hover:bg-primary-100 hover:text-inherit hover:outline-none focus:bg-slate-50 focus:text-inherit focus:outline-none active:bg-slate-50 active:text-inherit active:outline-none data-[te-sidenav-state-active]:text-inherit data-[te-sidenav-state-focus]:outline-none motion-reduce:transition-none dark:text-gray-300 dark:hover:bg-white/10 dark:focus:bg-white/10 dark:active:bg-white/10"
                data-te-sidenav-link-ref>
@@ -414,7 +458,7 @@
           </li>
 
           <!-- Financial links -->
-          <li class="relative  ">
+          <li v-if="false" class="relative  ">
             <a :class="{'bg-primary-50 text-primary-500':menuIsActive ( 'panel.financial.*' )}"
                class="flex   cursor-pointer items-center truncate rounded-[5px] px-3 py-4 text-[0.875rem] text-gray-600 outline-none transition duration-300 ease-linear hover:bg-primary-100 hover:text-inherit hover:outline-none focus:bg-slate-50 focus:text-inherit focus:outline-none active:bg-slate-50 active:text-inherit active:outline-none data-[te-sidenav-state-active]:text-inherit data-[te-sidenav-state-focus]:outline-none motion-reduce:transition-none dark:text-gray-300 dark:hover:bg-white/10 dark:focus:bg-white/10 dark:active:bg-white/10"
                data-te-sidenav-link-ref>
@@ -522,6 +566,7 @@ export default {
   created() {
   },
   mounted() {
+
     // this.$nextTick(function () {
     //     console.log(this.$parent.toast);
     // });

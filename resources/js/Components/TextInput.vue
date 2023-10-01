@@ -4,10 +4,10 @@ import {initTE, Input} from "tw-elements";
 import InputLabel from "@/Components/InputLabel.vue";
 import InputError from "@/Components/InputError.vue";
 
-defineProps(['modelValue', 'type', 'id', 'classes', 'verified', 'placeholder', 'error', 'multiline']);
+defineProps(['modelValue', 'type', 'id', 'classes', 'verified', 'placeholder', 'error', 'multiline', 'admin']);
 
 
-defineEmits(['update:modelValue']);
+defineEmits(['update:modelValue', 'update:verified',]);
 
 const input = ref(null);
 
@@ -37,6 +37,12 @@ const focusNext = (elem) => {
       <InputLabel :for="id" :value="placeholder"/>
       <span v-if="verified==0" class="text-danger text-xs mx-1">({{ __('not_verified') }})</span>
       <span v-else-if="verified==1" class="text-success text-xs mx-1">({{ __('verified') }})</span>
+      <span v-if="admin" class="flex items-center">
+          <input id="checkbox-verify" type="checkbox" :checked="verified==1 || null"
+                 @change="$emit('update:verified', $event.target.checked ? 1:0) "
+                 class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+          <label for="checkbox-verify" class="sr-only"> </label>
+        </span>
     </div>
     <div class="relative mb-1 mt-2 flex flex-wrap items-stretch">
 

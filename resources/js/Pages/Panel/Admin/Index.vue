@@ -50,6 +50,33 @@
             </div>
 
           </Link>
+          <!-- ticket card -->
+          <Link :href="route('panel.ticket.index')" :class="cardShadow"
+                class="flex hover:scale-[101%] transition duration-300 cursor-pointer   items-center justify-around   p-4 bg-white  rounded-lg dark:bg-darker">
+            <div class="flex flex-col grow">
+              <h6 class="text-xs font-bold   py-2 tracking-wider text-gray-500 uppercase dark:text-primary-light">
+                {{ __('tickets') }}
+              </h6>
+
+              <div class="justify-around flex  ">
+                                <span v-for="(t,idx) in tickets" class="align-middle flex  flex-col text-center  ">
+                                        <span
+                                            :class="idx==0?'text-red-500':idx==1?'text-primary-500':'text-green-500'"
+                                            class="  text-xl font-semibold "> {{ t.value }}</span>
+                                        <span
+                                            :class="idx==0?'bg-red-100 text-red-500':idx==1?'bg-primary-100 text-primary-500':'bg-green-100 text-green-500'"
+                                            class="   mx-1 px-2 py-1    text-xs  rounded-md">
+                                   {{ __(t.title) }}
+                                        </span>
+                                </span>
+              </div>
+
+            </div>
+            <div class="flex">
+              <TicketIcon class="w-12 h-12 text-primary-300 dark:text-pink-50 "/>
+            </div>
+
+          </Link>
           <!-- users card -->
           <Link :href="route('panel.admin.user.index')" :class="cardShadow"
                 class="flex hover:scale-[101%] transition duration-300 cursor-pointer   items-center justify-around   p-4 bg-white  rounded-lg dark:bg-darker">
@@ -94,7 +121,7 @@
                                    {{ __('notifications') }}
                                         </span>
               </Link>
-              <Link :href="route(`panel.admin.queue.index`)"
+              <Link :href="route(`panel.admin.review.index`)"
                     class="  flex flex-col   pt-6  pb-4 items-around justify-around hover:scale-[102%]     px-1  grow text-center hover:bg-gray-100  ">
                                         <span
                                             class=" text-pink-500 text-xl font-bold "> {{
@@ -111,7 +138,7 @@
           </div>
           <!-- items card -->
           <div :class="cardShadow"
-               class="flex lg:col-span-2   cursor-pointer   items-center justify-around   bg-white  rounded-lg dark:bg-darker">
+               class="flex     cursor-pointer   items-center justify-around   bg-white  rounded-lg dark:bg-darker">
 
             <div class="  grow h-full  flex items-stretch  ">
               <Link v-for="(i,idx) in items" :href="route(`panel.${i.type}.index`)"

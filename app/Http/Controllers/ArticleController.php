@@ -10,6 +10,7 @@ use App\Http\Requests\ArticleRequest;
 use App\Models\ArticleTransaction;
 use App\Models\County;
 use App\Models\Article;
+use App\Models\Notification;
 use App\Models\Province;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -26,8 +27,12 @@ class ArticleController extends Controller
     {
 
         $data = Article::with('category')->find($site);
-
         $this->authorize('edit', [User::class, $data]);
+        $data->message = optional(Notification::firstWhere([
+                'data_id' => $data->id, 'type' => 'article_reject',]
+        ))->description;
+        if ($data->message)
+            $data->message = json_decode($data->message);
         return Inertia::render('Panel/Article/Edit', [
             'categories' => Article::categories(),
             'statuses' => Variable::STATUSES,
@@ -129,7 +134,7 @@ class ArticleController extends Controller
             foreach ($content as $idx => $item) {
                 $item = (object)$item;
                 if ($item->type && $item->type != 'text') {
-                    $tmp = DB::table("{$item->type}s")->find($item->id);
+                    $tmp = DB::table("{$item->type}s")->where('owner_id', $user->id)->find($item->id);
                     if ($tmp) {
                         $content[$idx]['value'] = $tmp->name;
                         $duration += $tmp->duration ?? 0;
@@ -142,18 +147,56 @@ class ArticleController extends Controller
 
             $content = count($content) == 0 ? null : json_encode($content);
             $request->merge([
-                'status' => 'review',
+                'status' => $user->isAdmin() ? $request->status : 'review',
 //                'is_active' => false,
                 'duration' => $duration,
                 'content' => $content,
                 'slug' => str_slug($request->title),
             ]);
+
+            if ($user->isAdmin()) {
+                $newStatus = $request->status;
+                $oldStatus = $data->status;
+                switch ($newStatus) {
+                    case 'reject':
+                        Notification::updateOrCreate([
+                            'data_id' => $data->id,],
+                            ['type' => 'article_reject', 'subject' => __('article_need_change'), 'description' => json_encode($request->message), 'owner_id' => $data->owner_id]
+                        );
+                        break;
+                    case 'active':
+                        Notification::updateOrCreate([
+                            'data_id' => $data->id,],
+                            ['type' => 'article_approve', 'subject' => __('article_approved'), 'description' => null, 'owner_id' => $data->owner_id]
+                        );
+                        if ($data->view_fee > $data->charge) {
+                            $request->status = 'need_charge';
+                            $request->merge([
+                                'status' => 'need_charge',
+                            ]);
+                        }
+
+                        break;
+                    case 'review':
+                        Notification::where('data_id', $data->id)->delete();
+                        break;
+                }
+                if ($oldStatus != $newStatus && in_array($newStatus, ['active', 'reject'])) {
+                    $owner = User::find($data->owner_id);
+                    if ($owner) {
+                        $owner->notifications++;
+                        $owner->save();
+                    }
+                }
+            }
+
+
 //            $data->name = $request->tags;
 //            $data->tags = $request->tags;
 //            dd($request->tags);
             if ($data->update($request->all())) {
 
-                $res = ['flash_status' => 'success', 'flash_message' => __('updated_successfully_and_active_after_review')];
+                $res = ['flash_status' => 'success', 'flash_message' => __($user->isAdmin() ? 'updated_successfully' : 'updated_successfully_and_active_after_review')];
 //                dd($request->all());
                 Telegram::log(null, 'article_edited', $data);
             } else    $res = ['flash_status' => 'danger', 'flash_message' => __('response_error')];
@@ -224,7 +267,7 @@ class ArticleController extends Controller
             'slug' => str_slug($request->title),
             'content' => $content,
             'duration' => $duration,
-            'status' => 'review',
+            'status' => $user->isAdmin() && $request->status ? $request->status : 'review',
         ]);
 
         $article = Article::create($request->all());

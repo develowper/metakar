@@ -45,7 +45,7 @@ class SiteRequest extends FormRequest
                     return $query->where('phone', $request->phone);
                 }),
             ],
-            'password' => 'required|regex:/^.*(?=.{6,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x]).*$/',
+            'password' => [$user ? '' : 'required', 'regex:/^.*(?=.{6,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x]).*$/'],
 
             'lang' => ['required', Rule::in(Variable::LANGS)],
             'name' => ['required', 'min:3', 'max:100', Rule::unique('sites', 'name')->ignore($this->id)],

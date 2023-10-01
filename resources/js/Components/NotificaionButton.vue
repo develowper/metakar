@@ -19,6 +19,11 @@
         class="absolute z-[99000]   p-1 start-[1rem] end-[1rem]  hidden max-h-[80vh] overflow-x-hidden overflow-y-scroll  w-[90vw]    sm:w-[20rem] list-none   rounded-lg border-none bg-white bg-clip-padding text-start text-base shadow-lg dark:bg-neutral-700 [&[data-te-dropdown-show]]:block"
         aria-labelledby="dropdownNotidicationSetting"
         data-te-dropdown-menu-ref>
+      <li class="  p-2 text-primary text-center bg-primary-100 rounded hover:bg-primary hover:text-white cursor-pointer  ">
+
+        <Link :href="route(`panel.${ this.isAdmin() ? 'admin.' : ''}notification.index`)">{{ __('see_all')}}</Link>
+
+      </li>
       <template v-if="!error">
         <li v-for="(d,idx) in data">
           <Link :class="idx>0? 'border-t':''"
@@ -31,7 +36,7 @@
                 <div class="text-gray-500 my-1">{{ d.subject }}</div>
                 <div class="text-gray-300 my-1 text-xs">{{ toShamsi(d.created_at) }}</div>
               </div>
-              <div class="text-gray-300 text-sm m-1">{{ cropText(d.description, 128) }}</div>
+              <div class="text-gray-300 text-sm m-1" v-html="getHTML(d.description)"></div>
             </div>
           </Link
           >
@@ -41,8 +46,8 @@
       >
         <ArrowPathIcon @click.prevent="getData" class="w-10   h-10 cursor-pointer hover:scale-[110%]"/>
       </li>
-
     </ul>
+
   </div>
 </template>
 
@@ -77,12 +82,20 @@ export default {
   },
   computed: {},
   methods: {
+    getHTML(desc) {
+      try {
+        desc = JSON.parse(desc);
+      } catch (e) {
+
+      }
+      return this.cropText(desc, 1024)
+    },
     createLink(data) {
       if (!data) return '';
       if (data.link) return data.link;
       if (data.data_id && data.type)
         return route('/') + "/" + data.type.split("_")[0] + "/edit/" + data.data_id;
-      return route('panel.notification.index');
+      return route(`panel.${this.isAdmin() ? 'admin.' : ''}notification.index`);
     },
     resetNotifications() {
       if (this.error)

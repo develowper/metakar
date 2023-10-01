@@ -10,6 +10,7 @@ use App\Models\DataTransaction;
 use App\Models\Notification;
 use App\Models\Podcast;
 use App\Models\Setting;
+use App\Models\Site;
 use App\Models\SiteTransaction;
 use App\Models\Ticket;
 use App\Models\Transaction;
@@ -95,36 +96,139 @@ class PanelController extends Controller
         return Inertia::render('Panel/Admin/Index', $params);
     }
 
-    public function searchMergedItems(Request $request)
+    public function searchReviewItems(Request $request)
+    {
+        $paginate = $request->paginate ?? 24;
+        $order = $request->order ?? 'updated_at';
+        $dir = $request->dir ?? 'ASC';
+        $search = $request->search;
+        $type = $request->type;
+        $owner_id = $request->owner_id;
+        $businesses = null;
+        $articles = null;
+        $banners = null;
+        $podcasts = null;
+        $videos = null;
+        $sites = null;
+
+        if (!$request->type || $type == 'banner')
+            $banners = Banner::select(array_merge(['id', 'name', 'owner_id', 'updated_at'], [DB::raw(" 'banner'" . ' as type '), DB::raw(' 0 as duration '), DB::raw("'banners' as storage")]))
+                ->where('status', 'review')
+                ->where(function ($query) use ($search, $owner_id) {
+                    if ($search)
+                        $query->where('name', 'like', "%$search%");
+                    if ($owner_id)
+                        $query->where('owner_id', $owner_id);
+                });
+        if (!$request->type || $type == 'article')
+            $articles = Article::select(array_merge(['id', DB::raw("title AS name"), 'owner_id', 'updated_at'], [DB::raw(" 'article'" . ' as type '), DB::raw(' 0 as duration '), DB::raw("'articles' as storage")]))
+                ->where('status', 'review')
+                ->where(function ($query) use ($search, $owner_id) {
+                    if ($search)
+                        $query->where('name', 'like', "%$search%");
+                    if ($owner_id)
+                        $query->where('owner_id', $owner_id);
+                });
+        if (!$request->type || $type == 'business')
+            $businesses = Business::select(array_merge(['id', 'name', 'owner_id', 'updated_at'], [DB::raw(" 'business'" . ' as type '), DB::raw(' 0 as duration '), DB::raw("'businesses' as storage")]))
+                ->where('status', 'review')
+                ->where(function ($query) use ($search, $owner_id) {
+                    if ($search)
+                        $query->where('name', 'like', "%$search%");
+                    if ($owner_id)
+                        $query->where('owner_id', $owner_id);
+                });
+
+        if (!$request->type || $type == 'podcast')
+            $podcasts = Podcast::select(array_merge(['id', 'name', 'owner_id', 'updated_at'], [DB::raw("'podcast'" . ' as type'), DB::raw('duration as duration'), DB::raw("'podcasts' as storage")]))
+                ->where('status', 'review')
+                ->where(function ($query) use ($search, $owner_id) {
+                    if ($search)
+                        $query->where('name', 'like', "%$search%");
+                    if ($owner_id)
+                        $query->where('owner_id', $owner_id);
+                });
+
+        if (!$request->type || $type == 'video')
+            $videos = Video::select(array_merge(['id', 'name', 'owner_id', 'updated_at'], [DB::raw("'video'" . ' as type'), DB::raw('duration as duration'), DB::raw("'videos' as storage")]))
+                ->where('status', 'review')
+                ->where(function ($query) use ($search, $owner_id) {
+                    if ($search)
+                        $query->where('name', 'like', "%$search%");
+                    if ($owner_id)
+                        $query->where('owner_id', $owner_id);
+                });
+        if (!$request->type || $type == 'site')
+            $sites = Site::select(array_merge(['id', 'name', 'owner_id', 'updated_at'], [DB::raw("'site'" . ' as type'), DB::raw('0 as duration'), DB::raw("'sites' as storage")]))
+                ->where('status', 'review')
+                ->where(function ($query) use ($search, $owner_id) {
+                    if ($search)
+                        $query->where('name', 'like', "%$search%");
+                    if ($owner_id)
+                        $query->where('owner_id', $owner_id);
+                });
+
+        $res = null;
+        if ($banners)
+            $res = $banners;
+        if ($podcasts)
+            if ($res) $res->union($podcasts);
+            else $res = $podcasts;
+        if ($videos)
+            if ($res) $res->union($videos);
+            else $res = $videos;
+        if ($articles)
+            if ($res) $res->union($articles);
+            else $res = $articles;
+        if ($businesses)
+            if ($res) $res->union($businesses);
+            else $res = $businesses;
+        if ($sites)
+            if ($res) $res->union($sites);
+            else $res = $sites;
+
+        if ($res)
+            return $res->orderBy($order, $dir)->paginate($paginate);
+    }
+
+    public
+    function searchMergedItems(Request $request)
     {
         $paginate = $request->paginate ?? 24;
         $order = $request->order ?? 'id';
         $dir = $request->dir ?? 'DESC';
         $search = $request->search;
         $type = $request->type;
+        $owner_id = $request->owner_id;
         $banners = null;
         $podcasts = null;
         $videos = null;
 
         if (!$request->type || $type == 'banner')
-            $banners = Banner::select(array_merge(['id', 'name',], [DB::raw(" 'banner'" . ' as type '), DB::raw(' 0 as duration '), DB::raw('"" as extra')]))
+            $banners = Banner::select(array_merge(['id', 'name', 'owner_id'], [DB::raw(" 'banner'" . ' as type '), DB::raw(' 0 as duration '), DB::raw('"" as extra')]))
                 ->where('status', 'active')
-                ->where(function ($query) use ($search) {
+                ->where(function ($query) use ($search, $owner_id) {
                     $query->where('name', 'like', "%$search%");
+                    if ($owner_id)
+                        $query->where('owner_id', $owner_id);
                 });
 
         if (!$request->type || $type == 'podcast')
-            $podcasts = Podcast::select(array_merge(['id', 'name',], [DB::raw("'podcast'" . ' as type'), DB::raw('duration as duration'), DB::raw('"" as extra')]))
+            $podcasts = Podcast::select(array_merge(['id', 'name', 'owner_id'], [DB::raw("'podcast'" . ' as type'), DB::raw('duration as duration'), DB::raw('"" as extra')]))
                 ->where('status', 'active')
-                ->where(function ($query) use ($search) {
+                ->where(function ($query) use ($search, $owner_id) {
                     $query->where('name', 'like', "%$search%");
+                    if ($owner_id)
+                        $query->where('owner_id', $owner_id);
                 });
 
         if (!$request->type || $type == 'video')
-            $videos = Video::select(array_merge(['id', 'name'], [DB::raw("'video'" . ' as type'), DB::raw('duration as duration'), DB::raw('"" as extra')]))
+            $videos = Video::select(array_merge(['id', 'name', 'owner_id'], [DB::raw("'video'" . ' as type'), DB::raw('duration as duration'), DB::raw('"" as extra')]))
                 ->where('status', 'active')
-                ->where(function ($query) use ($search) {
+                ->where(function ($query) use ($search, $owner_id) {
                     $query->where('name', 'like', "%$search%");
+                    if ($owner_id)
+                        $query->where('owner_id', $owner_id);
                 });
 
         $res = null;
@@ -139,7 +243,8 @@ class PanelController extends Controller
             return $res->orderBy($order, $dir)->paginate($paginate);
     }
 
-    public function ownedItemsCount($ownerId, $type = null)
+    public
+    function ownedItemsCount($ownerId, $type = null)
     {
 
         if (!$type || $type == 'business')
@@ -192,7 +297,8 @@ class PanelController extends Controller
             return $res->groupBy('type')->get();
     }
 
-    public function queueItemsCount()
+    public
+    function queueItemsCount()
     {
         $countAll = 0;
         $countAll += Business::where('status', 'review')->count();
@@ -203,7 +309,8 @@ class PanelController extends Controller
         return $countAll;
     }
 
-    public function chartLogs(Request $request)
+    public
+    function chartLogs(Request $request)
     {
         $user = auth()->user();
         $user_id = $request->user_id;

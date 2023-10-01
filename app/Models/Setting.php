@@ -21,8 +21,8 @@ class Setting extends Model
     public static function getValue(string $key)
     {
 
-        $val = Setting::where(['key' => $key, 'lang' => app()->getLocale()])->firstOrNew()->value;
-        if (!$val)
+//        $val = Setting::where(['key' => $key, 'lang' => app()->getLocale()])->firstOrNew()->value;
+//        if (!$val)
             $val = Setting::where(['key' => $key,])->firstOrNew()->value;
         return $val;
     }

@@ -13,8 +13,10 @@ use App\Http\Controllers\PanelController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PodcastController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\SiteController;
 use App\Http\Controllers\TicketController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\VideoController;
 use App\Http\Helpers\Pay;
 use App\Http\Helpers\SMSHelper;
@@ -26,6 +28,7 @@ use App\Models\Banner;
 use App\Models\Business;
 use App\Models\Category;
 use App\Models\County;
+use App\Models\Notification;
 use App\Models\Podcast;
 use App\Models\Province;
 use App\Models\Setting;
@@ -51,6 +54,8 @@ use Inertia\Inertia;
 |
 */
 Route::get('test', function () {
+
+    return;
     return \Illuminate\Support\Facades\Artisan::call('store:transactions');
     return (new ArticleController())->search(new Request([]));
     return;
@@ -168,8 +173,6 @@ Route::middleware(['auth', 'verified'])->prefix('panel')->group(function ($route
         ]
     );
 
-    PanelController::makeInertiaRoute('get', 'auction/index', 'panel.auction.index', 'Panel/Auction/Index');
-    PanelController::makeInertiaRoute('get', 'auction/create', 'panel.auction.create', 'Panel/Auction/Create');
     PanelController::makeInertiaRoute('get', 'ticket/index', 'panel.ticket.index', 'Panel/Ticket/Index',
         [
             'statuses' => Variable::TICKET_STATUSES
@@ -179,6 +182,10 @@ Route::middleware(['auth', 'verified'])->prefix('panel')->group(function ($route
         [
             'attachment_allowed_mimes' => implode(',.', Variable::TICKET_ATTACHMENT_ALLOWED_MIMES),
         ]);
+
+    PanelController::makeInertiaRoute('get', 'auction/index', 'panel.auction.index', 'Panel/Auction/Index');
+    PanelController::makeInertiaRoute('get', 'auction/create', 'panel.auction.create', 'Panel/Auction/Create');
+
     PanelController::makeInertiaRoute('get', 'transaction/index', 'panel.financial.transaction.index', 'Panel/Financial/Transaction/Index');
 
     PanelController::makeInertiaRoute('get', 'profile/edit', 'panel.profile.edit', 'Panel/Profile/Edit',
@@ -189,6 +196,8 @@ Route::middleware(['auth', 'verified'])->prefix('panel')->group(function ($route
         [
 
         ]);
+
+    /**  Admin Panel **/
     Route::middleware(['can:create,App\Models\User,App\Models\User,""',])->prefix('admin')->group(function ($route) {
 
         Route::get('', [PanelController::class, 'admin'])->name('panel.admin.index');
@@ -204,10 +213,40 @@ Route::middleware(['auth', 'verified'])->prefix('panel')->group(function ($route
             [
 
             ]);
-        PanelController::makeInertiaRoute('get', 'queue/index', 'panel.admin.queue.index', 'Panel/Admin/Queue/Index',
+        PanelController::makeInertiaRoute('get', 'notification/create', 'panel.admin.notification.create', 'Panel/Admin/Notification/Create',
             [
 
             ]);
+        PanelController::makeInertiaRoute('get', 'review/index', 'panel.admin.review.index', 'Panel/Admin/Review/Index',
+            [
+
+            ]);
+        PanelController::makeInertiaRoute('get', 'ticket/index', 'panel.admin.ticket.index', 'Panel/Ticket/Index',
+            [
+                'statuses' => Variable::TICKET_STATUSES
+
+            ]);
+        PanelController::makeInertiaRoute('get', 'ticket/create', 'panel.admin.ticket.create', 'Panel/Ticket/Create',
+            [
+                'attachment_allowed_mimes' => implode(',.', Variable::TICKET_ATTACHMENT_ALLOWED_MIMES),
+            ]);
+
+        Route::get('setting/search', [SettingController::class, 'searchPanel'])->name('panel.admin.setting.search');
+        Route::patch('setting/update', [SettingController::class, 'update'])->name('panel.admin.setting.update');
+        Route::delete('setting/delete/{setting}', [SettingController::class, 'delete'])->name('panel.admin.setting.delete');
+        Route::get('user/search', [UserController::class, 'searchPanel'])->name('panel.admin.user.search');
+        Route::get('user/create', [UserController::class, 'new'])->name('panel.admin.user.new');
+        Route::post('user/create', [UserController::class, 'create'])->name('panel.admin.user.create');
+        Route::get('user/edit/{site}', [UserController::class, 'edit'])->name('panel.admin.user.edit');
+        Route::patch('user/update', [UserController::class, 'update'])->name('panel.admin.user.update');
+        Route::get('review/search', [PanelController::class, 'searchReviewItems'])->name('panel.admin.review.search');
+        Route::get('ticket/{ticket}', [TicketController::class, 'edit'])->name('panel.admin.ticket.edit');
+        Route::patch('ticket/update', [TicketController::class, 'update'])->name('panel.admin.ticket.update');
+        Route::post('ticket/create', [TicketController::class, 'create'])->name('panel.admin.ticket.create');
+        Route::get('notification/{notification}', [NotificationController::class, 'edit'])->name('panel.admin.notification.edit');
+        Route::patch('notification/update', [NotificationController::class, 'update'])->name('panel.admin.notification.update');
+        Route::post('notification/create', [NotificationController::class, 'create'])->name('panel.admin.notification.create');
+
 
     });
 });

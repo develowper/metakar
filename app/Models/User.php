@@ -7,6 +7,7 @@ use App\Http\Helpers\Util;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 use Laravel\Sanctum\HasApiTokens;
 use function App\Helpers\randomString;
 
@@ -87,4 +88,11 @@ class User extends Authenticatable
         }
         return $ref;
     }
+
+    public function isAdmin()
+    {
+        return in_array($this->role, ['go', 'ad',]);
+    }
+
+
 }

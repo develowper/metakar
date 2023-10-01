@@ -12,14 +12,17 @@
           class="flex items-center justify-between px-4 py-2 text-primary-500 border-b md:py-4 dark:border-primary-darker">
         <div class="flex">
           <Bars2Icon class="h-7 w-7 mx-3"/>
-          <h1 class="text-2xl font-semibold">{{ __('articles_list') }}</h1>
+          <h1 class="text-2xl font-semibold">{{ __('settings') }}</h1>
         </div>
         <div>
-          <Link :href="route('panel.article.create')"
-                class="inline-flex items-center  justify-center px-4 py-2 bg-green-500 border border-transparent rounded-md font-semibold  transition-all duration-500 text-white     hover:bg-green-600 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150"
+          <button @click="params.id=null;params.key=null;params.value=null;modal.show()"
+                  data-te-toggle="modal"
+                  data-te-target="#settingModal"
+                  data-te-ripple-init
+                  class="inline-flex items-center  justify-center px-4 py-2 bg-green-500 border border-transparent rounded-md font-semibold  transition-all duration-500 text-white     hover:bg-green-600 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150"
           >
-            {{ __('new_article') }}
-          </Link>
+            {{ __('new_setting') }}
+          </button>
         </div>
       </div>
       <!-- Content -->
@@ -121,7 +124,7 @@
                   class="px-2 py-3   cursor-pointer duration-300 hover:text-gray-500 hover:scale-[105%]"
                   @click="params.order_by='title';params.dir=params.dir=='ASC'? 'DESC':'ASC'; params.page=1;getData()">
                 <div class="flex items-center justify-center">
-                  <span class="px-2">  {{ __('title') }}</span>
+                  <span class="px-2">  {{ __('key') }}</span>
                   <ArrowsUpDownIcon class="w-4 h-4 "/>
                 </div>
               </th>
@@ -130,55 +133,11 @@
                   class="px-2 py-3   cursor-pointer duration-300 hover:text-gray-500 hover:scale-[105%]"
                   @click="params.order_by='view';params.dir=params.dir=='ASC'? 'DESC':'ASC'; params.page=1;getData()">
                 <div class="flex items-center justify-center">
-                  <span class="px-2">    {{ __('view') }} </span>
+                  <span class="px-2">    {{ __('value') }} </span>
                   <ArrowsUpDownIcon class="w-4 h-4 "/>
                 </div>
               </th>
 
-              <th v-if="hasWallet()" scope="col"
-                  class="px-2 py-3   cursor-pointer duration-300 hover:text-gray-500 hover:scale-[105%]"
-                  @click="params.order_by='view_fee';params.dir=params.dir=='ASC'? 'DESC':'ASC'; params.page=1;getData()">
-                <div class="flex items-center justify-center">
-                  <Tooltip class="p-2 " :content="__('help_view_fee')">
-                    <span class="px-2">    {{ __('view_fee') }} </span>
-                  </Tooltip>
-                  <ArrowsUpDownIcon class="w-4 h-4 "/>
-
-                </div>
-              </th>
-              <th scope="col"
-                  class="px-2 py-3   cursor-pointer duration-300 hover:text-gray-500 hover:scale-[105%]"
-                  @click="params.order_by='status';params.dir=params.dir=='ASC'? 'DESC':'ASC'; params.page=1;getData()">
-                <div class="flex items-center justify-center">
-                  <span class="px-2">    {{ __('status') }} </span>
-                  <ArrowsUpDownIcon class="w-4 h-4 "/>
-                </div>
-              </th>
-              <th scope="col" v-if="hasWallet()"
-                  class="px-2 py-3   cursor-pointer duration-300 hover:text-gray-500 hover:scale-[105%]"
-                  @click="params.order_by='charge';params.dir=params.dir=='ASC'? 'DESC':'ASC'; params.page=1;getData()">
-                <div class="flex items-center justify-center">
-                  <span class="px-2">    {{ __('charge') }}  </span>
-                  <ArrowsUpDownIcon class="w-4 h-4 "/>
-                </div>
-              </th>
-              <th v-if="false" scope="col"
-                  class="px-2 py-3   cursor-pointer duration-300 hover:text-gray-500 hover:scale-[105%]"
-                  @click="params.order_by='meta';params.dir=params.dir=='ASC'? 'DESC':'ASC'; params.page=1;getData()">
-                <div class="flex items-center justify-center">
-                  <span class="px-2">    {{ __('meta_charge') }}  </span>
-                  <ArrowsUpDownIcon class="w-4 h-4 "/>
-                </div>
-              </th>
-
-              <th scope="col"
-                  class="px-2 py-3   cursor-pointer duration-300 hover:text-gray-500 hover:scale-[105%]"
-                  @click="params.order_by='category_id';params.dir=params.dir=='ASC'? 'DESC':'ASC'; params.page=1;getData()">
-                <div class="flex items-center justify-center">
-                  <span class="px-2">   {{ __('category') }}</span>
-                  <ArrowsUpDownIcon class="w-4 h-4 "/>
-                </div>
-              </th>
 
               <th scope="col" class="px-2 py-3">
                 {{ __('actions') }}
@@ -247,209 +206,35 @@
               </td>
               <td
                   class="flex  items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                <Image class="w-10 h-10 rounded-full" :src="`${route('storage.articles')}/${d.id}.jpg`"
-                       :alt="cropText(d.title,5)"/>
-                <Link class="px-3 hover:text-gray-500" :href="route('panel.article.edit',d.id)">
-                  <div class="text-base font-semibold">{{ cropText(d.title, 30) }}</div>
-                  <div class="font-normal text-gray-500">{{ }}</div>
-                </Link>
+
+                {{ d.key }}
               </td>
 
               <td class="px-2 py-4">
-                {{ d.view }}
+                {{ d.value }}
               </td>
 
-              <td v-if="hasWallet()"
-                  class="px-2 py-4    " data-te-dropdown-ref>
-                <button
-                    id="dropdownViewFee"
-                    data-te-dropdown-toggle-ref
-                    aria-expanded="false"
-                    data-te-ripple-init
-                    data-te-ripple-color="light"
-                    class="  min-w-[5rem] bg-gray-100 hover:bg-gray-200 px-1 cursor-pointer items-center text-center rounded-md py-[.2rem]"
-                    :class="`bg-primary-100 hover:bg-primary-200 text-primary-500`"
-                >
-                  {{ asPrice(d.view_fee) }}
-                </button>
-                <ul ref="dropdownViewFeeMenu" data-te-dropdown-menu-ref
-                    class="p-4  absolute z-[1000]    hidden   list-none overflow-hidden rounded-lg border-none bg-white bg-clip-padding text-center text-base shadow-lg dark:bg-neutral-700 [&[data-te-dropdown-show]]:block"
-                    tabindex="-1" role="menu" aria-orientation="vertical" aria-label="User menu"
-                    aria-labelledby="dropdownViewFee">
-                  <li v-if="d.status!='block'"
-                      class="   text-sm  ">
-                    <span class="text-xs py-2 text-danger-500">{{ __('help_view_fee') }}</span>
-                    <div class="flex items-center ">
-                      <input @keydown.enter="edit({'idx':idx,'id':d.id,'cmnd':'view-fee','view_fee':d.view_fee})"
-                             type="number" min="0" class="grow my-2  p-1 rounded-lg border-gray-400"
-                             v-model="d.view_fee">
-                      <span class="text-xs ms-1 font-light text-gray-400">{{ __('currency') }}</span>
-                    </div>
-                  </li>
-
-                  <li v-if="d.status!='block'">
-                    <button class="bg-success-100 text-success-700 p-2 rounded-lg  hover:bg-success-50 w-full"
-                            @click="edit({'idx':idx,'id':d.id,'cmnd':'view-fee','view_fee':d.view_fee})">
-                      {{ __('reg') }}
-                    </button>
-                  </li>
-                  <li v-if="  d.status=='block'  " role="menuitem"
-                      class="   cursor-pointer   text-sm text-gray-700 transition-colors hover:bg-gray-100 dark:text-light dark:hover:bg-primary">
-                    <div class="flex items-center  px-6 py-2 justify-between ">
-                      <span>{{ __('not_available') }}</span>
-                    </div>
-                    <hr class="border-gray-200 dark:border-gray-700 ">
-                  </li>
-
-                </ul>
-              </td>
-              <td class="px-2 py-4    " data-te-dropdown-ref>
-                <button
-                    id="dropdownStatusSetting"
-                    data-te-dropdown-toggle-ref
-                    aria-expanded="false"
-                    data-te-ripple-init
-                    data-te-ripple-color="light"
-                    class="  min-w-[5rem]  px-1 cursor-pointer items-center text-center rounded-md py-[.2rem]"
-                    :class="`bg-${getStatus('article', d.status).color}-100 hover:bg-${getStatus('article', d.status).color}-200 text-${getStatus('article', d.status).color}-500`">
-                  {{ getStatus('article', d.status).name }}
-                </button>
-                <ul ref="statusMenu" data-te-dropdown-menu-ref
-                    class="  absolute z-[1000]   m-0 hidden   list-none overflow-hidden rounded-lg border-none bg-white bg-clip-padding text-center text-base shadow-lg dark:bg-neutral-700 [&[data-te-dropdown-show]]:block"
-                    tabindex="-1" role="menu" aria-orientation="vertical" aria-label="User menu"
-                    aria-labelledby="dropdownStatusSetting">
-
-                  <li v-if="d.status=='active'  " role="menuitem"
-                      @click="edit({'idx':idx,'id':d.id,'cmnd':'inactive'})"
-                      class="   cursor-pointer   text-sm   transition-colors hover:bg-gray-100 dark:text-light dark:hover:bg-primary">
-                    <div class="flex items-center text-danger  px-6 py-2 justify-between ">
-                      <span class="bg-danger mx-1  animate-pulse px-1 py-1 rounded "></span>
-                      {{ __('inactive') }}
-                    </div>
-                    <hr class="border-gray-200 dark:border-gray-700 ">
-                  </li>
-                  <li v-if="d.status=='review' || d.status=='block'  " role="menuitem"
-                      class="   cursor-pointer   text-sm text-gray-700 transition-colors hover:bg-gray-100 dark:text-light dark:hover:bg-primary">
-                    <div class="flex items-center  px-6 py-2 justify-between ">
-                      <span v-if="d.status=='review'">{{ __('active_after_review') }}</span>
-                      <span v-if="d.status=='block'">{{ __('not_available') }}</span>
-                    </div>
-                    <hr class="border-gray-200 dark:border-gray-700 ">
-                  </li>
-                  <li v-if="d.status=='inactive'  " role="menuitem"
-                      @click="edit({'idx':idx,'id':d.id,'cmnd':'activate'})"
-                      class="   cursor-pointer   text-sm text-primary-700 transition-colors hover:bg-gray-100 dark:text-light dark:hover:bg-primary">
-                    <div class="flex items-center  px-6 py-2 justify-between ">
-                      {{ __('activate') }}
-                    </div>
-                    <hr class="border-gray-200 dark:border-gray-700 ">
-                  </li>
-                </ul>
-              </td>
-              <td v-if="hasWallet()"
-                  class="px-2 py-4    " data-te-dropdown-ref>
-                <button
-                    id="dropdownViewCharge"
-                    data-te-dropdown-toggle-ref
-                    aria-expanded="false"
-                    data-te-ripple-init
-                    data-te-ripple-color="light"
-                    class="  min-w-[5rem]  bg-gray-100 hover:bg-gray-200  px-1 cursor-pointer items-center text-center rounded-md py-[.2rem]"
-                    :class="`bg-${getStatus('article', d.status).color}-100 hover:bg-${getStatus('article', d.status).color}-200 text-${getStatus('article', d.status).color}-500`"
-                >
-                  {{ asPrice(d.charge) }}
-                </button>
-                <ul ref="dropdownViewChargeMenu" data-te-dropdown-menu-ref
-                    class="  absolute z-[1000]   p-4  hidden   list-none overflow-hidden rounded-lg border-none bg-white bg-clip-padding text-center text-base shadow-lg dark:bg-neutral-700 [&[data-te-dropdown-show]]:block"
-                    tabindex="-1" role="menu" aria-orientation="vertical" aria-label="User menu"
-                    aria-labelledby="dropdownViewCharge">
-                  <li v-if="d.status!='block'"
-                      class="     text-sm flex flex-col">
-                    <span class="text-xs py-3 text-danger-500">{{ __('will_subtract_from_wallet') }}</span>
-                    <div class="flex items-center">
-                      <input @keydown.enter="edit({'idx':idx,'id':d.id,'cmnd':'charge','charge':d.charge})"
-                             type="number" min="0" class="grow my-2  p-1 rounded-lg border-gray-400" v-model="d.charge">
-                      <span class="text-xs ms-1 font-light text-gray-400">{{ __('currency') }}</span>
-                    </div>
-                  </li>
-
-                  <li v-if="d.status!='block'">
-                    <button class="bg-success-100 text-success-700 p-2 rounded-lg  hover:bg-success-50 w-full"
-                            @click="edit({'idx':idx,'id':d.id,'cmnd':'charge','charge':d.charge})">
-                      {{ __('charge') }}
-                    </button>
-                  </li>
-                  <li v-if="  d.status=='block'  " role="menuitem"
-                      class="   cursor-pointer   text-sm text-gray-700 transition-colors hover:bg-gray-100 dark:text-light dark:hover:bg-primary">
-                    <div class="flex items-center  px-6 py-2 justify-between ">
-                      <span>{{ __('not_available') }}</span>
-                    </div>
-                    <hr class="border-gray-200 dark:border-gray-700 ">
-                  </li>
-
-                </ul>
-              </td>
-              <td v-if="false"
-                  class="px-2 py-4    " data-te-dropdown-ref>
-                <button
-                    id="dropdownViewCharge"
-                    data-te-dropdown-toggle-ref
-                    aria-expanded="false"
-                    data-te-ripple-init
-                    data-te-ripple-color="light"
-                    class="  min-w-[5rem]  px-1 cursor-pointer items-center text-center rounded-md py-[.2rem]"
-                >
-                  {{ asPrice(d.meta) }}
-                </button>
-                <ul ref="dropdownViewChargeMenu" data-te-dropdown-menu-ref
-                    class="  absolute z-[1000]   p-4  hidden   list-none overflow-hidden rounded-lg border-none bg-white bg-clip-padding text-center text-base shadow-lg dark:bg-neutral-700 [&[data-te-dropdown-show]]:block"
-                    tabindex="-1" role="menu" aria-orientation="vertical" aria-label="User menu"
-                    aria-labelledby="dropdownViewCharge">
-                  <li v-if="d.status!='block'"
-                      class="     text-sm flex flex-col">
-                    <span class="text-xs py-3 text-danger-500">{{ __('will_subtract_from_meta') }}</span>
-                    <div class="flex items-center">
-                      <input @keydown.enter="edit({'idx':idx,'id':d.id,'cmnd':'meta','meta':d.meta})"
-                             type="number" min="0" class="grow my-2  p-1 rounded-lg border-gray-400" v-model="d.meta">
-
-                    </div>
-                  </li>
-
-                  <li v-if="d.status!='block'">
-                    <button class="bg-success-100 text-success-700 p-2 rounded-lg  hover:bg-success-50 w-full"
-                            @click="edit({'idx':idx,'id':d.id,'cmnd':'meta','meta':d.meta})">
-                      {{ __('charge') }}
-                    </button>
-                  </li>
-                  <li v-if="  d.status=='block'  " role="menuitem"
-                      class="   cursor-pointer   text-sm text-gray-700 transition-colors hover:bg-gray-100 dark:text-light dark:hover:bg-primary">
-                    <div class="flex items-center  px-6 py-2 justify-between ">
-                      <span>{{ __('not_available') }}</span>
-                    </div>
-                    <hr class="border-gray-200 dark:border-gray-700 ">
-                  </li>
-
-                </ul>
-              </td>
-
-              <td class="px-2 py-4 ">
-                <div>
-                  {{ getCategory(d.category_id) }}
-                </div>
-              </td>
 
               <td class="px-2 py-4">
                 <!-- Actions Group -->
                 <div
                     class=" inline-flex rounded-md shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
                     role="group">
-                  <Link
-                      type="button" :href="route('panel.article.edit',d.id)"
-                      class="inline-block rounded  bg-orange-500 text-white px-6  py-2 text-xs font-medium uppercase leading-normal text-white transition duration-150 ease-in-out hover:bg-orange-400   focus:outline-none focus:ring-0  "
-                      data-te-ripple-init
-                      data-te-ripple-color="light">
+                  <button @click="params.id=d.id;params.key=d.key;params.value=d.value; modal.show()"
+                          data-te-toggle="modal"
+                          data-te-target="#settingModal"
+                          data-te-ripple-init
+                          class="inline-flex items-center rounded-s  justify-center px-4 py-2 bg-orange-500 border border-transparent    transition-all duration-500 text-white     hover:bg-orange-400 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150"
+                  >
                     {{ __('edit') }}
-                  </Link>
+                  </button>
+                  <button @click=" showDialog('danger',__('remove_item?'), __('remove') , removeData,d.id )"
+                          type="button"
+                          class="inline-block rounded-e  bg-red-500 text-white px-6  py-2 text-xs font-medium uppercase leading-normal text-white transition duration-150 ease-in-out hover:bg-red-400   focus:outline-none focus:ring-0  "
+                          data-te-ripple-init
+                          data-te-ripple-color="light">
+                    {{ __('remove') }}
+                  </button>
 
                   <!--                  <button -->
                   <!--                      type="button"-->
@@ -468,6 +253,144 @@
         </div>
 
       </div>
+
+      <!-- Modal -->
+      <div
+          data-te-modal-init
+          class="fixed left-0 top-0 backdrop-blur z-[1055] hidden h-full w-full overflow-y-auto overflow-x-hidden outline-none"
+          id="settingModal"
+          tabindex="-1"
+          aria-labelledby="settingModalLabel"
+          aria-hidden="true">
+        <div
+            data-te-modal-dialog-ref
+            class="pointer-events-none relative w-auto translate-y-[-50px] opacity-0 transition-all duration-300 ease-in-out min-[576px]:mx-auto min-[576px]:mt-7 px-2 sm:px-4 md:px8 min-[576px]:max-w-5xl">
+          <div
+              class="min-[576px]:shadow-[0_0.5rem_1rem_rgba(#000, 0.15)] pointer-events-auto relative flex w-full flex-col rounded-md border-none bg-white bg-clip-padding text-current shadow-lg outline-none dark:bg-neutral-600">
+            <div
+                class="flex flex-shrink-0 items-center justify-between rounded-t-md border-b-2 border-neutral-100 border-opacity-100 p-4 dark:border-opacity-50">
+              <!--Modal title-->
+              <h5
+                  class="text-xl font-medium leading-normal text-neutral-800 dark:text-neutral-200"
+                  id="settingModalLabel">
+
+              </h5>
+              <!--Close button-->
+              <button
+                  :class="`text-danger`"
+                  type="button"
+                  class="box-content rounded-none border-none hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none"
+                  data-te-modal-dismiss
+                  aria-label="Close">
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    class="h-6 w-6">
+                  <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+              </button>
+            </div>
+
+            <!--Modal body-->
+            <div class="relative flex-auto p-4" data-te-modal-body-ref>
+              <div
+                  class="flex items-center justify-start px-4 py-2 text-primary-500 border-b md:py-4 dark:border-primary-darker">
+                <FolderPlusIcon class="h-7 w-7 mx-3"/>
+
+                <h1 class="text-2xl font-semibold">{{ __('new_setting') }}</h1>
+
+              </div>
+
+
+              <div class="px-2  md:px-4">
+
+                <div
+                    class="    mx-auto md:max-w-3xl   mt-6 px-2 md:px-4 py-4   overflow-hidden  rounded-lg  ">
+
+
+                  <div
+                      class="flex flex-col mx-2   col-span-2 w-full     px-2"
+                  >
+
+                    <form @submit.prevent="addEditData">
+
+
+                      <div class="my-2">
+                        <TextInput
+                            id="key"
+                            type="text"
+                            :placeholder="__('key')"
+                            classes="  "
+                            v-model="params.key"
+                            autocomplete="key"
+                            :error="params.errors.key"
+                        >
+                          <template v-slot:prepend>
+                            <div class="p-3">
+                              <Bars2Icon class="h-5 w-5"/>
+                            </div>
+                          </template>
+
+                        </TextInput>
+                      </div>
+
+                      <div class="my-2">
+                        <TextInput
+                            id="value"
+                            type="text"
+                            :placeholder="__('value')"
+                            classes="  "
+                            v-model="params.value"
+                            autocomplete="value"
+                            :error="params.errors.value"
+                        >
+                          <template v-slot:prepend>
+                            <div class="p-3">
+                              <Bars2Icon class="h-5 w-5"/>
+                            </div>
+                          </template>
+
+                        </TextInput>
+                      </div>
+
+                      <div v-if="loading" class="shadow w-full bg-grey-light m-2   bg-gray-200 rounded-full">
+                        <div
+                            class=" bg-primary rounded  text-xs leading-none py-[.1rem] text-center text-white duration-300 "
+                            :class="{' animate-pulse': loading}"
+                            :style="`width: 100%`">
+                        </div>
+                      </div>
+
+                      <div class="    mt-4">
+
+                        <PrimaryButton class="w-full  "
+                                       :class="{ 'opacity-25': loading}"
+                                       :disabled="loading">
+                          <LoadingIcon class="w-4 h-4 mx-3 " v-if="  loading"/>
+                          <span class=" text-lg  ">  {{ __('register_info') }}</span>
+                        </PrimaryButton>
+
+                      </div>
+
+                    </form>
+                  </div>
+
+
+                </div>
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+      </div>
+
     </template>
 
 
@@ -486,10 +409,16 @@ import {
   HomeIcon,
   XMarkIcon,
   ArrowsUpDownIcon,
+  FolderPlusIcon,
+  PlusIcon,
 
 } from "@heroicons/vue/24/outline";
 import Image from "@/Components/Image.vue"
 import Tooltip from "@/Components/Tooltip.vue"
+import LoadingIcon from "@/Components/LoadingIcon.vue"
+import {Modal} from "tw-elements";
+import TextInput from "@/Components/TextInput.vue";
+import PrimaryButton from "@/Components/PrimaryButton.vue";
 
 export default {
   data() {
@@ -500,15 +429,21 @@ export default {
         paginate: this.$page.props.pageItems[0],
         order_by: null,
         dir: 'DESC',
+        id: null,
+        key: null,
+        value: null,
+        errors: {},
       },
       data: [],
       pagination: {},
       toggleSelect: false,
       loading: false,
       error: null,
+      selected: null,
     }
   },
   components: {
+    TextInput,
     Head,
     Link,
     HomeIcon,
@@ -521,11 +456,16 @@ export default {
     Pagination,
     ArrowsUpDownIcon,
     Tooltip,
+    LoadingIcon,
+    FolderPlusIcon,
+    PlusIcon,
+    PrimaryButton,
   },
   mounted() {
 
     this.getData();
-
+    const modalEl = document.getElementById('settingModal');
+    this.modal = new Modal(modalEl);
     // this.showDialog('danger', 'message',()=>{});
     // this.isLoading(false);
   },
@@ -534,36 +474,9 @@ export default {
 
       this.loading = true;
       this.data = [];
-      window.axios.get(route('panel.article.search'), {
+      window.axios.get(route('panel.admin.setting.search'), {
         params: this.params
-      }, {
-        onUploadProgress: function (axiosProgressEvent) {
-          console.log(axiosProgressEvent);
-          /*{
-            loaded: number;
-            total?: number;
-            progress?: number; // in range [0..1]
-            bytes: number; // how many bytes have been transferred since the last trigger (delta)
-            estimated?: number; // estimated time in seconds
-            rate?: number; // upload speed in bytes
-            upload: true; // upload sign
-          }*/
-        },
-
-        onDownloadProgress: function (axiosProgressEvent) {
-          console.log(axiosProgressEvent);
-
-          /*{
-            loaded: number;
-            total?: number;
-            progress?: number;
-            bytes: number;
-            estimated?: number;
-            rate?: number; // download speed in bytes
-            download: true; // download sign
-          }*/
-        }
-      })
+      }, {})
           .then((response) => {
             this.data = response.data.data;
             this.data.forEach(el => {
@@ -609,77 +522,61 @@ export default {
         e.selected = this.toggleSelect;
       });
     },
-    edit(params) {
-      this.isLoading(true);
-      window.axios.patch(route('article.update'), params,
-          {
-            onUploadProgress: function (axiosProgressEvent) {
-              // console.log(axiosProgressEvent);
-              /*{
-                loaded: number;
-                total?: number;
-                progress?: number; // in range [0..1]
-                bytes: number; // how many bytes have been transferred since the last trigger (delta)
-                estimated?: number; // estimated time in seconds
-                rate?: number; // upload speed in bytes
-                upload: true; // upload sign
-              }*/
-            },
-
-            onDownloadProgress: function (axiosProgressEvent) {
-              // console.log(axiosProgressEvent);
-
-              /*{
-                loaded: number;
-                total?: number;
-                progress?: number;
-                bytes: number;
-                estimated?: number;
-                rate?: number; // download speed in bytes
-                download: true; // download sign
-              }*/
-            }
-          })
+    addEditData() {
+      this.loading = true;
+      window.axios.patch(route('panel.admin.setting.update'), this.params,
+          {})
           .then((response) => {
             if (response.data && response.data.message) {
+              this.modal.hide();
               this.showToast('success', response.data.message);
+              this.params.page = 1;
+              this.getData();
 
             }
-            if (response.data.charge) {
-              this.data[params.idx].charge = response.data.charge;
-              this.user.wallet = response.data.wallet;
-            }
-            if (response.data.status) {
-              this.data[params.idx].status = response.data.status;
-            }
-            if (response.data.view_fee) {
-              this.data[params.idx].view_fee = response.data.view_fee;
-            }
-            if (response.data.meta) {
-              this.data[params.idx].meta = response.data.meta;
-              this.user.meta_wallet = response.data.meta_wallet;
-            }
+
 
           })
 
           .catch((error) => {
             this.error = this.getErrors(error);
             if (error.response && error.response.data) {
-              if (error.response.data.charge) {
-                this.data[params.idx].charge = error.response.data.charge;
-              }
-              if (error.response.data.view_fee) {
-                this.data[params.idx].view_fee = error.response.data.view_fee;
-              }
-              if (error.response.data.meta) {
-                this.data[params.idx].meta = error.response.data.meta;
-              }
+
+
             }
             this.showToast('danger', this.error);
           })
           .finally(() => {
             // always executed
-            this.isLoading(false);
+            this.loading = false;
+          });
+    },
+    removeData(id) {
+      this.loading = true;
+      window.axios.delete(route('panel.admin.setting.delete', id), {},
+          {})
+          .then((response) => {
+            if (response.data && response.data.message) {
+              this.showToast('success', response.data.message);
+              this.params.page = 1;
+              this.getData();
+
+            }
+
+
+          })
+
+          .catch((error) => {
+            this.error = this.getErrors(error);
+            if (error.response && error.response.data) {
+
+
+            }
+            this.showToast('danger', this.error);
+          })
+          .finally(() => {
+            // always executed
+            this.loading = false;
           });
     },
     paginationChanged(data) {

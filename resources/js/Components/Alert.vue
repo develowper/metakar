@@ -48,10 +48,14 @@ export default {
   props: [],
   methods: {
     show(status, message) {
-      this.showing = true;
       this.status = status;
       this.message = message;
-      window.Alert.show();
+      if (message && message != undefined) {
+        this.showing = true;
+        this.$nextTick(() => {
+          window.Alert.show();
+        });
+      }
 
     },
     hide() {

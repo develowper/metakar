@@ -52,7 +52,6 @@ window.onload = (event) => {
     } catch (_) {
     }
 
-
 }
 
 window.tailwindElements = () => {
@@ -90,6 +89,7 @@ window.tailwindElements = () => {
         window.Toast = Toast.getInstance(toastEl);
     if (modalEl)
         window.Modal = new Modal(modalEl);
+
     if (sideNavEl) {
 
         window.Sidenav = Sidenav.getInstance(sideNavEl);
@@ -110,13 +110,16 @@ window.initSidenav = () => {
         }
 
         innerWidth = window.innerWidth;
+        // console.log(window.Sidenav);
         if (!window.Sidenav) return;
 
         if (window.innerWidth < window.Sidenav.getBreakpoint("md")) {
             window.Sidenav.changeMode("over");
+            // console.log('hide');
             window.Sidenav.hide();
         } else {
             window.Sidenav.changeMode("side");
+            // console.log('show');
             window.Sidenav.show();
         }
     };

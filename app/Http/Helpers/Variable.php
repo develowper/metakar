@@ -86,7 +86,6 @@ class Variable
         "podcast_approve",
         "podcast_reject",
         "pay",
-        "ticket_answer",
 
     ];
     const DATA_TYPES = [

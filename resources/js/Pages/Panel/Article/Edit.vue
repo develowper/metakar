@@ -22,6 +22,27 @@
         <div
             class="    mx-auto md:max-w-5xl   mt-6 px-2 md:px-4 py-4 bg-white shadow-md overflow-hidden  rounded-lg  ">
 
+          <div v-if="isAdmin()" class="border bg-sky-50 border-dashed rounded p-4">
+            <p class="border-b text-md w-fit flex mx-auto mb-2 text-primary font-bold ">{{ __('admin_section') }}</p>
+            <div class="flex items-center">
+
+              <RadioGroup :beforeSelected="form.status" ref="statusSelector" class="grow" name="status"
+                          v-model="form.status"
+                          :items="myMap($page.props.statuses,(e)=>e.name)"/>
+            </div>
+            <div v-show="form.status=='reject'">
+
+              <InputLabel class="text-red-500" for="editor" :value="__('reject_message')"/>
+              <TextEditor mode="create"
+                          :preload="form.message"
+                          :lang="$page.props.locale"
+                          :id="`editor`"
+                          :ref="`editor`"/>
+            </div>
+          </div>
+          <div v-else-if="!isAdmin() && form.message" v-html="form.message"
+               class="border text-sm text-rose-400 bg-rose-50 border-dashed rounded p-4">
+          </div>
 
           <div
               class="flex flex-col mx-2   col-span-2 w-full     px-2"
@@ -148,6 +169,7 @@
               <div class="    mt-4">
 
                 <PrimaryButton class="w-full  "
+                               @click.prevent="isAdmin()? submit():  showDialog('primary',__('will_active_after_review'), __('ok') , submit )"
                                :class="{ 'opacity-25': form.processing }"
                                :disabled="form.processing">
                   <LoadingIcon class="w-4 h-4 mx-3 " v-if="  form.processing"/>
@@ -204,6 +226,7 @@ import ProvinceCounty from "@/Components/ProvinceCounty.vue";
 import PhoneFields from "@/Components/PhoneFields.vue";
 import SocialFields from "@/Components/SocialFields.vue";
 import Article from "@/Components/Article.vue";
+import TextEditor from "@/Components/TextEditor.vue";
 
 
 export default {
@@ -222,12 +245,15 @@ export default {
         tags: null,
         content: null,
         summary: '',
+        message: '',
+        status: this.$page.props.data.status,
 
       }),
       img: null,
     }
   },
   components: {
+    TextEditor,
     ImageUploader,
     LoadingIcon,
     Head,
@@ -277,7 +303,9 @@ export default {
     this.$refs.tags.set(this.data.tags);
     this.$refs.article.setContent(this.data.content);
     this.form.summary = this.data.summary;
+    this.form.message = this.data.message;
     this.$refs.langSelector.selected = this.data.lang;
+
   },
   methods: {
     submit() {
@@ -285,6 +313,9 @@ export default {
 
       this.form.lang = this.$refs.langSelector.selected;
       this.form.content = this.$refs.article.getContent();
+
+      if (this.$refs.editor)
+        this.form.message = this.$refs.editor.getData();
 
       // this.form.category_id = this.$refs.categorySelector.selected;
       this.form.clearErrors();
@@ -312,7 +343,8 @@ export default {
             this.showAlert(this.$page.props.flash.status, this.$page.props.flash.message);
         },
       });
-    }
+    },
+
   },
 
 }

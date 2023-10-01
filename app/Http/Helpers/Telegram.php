@@ -550,7 +550,18 @@ class Telegram
                     $msg .= $data->amount . PHP_EOL;
 
                     break;
-
+                case 'setting_created':
+                case 'setting_updated':
+                case 'setting_deleted':
+                    if ($type == 'setting_created')
+                        $msg .= " 🟢 " . "یک تنظیمات ساخته شد" . PHP_EOL;
+                    if ($type == 'setting_updated')
+                        $msg .= " 🟠 " . "یک تنظیمات ویرایش شد" . PHP_EOL;
+                    if ($type == 'setting_deleted')
+                        $msg .= " 🔴 " . "یک تنظیمات حذف شد" . PHP_EOL;
+                    $msg .= " *️⃣ " . $data->key . PHP_EOL;
+                    $msg .= " #️⃣ " . $data->value . PHP_EOL;
+                    break;
                 case 'video_created':
 
                     $msg .= " 🟢 " . "یک ویدیو ثبت شد" . PHP_EOL;

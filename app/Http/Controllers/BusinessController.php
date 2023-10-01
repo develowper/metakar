@@ -13,6 +13,7 @@ use App\Models\Business;
 use App\Models\BusinessTransaction;
 use App\Models\Category;
 use App\Models\County;
+use App\Models\Notification;
 use App\Models\Province;
 use App\Models\Site;
 use App\Models\SiteTransaction;
@@ -34,6 +35,11 @@ class BusinessController extends Controller
         if ($data)
             $data->images = Business::getImages($data->id);
         $this->authorize('edit', [User::class, $data]);
+        $data->message = optional(Notification::firstWhere([
+                'data_id' => $data->id, 'type' => 'business_reject',]
+        ))->description;
+        if ($data->message)
+            $data->message = json_decode($data->message);
         return Inertia::render('Panel/Business/Edit', [
             'provinces' => Province::all(),
             'counties' => County::all(),
@@ -140,16 +146,53 @@ class BusinessController extends Controller
 
 
             $request->merge([
-                'status' => 'review',
+                'status' => $user->isAdmin() ? $request->status : 'review',
 //                'is_active' => false,
                 'slug' => str_slug($request->name),
             ]);
+
+            if ($user->isAdmin()) {
+                $newStatus = $request->status;
+                $oldStatus = $data->status;
+                switch ($newStatus) {
+                    case 'reject':
+                        Notification::updateOrCreate([
+                            'data_id' => $data->id,],
+                            ['type' => 'business_reject', 'subject' => __('business_need_change'), 'description' => json_encode($request->message), 'owner_id' => $data->owner_id]
+                        );
+                        break;
+                    case 'active':
+                        Notification::updateOrCreate([
+                            'data_id' => $data->id,],
+                            ['type' => 'business_approve', 'subject' => __('business_approved'), 'description' => null, 'owner_id' => $data->owner_id]
+                        );
+                        if ($data->view_fee > $data->charge) {
+                            $request->status = 'need_charge';
+                            $request->merge([
+                                'status' => 'need_charge',
+                            ]);
+                        }
+
+                        break;
+                    case 'review':
+                        Notification::where('data_id', $data->id)->delete();
+                        break;
+                }
+                if ($oldStatus != $newStatus && in_array($newStatus, ['active', 'reject'])) {
+                    $owner = User::find($data->owner_id);
+                    if ($owner) {
+                        $owner->notifications++;
+                        $owner->save();
+                    }
+                }
+            }
+
 //            $data->name = $request->tags;
 //            $data->tags = $request->tags;
 //            dd($request->tags);
             if ($data->update($request->all())) {
 
-                $res = ['flash_status' => 'success', 'flash_message' => __('updated_successfully_and_active_after_review')];
+                $res = ['flash_status' => 'success', 'flash_message' => __($user->isAdmin() ? 'updated_successfully' : 'updated_successfully_and_active_after_review')];
 //                dd($request->all());
                 Telegram::log(null, 'business_edited', $data);
             } else    $res = ['flash_status' => 'danger', 'flash_message' => __('response_error')];

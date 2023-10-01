@@ -6,7 +6,9 @@ use App\Events\Viewed;
 use App\Http\Helpers\Telegram;
 use App\Http\Helpers\Util;
 use App\Http\Helpers\Variable;
+use App\Http\Requests\UserRequest;
 use App\Http\Requests\VideoRequest;
+use App\Models\Notification;
 use App\Models\User;
 use App\Models\Video;
 use App\Models\VideoTransaction;
@@ -16,12 +18,18 @@ use Inertia\Inertia;
 class VideoController extends Controller
 {
 
+
     public function edit(Request $request, $site)
     {
 
         $data = Video::with('category')->find($site);
 
         $this->authorize('edit', [User::class, $data]);
+        $data->message = optional(Notification::firstWhere([
+                'data_id' => $data->id, 'type' => 'article_reject',]
+        ))->description;
+        if ($data->message)
+            $data->message = json_decode($data->message);
         return Inertia::render('Panel/Video/Edit', [
             'categories' => Video::categories(),
             'statuses' => Variable::STATUSES,
@@ -120,16 +128,53 @@ class VideoController extends Controller
 
 
             $request->merge([
-                'status' => 'review',
+                'status' => $user->isAdmin() ? $request->status : 'review',
 //                'is_active' => false,
                 'slug' => str_slug($request->name),
             ]);
 //            $data->name = $request->tags;
 //            $data->tags = $request->tags;
 //            dd($request->tags);
+
+            if ($user->isAdmin()) {
+                $newStatus = $request->status;
+                $oldStatus = $data->status;
+                switch ($newStatus) {
+                    case 'reject':
+                        Notification::updateOrCreate([
+                            'data_id' => $data->id,],
+                            ['type' => 'video_reject', 'subject' => __('video_need_change'), 'description' => json_encode($request->message), 'owner_id' => $data->owner_id]
+                        );
+                        break;
+                    case 'active':
+                        Notification::updateOrCreate([
+                            'data_id' => $data->id,],
+                            ['type' => 'video_approve', 'subject' => __('video_approved'), 'description' => null, 'owner_id' => $data->owner_id]
+                        );
+                        if ($data->view_fee > $data->charge) {
+                            $request->status = 'need_charge';
+                            $request->merge([
+                                'status' => 'need_charge',
+                            ]);
+                        }
+
+                        break;
+                    case 'review':
+                        Notification::where('data_id', $data->id)->delete();
+                        break;
+                }
+                if ($oldStatus != $newStatus && in_array($newStatus, ['active', 'reject'])) {
+                    $owner = User::find($data->owner_id);
+                    if ($owner) {
+                        $owner->notifications++;
+                        $owner->save();
+                    }
+                }
+            }
+
             if ($data->update($request->all())) {
 
-                $res = ['flash_status' => 'success', 'flash_message' => __('updated_successfully_and_active_after_review')];
+                $res = ['flash_status' => 'success', 'flash_message' => __($user->isAdmin() ? 'updated_successfully' : 'updated_successfully_and_active_after_review')];
 //                dd($request->all());
                 Telegram::log(null, 'video_edited', $data);
             } else    $res = ['flash_status' => 'danger', 'flash_message' => __('response_error')];

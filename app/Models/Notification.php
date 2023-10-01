@@ -10,4 +10,17 @@ class Notification extends Model
     use HasFactory;
 
     public $timestamps = false;
+    protected $fillable = [
+        'subject',
+        'link',
+        'data_id',
+        'type',
+        'owner_id',
+        'description',
+    ];
+
+    public function owner()
+    {
+        return $this->belongsTo(User::class, 'owner_id');
+    }
 }

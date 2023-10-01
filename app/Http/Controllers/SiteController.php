@@ -7,6 +7,7 @@ use App\Http\Helpers\Telegram;
 use App\Http\Helpers\Util;
 use App\Http\Helpers\Variable;
 use App\Http\Requests\SiteRequest;
+use App\Models\Notification;
 use App\Models\Setting;
 use App\Models\Site;
 use App\Models\SiteTransaction;
@@ -25,7 +26,7 @@ class SiteController extends Controller
     public function new()
     {
         return Inertia::render('Site/Create', [
-            'heroText' => Setting::getValue('hero_sites_page'),
+            'heroText' => __('hero_sites_page'),
             'site_view_meta_reward' => Variable::SITE_VIEW_META_REWARD(),
             'categories' => Site::categories('parents'),
         ]);
@@ -73,7 +74,7 @@ class SiteController extends Controller
 
 
         return Inertia::render('Site/Index', [
-            'heroText' => Setting::getValue('hero_sites_page'),
+            'heroText' => __('hero_sites_page'),
             'site_view_meta_reward' => Variable::SITE_VIEW_META_REWARD(),
             'categories' => Site::categories('parents'),
         ]);
@@ -206,7 +207,7 @@ class SiteController extends Controller
         ]);
         $ip = $request->ip();
         if ($ip && $user)
-            Transaction::fillAllOwnerIds($ip,$user->id);
+            Transaction::fillAllOwnerIds($ip, $user->id);
         $site = Site::create($request->all());
         if ($site) {
             $res = ['flash_status' => 'success', 'flash_message' => __('created_successfully_and_activete_after_review')];
@@ -222,9 +223,14 @@ class SiteController extends Controller
 
         $data = Site::with('category')->find($site);
         $this->authorize('edit', [User::class, $data]);
+        $data->message = optional(Notification::firstWhere([
+                'data_id' => $data->id, 'type' => 'site_reject',]
+        ))->description;
+        if ($data->message)
+            $data->message = json_decode($data->message);
         return Inertia::render('Panel/Site/Edit', [
             'categories' => Site::categories('parents'),
-            'site_statuses' => Variable::SITE_STATUSES,
+            'statuses' => Variable::SITE_STATUSES,
             'data' => $data,
         ]);
     }
@@ -359,12 +365,50 @@ class SiteController extends Controller
             }
         } elseif ($data) {
             $request->merge([
-                'status' => 'review',
+                'status' => $user->isAdmin() ? $request->status : 'review',
 //                'is_active' => false,
                 'slug' => str_slug($request->name),
             ]);
+
+            if ($user->isAdmin()) {
+                $newStatus = $request->status;
+                $oldStatus = $data->status;
+                switch ($newStatus) {
+                    case 'reject':
+                        Notification::updateOrCreate([
+                            'data_id' => $data->id,],
+                            ['type' => 'site_reject', 'subject' => __('site_need_change'), 'description' => json_encode($request->message), 'owner_id' => $data->owner_id]
+                        );
+                        break;
+                    case 'active':
+                        Notification::updateOrCreate([
+                            'data_id' => $data->id,],
+                            ['type' => 'site_approve', 'subject' => __('site_approved'), 'description' => null, 'owner_id' => $data->owner_id]
+                        );
+                        if ($data->view_fee > $data->charge) {
+                            $request->status = 'need_charge';
+                            $request->merge([
+                                'status' => 'need_charge',
+                            ]);
+                        }
+
+                        break;
+                    case 'review':
+                        Notification::where('data_id', $data->id)->delete();
+                        break;
+                }
+                if ($oldStatus != $newStatus && in_array($newStatus, ['active', 'reject'])) {
+                    $owner = User::find($data->owner_id);
+                    if ($owner) {
+                        $owner->notifications++;
+                        $owner->save();
+                    }
+                }
+            }
+
+
             if ($data->update($request->all())) {
-                $res = ['flash_status' => 'success', 'flash_message' => __('updated_successfully_and_active_after_review')];
+                $res = ['flash_status' => 'success', 'flash_message' => __($user->isAdmin() ? 'updated_successfully' : 'updated_successfully_and_active_after_review')];
                 Util::createImage($request->img, Variable::IMAGE_FOLDERS[Site::class], $id);
                 Telegram::log(null, 'site_edited', $data);
             } else    $res = ['flash_status' => 'danger', 'flash_message' => __('response_error')];

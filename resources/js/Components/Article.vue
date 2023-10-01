@@ -385,6 +385,7 @@ export default {
         paginate: this.$page.props.pageItems[0],
         order_by: null,
         dir: 'DESC',
+        owner_id: this.$page.props.auth.user.id
       },
       Modal: null,
       data: [],
