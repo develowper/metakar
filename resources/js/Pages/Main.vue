@@ -94,7 +94,7 @@
 
           <div v-for="(item,idx) in section1"
                class="flex gap-4 bg-gray-50 shadow-md rounded-lg p-4 py-8 items-stretch">
-            <component v-bind:is="item.icon" class="w-12 h-12 text-primary-500"></component>
+            <component v-bind:is="item.icon" class="w-12 h-12 lg:w-24 lg:h-24 text-primary-500"></component>
             <div class="flex flex-col justify-start space-y-2 items-start  ">
               <div class="text-sm font-bold">{{ __(item.header) }}</div>
               <p class="text-sm text-start text-primary-900">{{ __(item.sub) }}</p>
