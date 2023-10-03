@@ -48,9 +48,9 @@
             <!--                        </Link>-->
           </div>
           <div class="flex items-center">
-            <Link :href="route('page.prices')" class="nav-item" :class="navClasses('prices')">
-              {{ __('prices') }}
-            </Link>
+<!--            <Link :href="route('page.prices')" class="nav-item" :class="navClasses('prices')">-->
+            <!--              {{ __('prices') }}-->
+            <!--            </Link>-->
             <Link :href="route('page.help')" class="nav-item" :class="navClasses('help')">
               {{ __('help') }}
             </Link>

@@ -10,6 +10,7 @@ use App\Models\Notification;
 use App\Models\Ticket;
 use App\Models\TicketChat;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
@@ -19,8 +20,13 @@ class TicketController extends Controller
 {
     public function edit(Request $request, $ticket)
     {
+        $user = auth()->user();
         $data = Ticket::whereId($ticket)->with('chats.owner:id,fullname,role')->first();
         $this->authorize('edit', [User::class, $data]);
+        if ($user->isAdmin())
+            $data->chats()->where('admin_seen', false)->update(['admin_seen' => true]);
+        else
+            $data->chats()->where('user_seen', false)->update(['user_seen' => true]);
         $attachments = array_map(fn($e) => basename($e), File::glob(Storage::path("public/" . Variable::IMAGE_FOLDERS[Ticket::class]) . "/$data->id/*"));
 
         return Inertia::render('Panel/Ticket/Edit', [
@@ -53,22 +59,59 @@ class TicketController extends Controller
                     $res = ['status' => 'closed', 'flash_status' => 'success', 'flash_message' => __('updated_successfully')];
                     return back()->with($res);
 
+                case 'del-chat':
+                    $data = Ticket::whereId($request->ticket_id)->with('chats.owner:id,fullname,role')->first();
+                    $chats = $data->getRelation('chats');
+                    if (!$data || !$chats)
+                        return back()->withErrors(['flash_message' => __('item_not_found')]);
+                    foreach ($chats as $idx => $chat) {
+                        if ($chat->id == $request->chat_id) {
+                            foreach (File::glob(Storage::path("public/" . Variable::IMAGE_FOLDERS[Ticket::class]) . "/$data->id/$chat->id-*") as $path) {
+                                File::delete($path);
+                            }
+
+                            $chat->delete();
+                            $chats->forget($idx);
+                            $len = count($chats);
+                            if ($len == 0)
+                                $data->status = 'closed';
+                            elseif ($len > 0 && User::firstOrNew(['id' => $chats->first()->from_id])->isAdmin())
+                                $data->status = 'responded';
+                            else
+                                $data->status = 'review';
+                            $data->save();
+                        }
+                    }
+                    $res = ['chats' => $chats, 'status' => $data->status, 'flash_status' => 'success', 'flash_message' => __('updated_successfully')];
+                    return back()->with($res);
+                    break;
                 case 'add-chat':
-                    $data->status = $user->role != 'us' ? 'responded' : 'review';
+                    $data->status = $user->isAdmin() ? 'responded' : 'review';
                     $ticketChat = TicketChat::create([
                         'ticket_id' => $data->id,
                         'from_id' => $user->id,
-                        'user_seen' => true,
-                        'admin_seen' => false,
+                        'user_seen' => !$user->isAdmin(),
+                        'admin_seen' => $user->isAdmin(),
                         'message' => $request->message,
                     ]);
                     foreach ($request->file('attachments') ?? [] as $idx => $item)
                         if ($item)
                             Util::createFile($item, Variable::IMAGE_FOLDERS[Ticket::class] . "/$data->id", "$ticketChat->id-$idx");
-
-                    Telegram::log(null, 'ticket_updated', $data);
+                    $data->updated_at = Carbon::now();
                     $data->save();
                     $res = ['chats' => $data->chats, 'status' => $data->status, 'flash_status' => 'success', 'flash_message' => __('updated_successfully')];
+                    if ($user->isAdmin()) {
+                        Notification::create([
+                            'data_id' => $data->id,
+                            'owner_id' => $data->owner_id,
+                            'subject' => __('ticket_answer'),
+                            'description' => __('ticket_answered'),
+                            'type' => 'ticket_answer',
+
+                        ]);
+                        User::where('id', $data->owner_id)->increment('notifications');
+                    }
+                    Telegram::log(null, 'ticket_updated', $data);
                     return back()->with($res);
 
 

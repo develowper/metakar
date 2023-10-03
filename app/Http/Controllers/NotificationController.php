@@ -13,6 +13,14 @@ use Inertia\Inertia;
 
 class NotificationController extends Controller
 {
+    public function delete(Request $request, $id)
+    {
+        if (Notification::where('id', $id)->delete()) {
+            return response()->json(['message' => __('done_successfully')], Variable::SUCCESS_STATUS);
+        }
+        return response()->json(['message' => __('item_not_found')], Variable::ERROR_STATUS);
+    }
+
     public function edit(Request $request, $notification)
     {
         $data = Notification::whereId($notification)->with('owner:id,fullname,phone')->first();

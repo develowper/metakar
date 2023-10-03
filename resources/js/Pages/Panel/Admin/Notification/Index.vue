@@ -262,11 +262,19 @@
                     role="group">
                   <Link
                       type="button" :href="route('panel.admin.notification.edit',d.id)"
-                      class="inline-block rounded  bg-orange-500 text-white px-6  py-2 text-xs font-medium uppercase leading-normal text-white transition duration-150 ease-in-out hover:bg-orange-400   focus:outline-none focus:ring-0  "
+                      class="inline-block rounded-s  bg-orange-500 text-white px-6  py-2 text-xs font-medium uppercase leading-normal text-white transition duration-150 ease-in-out hover:bg-orange-400   focus:outline-none focus:ring-0  "
                       data-te-ripple-init
                       data-te-ripple-color="light">
                     {{ __('edit') }}
                   </Link>
+                  <button
+                      type="button"
+                      @click.prevent="showDialog('danger',__('remove_item?'),__('remove'),remove,{id:d.id,idx:idx})"
+                      class="inline-block rounded-e  bg-danger-500 text-white px-6  py-2 text-xs font-medium uppercase leading-normal text-white transition duration-150 ease-in-out hover:bg-danger-400   focus:outline-none focus:ring-0  "
+                      data-te-ripple-init
+                      data-te-ripple-color="light">
+                    {{ __('remove') }}
+                  </button>
 
                   <!--                  <button -->
                   <!--                      type="button"-->
@@ -427,9 +435,9 @@ export default {
         e.selected = this.toggleSelect;
       });
     },
-    edit(params) {
+    remove(params) {
       this.isLoading(true);
-      window.axios.patch(route('notification.update'), params,
+      window.axios.delete(route('panel.admin.notification.delete', params.id), {},
           {
             onUploadProgress: function (axiosProgressEvent) {
               // console.log(axiosProgressEvent);
@@ -461,37 +469,16 @@ export default {
           .then((response) => {
             if (response.data && response.data.message) {
               this.showToast('success', response.data.message);
+              this.data.splice(params.idx, 1);
+            }
 
-            }
-            if (response.data.charge) {
-              this.data[params.idx].charge = response.data.charge;
-              this.user.wallet = response.data.wallet;
-            }
-            if (response.data.status) {
-              this.data[params.idx].status = response.data.status;
-            }
-            if (response.data.view_fee) {
-              this.data[params.idx].view_fee = response.data.view_fee;
-            }
-            if (response.data.meta) {
-              this.data[params.idx].meta = response.data.meta;
-              this.user.meta_wallet = response.data.meta_wallet;
-            }
 
           })
 
           .catch((error) => {
             this.error = this.getErrors(error);
             if (error.response && error.response.data) {
-              if (error.response.data.charge) {
-                this.data[params.idx].charge = error.response.data.charge;
-              }
-              if (error.response.data.view_fee) {
-                this.data[params.idx].view_fee = error.response.data.view_fee;
-              }
-              if (error.response.data.meta) {
-                this.data[params.idx].meta = error.response.data.meta;
-              }
+
             }
             this.showToast('danger', this.error);
           })

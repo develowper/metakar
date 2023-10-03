@@ -66,8 +66,14 @@
               </div>
             </div>
 
-            <div class="">
-              <div v-for="(ch,idx) in data.chats" class="flex flex-col  my-2   p-4 rounded-lg   bg-white shadow-md">
+            <div class="relative">
+              <div v-for="(ch,idx) in data.chats" :key="ch.id"
+                   class="flex flex-col   my-2   p-4 rounded-lg   bg-white shadow-md">
+                <div
+                    @click="showDialog('danger',__('remove_item?'),__('remove'),removeMessage,{cmnd:'del-chat',ticket_id:data.id,chat_id:ch.id,idx:idx})"
+                    class="absolute p-2 bg-danger text-white rounded cursor-pointer hover:bg-danger-400 end-1">
+                  <XMarkIcon class="w-5 h-5"/>
+                </div>
                 <div class="flex  items-start "
                      :class="ch.owner && $page.props.auth.user.id==ch.owner.id?'':'flex-row-reverse'">
                   <div v-if="ch.owner"
@@ -334,8 +340,8 @@ export default {
   },
   mounted() {
 
-    // console.log(this.data);
     this.data = this.$page.props.data;
+    // console.log(this.data.chats);
 
     const modalEl = document.getElementById('newTicketModal');
     this.modal = new Modal(modalEl);
@@ -358,6 +364,10 @@ export default {
       };
       this.submit();
     },
+    removeMessage(params) {
+      params._method = 'patch';
+      this.submit(params)
+    },
     closeTicket() {
       this.params = {
         cmnd: 'close',
@@ -366,10 +376,11 @@ export default {
       };
       this.submit();
     },
-    submit() {
+
+    submit(params) {
       // this.form.category_id = this.$refs.categorySelector.selected;
       this.form.clearErrors();
-      this.form = useForm(this.params);
+      this.form = useForm(params || this.params);
       // this.isLoading(true, this.form.progress ? this.form.progress.percentage : null);
       // this.images = [];
       // for (let i = 0; i < this.$page.props.max_images_limit; i++) {
@@ -386,12 +397,14 @@ export default {
             this.data.status = this.$page.props.data.status;
           if (this.$page.props.data.chats)
             this.data.chats = this.$page.props.data.chats;
+
           this.$nextTick(e => {
             this.modal.hide();
             this.files = [];
             this.$refs.text.setData('');
 
           });
+
         },
         onError: () => {
           this.showToast('danger', Object.values(this.form.errors).join("<br/>"));

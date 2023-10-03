@@ -38,7 +38,7 @@ class Ticket extends Model
         return $this->hasMany(TicketChat::class, 'ticket_id')->orderBy('id', 'DESC');
     }
 
-    public function getUpdatedAtAttribute($value)
+    public function getUpdatedAtAttributes($value)
     {
         if (!$value) return $value;
         return \Morilog\Jalali\CalendarUtils::strftime('Y/m/d | H:i', strtotime($value));

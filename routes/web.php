@@ -310,6 +310,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('notification/edit/{article}', [NotificationController::class, 'edit'])->name('panel.notification.edit');
     Route::patch('notification/update', [NotificationController::class, 'update'])->name('notification.update');
+    Route::delete('notification/delete/{notification}', [NotificationController::class, 'delete'])->name('panel.admin.notification.delete');
 
     Route::get('ticket/{ticket}', [TicketController::class, 'edit'])->name('panel.ticket.edit');
     Route::patch('ticket/update', [TicketController::class, 'update'])->name('ticket.update');

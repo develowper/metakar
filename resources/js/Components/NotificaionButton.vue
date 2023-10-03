@@ -21,7 +21,7 @@
         data-te-dropdown-menu-ref>
       <li class="  p-2 text-primary text-center bg-primary-100 rounded hover:bg-primary hover:text-white cursor-pointer  ">
 
-        <Link :href="route(`panel.${ this.isAdmin() ? 'admin.' : ''}notification.index`)">{{ __('see_all')}}</Link>
+        <Link :href="route(`panel.${ this.isAdmin() ? 'admin.' : ''}notification.index`)">{{ __('see_all') }}</Link>
 
       </li>
       <template v-if="!error">
@@ -93,8 +93,9 @@ export default {
     createLink(data) {
       if (!data) return '';
       if (data.link) return data.link;
+
       if (data.data_id && data.type)
-        return route('/') + "/" + data.type.split("_")[0] + "/edit/" + data.data_id;
+        return route('/') + "/" + data.type.split("_")[0] + `/${data.type === 'ticket_answer' ? '' : 'edit/'}` + data.data_id;
       return route(`panel.${this.isAdmin() ? 'admin.' : ''}notification.index`);
     },
     resetNotifications() {
