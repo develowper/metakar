@@ -7,7 +7,7 @@
 
     <div class="relative    bg-gradient-to-t from-pink-300 via-purple-300 to-indigo-400">
       <!--Hero-->
-      <img class=" opacity-80  blur-sm h-full z-0 absolute  bottom-2    start-0 w-full   h-full "
+      <img class=" opacity-50  blur-sm h-full z-0 absolute  bottom-2    start-0 w-full   h-full "
            :src="heroImage"/>
       <div class="py-24 md:py-32 xl:py-48   z-10    mx-auto    ">
         <div class="  px-3  sm:px-1  flex   flex-col md:flex-row items-center">
