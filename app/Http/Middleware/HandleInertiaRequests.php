@@ -65,6 +65,13 @@ class HandleInertiaRequests extends Middleware
             ],
             'extra' => fn() => $request->session()->get('extra'),
             'pageItems' => Variable::PAGINATE,
+            'socials' => [
+                'whatsapp' => "https://wa.me/00989132258738",
+                'telegram' => "https://t.me/hasannejhad",
+                'phone' => "09132258738",
+                'email' => "info@metakar.ir",
+                'address' => __('address'),
+            ],
         ]);
     }
 }

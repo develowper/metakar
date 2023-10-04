@@ -33,6 +33,7 @@ use App\Models\Podcast;
 use App\Models\Province;
 use App\Models\Setting;
 use App\Models\Site;
+use App\Models\User;
 use App\Models\Video;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
@@ -80,7 +81,15 @@ Route::get('/', function () {
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
         'heroText' => \App\Models\Setting::getValue('hero_main_page'),
-
+        'counts' => [
+            'users' => ['icon' => 'UsersIcon', 'count' => User::count()],
+            'businesses' => ['icon' => 'HomeModernIcon', 'count' => Business::count()],
+            'articles' => ['icon' => 'PencilIcon', 'count' => Article::count()],
+            'sites' => ['icon' => 'GlobeAltIcon', 'count' => Site::count()],
+            'podcasts' => ['icon' => 'MicrophoneIcon', 'count' => Podcast::count()],
+            'videos' => ['icon' => 'PlayIcon', 'count' => Video::count()],
+            'banners' => ['icon' => 'PhotoIcon', 'count' => Banner::count()],
+        ]
     ]);
 })->name('/');
 

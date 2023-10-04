@@ -47,8 +47,14 @@
 
             </div>
             <div class=" z-10 p-3    flex  items-center">
-              <PrimaryButton class="mx-2 p-2 grow">{{ __('adv_create') }}</PrimaryButton>
-              <SecondaryButton class="mx-2 p-2 grow">{{ __('make_money') }}</SecondaryButton>
+              <PrimaryButton @click="$inertia.visit(route('panel.index'))" class="mx-2 p-2 grow">{{
+                  __('adv_create')
+                }}
+              </PrimaryButton>
+              <SecondaryButton @click="$inertia.visit(route('panel.index'))" class="mx-2 p-2 grow">{{
+                  __('make_money')
+                }}
+              </SecondaryButton>
             </div>
           </div>
 
@@ -82,29 +88,89 @@
 
 
     </div>
+    <div class="container mx-auto space-y-4">
+      <Transition name="fade" mode="out-in">
+        <section class="flex flex-col   justify-center   text-center ">
+          <h1 class="slide-in-bottom-h1 my-4 text-primary-500 mx-auto w-fit text-3xl font-bold border-primary       ">
+            {{ __('our_services') }}
+            <div
+                class="h-1 mx-auto bg-gradient-to-l from-primary-100 via-primary-500 to-primary-600 w-64 opacity-25 my-0 py-0 rounded-t"></div>
 
-    <Transition name="fade" mode="out-in">
-      <section class="flex flex-col   justify-center   text-center ">
-        <h1 class="slide-in-bottom-h1 my-4 text-primary-500 mx-auto w-fit text-3xl font-bold border-primary       ">
-          {{ __('our_services') }}
-        </h1>
-        <div class="  text-primary-500  slide-in-bottom-subtitle ">{{ __('how_help_you_revenue') }}</div>
+          </h1>
+          <div class="  text-primary-500  slide-in-bottom-subtitle ">{{ __('how_help_you_revenue') }}</div>
 
-        <div class="m-4 mt-8 gap-4 grid md:grid-cols-2 lg:grid-cols-4 bounce-top-icons">
+          <div class="m-4 mt-8 gap-4 grid md:grid-cols-2 lg:grid-cols-4 bounce-top-icons">
 
-          <div v-for="(item,idx) in section1"
-               class="flex gap-4 bg-gray-50 shadow-md rounded-lg p-4 py-8 items-stretch">
-            <component v-bind:is="item.icon" class="w-12 h-12 lg:w-24 lg:h-24 text-primary-500"></component>
-            <div class="flex flex-col justify-start space-y-2 items-start  ">
-              <div class="text-sm font-bold">{{ __(item.header) }}</div>
-              <p class="text-sm text-start text-primary-900">{{ __(item.sub) }}</p>
+            <div v-for="(item,idx) in section1"
+                 class="flex gap-4 bg-gradient-to-l from-primary-50 via-gray-50 to-primary-100 shadow-md rounded-lg p-4 py-8 items-stretch">
+              <component v-bind:is="item.icon" class="w-12 h-12 lg:w-24 lg:h-24 text-primary-500"></component>
+              <div class="flex flex-col justify-start space-y-2 items-start  ">
+                <div class="text-sm font-bold">{{ __(item.header) }}</div>
+                <p class="text-sm text-start text-primary-900">{{ __(item.sub) }}</p>
+              </div>
             </div>
+
+
           </div>
+        </section>
+      </Transition>
+
+      <Transition name="fade" mode="out-in" class=" ">
+        <section class="flex flex-col   justify-center   text-center ">
+          <h1 class="slide-in-bottom-h1 my-4 text-primary-500 mx-auto w-fit text-3xl font-bold border-primary       ">
+            {{ __('until_now') }}
+            <div
+                class="h-1 mx-auto bg-gradient-to-l from-primary-100 via-primary-500 to-primary-600 w-64 opacity-25 my-0 py-0 rounded-t"></div>
+          </h1>
+
+          <div class="  text-primary-500  slide-in-bottom-subtitle ">{{ __('hero_stats') }}</div>
+
+          <div class="m-4 mt-8 gap-4 grid md:grid-cols-4 lg:grid-cols-7 bounce-top-icons">
+            <div v-for="(key,idx) in Object.keys(counts)"
+                 class="flex flex-col justify-center items-center gap-4 bg-gradient-to-t from-primary-50 via-gray-50 to-primary-100 shadow-md rounded-lg p-4 py-8  ">
+              <component v-bind:is="counts[key].icon" class="w-8 h-8 lg:w-12 lg:h-12 text-primary-500"></component>
+              <div class="text-sm font-bold">{{ __(key) }}</div>
+              <p class="text-lg text-start text-primary-900 countup">{{ __(counts[key].count) }}</p>
+            </div>
 
 
-        </div>
-      </section>
-    </Transition>
+          </div>
+        </section>
+      </Transition>
+    </div>
+    <!--wave-->
+    <svg class="wave-top" viewBox="0 0 1439 147" version="1.1" xmlns="http://www.w3.org/2000/svg"
+         xmlns:xlink="http://www.w3.org/1999/xlink">
+      <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g transform="translate(-1.000000, -14.000000)" fill-rule="nonzero">
+          <g class="wave " fill="#fff">
+            <path
+                d="M1440,84 C1383.555,64.3 1342.555,51.3 1317,45 C1259.5,30.824 1206.707,25.526 1169,22 C1129.711,18.326 1044.426,18.475 980,22 C954.25,23.409 922.25,26.742 884,32 C845.122,37.787 818.455,42.121 804,45 C776.833,50.41 728.136,61.77 713,65 C660.023,76.309 621.544,87.729 584,94 C517.525,105.104 484.525,106.438 429,108 C379.49,106.484 342.823,104.484 319,102 C278.571,97.783 231.737,88.736 205,84 C154.629,75.076 86.296,57.743 0,32 L0,0 L1440,0 L1440,84 Z"></path>
+          </g>
+          <g transform="translate(1.000000, 15.000000)" fill=""
+             class="fill-primary  ">
+            <g class=""
+               transform="translate(719.500000, 68.500000) rotate(-180.000000) translate(-719.500000, -68.500000) ">
+              <path class="fill-primary-500"
+                    d="M0,0 C90.7283404,0.927527913 147.912752,27.187927 291.910178,59.9119003 C387.908462,81.7278826 543.605069,89.334785 759,82.7326078 C469.336065,156.254352 216.336065,153.6679 0,74.9732496"
+                    opacity="0.100000001"></path>
+              <path class="fill-primary-700"
+                    d="M100,104.708498 C277.413333,72.2345949 426.147877,52.5246657 546.203633,45.5787101 C666.259389,38.6327546 810.524845,41.7979068 979,55.0741668 C931.069965,56.122511 810.303266,74.8455141 616.699903,111.243176 C423.096539,147.640838 250.863238,145.462612 100,104.708498 Z"
+                    opacity="0.100000001"></path>
+              <path class="fill-primary-700"
+                    d="M1046,51.6521276 C1130.83045,29.328812 1279.08318,17.607883 1439,40.1656806 L1439,120 C1271.17211,77.9435312 1140.17211,55.1609071 1046,51.6521276 Z"
+                    opacity="0.200000003"></path>
+
+            </g>
+
+          </g>
+        </g>
+        <g transform="translate(0.000000, 50.000000)" class="fill-primary-100" fill="" fill-rule="nonzero">
+          <path
+              d="M 0.457 34.035 C 326 14 442 -46 712 -14 C 953 7 1065 80 1442 12 L 1441.191 104.352 L 1.121 104.031 L 0.457 34.035 Z"></path>
+        </g>
+      </g>
+    </svg>
 
   </Scaffold>
 </template>
@@ -121,6 +187,12 @@ import {
   RocketLaunchIcon,
   UsersIcon,
   WrenchScrewdriverIcon,
+  PencilIcon,
+  GlobeAltIcon,
+  MicrophoneIcon,
+  PlayIcon,
+  PhotoIcon,
+
 } from "@heroicons/vue/24/solid";
 
 export default {
@@ -132,7 +204,9 @@ export default {
         {header: 'sites', sub: 'hero_services_2', icon: 'RocketLaunchIcon'},
         {header: 'regular_users', sub: 'hero_services_3', icon: 'UsersIcon'},
         {header: 'special_users', sub: 'hero_services_4', icon: 'WrenchScrewdriverIcon'},
-      ]
+      ],
+
+      counts: this.$page.props.counts,
     }
   },
   props: ['heroText'],
@@ -142,11 +216,17 @@ export default {
     RocketLaunchIcon,
     UsersIcon,
     WrenchScrewdriverIcon,
+    PencilIcon,
+    GlobeAltIcon,
+    MicrophoneIcon,
+    PlayIcon,
+    PhotoIcon,
   },
   // mixins: [Mixin],
   setup(props) {
 
-  }, mounted() {
+  },
+  mounted() {
     // loadScript("https://d1w019qw3bn26k.cloudfront.net/assets/application-b7a4037d87fe8e15e2a75db9f136291a1fd5cea2fa810311c7c1bb44ecb6c069.js");
     // loadScript("https://www.googletagmanager.com/gtag/js?id=G-P9M5S0890F");
     // loadScript("https://unpkg.com/@alpinejs/ui@3.10.5-beta.7/dist/cdn.min.js");
@@ -155,7 +235,44 @@ export default {
     // loadScript("https://unpkg.com/alpinejs@3.10.5/dist/cdn.min.js");
     // loadScript("https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js");
 
+    const countupEls = document.querySelectorAll('.countup');
+    countupEls.forEach(this.animateCountUp);
+  },
+  methods: {
+    animateCountUp(el) {
+      // How long you want the animation to take, in ms
+      const animationDuration = 1000 + Math.random(3000);
+// Calculate how long each ‘frame’ should last if we want to update the animation 60 times per second
+      const frameDuration = 1000 / 60;
+// Use that to calculate how many frames we need to complete the animation
+      const totalFrames = Math.round(animationDuration / frameDuration);
+// An ease-out function that slows the count as it progresses
+      const easeOutQuad = t => t * (2 - t);
 
+
+      let frame = 0;
+      const countTo = parseInt(el.innerHTML, 10);
+      // Start the animation running 60 times per second
+      const counter = setInterval(() => {
+        frame++;
+        // Calculate our progress as a value between 0 and 1
+        // Pass that value to our easing function to get our
+        // progress on a curve
+        const progress = easeOutQuad(frame / totalFrames);
+        // Use the progress value to calculate the current count
+        const currentCount = Math.round(countTo * progress);
+
+        // If the current count has changed, update the element
+        if (parseInt(el.innerHTML, 10) !== currentCount) {
+          el.innerHTML = currentCount;
+        }
+
+        // If we’ve reached our last frame, stop the animation
+        if (frame === totalFrames) {
+          clearInterval(counter);
+        }
+      }, frameDuration);
+    }
   },
 
 }

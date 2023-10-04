@@ -40,15 +40,15 @@
             <Link :href="route('site.index')" class="nav-item" :class="navClasses('site')">
               {{ __('increase_view') }}
             </Link>
-            <Link :href="route('page.make_money')" class="nav-item" :class="navClasses('make_money')">
-              {{ __('make_money') }}
-            </Link>
+            <!--            <Link :href="route('page.make_money')" class="nav-item" :class="navClasses('make_money')">-->
+            <!--              {{ __('make_money') }}-->
+            <!--            </Link>-->
             <!--                        <Link :href="route('exchange.index')" class="nav-item" :class="navClasses('exchange')">-->
             <!--                            {{ __('exchange') }}-->
             <!--                        </Link>-->
           </div>
           <div class="flex items-center">
-<!--            <Link :href="route('page.prices')" class="nav-item" :class="navClasses('prices')">-->
+            <!--            <Link :href="route('page.prices')" class="nav-item" :class="navClasses('prices')">-->
             <!--              {{ __('prices') }}-->
             <!--            </Link>-->
             <Link :href="route('page.help')" class="nav-item" :class="navClasses('help')">
@@ -75,16 +75,29 @@
       </div>
     </div>
     <!-- mobile menu -->
-    <div class="hidden mobile-menu">
-      <ul class="">
-        <li class="active"><a href="index.html"
-                              class="block text-sm px-2 py-4 text-white bg-green-500 font-semibold">Home</a>
-        </li>
-        <li><a href="#services"
-               class="block text-sm px-2 py-4 hover:text-white hover:bg-green-500 transition duration-300">Services</a>
-        </li>
+    <div class="hidden mobile-menu flex flex-col bg-primary px-4">
+      <Link :href="route('/')" class="px-4 nav-ite" :class="navClasses('/')">
+        {{ __('home') }}
+      </Link>
+      <Link :href="route('business.index')" class="nav-ite" :class="navClasses('business')">
+        {{ __('businesses') }}
+      </Link>
+      <Link :href="route('article.index')" class="nav-ite" :class="navClasses('article')">
+        {{ __('articles') }}
+      </Link>
+      <Link :href="route('video.index')" class="nav-ite" :class="navClasses('video')">
+        {{ __('videos') }}
+      </Link>
 
-      </ul>
+      <Link :href="route('podcast.index')" class="nav-ite" :class="navClasses('podcast')">
+        {{ __('podcasts') }}
+      </Link>
+      <Link :href="route('banner.index')" class="nav-ite" :class="navClasses('banner')">
+        {{ __('banners') }}
+      </Link>
+      <Link :href="route('site.index')" class="nav-ite" :class="navClasses('site')">
+        {{ __('increase_view') }}
+      </Link>
     </div>
     <!--        <hr class="border-b border-gray-100 opacity-25 my-0 py-0"/>-->
   </nav>
