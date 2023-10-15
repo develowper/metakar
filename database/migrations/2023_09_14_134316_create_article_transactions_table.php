@@ -20,6 +20,8 @@ return new class extends Migration {
             $table->ipAddress('ip')->index()->nullable();
             $table->boolean('is_meta')->default(false);
             $table->unsignedBigInteger('owner_id')->nullable();
+            $table->unsignedBigInteger('source_id')->nullable(); //transfer or payment
+
             $table->foreign('owner_id')->references('id')->on('users')->onDelete('no action');
             $table->unsignedBigInteger('data_id')->nullable();
             $table->unsignedInteger('amount')->default(0);

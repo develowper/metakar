@@ -27,7 +27,7 @@
           <Link href="#"
                 class="flex px-6   py-4  justify-around      text-sm text-gray-600 transition-colors duration-200 transform dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white">
             <Image classes=" flex-shrink-0  object-cover mx-1 rounded-full w-9 h-9"
-                   src="https://images.unsplash.com/photo-1523779917675-b6ed3a42a561?ixid=MnwxMjA3fDB8MHxzZWFyY2h8N3x8d29tYW4lMjBibHVlfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=face&w=500&q=200"
+                   :src="route('storage.users')+`/${user.id}.jpg`"
                    alt="jane avatar"
                    type="user"/>
 
@@ -49,12 +49,12 @@
 
           <hr class="border-gray-200 dark:border-gray-700 ">
 
-          <Link as="button" method="post" :href="route('logout')" class="flex ">
-            <button class="flex items-center justify-center p-4 m-3  w-full  hover:scale-110 focus:outline-none     px-4 py-2 rounded font-bold cursor-pointer
+          <Link as="button" method="post" :href="route('logout')" class=" w-full flex ">
+            <div class="flex items-center justify-center  m-3 px-4 py-2  w-full  hover:scale-110 focus:outline-none      rounded font-bold cursor-pointer
         hover:bg-red-700 hover:text-red-100  bg-red-100 text-red-500  border duration-200 ease-in-out border-red-600 transition">
               {{ __('signout') }}
               <ArrowRightOnRectangleIcon class="h-5 w-5 text-red-500  "/>
-            </button>
+            </div>
           </Link>
 
         </ul>

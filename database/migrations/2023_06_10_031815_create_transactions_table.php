@@ -16,14 +16,14 @@ return new class extends Migration {
             $table->id();
             $table->string('title', 100);
             $table->string('type', 50)->nullable()->index();
-            $table->bigInteger('owner_id')->unsigned();
-            $table->bigInteger('payment_id')->unsigned()->nullable();
+            $table->bigInteger('owner_id')->unsigned()->nullable();
+            $table->bigInteger('source_id')->unsigned()->nullable(); //transfer or payment
             $table->integer('amount');
             $table->string('coupon', 10)->nullable(); //null is for public
 
             $table->timestamps();
             $table->foreign('owner_id')->references('id')->on('users')->onDelete('no action');
-            $table->foreign('payment_id')->references('id')->on('payments')->onDelete('no action');
+//            $table->foreign('payment_id')->references('id')->on('payments')->onDelete('no action');
 
         });
     }

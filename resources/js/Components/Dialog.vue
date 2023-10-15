@@ -111,7 +111,10 @@ export default {
       this.action = action;
       this.items = items;
 
-      window.Modal.show();
+      if (message && message != undefined)
+        this.$nextTick((e) => {
+          window.Modal.show();
+        });
 
     },
     hide() {

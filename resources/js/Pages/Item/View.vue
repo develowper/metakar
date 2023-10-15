@@ -90,7 +90,7 @@
         <!--      main section-->
 
         <div v-else-if="data" class=" flex flex-col ">
-          <div class="px-4 py-2 text-white bg-primary">{{ data.name }}</div>
+          <div class="px-4 py-2 text-white bg-primary-500">{{ data.name }}</div>
           <div v-if="data" class="border-t   p-4 flex flex-col space-y-4 m-4">
 
             <p v-if="data.owner" class="text-sm flex flex-wrap">
@@ -111,7 +111,7 @@
 
           </div>
           <div
-              class=" flex  flex-wrap sm:flex-nowrap items-center justify-between     text-white bg-primary px-4 py-2 ">
+              class=" flex  flex-wrap sm:flex-nowrap items-center justify-between     text-white bg-primary-500 px-4 py-2 ">
 
             <div
                 class=" flex flex-wrap w-full justify-start  items-center  text-sm  ">
@@ -127,13 +127,13 @@
                 <span class="px-1">{{ data.viewer }}</span>
               </div>
               <div class=" border-s   py-4 md:mx-6  mx-1"></div>
-              <div v-if="!hasWallet()" class="flex items-center">
-                <CurrencyDollarIcon class="w-4 h-4"/>
+              <!--              <div v-if="!hasWallet()" class="flex items-center">-->
+              <!--                <CurrencyDollarIcon class="w-4 h-4"/>-->
 
-                <span class="px-1">{{ __('reward') }}:</span>
-                <span class="px-1">{{ $page.props.site_view_meta_reward }} {{ __('meta') }}</span>
-              </div>
-              <div v-else class="flex items-center">
+              <!--                <span class="px-1">{{ __('reward') }}:</span>-->
+              <!--                <span class="px-1">{{ $page.props.site_view_meta_reward }} {{ __('meta') }}</span>-->
+              <!--              </div>-->
+              <div class="flex items-center">
                 <CurrencyDollarIcon class="w-4 h-4"/>
                 <span class="px-1">{{ __('reward') }}:</span>
                 <span class="px-1">{{ asPrice(data.view_reward) }} {{ __('currency_symbol') }}</span>
@@ -169,7 +169,7 @@
           <div class="flex">
             <div class="shadow w-full bg-grey-light m-2   bg-gray-200 rounded-full">
               <div
-                  class=" bg-primary rounded  text-xs leading-none py-[.1rem] text-center text-white duration-300 "
+                  class=" bg-primary-500 rounded  text-xs leading-none py-[.1rem] text-center text-white duration-300 "
                   :class="{' animate-pulse': timerPercent<100}"
                   :style="`width: ${timerPercent}%`">
                 <span class="animate-bounce">{{ timer }}</span>
@@ -185,7 +185,7 @@
         </div>
       </div>
     </section>
-    <section>
+    <section v-if="false">
       <div class=" w-full px-3 my-8   flex  items-center justify-center">
         <PrimaryButton @click="$inertia.visit(route($page.props.auth.user?'panel.site.create':'site.new' ))"
                        class="mx-2 py-2  px-6  ">
@@ -198,11 +198,12 @@
 
       <div
           class="   grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4   gap-2     max-w-6xl">
-        <Link v-for="(d,idx) in sites" :href="route('site',d.id)"
-              class="flex-col items-stretch cursor-pointer hover:scale-[101%] duration-300 rounded-lg overflow-hidden shadow-lg">
-          <Image :src="route('storage.sites')+`/${d.id}.jpg`" classes="object-cover h-48 rounded-lg  w-full"/>
-          <div class="p-2  text-gray-700">{{ cropText(d.name, 30) }}</div>
-          <div class="px-4 py-2 text-sm   text-gray-400">{{ getCategory(d.category_id) }}</div>
+        <Link v-for="(d,idx) in sites" :href="route('item',{type:d.type,id:d.id})"
+              class="flex-col relative items-stretch cursor-pointer hover:scale-[101%] duration-300 rounded-lg overflow-hidden shadow-lg">
+          <Image :src="route(`storage.${d.type}s`)+`/${d.id}.jpg`" classes="object-cover h-48 rounded-lg  w-full"/>
+          <div class="p-2 text-sm text-gray-700">{{ cropText(d.name, 30) }}</div>
+          <div class="px-4 py-1 text-sm   text-gray-400">{{ getCategory(d.category_id) }}</div>
+          <div class="px-4 py-1 text-sm   text-gray-400">{{ __(d.type) }}</div>
           <hr class="border-gray-200 dark:border-gray-700  ">
           <div class="flex justify-around  items-center p-4 text-sm text-gray-500">
             <div class="flex items-center">
@@ -211,17 +212,22 @@
               <span class="px-1">{{ d.view }}</span>
             </div>
             <div class=" border-s   py-2"></div>
-            <div v-if="!hasWallet()" class="flex items-center">
+            <!--            <div v-if="!hasWallet()" class="flex items-center">-->
+            <!--              &lt;!&ndash;              <EyeIcon class="w-4 h-4"/>&ndash;&gt;-->
+            <!--              <span class="px-1">{{ __('reward') }}:</span>-->
+            <!--              <span class="px-1">{{ $page.props.site_view_meta_reward }} {{ __('meta') }}</span>-->
+            <!--            </div>-->
+            <div class="flex items-center">
               <!--              <EyeIcon class="w-4 h-4"/>-->
               <span class="px-1">{{ __('reward') }}:</span>
-              <span class="px-1">{{ $page.props.site_view_meta_reward }} {{ __('meta') }}</span>
+              <span class="px-1">{{
+                  d.status == 'active' && d.charge > d.view_fee ? asPrice(afterCommision(d.view_fee)) : 0
+                }} {{ __('currency_symbol') }}</span>
             </div>
-            <div v-else class="flex items-center">
-              <!--              <EyeIcon class="w-4 h-4"/>-->
-              <span class="px-1">{{ __('reward') }}:</span>
-              <span class="px-1">{{ asPrice(d.view_fee) }} {{ __('currency_symbol') }}</span>
+            <div v-if="d.status=='active' && d.charge>d.view_fee"
+                 class="absolute text-gray-500 rounded-lg text-white bg-rose-500 p-1 px-2 m-2  end-0 top-0    shadow-lg">
+              {{ `${afterCommision(d.view_fee)} ⭐️` }}
             </div>
-
           </div>
         </Link>
       </div>
@@ -239,13 +245,7 @@ import {Head, Link} from "@inertiajs/vue3";
 import LoadingIcon from "@/Components/LoadingIcon.vue";
 import Image from "@/Components/Image.vue";
 import {} from "@heroicons/vue/24/outline";
-import {
-  EyeIcon,
-  CurrencyDollarIcon,
-  UserIcon,
-  PlayIcon,
-  PauseIcon,
-} from "@heroicons/vue/24/solid";
+import {EyeIcon, CurrencyDollarIcon, UserIcon, PlayIcon, PauseIcon} from "@heroicons/vue/24/solid";
 
 export default {
   data() {
@@ -281,7 +281,7 @@ export default {
     SecondaryButton,
     UserIcon,
     PlayIcon,
-    PauseIcon,
+    PauseIcon
   },
   beforeUnmount() {
     clearInterval(this.intervalId);
@@ -303,6 +303,13 @@ export default {
     this.getData();
   },
   methods: {
+    afterCommision(price) {
+      if (!price || price == 0) return price;
+      const cp = this.$page.props.commission;
+      const p = Math.floor(cp * price / 100)
+      return price - p;
+
+    },
     startTimer(el) {
       this.isLoading(false);
       this.timer = 0;
@@ -323,8 +330,9 @@ export default {
     addTransaction() {
       if (!this.$page.props.data) return; //user changed page
       this.isLoading(true);
-      window.axios.post(route('transaction.site.view'), {
-            id: this.$page.props.data.id,
+      window.axios.post(route('transaction.item.view'), {
+            id: this.data.id,
+            type: this.data.type,
             auto_view: this.auto_view,
           },
       )
@@ -334,7 +342,10 @@ export default {
               this.showToast('success', response.data.message);
               this.sleep(3000).then(() => {
                 if (response.data.next && this.auto_view)
-                  this.$inertia.visit(route('site', response.data.next), {method: 'get'});
+                  this.$inertia.visit(route('item', {
+                    type: response.data.next.type,
+                    id: response.data.next.id,
+                  }), {method: 'get'});
 
               });
             }
@@ -350,7 +361,11 @@ export default {
             if (error.response && error.response.data) {
               this.sleep(3000).then(() => {
                 if (error.response.data.next && this.auto_view)
-                  this.$inertia.visit(route('site', error.response.data.next), {method: 'get'});
+                  this.$inertia.visit(route('item', {
+                    type: error.response.data.next.type,
+                    id: error.response.data.next.id,
+                  }), {method: 'get'});
+
 
               });
             }
@@ -388,7 +403,7 @@ export default {
       if (this.total > 0 && this.total <= this.sites.length) return;
       this.loading = true;
 
-      window.axios.get(route('site.search'), {
+      window.axios.get(route('item.search'), {
         params: this.params
       })
           .then((response) => {

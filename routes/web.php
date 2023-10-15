@@ -7,6 +7,7 @@ use App\Http\Controllers\BusinessController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\ExchangeController;
+use App\Http\Controllers\ItemController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PanelController;
@@ -16,6 +17,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\SiteController;
 use App\Http\Controllers\TicketController;
+use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\TransferController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VideoController;
 use App\Http\Helpers\Pay;
@@ -199,12 +202,21 @@ Route::middleware(['auth', 'verified'])->prefix('panel')->group(function ($route
 
     PanelController::makeInertiaRoute('get', 'profile/edit', 'panel.profile.edit', 'Panel/Profile/Edit',
         [
-
         ]);
     PanelController::makeInertiaRoute('get', 'password/edit', 'panel.profile.password.edit', 'Panel/Profile/PasswordEdit',
         [
-
         ]);
+
+    PanelController::makeInertiaRoute('get', 'transfer/index', 'panel.transfer.index', 'Panel/Transfer/Index', [
+        'statuses' => Variable::TRANSFER_STATUSES
+
+    ]);
+    PanelController::makeInertiaRoute('get', 'transfer/create', 'panel.transfer.create', 'Panel/Transfer/Create',
+        [
+            'types' => Variable::TRANSFER_TYPES
+        ]
+    );
+
 
     /**  Admin Panel **/
     Route::middleware(['can:create,App\Models\User,App\Models\User,""',])->prefix('admin')->group(function ($route) {
@@ -273,7 +285,9 @@ Route::post('banner/create', [BannerController::class, 'create'])->name('banner.
 
 Route::post('article/create', [ArticleController::class, 'create'])->name('article.create')->middleware('can:create,App\Models\User,App\Models\Article,""');
 
-Route::post('ticket/create', [TicketController::class, 'create'])->name('ticket.create');
+Route::post('ticket/create', [TicketController::class, 'create'])->name('ticket.create')->middleware('can:create,App\Models\User,App\Models\Ticket,""');
+
+Route::post('transfer/create', [TransferController::class, 'create'])->name('transfer.create')->middleware('can:create,App\Models\User,App\Models\Transfer,""');
 
 
 Route::middleware('throttle:6,1')->group(function () {
@@ -297,6 +311,7 @@ Route::middleware('auth')->group(function () {
     Route::get('panel/notification/search', [NotificationController::class, 'searchPanel'])->name('panel.notification.search');
     Route::get('panel/ticket/search', [TicketController::class, 'searchPanel'])->name('panel.ticket.search');
     Route::get('panel/merged/search', [PanelController::class, 'searchMergedItems'])->name('panel.merged.search');
+    Route::get('panel/transfer/search', [TransferController::class, 'searchPanel'])->name('panel.transfer.search');
 
 
     Route::get('site/edit/{site}', [SiteController::class, 'edit'])->name('panel.site.edit');
@@ -317,7 +332,7 @@ Route::middleware('auth')->group(function () {
     Route::get('article/edit/{article}', [ArticleController::class, 'edit'])->name('panel.article.edit');
     Route::patch('article/update', [ArticleController::class, 'update'])->name('article.update');
 
-    Route::get('notification/edit/{article}', [NotificationController::class, 'edit'])->name('panel.notification.edit');
+    Route::get('notification/edit/{notification}', [NotificationController::class, 'edit'])->name('panel.notification.edit');
     Route::patch('notification/update', [NotificationController::class, 'update'])->name('notification.update');
     Route::delete('notification/delete/{notification}', [NotificationController::class, 'delete'])->name('panel.admin.notification.delete');
 
@@ -326,6 +341,13 @@ Route::middleware('auth')->group(function () {
 
     Route::post('payment/url', [PaymentController::class, 'makeUrl'])->name('payment.url');
 
+    Route::get('transfer/edit/{transfer}', [TransferController::class, 'edit'])->name('panel.transfer.edit');
+    Route::patch('transfer/update', [TransferController::class, 'update'])->name('transfer.update');
+
+    Route::delete('transfer/delete/{transfer}', [TransferController::class, 'delete'])->name('panel.transfer.delete');
+    Route::get('transfer/edit/{transfer}', [TransferController::class, 'edit'])->name('panel.transfer.edit');
+    Route::patch('transfer/update', [TransferController::class, 'update'])->name('transfer.update');
+    Route::post('transfer/transfer', [TransferController::class, 'transfer'])->name('transfer.transfer');
 
 });
 Route::post('transaction/storesite', [\App\Http\Controllers\TransactionController::class, 'storeSite'])->name('transaction.site.view');
@@ -361,6 +383,17 @@ Route::get('banner/{banner}', [BannerController::class, 'view'])->name('banner')
 Route::get('/articles', [ArticleController::class, 'index'])->name('article.index');
 Route::get('/article/search', [ArticleController::class, 'search'])->name('article.search');
 Route::get('article/{article}', [ArticleController::class, 'view'])->name('article');
+
+Route::get('/transfers', [TransferController::class, 'index'])->name('transfer.index');
+Route::get('/transfer/search', [TransferController::class, 'search'])->name('transfer.search');
+Route::get('transfer/show', [TransferController::class, 'show'])->name('transfer.show');
+Route::get('transfer/{transfer}', [TransferController::class, 'view'])->name('transfer');
+
+Route::get('/items', [ItemController::class, 'index'])->name('item.index');
+Route::get('/items/search', [ItemController::class, 'search'])->name('item.search');
+Route::get('item/{type}/{id}', [ItemController::class, 'view'])->name('item');
+Route::post('transaction/storeitem', [TransactionController::class, 'storeItem'])->name('transaction.item.view');
+
 
 Route::get('language/{language}', function ($language) {
     session()->put('locale', $language);

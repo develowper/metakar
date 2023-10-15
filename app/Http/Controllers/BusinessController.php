@@ -322,8 +322,8 @@ class BusinessController extends Controller
             $message = __('no_results');
             $link = route('business.index');
             $data = ['name' => __('no_results'),];
-        } else {
-            event(new Viewed($data, BusinessTransaction::class, __('view_business')));
+        } elseif(!$request->iframe) {
+            event(new Viewed($data, BusinessTransaction::class));
         }
         return Inertia::render('Business/View', [
             'error_message' => $message,

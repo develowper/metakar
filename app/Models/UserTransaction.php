@@ -27,13 +27,16 @@ class UserTransaction extends Model
     public static function firstOrCreate($ip, $userId, $date = null)
     {
         if (!$date)
-            $date = Carbon::now('Asia/Tehran')->setTime(0, 0);
+            $date = Carbon::now(/*'Asia/Tehran'*/)->setTime(0, 0);
 
         $q = UserTransaction::query()->where('date', $date);
-        if ($userId)
-            $q->orWhere('owner_id', $userId);
-        if ($ip)
-            $q->orWhere('ip', $ip);
+        $q->where(function ($q) use ($ip, $userId) {
+            if ($ip)
+                $q->orWhere('ip', $ip);
+            if ($userId)
+                $q->orWhere('owner_id', $userId);
+        });
+
         $storeUser = $q->first();
 
         if (!$storeUser)

@@ -18,9 +18,9 @@
         <div
             class="hidden md:flex items-center grow  justify-around  text-xs  transition-all duration-500">
           <div class="flex items-center">
-            <Link :href="route('/')" class="px-4 nav-item" :class="navClasses('/')">
-              {{ __('home') }}
-            </Link>
+<!--            <Link :href="route('/')" class="px-4 nav-item" :class="navClasses('/')">-->
+            <!--              {{ __('home') }}-->
+            <!--            </Link>-->
             <Link :href="route('business.index')" class="nav-item" :class="navClasses('business')">
               {{ __('businesses') }}
             </Link>
@@ -40,6 +40,9 @@
             <Link :href="route('site.index')" class="nav-item" :class="navClasses('site')">
               {{ __('increase_view') }}
             </Link>
+            <Link :href="route('transfer.index')" class="nav-item" :class="navClasses('transfer')">
+              {{ __('shop') }}
+            </Link>
             <!--            <Link :href="route('page.make_money')" class="nav-item" :class="navClasses('make_money')">-->
             <!--              {{ __('make_money') }}-->
             <!--            </Link>-->
@@ -51,11 +54,14 @@
             <!--            <Link :href="route('page.prices')" class="nav-item" :class="navClasses('prices')">-->
             <!--              {{ __('prices') }}-->
             <!--            </Link>-->
-            <Link :href="route('page.help')" class="nav-item" :class="navClasses('help')">
-              {{ __('help') }}
-            </Link>
-            <Link :href="route('page.contact_us')" class="nav-item" :class="navClasses('contact_us')">
-              {{ __('contact_us') }}
+            <!--            <Link :href="route('page.help')" class="nav-item" :class="navClasses('help')">-->
+            <!--              {{ __('help') }}-->
+            <!--            </Link>-->
+            <!--            <Link :href="route('page.contact_us')" class="nav-item" :class="navClasses('contact_us')">-->
+            <!--              {{ __('contact_us') }}-->
+            <!--            </Link>-->
+            <Link :href="route('page.make_money')" class="nav-item " :class="navClasses('page.make_money')">
+              {{ __('make_money') }}
             </Link>
 
           </div>
@@ -64,7 +70,7 @@
         <!-- Secondary Navbar items -->
         <div class="   flex items-center space-x-3   ">
           <UserButton/>
-          <LanguageButton/>
+          <!--          <LanguageButton/>-->
         </div>
         <!-- Mobile menu button -->
         <div class="md:hidden flex items-center nav-item ">
@@ -75,7 +81,7 @@
       </div>
     </div>
     <!-- mobile menu -->
-    <div class="hidden mobile-menu flex flex-col bg-primary px-4">
+    <div class="hidden mobile-menu flex flex-col   bg-gradient-to-b from-blue-400   to-sky-400 px-4 shadow-md p-4">
       <Link :href="route('/')" class="px-4 nav-ite" :class="navClasses('/')">
         {{ __('home') }}
       </Link>
@@ -97,6 +103,12 @@
       </Link>
       <Link :href="route('site.index')" class="nav-ite" :class="navClasses('site')">
         {{ __('increase_view') }}
+      </Link>
+      <Link :href="route('transfer.index')" class="nav-item" :class="navClasses('transfer')">
+        {{ __('shop') }}
+      </Link>
+      <Link :href="route('page.make_money')" class="nav-item " :class="navClasses('page.make_money')">
+        {{ __('make_money') }}
       </Link>
     </div>
     <!--        <hr class="border-b border-gray-100 opacity-25 my-0 py-0"/>-->

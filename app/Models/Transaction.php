@@ -12,7 +12,7 @@ class Transaction extends Model
     protected $table = 'transactions';
     public $timestamps = true;
     protected $fillable = [
-        'title', 'type', 'user_id', 'coupon_id', 'amount', 'created_at', 'updated_at'
+        'title', 'type', 'user_id', 'owner_id', 'source_id', 'coupon_id', 'amount', 'created_at', 'updated_at'
     ];
 
     /**

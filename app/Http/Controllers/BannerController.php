@@ -13,6 +13,7 @@ use App\Models\County;
 use App\Models\Banner;
 use App\Models\Notification;
 use App\Models\Province;
+use App\Models\Transfer;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -170,11 +171,14 @@ class BannerController extends Controller
                     }
                 }
             }
-
+            $oldName = $data->name;
 //            $data->name = $request->tags;
 //            $data->tags = $request->tags;
 //            dd($request->tags);
             if ($data->update($request->all())) {
+
+                if ($oldName != $request->name)
+                    Transfer::where('item_type', 'banner')->where('item_id', $data->id)->where('status', '!=', 'done')->update(['name' => $data->name]);
 
                 $res = ['flash_status' => 'success', 'flash_message' => __($user->isAdmin() ? 'updated_successfully' : 'updated_successfully_and_active_after_review')];
 //                dd($request->all());
@@ -302,8 +306,8 @@ class BannerController extends Controller
             $message = __('no_results');
             $link = route('banner.index');
             $data = ['name' => __('no_results'),];
-        } else {
-            event(new Viewed($data, BannerTransaction::class, __('view_banner')));
+        } elseif(!$request->iframe) {
+            event(new Viewed($data, BannerTransaction::class));
         }
 
         return Inertia::render('Banner/View', [

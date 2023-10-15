@@ -16,7 +16,7 @@ class Viewed
 
     public $data;
     public $viewClass;
-    public $title;
+    public $userReward;
     public $isMeta;
 
     /**
@@ -24,12 +24,12 @@ class Viewed
      *
      * @return void
      */
-    public function __construct($data, $viewClass, $title, $isMeta = false)
+    public function __construct($data, $viewClass, $userReward = false, $isMeta = false)
     {
         $this->viewClass = $viewClass;
-        $this->title = $title;
         $this->isMeta = $isMeta;
         $this->data = $data;
+        $this->userReward = $userReward;
     }
 
     /**

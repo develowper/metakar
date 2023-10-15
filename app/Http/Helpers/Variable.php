@@ -3,14 +3,20 @@
 namespace App\Http\Helpers;
 
 use App\Models\Article;
+use App\Models\ArticleTransaction;
 use App\Models\Banner;
+use App\Models\BannerTransaction;
 use App\Models\Business;
+use App\Models\BusinessTransaction;
 use App\Models\Podcast;
+use App\Models\PodcastTransaction;
 use App\Models\Setting;
 use App\Models\Site;
+use App\Models\SiteTransaction;
 use App\Models\Ticket;
 use App\Models\User;
 use App\Models\Video;
+use App\Models\VideoTransaction;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Hash;
@@ -57,6 +63,8 @@ class Variable
     const BANNER_ALLOWED_MIMES = ['jpeg', 'jpg', 'png'];
     const SITE_IMAGE_LIMIT_MB = 4;
     const BUSINESS_IMAGE_LIMIT = 4;
+
+    const MIN_SELL_PRICE = 5000;
     const SITE_ALLOWED_MIMES = ['jpeg', 'jpg', 'png'];
     const PODCAST_ALLOWED_MIMES = ['mp3', 'mpga'];
     const VIDEO_ALLOWED_MIMES = ['mp4',];
@@ -95,6 +103,29 @@ class Variable
         Video::class => 'video',
         Banner::class => 'banner',
         Article::class => 'article',
+
+    ];
+    const TRANSACTION_TYPES = [
+        SiteTransaction::class => 'site',
+        BusinessTransaction::class => 'business',
+        PodcastTransaction::class => 'podcast',
+        VideoTransaction::class => 'video',
+        BannerTransaction::class => 'banner',
+        ArticleTransaction::class => 'article',
+
+    ];
+
+    const TRANSFER_TYPES = [
+        'regular',
+        'private',
+        'auction',
+
+    ];
+    const TRANSFER_STATUSES = [
+        ["name" => 'active', "color" => 'success'],
+        ["name" => 'inactive', "color" => 'danger'],
+        ["name" => 'done', "color" => 'gray'],
+        ["name" => 'expire', "color" => 'danger'],
 
     ];
     const SITE_STATUSES = [
@@ -140,9 +171,12 @@ class Variable
     {
         return [
             ['key' => 'hero_main_page', 'value' => __('hero_main_page'), 'lang' => app()->getLocale(), "created_at" => \Carbon\Carbon::now(),],
+            ['key' => 'site_view_seconds', 'value' => 60, "created_at" => \Carbon\Carbon::now(), 'lang' => null],
             ['key' => 'site_min_view_fee', 'value' => 100, "created_at" => \Carbon\Carbon::now(), 'lang' => null],
-            ['key' => 'site_view_commission', 'value' => 70, "created_at" => \Carbon\Carbon::now(), 'lang' => null],
             ['key' => 'iran_wallet', 'value' => 0, "created_at" => \Carbon\Carbon::now(), 'lang' => null],
+            ['key' => 'auction_price_step', 'value' => 50000, "created_at" => \Carbon\Carbon::now(), 'lang' => null],
+            ['key' => 'site_view_cp', 'value' => 20, "created_at" => \Carbon\Carbon::now(), 'lang' => null],
+            ['key' => 'sell_cp', 'value' => 20, "created_at" => \Carbon\Carbon::now(), 'lang' => null],
 
         ];
     }
@@ -167,8 +201,8 @@ class Variable
 
     static function SITE_VIEW_REWARD_SECOND()
     {
-        return 5;
-        return Setting::firstOrNew(['key' => 'site_view_reward_second'])->value ?? 30;
+//        return 5;
+        return Setting::firstOrNew(['key' => 'site_view_seconds'])->value ?? 60;
     }
 
 

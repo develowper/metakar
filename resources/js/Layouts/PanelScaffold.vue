@@ -51,8 +51,8 @@
 
             <!-- Brand -->
             <Link :href="route('/')"
-                  class="inline-block text-2xl font-bold tracking-wider   text-primary-500 dark:text-light">
-              {{ __('app_name') }}
+                  class="inline-block rounded bg-primary-100 p-2 hover:bg-primary-50 text-md font-bold tracking-wider   text-primary-500 dark:text-light">
+              {{ __('site_view') }}
             </Link>
 
 
@@ -260,6 +260,7 @@ export default {
     });
 
     this.emitter.on('showDialog', (e) => {
+      this.log(e);
       if (this.$refs.modal)
         this.$refs.modal.show(e.type, e.message, e.button, e.action, e.items);
     });

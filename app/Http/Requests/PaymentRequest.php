@@ -37,7 +37,7 @@ class PaymentRequest extends FormRequest
         $tmp = [];
 
         $tmp = array_merge($tmp, [
-            'amount' => ['numeric', 'min:200']
+            'amount' => ['numeric', 'min:1000']
         ]);
 
 

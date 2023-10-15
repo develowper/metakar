@@ -154,7 +154,7 @@
 
               <!--                article content-->
               <div class="my-2">
-                <Article mode="edit" ref="article" :placeholder="__('article_content')"
+                <Article mode="edit" ref="article" :owner-id="data.owner_id" :placeholder="__('article_content')"
                          :error="form.errors.content"/>
               </div>
               <div v-if="form.progress" class="shadow w-full bg-grey-light m-2   bg-gray-200 rounded-full">

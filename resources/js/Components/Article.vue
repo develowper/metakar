@@ -354,7 +354,7 @@ import Banner from "@/Components/Banner.vue";
 
 export default {
   name: "ArticleCell",
-  props: ['mode', 'placeholder', 'error'],
+  props: ['mode', 'ownerId', 'placeholder', 'error'],
   components: {
     Banner,
     Video,
@@ -385,7 +385,7 @@ export default {
         paginate: this.$page.props.pageItems[0],
         order_by: null,
         dir: 'DESC',
-        owner_id: this.$page.props.auth.user.id
+        owner_id: this.ownerId || this.$page.props.auth.user.id
       },
       Modal: null,
       data: [],

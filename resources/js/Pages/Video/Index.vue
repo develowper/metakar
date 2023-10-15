@@ -75,7 +75,7 @@
             <PlayIcon class="w-5 h-5 "/>
           </div>
           <div v-if="d.status=='active'"
-               class="absolute text-gray-500 rounded-lg text-white bg-rose-500 p-1 px-2 m-2  end-0 top-0 bg-white   shadow-lg">
+               class="absolute text-gray-500 rounded-lg text-white bg-rose-500 p-1 px-2 m-2  end-0 top-0    shadow-lg">
             {{ `${d.view_fee} ⭐️` }}
           </div>
           <div class="p-2 mt-4  text-gray-700">{{ cropText(d.name, 30) }}</div>

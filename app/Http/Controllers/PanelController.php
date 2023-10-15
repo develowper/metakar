@@ -203,30 +203,40 @@ class PanelController extends Controller
         $banners = null;
         $podcasts = null;
         $videos = null;
+        $articles = null;
 
-        if (!$request->type || $type == 'banner')
+        if (!$type || $type == 'transfer' || $type == 'banner')
             $banners = Banner::select(array_merge(['id', 'name', 'owner_id'], [DB::raw(" 'banner'" . ' as type '), DB::raw(' 0 as duration '), DB::raw('"" as extra')]))
-                ->where('status', 'active')
+                ->whereIn('status', ['active', 'need_charge',])
                 ->where(function ($query) use ($search, $owner_id) {
                     $query->where('name', 'like', "%$search%");
                     if ($owner_id)
                         $query->where('owner_id', $owner_id);
                 });
 
-        if (!$request->type || $type == 'podcast')
+        if (!$type || $type == 'transfer' || $type == 'podcast')
             $podcasts = Podcast::select(array_merge(['id', 'name', 'owner_id'], [DB::raw("'podcast'" . ' as type'), DB::raw('duration as duration'), DB::raw('"" as extra')]))
-                ->where('status', 'active')
+                ->whereIn('status', ['active', 'need_charge',])
                 ->where(function ($query) use ($search, $owner_id) {
                     $query->where('name', 'like', "%$search%");
                     if ($owner_id)
                         $query->where('owner_id', $owner_id);
                 });
 
-        if (!$request->type || $type == 'video')
+        if (!$type || $type == 'transfer' || $type == 'video')
             $videos = Video::select(array_merge(['id', 'name', 'owner_id'], [DB::raw("'video'" . ' as type'), DB::raw('duration as duration'), DB::raw('"" as extra')]))
-                ->where('status', 'active')
+                ->whereIn('status', ['active', 'need_charge',])
                 ->where(function ($query) use ($search, $owner_id) {
                     $query->where('name', 'like', "%$search%");
+                    if ($owner_id)
+                        $query->where('owner_id', $owner_id);
+                });
+        if ($type == 'transfer' || $type == 'article')
+            $articles = Article::select(array_merge(['id', DB::raw("title AS name"), 'owner_id'], [DB::raw(" 'article'" . ' as type '), DB::raw(' 0 as duration '), DB::raw('"" as extra')]))
+                ->whereIn('status', ['active', 'need_charge',])
+                ->where(function ($query) use ($search, $owner_id) {
+                    if ($search)
+                        $query->where('title', 'like', "%$search%");
                     if ($owner_id)
                         $query->where('owner_id', $owner_id);
                 });
@@ -238,6 +248,8 @@ class PanelController extends Controller
             if ($res) $res->union($podcasts); else $res = $podcasts;
         if ($videos)
             if ($res) $res->union($videos); else $res = $videos;
+        if ($articles)
+            if ($res) $res->union($articles); else $res = $articles;
 
         if ($res)
             return $res->orderBy($order, $dir)->paginate($paginate);

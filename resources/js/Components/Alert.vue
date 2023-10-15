@@ -2,19 +2,19 @@
 
   <div v-show="showing" id="alert"
        :class="`bg-${status}-100  text-${status}-700`"
-       class="cursor-pointer flex  z-[999999]  mb-3 fixed top-0 start-0 end-0  duration-500 transition-all w-full items-center   px-6 py-5     data-[te-alert-show]:inline-flex"
+       class="cursor-pointer flex  z-[999999]  mb-3 fixed top-0 start-0 end-0  duration-500 transition-all w-full items-center justify-around   px-6 py-5     data-[te-alert-show]:inline-flex"
        role="alert"
        data-te-alert-init
        data-te-delay="500"
        data-te-autohide="false"
        @click="hide"
   >
-    <strong class="mx-1"> {{ message }}</strong>
+    <strong class="mx-1" v-html="message"> </strong>
     <button
         @click="hide"
         :class="`bg-${status}-100 text-${status} hover:text-${status}-900` "
         type="button"
-        class="ml-auto box-content rounded-none border-none p-1   opacity-50  hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none"
+        class="ms-auto box-content rounded-none border-none p-1   opacity-50  hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none"
 
         aria-label="Close">
     <span

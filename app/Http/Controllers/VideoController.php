@@ -9,6 +9,7 @@ use App\Http\Helpers\Variable;
 use App\Http\Requests\UserRequest;
 use App\Http\Requests\VideoRequest;
 use App\Models\Notification;
+use App\Models\Transfer;
 use App\Models\User;
 use App\Models\Video;
 use App\Models\VideoTransaction;
@@ -171,8 +172,14 @@ class VideoController extends Controller
                     }
                 }
             }
-
+            $oldName = $data->name;
+//            $data->name = $request->tags;
+//            $data->tags = $request->tags;
+//            dd($request->tags);
             if ($data->update($request->all())) {
+
+                if ($oldName != $request->name)
+                    Transfer::where('item_type', 'video')->where('item_id', $data->id)->where('status', '!=', 'done')->update(['name' => $data->name]);
 
                 $res = ['flash_status' => 'success', 'flash_message' => __($user->isAdmin() ? 'updated_successfully' : 'updated_successfully_and_active_after_review')];
 //                dd($request->all());
@@ -298,8 +305,8 @@ class VideoController extends Controller
             $message = __('no_results');
             $link = route('video.index');
             $data = ['name' => __('no_results'),];
-        } else {
-            event(new Viewed($data, VideoTransaction::class, __('view_video')));
+        } elseif(!$request->iframe) {
+            event(new Viewed($data, VideoTransaction::class));
         }
         return Inertia::render('Video/View', [
             'error_message' => $message,

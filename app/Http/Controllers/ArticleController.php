@@ -12,6 +12,7 @@ use App\Models\County;
 use App\Models\Article;
 use App\Models\Notification;
 use App\Models\Province;
+use App\Models\Transfer;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -134,7 +135,7 @@ class ArticleController extends Controller
             foreach ($content as $idx => $item) {
                 $item = (object)$item;
                 if ($item->type && $item->type != 'text') {
-                    $tmp = DB::table("{$item->type}s")->where('owner_id', $user->id)->find($item->id);
+                    $tmp = DB::table("{$item->type}s")->where('owner_id', $data->owner_id)->find($item->id);
                     if ($tmp) {
                         $content[$idx]['value'] = $tmp->name;
                         $duration += $tmp->duration ?? 0;
@@ -190,11 +191,13 @@ class ArticleController extends Controller
                 }
             }
 
-
+            $oldName = $data->title;
 //            $data->name = $request->tags;
 //            $data->tags = $request->tags;
 //            dd($request->tags);
             if ($data->update($request->all())) {
+                if ($oldName != $request->title)
+                    Transfer::where('item_type', 'article')->where('item_id', $data->id)->where('status', '!=', 'done')->update(['name' => $data->title]);
 
                 $res = ['flash_status' => 'success', 'flash_message' => __($user->isAdmin() ? 'updated_successfully' : 'updated_successfully_and_active_after_review')];
 //                dd($request->all());
@@ -250,7 +253,7 @@ class ArticleController extends Controller
         foreach ($content as $idx => $item) {
             $item = (object)$item;
             if ($item->type && $item->type != 'text') {
-                $tmp = DB::table("{$item->type}s")->find($item->id);
+                $tmp = DB::table("{$item->type}s")->where('owner_id', $user->id)->find($item->id);
                 if ($tmp) {
                     $item->value = $tmp->name;
                     $duration += $tmp->duration ?? 0;
@@ -339,8 +342,8 @@ class ArticleController extends Controller
             $message = __('no_results');
             $link = route('article.index');
             $data = ['name' => __('no_results'),];
-        } else {
-            event(new Viewed($data, ArticleTransaction::class, __('view_article')));
+        } elseif(!$request->iframe) {
+            event(new Viewed($data, ArticleTransaction::class));
         }
 
         return Inertia::render('Article/View', [

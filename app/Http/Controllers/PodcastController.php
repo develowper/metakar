@@ -13,6 +13,7 @@ use App\Models\Notification;
 use App\Models\Podcast;
 use App\Models\PodcastTransaction;
 use App\Models\Province;
+use App\Models\Transfer;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -170,11 +171,14 @@ class PodcastController extends Controller
                     }
                 }
             }
-
+            $oldName = $data->name;
 //            $data->name = $request->tags;
 //            $data->tags = $request->tags;
 //            dd($request->tags);
             if ($data->update($request->all())) {
+
+                if ($oldName != $request->name)
+                    Transfer::where('item_type', 'podcast')->where('item_id', $data->id)->where('status', '!=', 'done')->update(['name' => $data->name]);
 
                 $res = ['flash_status' => 'success', 'flash_message' => __($user->isAdmin() ? 'updated_successfully' : 'updated_successfully_and_active_after_review')];
 //                dd($request->all());
@@ -302,8 +306,8 @@ class PodcastController extends Controller
             $message = __('no_results');
             $link = route('podcast.index');
             $data = ['name' => __('no_results'),];
-        } else {
-            event(new Viewed($data, PodcastTransaction::class, __('view_podcast')));
+        } elseif (!$request->iframe) {
+            event(new Viewed($data, PodcastTransaction::class));
         }
         return Inertia::render('Podcast/View', [
             'error_message' => $message,

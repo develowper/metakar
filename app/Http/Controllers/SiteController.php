@@ -7,12 +7,16 @@ use App\Http\Helpers\Telegram;
 use App\Http\Helpers\Util;
 use App\Http\Helpers\Variable;
 use App\Http\Requests\SiteRequest;
+use App\Models\Article;
+use App\Models\Banner;
 use App\Models\Notification;
+use App\Models\Podcast;
 use App\Models\Setting;
 use App\Models\Site;
 use App\Models\SiteTransaction;
 use App\Models\Transaction;
 use App\Models\User;
+use App\Models\Video;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -34,11 +38,15 @@ class SiteController extends Controller
 
     public function index(Request $request)
     {
+        $type = $request->type;
+
         $message = null;
         $link = null;
         $auto_view = session()->get('auto_view', true);
         $meta_view_fee = Variable::SITE_VIEW_META_FEE();
         $user = auth()->user();
+
+
         $data = $user ? Site::whereStatus('view')->whereLang(app()->getLocale())->whereIntegerNotInRaw('id', Site::where('owner_id', $user->id)->pluck('id'))->whereIntegerNotInRaw('id', SiteTransaction::where('owner_id', $user->id)->pluck('data_id'))->where(function ($query) use ($user, $meta_view_fee) {
             if ($user->wallet_active)
                 $query->whereColumn('charge', '>=', 'view_fee');
@@ -111,6 +119,10 @@ class SiteController extends Controller
                 $data->link = str_replace('http://', 'https://', $data->link);
             $data->name = __('site') . ' ' . $data->name;
         }
+        $commissionPercent = Setting::getValue('site_view_cp') ?? 0;
+        $commission = intVal($data->view_fee * $commissionPercent / 100);
+        $data->view_reward = $data->view_fee - $commission;
+
         return Inertia::render('Site/View', [
             'auto_view' => $auto_view,
             'available_sites' => $user ? Site::whereStatus('view')->whereLang(app()->getLocale())->whereIntegerNotInRaw('id', Site::where('owner_id', $user->id)->pluck('id'))->whereIntegerNotInRaw('id', $seen/*SiteTransaction::where('owner_id', $user->id)->pluck('data_id')*/)->where(function ($query) use ($user, $meta_view_fee) {
@@ -417,4 +429,6 @@ class SiteController extends Controller
 
         return response()->json($response, $errorStatus);
     }
+
+
 }

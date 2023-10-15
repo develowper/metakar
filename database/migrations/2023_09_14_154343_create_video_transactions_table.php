@@ -20,6 +20,8 @@ return new class extends Migration {
             $table->enum('type', Variable::DATA_TRANSACTION_TYPES)->nullable();
             $table->boolean('is_meta')->default(false);
             $table->unsignedBigInteger('owner_id')->nullable();
+            $table->unsignedBigInteger('source_id')->nullable(); //transfer or payment
+
             $table->unsignedBigInteger('data_id')->nullable();
             $table->unsignedInteger('amount')->default(0);
             $table->timestamp('created_at')->useCurrent();

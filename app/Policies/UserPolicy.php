@@ -9,6 +9,7 @@ use App\Models\Notification;
 use App\Models\Podcast;
 use App\Models\Site;
 use App\Models\Ticket;
+use App\Models\Transfer;
 use App\Models\User;
 use App\Models\Video;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -96,6 +97,7 @@ class UserPolicy
             case Video::class  :
             case Banner::class  :
             case Article::class  :
+            case Transfer::class  :
                 if (in_array($user->role, ['us', 'ad',]))
                     return true;
                 break;
@@ -114,6 +116,8 @@ class UserPolicy
         }
         if (!$item)
             return abort(403, __("item_not_found"));
+
+
         switch (true) {
             case $item instanceof User   :
                 if (in_array($user->role, ['ad',]))
@@ -127,7 +131,7 @@ class UserPolicy
             case $item instanceof Article :
             case $item instanceof Notification :
             case $item instanceof Ticket :
-
+            case $item instanceof Transfer :
                 return $user->role == 'us' && optional($item)->owner_id == $user->id || in_array($user->role, ['ad',]);
                 break;
         }
@@ -162,6 +166,7 @@ class UserPolicy
             case $item instanceof Article  :
             case $item instanceof Notification  :
             case $item instanceof Ticket  :
+            case $item instanceof Transfer  :
                 return $user->role == 'us' && optional($item)->owner_id == $user->id || in_array($user->role, ['ad',]);
                 break;
         }

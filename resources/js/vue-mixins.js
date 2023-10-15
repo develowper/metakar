@@ -116,7 +116,9 @@ export default {
                 if (error.response.data && error.response.data.errors)
                     return Object.values(error.response.data.errors).join("<br/>")
                 if (error.response.data && error.response.data.message)
-                    return error.response.data.message;
+                    if (error.response.data.message == 'Unauthenticated.')
+                        return this.__('first_login_or_register');
+                return error.response.data.message;
 
             } else if (error.request) {
                 return error.request;
