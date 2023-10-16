@@ -74,7 +74,7 @@
           <Image :src="route('storage.businesses')+`/${d.id}/1.jpg`" classes="object-cover rounded-lg h-48   w-full"/>
 
           <div v-if="d.status=='active'"
-               class="absolute text-gray-500 rounded-lg text-white bg-rose-500 p-1 px-2 m-2  end-0 top-0 bg-white   shadow-lg">
+               class="absolute text-gray-500 rounded-lg text-white bg-rose-500 p-1 px-2 m-2  end-0 top-0    shadow-lg">
             {{ `${d.view_fee} ⭐️` }}
           </div>
           <div class="p-2  text-gray-700">{{ cropText(d.name, 30) }}</div>
