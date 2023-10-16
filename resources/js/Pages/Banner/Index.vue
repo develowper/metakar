@@ -26,7 +26,8 @@
 
             <div class="  px-3    flex  items-stretch justify-center">
               <!--              <PrimaryButton class="mx-2 p-2 grow  ">{{ __('register_banner') }}</PrimaryButton>-->
-              <SecondaryButton @click="$inertia.visit(route('panel.banner.create'))" class="mx-2 p-2  ">
+              <SecondaryButton @click="$inertia.visit(route('panel.banner.create'))"
+                               class="md:mx-2 p-2  text-xs md:text-sm  ">
                 {{ __('register_banner') }}
               </SecondaryButton>
               <SearchInput v-model="params.search" @search="getData(0)"/>

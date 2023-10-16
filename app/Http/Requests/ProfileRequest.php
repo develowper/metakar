@@ -37,11 +37,11 @@ class ProfileRequest extends FormRequest
         $tmp = [];
         $phoneChanged = optional($user)->phone != $this->phone;
 
-        if (!$this->cmnd)
+        if (!$this->cmnd || $this->cmnd == 'register')
             $tmp = array_merge($tmp, [
-                'fullname' => ['required', 'max:100', Rule::unique('users', 'fullname')->ignore(optional($user)->id)],
-                'card' => ['nullable', 'digits:16', Rule::unique('users', 'card')->ignore($user->id)],
-                'phone' => ['required', 'numeric', 'digits:11', 'regex:/^09[0-9]+$/', Rule::unique('users', 'phone')->ignore($user->id)],
+                'fullname' => ['required', 'min:3', 'max:100', Rule::unique('users', 'fullname')->ignore(optional($user)->id)],
+                'card' => ['nullable', 'digits:16', Rule::unique('users', 'card')->ignore(optional($user)->id)],
+                'phone' => ['required', 'numeric', 'digits:11', 'regex:/^09[0-9]+$/', Rule::unique('users', 'phone')->ignore(optional($user)->id)],
                 'phone_verify' => [Rule::requiredIf(function () use ($request, $user, $phoneChanged, $editMode) {
                     return $phoneChanged
                         || !$user || (!$editMode && $request->phone != $user->phone);
@@ -64,6 +64,13 @@ class ProfileRequest extends FormRequest
 
 
             ]);
+        if ($this->cmnd == 'register')
+
+            $tmp = array_merge($tmp, [
+                'password' => ['required', 'min:6', 'confirmed', 'regex:/^.*(?=.{6,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x]).*$/'],
+
+
+            ]);
         return $tmp;
     }
 
@@ -74,9 +81,11 @@ class ProfileRequest extends FormRequest
 
             'fullname.required' => sprintf(__("validator.required"), __('fullname')),
             'fullname.max' => sprintf(__("validator.max_len"), 100, mb_strlen($this->fullname)),
+            'fullname.min' => sprintf(__("validator.min_len"), 3, mb_strlen($this->fullname)),
 
             'phone.required' => sprintf(__("validator.required"), __('phone')),
             'phone.unique' => sprintf(__("validator.unique"), __('phone')),
+            'phone.numeric' => sprintf(__("validator.numeric"), __('phone')),
             'phone_verify.required' => sprintf(__("validator.required"), __('phone_verify')),
             'phone_verify.exists' => sprintf(__("validator.invalid"), __('phone_verify')),
 
@@ -87,6 +96,9 @@ class ProfileRequest extends FormRequest
             'img.base64_image_size' => sprintf(__("validator.max_size"), __("image"), Variable::SITE_IMAGE_LIMIT_MB),
             'img.base64_image_mime' => sprintf(__("validator.invalid_format"), __("image"), implode(",", Variable::SITE_ALLOWED_MIMES)),
 
+            'password.required' => sprintf(__("validator.required"), __('password')),
+            'password.regex' => sprintf(__("validator.password_regex"),),
+            'password.confirmed' => sprintf(__("validator.password_confirmed"),),
             'new_password.required' => sprintf(__("validator.required"), __('new_password')),
             'new_password.min' => sprintf(__("validator.min_len"), 6, mb_strlen($this->new_password)),
             'new_password.regex' => sprintf(__("validator.password_regex"),),

@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Helpers\SMSHelper;
+use App\Http\Helpers\Telegram;
+use App\Http\Requests\ProfileRequest;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
@@ -29,24 +32,25 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): RedirectResponse
+    public function store(ProfileRequest $request): RedirectResponse
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:'.User::class,
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ]);
+//        $request->validate([
+//            'name' => 'required|string|max:255',
+//            'email' => 'required|string|email|max:255|unique:'.User::class,
+//            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+//        ]);
 
         $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
+            'fullname' => $request->fullname,
+            'phone' => $request->phone,
+            'ref_id' => User::makeRefCode(),
             'password' => Hash::make($request->password),
         ]);
-
         event(new Registered($user));
 
         Auth::login($user);
-
+        Telegram::log(null, 'user_created', $user);
+        SMSHelper::deleteCode($user->phone);
         return redirect(RouteServiceProvider::HOME);
     }
 }

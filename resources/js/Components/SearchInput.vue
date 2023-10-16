@@ -32,9 +32,9 @@ const focusNext = (elem) => {
 <template>
   <div>
     <div class=" flex items-center  ">
-      <div class="relative  px-6 mx-auto  ">
+      <div class="relative  px-1 mx-auto  ">
         <div
-            class="absolute top-0 bottom-0 start-0 flex items-center opacity-60  ps-10  ">
+            class="absolute top-0 bottom-0 start-4 flex items-center opacity-60     ">
           <svg @click="$emit('search' )"
                class="w-4 h-4 text-gray-600 fill-current   "
                xmlns="http://www.w3.org/2000/svg"

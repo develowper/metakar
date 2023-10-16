@@ -36,7 +36,7 @@
       </div>
       <InputError class="mt-1" :message="phoneError"/>
     </div>
-    <div v-if="!isDisabled">
+    <div v-if="!isDisabled  ">
       <InputLabel class="my-2" for="phone_verify" :value="__('phone_verify')"/>
       <div class="relative mb-2 mt-2 flex flex-wrap items-stretch">
 
@@ -55,7 +55,7 @@
             ref="input_phone_verify"/>
 
       </div>
-      <!--      <InputError class="mt-1" :message="phoneError"/>-->
+      <InputError class="mt-1" :message="phoneVerifyError"/>
     </div>
   </div>
 

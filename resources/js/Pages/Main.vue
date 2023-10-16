@@ -51,7 +51,7 @@
                   __('adv_create')
                 }}
               </PrimaryButton>
-              <SecondaryButton @click="$inertia.visit(route('panel.index'))" class="mx-2 p-2 grow">{{
+              <SecondaryButton @click="$inertia.visit(route('page.make_money'))" class="mx-2 p-2 grow">{{
                   __('make_money')
                 }}
               </SecondaryButton>

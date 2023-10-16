@@ -7,7 +7,7 @@
           <div>
             <Link :href="route('/')" class="flex items-center py-4 px-2">
               <ApplicationLogo class="w-9 h-9 fill-current text-primary-600"/>
-              <span class="font-semibold text-white nav-item text-lg"
+              <span class="font-semibold text-white nav-item text-lg mx-2"
               >{{ __('app_name') }}</span>
 
             </Link>
@@ -18,7 +18,7 @@
         <div
             class="hidden md:flex items-center grow  justify-around  text-xs  transition-all duration-500">
           <div class="flex items-center">
-<!--            <Link :href="route('/')" class="px-4 nav-item" :class="navClasses('/')">-->
+            <!--            <Link :href="route('/')" class="px-4 nav-item" :class="navClasses('/')">-->
             <!--              {{ __('home') }}-->
             <!--            </Link>-->
             <Link :href="route('business.index')" class="nav-item" :class="navClasses('business')">
@@ -63,7 +63,9 @@
             <Link :href="route('page.make_money')" class="nav-item " :class="navClasses('page.make_money')">
               {{ __('make_money') }}
             </Link>
-
+            <Link :href="route('transfer.index')" class="nav-item" :class="navClasses('transfer')">
+              {{ __('shop') }}
+            </Link>
           </div>
 
         </div>
@@ -104,10 +106,10 @@
       <Link :href="route('site.index')" class="nav-ite" :class="navClasses('site')">
         {{ __('increase_view') }}
       </Link>
-      <Link :href="route('transfer.index')" class="nav-item" :class="navClasses('transfer')">
+      <Link :href="route('transfer.index')" class="nav-ite" :class="navClasses('transfer')">
         {{ __('shop') }}
       </Link>
-      <Link :href="route('page.make_money')" class="nav-item " :class="navClasses('page.make_money')">
+      <Link :href="route('page.make_money')" class="nav-ite " :class="navClasses('page.make_money')">
         {{ __('make_money') }}
       </Link>
     </div>

@@ -24,9 +24,10 @@
             </p>
             <!--                        search-->
 
-            <div class="  px-3    flex  items-stretch justify-center">
+            <div class="     flex  items-stretch justify-center">
               <!--              <PrimaryButton class="mx-2 p-2 grow  ">{{ __('register_video') }}</PrimaryButton>-->
-              <SecondaryButton @click="$inertia.visit(route('panel.business.create'))" class="mx-2 p-2  ">
+              <SecondaryButton @click="$inertia.visit(route('panel.business.create'))"
+                               class="   md:mx-2 p-2  text-xs md:text-sm ">
                 {{ __('register_business') }}
               </SecondaryButton>
               <SearchInput v-model="params.search" @search="getData(0)"/>
