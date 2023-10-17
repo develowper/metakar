@@ -1,7 +1,7 @@
 <template>
   <Scaffold navbar-theme="dark">
     <template v-slot:header>
-      <title>{{__('home')}}</title>
+      <title>{{__('make_money')}}</title>
 
     </template>
 
