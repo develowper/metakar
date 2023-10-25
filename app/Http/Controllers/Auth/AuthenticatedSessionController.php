@@ -36,7 +36,7 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerate();
         Transaction::fillAllOwnerIds($request->ip(), auth()->id());
 
-        return redirect()->intended(route('panel.index'));
+        return redirect()->intended(route(auth()->user()->isAdmin() ? 'panel.admin.index' : 'panel.index'));
     }
 
     /**

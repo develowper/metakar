@@ -34,7 +34,7 @@
               </div>
 
             </div>
-            <form @submit.prevent="submit">
+            <form @submit.prevent="showDialog('primary',__('subtract_wallet'),__('pay'),submit)">
 
               <div class="flex items-center">
                 <Tooltip class="p-2 " :content="__('help_lang')">
@@ -144,7 +144,7 @@
                                :class="{ 'opacity-25': form.processing }"
                                :disabled="form.processing">
                   <LoadingIcon class="w-4 h-4 mx-3 " v-if="  form.processing"/>
-                  <span class=" text-lg  ">  {{ __('register_info') }}</span>
+                  <span class=" text-lg  ">  {{ __('register_info') }} ( {{ $page.props.pay_amount }} )</span>
                 </PrimaryButton>
 
               </div>
@@ -205,6 +205,7 @@ export default {
 
       form: useForm({
         lang: null,
+        author: null,
         title: null,
         content: null,
         category_id: null,
@@ -284,7 +285,8 @@ export default {
                   onSuccess: (data) => {
 
                     // else {
-                    //   this.showAlert(this.$page.props.flash.status, this.$page.props.flash.message);
+                    if (this.$page.props.flash.status)
+                      this.showAlert(this.$page.props.flash.status, this.$page.props.flash.message);
                     //   this.form.reset();
                     // }
                   },

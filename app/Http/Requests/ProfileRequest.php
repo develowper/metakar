@@ -36,10 +36,12 @@ class ProfileRequest extends FormRequest
         $request = $this;
         $tmp = [];
         $phoneChanged = optional($user)->phone != $this->phone;
-
+        $roles = array_column(Variable::ACCESS, 'role');
         if (!$this->cmnd || $this->cmnd == 'register')
             $tmp = array_merge($tmp, [
-                'fullname' => ['required', 'min:3', 'max:100', Rule::unique('users', 'fullname')->ignore(optional($user)->id)],
+                'accesses' => ['nullable', 'array', 'max:' . count($roles),],
+                'accesses.*' => ['distinct', Rule::in($roles)],
+                'fullname' => ['required', 'min:3', 'max:100',/* Rule::unique('users', 'fullname')->ignore(optional($user)->id)*/],
                 'card' => ['nullable', 'digits:16', Rule::unique('users', 'card')->ignore(optional($user)->id)],
                 'phone' => ['required', 'numeric', 'digits:11', 'regex:/^09[0-9]+$/', Rule::unique('users', 'phone')->ignore(optional($user)->id)],
                 'phone_verify' => [Rule::requiredIf(function () use ($request, $user, $phoneChanged, $editMode) {
@@ -56,14 +58,18 @@ class ProfileRequest extends FormRequest
                 'img' => ['required', 'base64_image_size:' . Variable::SITE_IMAGE_LIMIT_MB * 1024, 'base64_image_mime:' . implode(",", Variable::SITE_ALLOWED_MIMES)],
 
             ]);
-        if ($this->cmnd == 'password-reset')
+        if ($this->cmnd == 'password-reset') {
 
+            if (!$user)
+                $tmp = array_merge($tmp, [
+                    'phone' => ['required', 'numeric', 'digits:11', 'regex:/^09[0-9]+$/', Rule::exists('users', 'phone')],
+                ]);
             $tmp = array_merge($tmp, [
-                'phone_verify' => ['required', Rule::exists('sms_verify', 'code')->where('phone', $user->phone)],
+                'phone_verify' => ['required', Rule::exists('sms_verify', 'code')->where('phone', $user ? $user->phone : $this->phone)],
                 'new_password' => ['required', 'min:6', 'confirmed', 'regex:/^.*(?=.{6,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x]).*$/'],
 
-
             ]);
+        }
         if ($this->cmnd == 'register')
 
             $tmp = array_merge($tmp, [
@@ -79,6 +85,11 @@ class ProfileRequest extends FormRequest
 
         return [
 
+            'accesses.array' => sprintf(__("validator.invalid"), __('accesses')),
+            'accesses.*.distinct' => sprintf(__("validator.invalid"), __('accesses')),
+            'accesses.*.in' => sprintf(__("validator.invalid"), __('accesses')),
+
+
             'fullname.required' => sprintf(__("validator.required"), __('fullname')),
             'fullname.max' => sprintf(__("validator.max_len"), 100, mb_strlen($this->fullname)),
             'fullname.min' => sprintf(__("validator.min_len"), 3, mb_strlen($this->fullname)),
@@ -88,6 +99,7 @@ class ProfileRequest extends FormRequest
             'phone.numeric' => sprintf(__("validator.numeric"), __('phone')),
             'phone_verify.required' => sprintf(__("validator.required"), __('phone_verify')),
             'phone_verify.exists' => sprintf(__("validator.invalid"), __('phone_verify')),
+            'phone.exists' => __('user_phone_not_found'),
 
 
             'card.digits' => sprintf(__("validator.digits"), __('card'), 16),

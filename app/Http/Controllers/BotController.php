@@ -483,7 +483,7 @@ class BotController extends Controller
 
                             $this->user->password = Hash::make($text);
                             $this->user->step = null;
-                            $this->user->ref_id = User::makeRefCode();
+                            $this->user->ref_id = User::makeRefCode($this->user->phone);
                             $this->user->save();
                             $this->createUserImage($this->user->telegram_id);
                             Telegram::sendMessage($chat_id, "با موفقیت ثبت نام شدید! و امتیاز به حساب شما افزوده شد.\nشما می توانید با اشتراک گذاری بنر خود و یا دیدن ویدیو در اپلیکیشن، امتیاز خود را افزایش دهید.", 'MarkDown', $message_id, $button);

@@ -31,6 +31,16 @@
               }}
             </div>
           </div>
+          <div class="flex text-sm">
+            <div class="text-gray-500">{{ __('accesses') }}:</div>
+            <div v-for="(access,idx) in $page.props.accesses" class="ms-1">
+              <div class="bg-primary-100 rounded px-2 text-sm"
+                   v-if="data.access && data.access.split(',').indexOf(access.role)>-1">
+                {{ __(access.name) }}
+              </div>
+            </div>
+          </div>
+
         </div>
         <div v-if="data && data.id"
              class="lg:grid      lg:grid-cols-3  mx-auto md:max-w-5xl   mt-6 px-2 md:px-4 py-4 bg-white shadow-md overflow-hidden  rounded-lg  ">

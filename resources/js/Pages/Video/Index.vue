@@ -63,13 +63,13 @@
       </div>
     </div>
 
-    <section class="flex justify-center  p-1 max-w-8xl  py-8  ">
+    <section v-if="false" class="flex justify-center  p-1 max-w-8xl  py-8  ">
       <!--      <div class=" w-80 p-3   mx-2  bg-white rounded-lg     lg:flex md:hidden sm:hidden xs:hidden"></div>-->
 
 
       <div
           class="   grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4  gap-4     max-w-6xl">
-        <Link v-for="(d,idx) in data" :href="route('video',d.id)"
+        <Link v-for="(d,idx) in data" :href="route('article',d.article_id)"
               class="max-w-xs flex-col relative items-stretch cursor-pointer hover:scale-[101%] duration-300 rounded-lg overflow-hidden shadow-lg">
           <Image :src="route('storage.videos')+`/${d.id}.jpg`" classes="object-cover rounded-lg h-48   w-full"/>
           <div class="absolute text-gray-500 rounded-full p-4 mx-4 top-[10rem] bg-white   shadow-lg">
@@ -105,6 +105,66 @@
         </Link>
       </div>
     </section>
+    <section class="    ">
+      <div v-for="(cat,idx) in categories" class="  ps-8">
+
+        <div v-if="cat && cat.length>0" class="my-8">
+          <div class="p-2 my-2  font-semibold w-fit  text-primary-500   border-b-2 border-primary-500">{{
+              getCategory(idx)
+            }}
+          </div>
+          <swiper class="w-full   "
+                  :modules="modules"
+
+                  :slides-per-view="'auto'"
+                  :space-between="16"
+                  :pagination="{ clickable: true }"
+                  :scrollbar="{ draggable: true }"
+                  @swiper=""
+                  @slideChange=""
+          >
+            <swiper-slide v-for="(d,idx) in cat" class="max-w-[16rem]    ">
+              <Link :href="route('article',d.article_id)"
+                    class="my-2 flex max-w-xs flex-col relative items-stretch cursor-pointer hover:scale-[101%] duration-300 rounded-lg overflow-hidden shadow-lg">
+                <Image :src="route('storage.videos')+`/${d.id}.jpg`" classes="object-cover rounded-lg h-48   w-full"/>
+                <div class="absolute text-gray-500 rounded-full p-4 mx-4 top-[10rem] bg-white   shadow-lg">
+                  <PlayIcon class="w-5 h-5 "/>
+                </div>
+                <div v-if="d.status=='active'"
+                     class="absolute text-gray-500 rounded-lg text-white bg-rose-500 p-1 px-2 m-2  end-0 top-0    shadow-lg">
+                  {{ `${d.view_fee} ⭐️` }}
+                </div>
+                <div class="p-2 mt-4  text-gray-700">{{ cropText(d.name, 30) }}</div>
+                <div class="px-2 py-2 text-sm   text-gray-400">{{ cropText(d.narrator, 30) }}</div>
+                <div class="px-4 py-2 text-xs   text-gray-400">{{ getCategory(d.category_id) }}</div>
+                <hr class="border-gray-200 dark:border-gray-700  ">
+                <div class="flex justify-around  items-center p-4 text-sm text-gray-500">
+                  <div class="flex items-center">
+                    <!--              <EyeIcon class="w-4 h-4"/>-->
+                    <span class="px-1">{{ __('view') }}:</span>
+                    <span class="px-1">{{ d.view }}</span>
+                  </div>
+                  <div class=" border-s   py-4"></div>
+                  <!--            <div v-if="!hasWallet()" class="flex items-center">-->
+                  <!--              &lt;!&ndash;              <EyeIcon class="w-4 h-4"/>&ndash;&gt;-->
+                  <!--              <span class="px-1">{{ __('reward') }}:</span>-->
+                  <!--              <span class="px-1">{{ $page.props.site_view_meta_reward }} {{ __('meta') }}</span>-->
+                  <!--            </div>-->
+                  <div class="flex items-center">
+                    <!--              <EyeIcon class="w-4 h-4"/>-->
+                    <!--              <span class="px-1">{{ __('location') }}:</span>-->
+                    <span class="px-1">{{ getDuration(d.duration) }} </span>
+                  </div>
+
+                </div>
+              </Link>
+            </swiper-slide>
+
+
+          </swiper>
+        </div>
+      </div>
+    </section>
     <LoadingIcon v-show="loading" ref="loader" type="linear"/>
   </Scaffold>
 
@@ -122,10 +182,18 @@ import SecondaryButton from "@/Components/SecondaryButton.vue";
 import {EyeIcon} from "@heroicons/vue/24/outline";
 import {PlayIcon} from "@heroicons/vue/24/solid";
 import SearchInput from "@/Components/SearchInput.vue";
+import {Swiper, SwiperSlide} from 'swiper/vue';
+import {Navigation, Pagination, Scrollbar, A11y} from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import 'swiper/css/scrollbar';
 
 export default {
   data() {
     return {
+      modules: [Navigation, Pagination, Scrollbar, A11y],
+      categories: [],
       heroImage,
       loading: false,
       total: 0,
@@ -150,6 +218,8 @@ export default {
     EyeIcon,
     Link,
     PlayIcon,
+    Swiper,
+    SwiperSlide,
   },
   // mixins: [Mixin],
   setup(props) {
@@ -172,10 +242,11 @@ export default {
         params: this.params
       })
           .then((response) => {
-            this.data = this.data.concat(response.data.data);
+            // this.data = this.data.concat(response.data.data);
             this.total = response.data.total;
             this.params.page = response.data.current_page + 1;
-
+            this.categories = response.data
+            // this.log(this.categories);
           })
           .catch((error) => {
             this.error = this.getErrors(error);

@@ -47,11 +47,11 @@
 
             </div>
             <div class=" z-10 p-3    flex  items-center">
-              <PrimaryButton @click="$inertia.visit(route('panel.index'))" class="mx-2 p-2 grow">{{
+              <PrimaryButton v-if="false" @click="$inertia.visit(route('panel.index'))" class="mx-2 p-2 grow">{{
                   __('adv_create')
                 }}
               </PrimaryButton>
-<!--              <SecondaryButton @click="$inertia.visit(route('page.make_money'))" class="mx-2 p-2 grow">{{-->
+              <!--              <SecondaryButton @click="$inertia.visit(route('page.make_money'))" class="mx-2 p-2 grow">{{-->
               <!--                  __('make_money')-->
               <!--                }}-->
               <!--              </SecondaryButton>-->
@@ -117,6 +117,26 @@
                 </div>
               </div>
             </Link>
+            <Link :href="route('panel.index')"
+                  class="flex cursor-pointer hover:scale-[101%] duration-300 gap-4 bg-gradient-to-l from-primary-50 via-gray-50 to-primary-100 shadow-md rounded-lg px-4 py-8 items-center">
+              <WrenchScrewdriverIcon class="w-12 h-12   text-primary-500"/>
+              <div class="flex flex-col   space-y-2 items-center  ">
+                <div class="text-sm font-bold text-primary">{{
+                    __('revenue_from_projects')
+                  }}
+                </div>
+              </div>
+            </Link>
+            <Link :href="route('panel.profile.edit')"
+                  class="flex cursor-pointer hover:scale-[101%] duration-300 gap-4 bg-gradient-to-l from-primary-50 via-gray-50 to-primary-100 shadow-md rounded-lg px-4 py-8 items-center">
+              <UserGroupIcon class="w-12 h-12   text-primary-500"/>
+              <div class="flex flex-col   space-y-2 items-center  ">
+                <div class="text-sm font-bold text-primary">{{
+                    __('revenue_from_referral')
+                  }}
+                </div>
+              </div>
+            </Link>
 
 
           </div>
@@ -139,18 +159,15 @@ import SecondaryButton from "@/Components/SecondaryButton.vue";
 import {
   GlobeAltIcon,
   CursorArrowRippleIcon,
+  WrenchScrewdriverIcon,
+  UserGroupIcon,
 } from "@heroicons/vue/24/outline";
 
 export default {
   data() {
     return {
       heroImage,
-      section1: [
-        {header: 'businesses', sub: 'hero_services_1', icon: 'HomeModernIcon'},
-        {header: 'sites', sub: 'hero_services_2', icon: 'RocketLaunchIcon'},
-        {header: 'regular_users', sub: 'hero_services_3', icon: 'UsersIcon'},
-        {header: 'special_users', sub: 'hero_services_4', icon: 'WrenchScrewdriverIcon'},
-      ],
+
     }
   },
   props: ['heroText'],
@@ -162,6 +179,8 @@ export default {
     Head,
     GlobeAltIcon,
     CursorArrowRippleIcon,
+    WrenchScrewdriverIcon,
+    UserGroupIcon,
 
   },
   // mixins: [Mixin],

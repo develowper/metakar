@@ -224,7 +224,7 @@ class BusinessController extends Controller
             //find user or create new user
             $user = User::where('phone', $phone)->first();
             if (!$user)
-                $user = User::create(['fullname' => $fullname, 'phone' => $phone, 'password' => Hash::make($request->password), 'ref_id' => User::makeRefCode()]);
+                $user = User::create(['fullname' => $fullname, 'phone' => $phone, 'password' => Hash::make($request->password), 'ref_id' => User::makeRefCode($phone)]);
 
         }
         if (!$user) {
@@ -322,7 +322,7 @@ class BusinessController extends Controller
             $message = __('no_results');
             $link = route('business.index');
             $data = ['name' => __('no_results'),];
-        } elseif(!$request->iframe) {
+        } elseif (!$request->iframe) {
             event(new Viewed($data, BusinessTransaction::class));
         }
         return Inertia::render('Business/View', [

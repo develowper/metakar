@@ -1,9 +1,9 @@
 <template>
   <div class="grid grid-cols-1   gap-2">
     <div>
+      <InputLabel class="mt-2" for="phone" :value="__('phone')"/>
       <div v-if="!disableEdit" class="flex items-center">
 
-        <InputLabel class="my-2" for="phone" :value="__('phone')"/>
         <span v-if="verified==0" class="text-danger text-xs mx-1">({{ __('not_verified') }})</span>
         <span v-else-if="verified==1" class="text-success text-xs mx-1">({{ __('verified') }})</span>
 
@@ -23,7 +23,7 @@
             class="  flex-auto rounded-0  border border-solid border-neutral-300    px-3   text-neutral-700   transition duration-200 ease-in-out focus:z-[3] focus:border-primary focus:text-neutral-700   dark:border-neutral-600 dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:focus:border-primary"
             @visibility.window="$el.type =  'text'  "
             ref="input_phone"/>
-        <span @click="!isDisabled ?sendVerificationCode(phone):null"
+        <span @click="!isDisabled && timer==60 ?sendVerificationCode(phone):null"
               class="flex  cursor-pointer hover:bg-primary-400 bg-primary-500 items-center whitespace-nowrap rounded-e border border-s-0 border-solid border-neutral-300 px-3 py-[0.25rem] focus:border-primary text-center text-base font-normal leading-[1.6] text-neutral-700 dark:border-neutral-600 dark:text-neutral-200 dark:placeholder:text-neutral-200"
               :class="{ 'opacity-25':isDisabled}"
               :disabled="isDisabled"
@@ -36,8 +36,8 @@
       </div>
       <InputError class="mt-1" :message="phoneError"/>
     </div>
-    <div v-if="!isDisabled  ">
-      <InputLabel class="my-2" for="phone_verify" :value="__('phone_verify')"/>
+    <div v-if="!isDisabled || timer<60  ">
+      <InputLabel class=" " for="phone_verify" :value="__('phone_verify')"/>
       <div class="relative mb-2 mt-2 flex flex-wrap items-stretch">
 
       <span

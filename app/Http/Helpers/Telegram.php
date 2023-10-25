@@ -837,6 +837,8 @@ class Telegram
                     $msg .= $data->wallet . PHP_EOL;
                     $msg .= " 💳 " . "شماره کارت" . PHP_EOL;
                     $msg .= $data->card . PHP_EOL;
+                    $msg .= " 🚧 " . "دسترسی" . PHP_EOL;
+                    $msg .= $data->access . PHP_EOL;
                     break;
 
                 case 'player_edited':

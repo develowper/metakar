@@ -35,7 +35,7 @@ class UserTransaction extends Model
                 $q->orWhere('ip', $ip);
             if ($userId)
                 $q->orWhere('owner_id', $userId);
-        });
+        })->orderBy('owner_id', 'DESC');
 
         $storeUser = $q->first();
 

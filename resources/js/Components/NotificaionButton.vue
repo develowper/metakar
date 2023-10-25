@@ -8,7 +8,7 @@
         aria-expanded="false"
         data-te-ripple-init
         data-te-ripple-color="light">
-      <span class="sr-only">Open notidications panel</span>
+      <span class="sr-only">Open notifications panel</span>
       <span v-if=" badge>0"
             class="bg-red-500 rounded-full text-white px-[.3rem] absolute top-0 start-0  ">
                                     {{ badge }}
@@ -93,6 +93,8 @@ export default {
     createLink(data) {
       if (!data) return '';
       if (data.link) return data.link;
+      if (data.type == "access_change")
+        return route('panel.profile.edit');
 
       if (data.data_id && data.type)
         return route('/') + "/" + data.type.split("_")[0] + `/${data.type === 'ticket_answer' ? '' : 'edit/'}` + data.data_id;

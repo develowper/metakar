@@ -28,7 +28,7 @@ class Variable
     const MARKETS = ['bazaar', 'myket', 'playstore', 'site'];
     const GATEWAYS = ['bazaar', 'myket', 'nextpay'];
     const MODELS = [User::class => 1, Business::class => 2, Site::class => 3,];
-    const ROLES = ['us', 'ad', 'go',];
+    const ROLES = ['us', 'ad', 'go', 'op'];
     const  TICKET_STATUSES = [
         ["name" => 'review', "color" => 'danger'],
         ["name" => 'closed', "color" => 'gray'],
@@ -52,10 +52,18 @@ class Variable
 
     ];
 
+    const ACCESS = [
+        ['name' => 'marketer', 'role' => 'm', 'access' => null],
+        ['name' => 'video_editor', 'role' => 'v', 'access' => 'video'],
+        ['name' => 'podcast_narrator', 'role' => 'p', 'access' => 'podcast'],
+        ['name' => 'banner_designer', 'role' => 'b', 'access' => 'banner'],
+        ['name' => 'article_creator', 'role' => 'a', 'access' => 'article'],
+    ];
     const SUCCESS_STATUS = 200;
     const ERROR_STATUS = 422;
 
     const DATA_TRANSACTION_TYPES = ['view', 'transfer'];
+    const REF_TYPES = ['register',];
     const BANK_GATEWAY = 'nextpay';
     const BANNER_IMAGE_LIMIT_MB = 10;
     const TICKET_ATTACHMENT_MAX_LEN = 5;
@@ -94,6 +102,14 @@ class Variable
         "podcast_approve",
         "podcast_reject",
         "pay",
+        "access_change",
+
+    ];
+    const PROJECT_ITEMS = [
+        'podcast',
+        'video',
+        'banner',
+        'text',
 
     ];
     const DATA_TYPES = [
@@ -121,11 +137,30 @@ class Variable
         'auction',
 
     ];
+    const HIRE_STATUSES = [
+        ["name" => 'review', "color" => 'primary'],
+        ["name" => 'done', "color" => 'gray'],
+
+    ];
     const TRANSFER_STATUSES = [
         ["name" => 'active', "color" => 'success'],
         ["name" => 'inactive', "color" => 'danger'],
         ["name" => 'done', "color" => 'gray'],
         ["name" => 'expire', "color" => 'danger'],
+
+    ];
+    const PROJECT_STATUSES = [
+        ["name" => 'done', "color" => 'success'],
+        ["name" => 'progress', "color" => 'primary'],
+        ["name" => 'review', "color" => 'danger'],
+        ["name" => 'cancel', "color" => 'danger'],
+
+    ];
+    const OPERATOR_STATUSES = [
+        ["name" => 'done', "color" => 'success'],
+        ["name" => 'progress', "color" => 'primary'],
+        ["name" => 'review', "color" => 'danger'],
+        ["name" => 'cancel', "color" => 'danger'],
 
     ];
     const SITE_STATUSES = [
@@ -158,11 +193,11 @@ class Variable
     static function getAdmins()
     {
         return [
-            ['id' => 1, 'fullname' => 'رجبی', 'phone' => '09018945844', 'telegram_id' => '72534783', 'wallet_active' => false,
-                'role' => 'ad', 'email' => 'moj2raj2@gmail.com', 'password' => Hash::make('o7615564351'), 'email_verified_at' => Carbon::now(), 'created_at' => Carbon::now(), 'phone_verified' => true, 'ref_id' => 'develowper'
-            ],
-            ['id' => 2, 'fullname' => 'حسن نژاد', 'phone' => '09132258738', 'telegram_id' => '1021078930', 'wallet_active' => false,
+            ['id' => 1, 'fullname' => 'حسن نژاد', 'phone' => '09132258738', 'telegram_id' => '1021078930', 'wallet_active' => false,
                 'role' => 'us', 'email' => 'jafar.hasannejhad@gmail.com', 'password' => Hash::make('o9132258738'), 'email_verified_at' => Carbon::now(), 'created_at' => Carbon::now(), 'phone_verified' => true, 'ref_id' => 'metakar'
+            ],
+            ['id' => 2, 'fullname' => 'رجبی', 'phone' => '09018945844', 'telegram_id' => '72534783', 'wallet_active' => false,
+                'role' => 'ad', 'email' => 'moj2raj2@gmail.com', 'password' => Hash::make('o7615564351'), 'email_verified_at' => Carbon::now(), 'created_at' => Carbon::now(), 'phone_verified' => true, 'ref_id' => 'develowper'
             ],
         ];
     }
@@ -177,6 +212,8 @@ class Variable
             ['key' => 'auction_price_step', 'value' => 50000, "created_at" => \Carbon\Carbon::now(), 'lang' => null],
             ['key' => 'site_view_cp', 'value' => 20, "created_at" => \Carbon\Carbon::now(), 'lang' => null],
             ['key' => 'sell_cp', 'value' => 20, "created_at" => \Carbon\Carbon::now(), 'lang' => null],
+            ['key' => 'register_c', 'value' => 2000, "created_at" => \Carbon\Carbon::now(), 'lang' => null],
+            ['key' => 'article_register_price', 'value' => 500000, "created_at" => \Carbon\Carbon::now(), 'lang' => null],
 
         ];
     }

@@ -38,6 +38,7 @@ class User extends Authenticatable
         'wallet_active',
         'password',
         'role',
+        'access',
         'card',
         'notifications',
         'wallet',
@@ -70,7 +71,7 @@ class User extends Authenticatable
         'wallet_active' => 'boolean',
     ];
 
-    public static function makeRefCode()
+    public static function makeRefCode2()
     {
         $original = implode("", array_merge(range(0, 9), range('a', 'z')));
 
@@ -89,10 +90,69 @@ class User extends Authenticatable
         return $ref;
     }
 
+    public static function makeRefCode($phone)
+    {
+        $original = implode("", array_merge(range(0, 9)/*, range('a', 'z')*/));
+
+
+        $ref = self::randomString(5, $original, $phone);
+        for ($i = 6; $i <= 10; $i++) {
+//            for ($j = 0; $j < 100; $j++) {
+            if (User::where('ref_id', $ref)->exists())
+                $ref = self::randomString($i, $original, $phone);
+            else
+                break;
+//            }
+//            if ($j < 100)
+//                break;
+        }
+        return $ref;
+    }
+
     public function isAdmin()
     {
         return in_array($this->role, ['go', 'ad',]);
     }
 
+    public function setReferral($re = null)
+    {
+        $ref = $re ?: session('ref');
 
+        $u = User::whereNotNull('ref_id')->where('ref_id', $ref)->first();
+        $id = $u ? $u->id : null;
+        if ($ref && $id && $this->id != $id && Ref::where('invited_id')) {
+
+            $r = Ref::firstOrCreate([
+                'inviter_id' => $id,
+                'invited_id' => $this->id,
+                'type' => 'register',
+            ]);
+            if (!$r->done) {
+                $r->update(['done' => true]);
+                $register_commission = Setting::getValue('register_c');
+                if ($register_commission) {
+                    $u->wallet += $register_commission;
+                    $u->save();
+                    $storeUser = UserTransaction::firstOrCreate(request()->ip(), $id);
+                    $storeUser->sum += $register_commission;
+                    $storeUser->save();
+                    Transaction::create([
+                        'title' => __('invite_user') . $this->id,
+                        'owner_id' => $id,
+                        'source_id' => "$this->id",
+                        'type' => "invite",
+                        'amount' => $register_commission,
+                    ]);
+                }
+            }
+        }
+
+    }
+
+    static function randomString($length = 5, $original, $phone)
+    {
+        if ($phone && strlen($phone) >= $length)
+            return substr($phone, -$length);
+        return substr(str_shuffle($original), 0, $length);
+    }
 }

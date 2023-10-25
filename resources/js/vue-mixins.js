@@ -126,6 +126,11 @@ export default {
                 return error.message;
             }
         },
+        hasAccess(role) {
+            if (this.isAdmin()) return true;
+            if (!this.user || !this.user.access) return false;
+            return this.user.access.split(',').indexOf(role) > -1;
+        },
         hasWallet() {
 
             return this.user ? this.user.wallet_active : false;

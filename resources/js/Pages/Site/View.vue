@@ -82,7 +82,7 @@
     </div>
     <section class="flex justify-center pt-24">
       <div
-          class="w-full   rounded-lg overflow-x-hidden shadow-lg max-w-4xl  xs:mx-2 md:mx-4    blur-xs opacity-75 bg-white  backdrop-filter">
+          class="w-full   rounded-lg overflow-x-hidden shadow-lg max-w-6xl  xs:mx-2 md:mx-4    blur-xs opacity-75 bg-white  backdrop-filter">
         <div v-if="$page.props.error_message" class="text-center flex flex-col font-bold p-4 text-danger  text-lg">
           <div class="text-gray-900">{{ $page.props.error_message }}</div>
           <Link :href="$page.props.error_link" class="my-4">{{ __('return') }}</Link>

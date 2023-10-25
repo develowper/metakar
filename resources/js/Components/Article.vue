@@ -385,7 +385,7 @@ export default {
         paginate: this.$page.props.pageItems[0],
         order_by: null,
         dir: 'DESC',
-        owner_id: this.ownerId || this.$page.props.auth.user.id
+        owner_id: this.ownerId || this.$page.props.auth.user ? this.$page.props.auth.user.id : null
       },
       Modal: null,
       data: [],
@@ -397,7 +397,7 @@ export default {
     }
   },
   mounted() {
-
+    if (this.mode == 'view') return;
     const modalEl = document.getElementById('modalFiles');
     this.Modal = new Modal(modalEl);
     this.getData();

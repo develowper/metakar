@@ -37,6 +37,7 @@ return new class extends Migration {
             $table->string('push_id', 20)->nullable();
             $table->timestamp('expires_at')->nullable()->default(null);
             $table->json('settings')->nullable()->default(null);
+            $table->string('access', 20)->nullable()->default(null);
             $table->rememberToken();
             $table->timestamps();
         });

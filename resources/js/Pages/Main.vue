@@ -10,9 +10,9 @@
       <img class=" opacity-50  blur-sm h-full z-0 absolute  bottom-2    start-0 w-full   h-full "
            :src="heroImage"/>
       <div class="py-24 md:py-32 xl:py-48   z-10    mx-auto    ">
-        <div class="  px-3  sm:px-1  flex   flex-col md:flex-row items-center">
+        <div class="justify-center  px-3  sm:px-1  flex   flex-col md:flex-row items-center">
           <!--                    Right Col-->
-          <div class=" z-10 md:w-2/5 py-6 text-center">
+          <div v-if="false" class=" z-10 md:w-2/5 py-6 text-center">
 
             <!--            <h1 class="my-4 text-white text-5xl font-bold    ">-->
             <!--              {{ __('app_name') }}-->
@@ -20,7 +20,7 @@
           </div>
           <!--Left Col-->
           <div
-              class="flex flex-col max-w-lg text-white w-full md:w-3/5 justify-center   text-center  ">
+              class="flex flex-col max-w-lg text-white w-full    justify-center   text-center  ">
             <p class="leading-normal text-2xl mb-8 z-10">
               {{ heroText }}
             </p>
@@ -47,14 +47,18 @@
 
             </div>
             <div class=" z-10 p-3    flex  items-center">
-              <PrimaryButton @click="$inertia.visit(route('panel.index'))" class="mx-2 p-2 grow">{{
-                  __('adv_create')
+              <PrimaryButton @click="$inertia.visit(route('page.project.create'))" class="mx-2 p-2 grow">{{
+                  __('order_article')
                 }}
               </PrimaryButton>
               <SecondaryButton @click="$inertia.visit(route('page.make_money'))" class="mx-2 p-2 grow">{{
                   __('make_money')
                 }}
               </SecondaryButton>
+              <PrimaryButton @click="$inertia.visit(route('register'))" class="mx-2 p-2 grow">{{
+                  __('hire')
+                }}
+              </PrimaryButton>
             </div>
           </div>
 

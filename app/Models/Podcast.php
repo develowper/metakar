@@ -15,6 +15,7 @@ class Podcast extends Model
         'slug',
         'owner_id',
         'category_id',
+        'article_id',
         'name',
         'narrator',
         'duration',

@@ -158,6 +158,14 @@
                   <ArrowsUpDownIcon class="w-4 h-4 "/>
                 </div>
               </th>
+              <th scope="col"
+                  class="px-2 py-3   cursor-pointer duration-300 hover:text-gray-500 hover:scale-[105%]"
+                  @click="params.order_by='access';params.dir=params.dir=='ASC'? 'DESC':'ASC'; params.page=1;getData()">
+                <div class="flex items-center justify-center">
+                  <span class="px-2">    {{ __('access') }}  </span>
+                  <ArrowsUpDownIcon class="w-4 h-4 "/>
+                </div>
+              </th>
 
 
               <th scope="col" class="px-2 py-3">
@@ -362,6 +370,76 @@
 
               </td>
 
+              <td
+                  class="px-2 py-4    " data-te-dropdown-ref>
+                <button
+                    id="dropdownViewFee"
+                    data-te-dropdown-toggle-ref
+                    aria-expanded="false"
+                    data-te-ripple-init
+                    data-te-ripple-color="light"
+                    class="  min-w-[5rem] bg-gray-100 hover:bg-gray-200 px-1 cursor-pointer items-center text-center rounded-md py-[.2rem]"
+                    :class="`bg-primary-100 hover:bg-primary-200 text-primary-500`"
+                >
+                  {{ d.access || '-' }}
+                </button>
+                <ul ref="dropdownViewFeeMenu" data-te-dropdown-menu-ref
+                    class="p-4  absolute z-[1000]    hidden   list-none overflow-hidden rounded-lg border-none bg-white bg-clip-padding text-center text-base shadow-lg dark:bg-neutral-700 [&[data-te-dropdown-show]]:block"
+                    tabindex="-1" role="menu" aria-orientation="vertical" aria-label="User menu"
+                    aria-labelledby="dropdownViewFee">
+                  <li
+                      class="   text-sm  ">
+                    <span class="text-xs py-2 text-primary-500">{{ __('accesses') }}</span>
+                    <div class="my-2">
+                      <div v-for="(access,ix) in $page.props.accesses" class=" flex items-center">
+                        <label
+                            class="relative flex items-center    p-3 rounded-full cursor-pointer "
+                            :for="`access${ix}`"
+                            data-ripple-dark="true"
+                        >
+                          <input :value="access.role" v-model="d.accesses"
+                                 :checked="  (d.accesses).indexOf(access.role)>-1"
+                                 :id="`access${ix}`"
+                                 type="checkbox"
+                                 class="before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-primary-500 checked:bg-primary-500 checked:before:bg-primary-500 hover:before:opacity-10"
+                          />
+                          <div
+                              class="absolute text-white transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                class="h-3.5 w-3.5"
+                                viewBox="0 0 20 20"
+                                fill="currentColor"
+                                stroke="currentColor"
+                                stroke-width="1"
+                            >
+                              <path
+                                  fill-rule="evenodd"
+                                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                  clip-rule="evenodd"
+                              ></path>
+                            </svg>
+                          </div>
+                        </label>
+                        <label @click.stop
+                               class="mt-px font-light text-sm text-gray-500 cursor-pointer select-none"
+                               :for="`access${ix}`"
+                        >
+                          {{ __(access.name) }}
+                        </label>
+                      </div>
+                    </div>
+
+                  </li>
+                  <li class="border-t py-1 ">
+                    <button @click="edit({cmnd:'access',idx:idx,id:d.id,accesses:d.accesses})"
+                            class="bg-primary-500 rounded w-full text-white p-2 hover:bg-primary-400">
+                      {{ __('reg') }}
+                    </button>
+                  </li>
+
+                </ul>
+              </td>
 
               <td class="px-2 py-4">
                 <!-- Actions Group -->
@@ -466,6 +544,7 @@ export default {
             this.data = response.data.data;
             this.data.forEach(el => {
               el.selected = false;
+              el.accesses = el.access ? el.access.split(',') : [];
             });
             delete response.data.data;
             this.pagination = response.data;
@@ -528,6 +607,9 @@ export default {
             }
             if (response.data.role) {
               this.data[params.idx].role = response.data.role;
+            }
+            if (response.data.access) {
+              this.data[params.idx].access = response.data.access;
             }
 
           })

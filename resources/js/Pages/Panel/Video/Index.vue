@@ -125,8 +125,15 @@
                   <ArrowsUpDownIcon class="w-4 h-4 "/>
                 </div>
               </th>
-
               <th scope="col"
+                  class="px-2 py-3   cursor-pointer duration-300 hover:text-gray-500 hover:scale-[105%]"
+                  @click="params.order_by='article_id';params.dir=params.dir=='ASC'? 'DESC':'ASC'; params.page=1;getData()">
+                <div class="flex items-center justify-center">
+                  <span class="px-2">  {{ __('article') }}</span>
+                  <ArrowsUpDownIcon class="w-4 h-4 "/>
+                </div>
+              </th>
+              <th v-if="false" scope="col"
                   class="px-2 py-3   cursor-pointer duration-300 hover:text-gray-500 hover:scale-[105%]"
                   @click="params.order_by='view';params.dir=params.dir=='ASC'? 'DESC':'ASC'; params.page=1;getData()">
                 <div class="flex items-center justify-center">
@@ -135,7 +142,7 @@
                 </div>
               </th>
 
-              <th v-if="hasWallet()" scope="col"
+              <th v-if="false && hasWallet()" scope="col"
                   class="px-2 py-3   cursor-pointer duration-300 hover:text-gray-500 hover:scale-[105%]"
                   @click="params.order_by='view_fee';params.dir=params.dir=='ASC'? 'DESC':'ASC'; params.page=1;getData()">
                 <div class="flex items-center justify-center">
@@ -154,7 +161,7 @@
                   <ArrowsUpDownIcon class="w-4 h-4 "/>
                 </div>
               </th>
-              <th scope="col" v-if="hasWallet()"
+              <th scope="col" v-if="false && hasWallet()"
                   class="px-2 py-3   cursor-pointer duration-300 hover:text-gray-500 hover:scale-[105%]"
                   @click="params.order_by='charge';params.dir=params.dir=='ASC'? 'DESC':'ASC'; params.page=1;getData()">
                 <div class="flex items-center justify-center">
@@ -255,12 +262,14 @@
                   <div class="font-normal text-gray-500">{{ }}</div>
                 </Link>
               </td>
-
               <td class="px-2 py-4">
+                <Link v-if="d.article_id" :href="route('article', d.article_id)">{{ d.article_id }}</Link>
+              </td>
+              <td v-if="false" class="px-2 py-4">
                 {{ d.view }}
               </td>
 
-              <td v-if="hasWallet()"
+              <td v-if="false && hasWallet()"
                   class="px-2 py-4    " data-te-dropdown-ref>
                 <button
                     id="dropdownViewFee"
@@ -347,7 +356,7 @@
                   </li>
                 </ul>
               </td>
-              <td v-if="hasWallet()"
+              <td v-if="false && hasWallet()"
                   class="px-2 py-4    " data-te-dropdown-ref>
                 <button
                     id="dropdownViewCharge"

@@ -149,7 +149,7 @@
                     {{ __('change_password') }}
                   </Link>
                   <hr class="border-gray-200 dark:border-gray-700 ">
-                  <Link method="post" :href="route('logout')" class="flex " as="button">
+                  <Link method="post" :href="route('logout')" class="flex w-full" as="button">
                     <button class="flex items-center justify-center p-4 m-3  w-full  hover:scale-110 focus:outline-none     px-4 py-2 rounded font-bold cursor-pointer
         hover:bg-red-700 hover:text-red-100  bg-red-100 text-red-500  border duration-200 ease-in-out border-red-600  ">
                       {{ __('signout') }}
@@ -260,7 +260,6 @@ export default {
     });
 
     this.emitter.on('showDialog', (e) => {
-      this.log(e);
       if (this.$refs.modal)
         this.$refs.modal.show(e.type, e.message, e.button, e.action, e.items);
     });
@@ -274,7 +273,6 @@ export default {
       this.loading = e;
       this.percentage = percentage;
     });
-
     if (this.$page.props.flash.message && this.$page.props.flash.message != undefined) {
       this.$nextTick(() => {
 

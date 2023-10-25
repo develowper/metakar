@@ -7,6 +7,7 @@ use App\Http\Controllers\BusinessController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\ExchangeController;
+use App\Http\Controllers\HireController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\NotificationController;
@@ -14,6 +15,7 @@ use App\Http\Controllers\PanelController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PodcastController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\SiteController;
 use App\Http\Controllers\TicketController;
@@ -79,7 +81,10 @@ Route::get('storage/banners')->name('storage.banners');
 Route::get('storage/articles')->name('storage.articles');
 Route::get('storage/tickets')->name('storage.tickets');
 
-Route::get('/', function () {
+Route::get('/', function (Request $request) {
+    if ($r = $request->ref) {
+        session(['ref' => $r]);
+    }
     return Inertia::render('Main', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
@@ -128,7 +133,8 @@ Route::middleware(['auth', 'verified'])->prefix('panel')->group(function ($route
     PanelController::makeInertiaRoute('get', 'article/create', 'panel.article.create', 'Panel/Article/Create',
         [
             'categories' => Banner::categories('parents'),
-            'statuses' => Variable::STATUSES
+            'statuses' => Variable::STATUSES,
+            'pay_amount' => number_format(Setting::getValue('article_register_price') ?? 0) . " " . __('currency'),
         ]
     );
     PanelController::makeInertiaRoute('get', 'site/index', 'panel.site.index', 'Panel/Site/Index', [
@@ -202,6 +208,7 @@ Route::middleware(['auth', 'verified'])->prefix('panel')->group(function ($route
 
     PanelController::makeInertiaRoute('get', 'profile/edit', 'panel.profile.edit', 'Panel/Profile/Edit',
         [
+            'accesses' => Variable::ACCESS
         ]);
     PanelController::makeInertiaRoute('get', 'password/edit', 'panel.profile.password.edit', 'Panel/Profile/PasswordEdit',
         [
@@ -228,6 +235,7 @@ Route::middleware(['auth', 'verified'])->prefix('panel')->group(function ($route
             ]);
         PanelController::makeInertiaRoute('get', 'user/index', 'panel.admin.user.index', 'Panel/Admin/User/Index',
             [
+                'accesses' => Variable::ACCESS,
 
             ]);
         PanelController::makeInertiaRoute('get', 'notification/index', 'panel.admin.notification.index', 'Panel/Admin/Notification/Index',
@@ -252,6 +260,13 @@ Route::middleware(['auth', 'verified'])->prefix('panel')->group(function ($route
                 'attachment_allowed_mimes' => implode(',.', Variable::TICKET_ATTACHMENT_ALLOWED_MIMES),
             ]);
 
+        PanelController::makeInertiaRoute('get', 'hire/index', 'panel.admin.hire.index', 'Panel/Hire/Index',
+            [
+                'statuses' => Variable::HIRE_STATUSES,
+                'accesses' => Variable::ACCESS,
+            ]);
+
+
         Route::get('setting/search', [SettingController::class, 'searchPanel'])->name('panel.admin.setting.search');
         Route::patch('setting/update', [SettingController::class, 'update'])->name('panel.admin.setting.update');
         Route::delete('setting/delete/{setting}', [SettingController::class, 'delete'])->name('panel.admin.setting.delete');
@@ -267,6 +282,8 @@ Route::middleware(['auth', 'verified'])->prefix('panel')->group(function ($route
         Route::get('notification/{notification}', [NotificationController::class, 'edit'])->name('panel.admin.notification.edit');
         Route::patch('notification/update', [NotificationController::class, 'update'])->name('panel.admin.notification.update');
         Route::post('notification/create', [NotificationController::class, 'create'])->name('panel.admin.notification.create');
+        Route::get('hire/search', [HireController::class, 'searchPanel'])->name('panel.admin.hire.search');
+        Route::patch('hire/update', [HireController::class, 'update'])->name('panel.admin.hire.update');
 
 
     });
@@ -393,6 +410,8 @@ Route::get('/items', [ItemController::class, 'index'])->name('item.index');
 Route::get('/items/search', [ItemController::class, 'search'])->name('item.search');
 Route::get('item/{type}/{id}', [ItemController::class, 'view'])->name('item');
 Route::post('transaction/storeitem', [TransactionController::class, 'storeItem'])->name('transaction.item.view');
+
+Route::get('/project/create', [ProjectController::class, 'new'])->name('page.project.create');
 
 
 Route::get('language/{language}', function ($language) {

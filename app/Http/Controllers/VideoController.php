@@ -8,12 +8,15 @@ use App\Http\Helpers\Util;
 use App\Http\Helpers\Variable;
 use App\Http\Requests\UserRequest;
 use App\Http\Requests\VideoRequest;
+use App\Models\Article;
+use App\Models\Category;
 use App\Models\Notification;
 use App\Models\Transfer;
 use App\Models\User;
 use App\Models\Video;
 use App\Models\VideoTransaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class VideoController extends Controller
@@ -277,6 +280,7 @@ class VideoController extends Controller
         $orderBy = 'created_at';
         $dir = $request->dir ?: 'DESC';
         $paginate = $request->paginate ?: 24;
+        /*
         $query = Video::query();
 //        $seen = session()->get('site_views', []);
         $query = $query->select('id', 'name', 'duration', 'view', 'view_fee', 'status', 'category_id', 'created_at',);
@@ -288,13 +292,68 @@ class VideoController extends Controller
         if ($search)
             $query = $query->where('name', 'like', "%$search%");
 
+        $query = $query->whereNotNull('article_id');
+
         $query = $query
             ->orderBy('status', 'ASC')
             ->orderByRaw("IF(charge >= view_fee, view_fee, id) DESC");
+
+*/
+        $query = Video::join('articles', function ($join) {
+            $join->on('videos.article_id', '=', 'articles.id')
+                ->whereIn('articles.status', ['active', 'need_charge'])
+                ->where('articles.lang', app()->getLocale());
+
+        })->select('videos.id', 'articles.id as article_id', 'articles.status as status', 'articles.view as view', 'articles.viewer as viewer', 'articles.view_fee as view_fee', 'articles.category_id as category_id', 'title', 'videos.duration as duration', 'name')
+            ->orderBy('articles.status', 'ASC')
+            ->orderByRaw("IF(articles.charge >= articles.view_fee, articles.view_fee, articles.id) DESC");
+        if ($search)
+            $query->where('title', 'like', "%$search%");
+
+        return $query->get()
+            ->groupby('category_id')->map(function ($e, $idx) use ($paginate) {
+
+//                $e = new \stdClass();
+//                $e->data = $el;
+//                $e->total = $paginate;
+//                $e->current_page = 1;
+                return $e->take($paginate);
+            });
+
+
+        return Article::select(DB::raw("GROUP_CONCAT(id) as ids"), 'category_id')
+            ->whereIn('status', ['active', 'need_charge'])
+            ->whereLang(app()->getLocale())
+            ->orderBy('status', 'ASC')
+            ->orderByRaw("IF(charge >= view_fee, view_fee, id) DESC")
+            ->groupBy('category_id')->get();
+
+        return Category::with(['videos' => function ($query) use ($search, $paginate, $page) {
+
+
+            $ids = Article::select('id', 'category_id')
+                ->whereIn('status', ['active', 'need_charge'])
+                ->whereLang(app()->getLocale())
+                ->orderBy('status', 'ASC')
+                ->orderByRaw("IF(charge >= view_fee, view_fee, id) DESC");
+            if ($search)
+                $ids->where('title', 'like', "%$search%");
+            $ids->get()->groupBy('category_id');
+            $query->whereIntegerInRaw();
+        }])->
+        get()->map(function ($e) use ($paginate) {
+            $e->setRelation('data', $e->videos->take($paginate));
+            unset  ($e->videos);
+            $e->total = $paginate;
+            $e->current_page = 1;
+            return $e;
+        });
+
         return $query->paginate($paginate, ['*'], 'page', $page);
     }
 
-    public function view(Request $request, $video)
+    public
+    function view(Request $request, $video)
     {
         $message = null;
         $link = null;
@@ -305,7 +364,7 @@ class VideoController extends Controller
             $message = __('no_results');
             $link = route('video.index');
             $data = ['name' => __('no_results'),];
-        } elseif(!$request->iframe) {
+        } elseif (!$request->iframe) {
             event(new Viewed($data, VideoTransaction::class));
         }
         return Inertia::render('Video/View', [

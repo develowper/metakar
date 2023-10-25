@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\SMSHelper;
 use App\Http\Helpers\Telegram;
+use App\Http\Helpers\Variable;
 use App\Http\Requests\ProfileRequest;
+use App\Models\Hire;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
@@ -24,7 +26,9 @@ class RegisteredUserController extends Controller
      */
     public function create(): Response
     {
-        return Inertia::render('Auth/Register');
+        return Inertia::render('Auth/Register', [
+            'accesses' => Variable::ACCESS
+        ]);
     }
 
     /**
@@ -43,9 +47,17 @@ class RegisteredUserController extends Controller
         $user = User::create([
             'fullname' => $request->fullname,
             'phone' => $request->phone,
-            'ref_id' => User::makeRefCode(),
+            'ref_id' => User::makeRefCode($request->phone),
             'password' => Hash::make($request->password),
         ]);
+        if ($user && $request->accesses)
+            Hire::create([
+                'fullname' => $user->fullname,
+                'phone' => $user->phone,
+                'owner_id' => $user->id,
+                'access_request' => join(',', $request->accesses),
+                'status' => 'review',
+            ]);
         event(new Registered($user));
 
         Auth::login($user);

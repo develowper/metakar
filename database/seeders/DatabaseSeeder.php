@@ -86,7 +86,7 @@ class DatabaseSeeder extends Seeder
                 'amount' => $data->amount,
                 'type' => $data->type,
                 'title' => $data->title,
-                'payment_id' => $data->id
+                'source_id' => $data->id
             ]);
             $user->wallet += $amount;
 
@@ -99,7 +99,7 @@ class DatabaseSeeder extends Seeder
                     'amount' => $this->faker->randomElement([-1200, -4200, -3400, -2300, -11000]),
                     'type' => "{$type}_$id",
                     'title' => __($type) . " $id ",
-                    'payment_id' => null,
+                    'source_id' => null,
                     'created_at' => Carbon::now()->subMinutes($this->faker->numberBetween(2000, 360000)),
 
                 ]);

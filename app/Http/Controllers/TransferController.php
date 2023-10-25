@@ -116,7 +116,7 @@ class TransferController extends Controller
                         $notAllowedArticleItems[] = ['id' => $notAllowedItem->id, 'type' => $itm->type, 'data' => "( " . __($itm->type) . " | $itm->value" . " )"];
                 }
                 if (count($notAllowedArticleItems) > 0) {
-                    return response()->json(['message' => __('article_items_cant_be_block_reject_review') . ":  " . join("\n\r", array_map(function ($e) {
+                    return response()->json(['message' => __('article_items_cant_be_block_reject_review_other_article') . ":  " . join("\n\r", array_map(function ($e) {
                             return $e['data'];
                         }, $notAllowedArticleItems))]);
                 }
@@ -181,7 +181,7 @@ class TransferController extends Controller
                     if ($itm->type == 'text') continue;
                     $notAllowedItem = DB::table(str_plural($itm->type))->where('id', $itm->id)->whereIn('status', [null, 'reject', 'block', 'review'])->first();
                     if ($notAllowedItem)
-                        return response()->json(['message' => __('article_items_cant_be_block_reject_review')], Variable::ERROR_STATUS);
+                        return response()->json(['message' => __('article_items_cant_be_block_reject_review_other_article')], Variable::ERROR_STATUS);
                 }
 
             }
@@ -266,7 +266,7 @@ class TransferController extends Controller
         DB::table("{$transfer->item_type}_transactions")->where('data_id', $transfer->item_id)->update(['owner_id' => $newOwner->id]);
         Transaction::create([
             'owner_id' => $transfer->new_owner_id,
-            'type' => "buy{$transfer->item_type}_{$transfer->item_id}",
+            'type' => "buy_{$transfer->item_type}_{$transfer->item_id}",
             'title' => __("buy_{$transfer->item_type}"),
             'source_id' => $transfer->id,
             'amount' => -$buyPrice,
@@ -275,7 +275,7 @@ class TransferController extends Controller
         ]);
         Transaction::create([
             'owner_id' => $transfer->owner_id,
-            'type' => "sell{$transfer->item_type}_{$transfer->item_id}",
+            'type' => "sell_{$transfer->item_type}_{$transfer->item_id}",
             'title' => __("sell_{$transfer->item_type}"),
             'source_id' => $transfer->id,
             'amount' => $sellerBenefit,
@@ -366,7 +366,7 @@ class TransferController extends Controller
             if (count($notAllowedArticleItems) > 0) {
                 $data->status = 'inactive';
                 $data->save();
-                return back()->with(['flash_status' => 'danger', 'flash_message' => __('article_items_cant_be_block_reject_review') . ":  " . join("\n\r", array_map(function ($e) {
+                return back()->with(['flash_status' => 'danger', 'flash_message' => __('article_items_cant_be_block_reject_review_other_article') . ":  " . join("\n\r", array_map(function ($e) {
                         return "<br>" . "<a class='text-danger hover:text-danger-400 cursor-pointer' target='_blank' href='" . route('panel.' . $e['type'] . '.index') . "'>" . $e['data'] . "</a>";
                     }, $notAllowedArticleItems))]);
             }
@@ -561,7 +561,7 @@ class TransferController extends Controller
 
             }
             if (count($notAllowedArticleItems) > 0)
-                return back()->with(['flash_status' => 'danger', 'flash_message' => __('article_items_cant_be_block_reject_review') . ":  " . join("\n\r", array_map(function ($e) {
+                return back()->with(['flash_status' => 'danger', 'flash_message' => __('article_items_cant_be_block_reject_review_other_article') . ":  " . join("\n\r", array_map(function ($e) {
                         return "<br>" . "<a class='text-danger hover:text-danger-400 cursor-pointer' target='_blank' href='" . route('panel.' . $e['type'] . '.index') . "'>" . $e['data'] . "</a>";
                     }, $notAllowedArticleItems))]);
             if (count($beforeInTransfer) > 0)

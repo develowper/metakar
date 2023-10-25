@@ -7,6 +7,7 @@ use App\Models\Article;
 use App\Models\Banner;
 use App\Models\Business;
 use App\Models\DataTransaction;
+use App\Models\Hire;
 use App\Models\Notification;
 use App\Models\Podcast;
 use App\Models\Setting;
@@ -89,6 +90,7 @@ class PanelController extends Controller
             'hasAdvertise' => true,
             'adminBalance' => Setting::getValue('iran_wallet'),
             'notifications' => ['count' => Notification::count()],
+            'hires' => ['count' => Hire::where('status', 'review')->count()],
             'queue' => ['count' => $this->queueItemsCount()],
         ];
 

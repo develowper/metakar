@@ -8,10 +8,13 @@ use App\Http\Helpers\Util;
 use App\Http\Helpers\Variable;
 use App\Http\Requests\ArticleRequest;
 use App\Models\ArticleTransaction;
+use App\Models\Category;
 use App\Models\County;
 use App\Models\Article;
 use App\Models\Notification;
 use App\Models\Province;
+use App\Models\Setting;
+use App\Models\Transaction;
 use App\Models\Transfer;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -45,6 +48,7 @@ class ArticleController extends Controller
     public function update(ArticleRequest $request)
     {
         $user = auth()->user();
+        $isAdmin = $user->isAdmin();
 //        $response = ['message' => __('done_successfully')];
         $response = ['message' => __('response_error')];
         $errorStatus = Variable::ERROR_STATUS;
@@ -132,18 +136,39 @@ class ArticleController extends Controller
 
             $content = $request->get('content') ?? [];
             $duration = 0;
+
+            $owners = [];
+            $notAllowedArticleItems = [];
+            foreach ($content as $idx => $itm) {
+                $itm = (object)$itm;
+                if (!$itm->id || $itm->type == 'text') continue;
+                $notAllowedItem = array_flip(Variable::DATA_TYPES)[$itm->type]::where('id', $itm->id)->first();
+                if ($notAllowedItem && !in_array($notAllowedItem->owner_id, $owners))
+                    $owners[] = $notAllowedItem->owner_id;
+                if (!$notAllowedItem || (!$isAdmin && $notAllowedItem->owner_id != $user->id) || ($isAdmin && count($owners) > 1) || $notAllowedItem->article_id != null || in_array($notAllowedItem->status, [null, 'reject', 'block', 'review']))
+                    $notAllowedArticleItems[] = ['id' => $notAllowedItem->id, 'type' => $itm->type, 'data' => "( " . __($itm->type) . " | $itm->value" . " )"];
+            }
+            if (count($notAllowedArticleItems) > 0) {
+                return response()->json(['message' => __($isAdmin ? 'article_items_cant_be_block_reject_review_other_article_multi_owner' : 'article_items_cant_be_block_reject_review_other_article') . ":  " . join("\n\r", array_map(function ($e) {
+                        return "<br>" . "<a class='text-danger hover:text-danger-400 cursor-pointer' target='_blank' href='" . route('panel.' . $e['type'] . '.edit', $e['id']) . "'>" . $e['data'] . "</a>";
+                    }, $notAllowedArticleItems))]);
+            }
+
             foreach ($content as $idx => $item) {
                 $item = (object)$item;
-                if ($item->type && $item->type != 'text') {
-                    $tmp = DB::table("{$item->type}s")->where('owner_id', $data->owner_id)->find($item->id);
+
+                if ($item->id && $item->type && $item->type != 'text') {
+                    $tmp = array_flip(Variable::DATA_TYPES)[$item->type]::where('owner_id', $data->owner_id)->find($item->id);
                     if ($tmp) {
                         $content[$idx]['value'] = $tmp->name;
                         $duration += $tmp->duration ?? 0;
+                        $tmp->update(['article_id' => $data->id]);
                     } else
                         unset($content[$idx]);
                 } elseif ($item->type == 'text') {
                     $duration += Util::estimateReadingTime($item->value);
-                }
+                } else
+                    unset($content[$idx]);
             }
 
             $content = count($content) == 0 ? null : json_encode($content);
@@ -209,7 +234,8 @@ class ArticleController extends Controller
         return response()->json($response, $errorStatus);
     }
 
-    public function index()
+    public
+    function index()
     {
         return Inertia::render('Article/Index', [
             'categories' => Article::categories(),
@@ -217,13 +243,14 @@ class ArticleController extends Controller
 
     }
 
-    public function create(ArticleRequest $request)
+    public
+    function create(ArticleRequest $request)
     {
 
 
         $user = auth()->user()/* ?? auth('api')->user()*/
         ;
-
+        $isAdmin = $user->isAdmin();
 //        $phone = $request->phone;
 //        $fullname = $request->fullname;
 //        if (!$user) {
@@ -250,19 +277,26 @@ class ArticleController extends Controller
             auth()->login($user);
         $content = $request->get('content') ?? [];
         $duration = 0;
-        foreach ($content as $idx => $item) {
-            $item = (object)$item;
-            if ($item->type && $item->type != 'text') {
-                $tmp = DB::table("{$item->type}s")->where('owner_id', $user->id)->find($item->id);
-                if ($tmp) {
-                    $item->value = $tmp->name;
-                    $duration += $tmp->duration ?? 0;
-                } else
-                    unset($content[$idx]);
-            } elseif ($item->type == 'text') {
-                $duration += Util::estimateReadingTime($item->value);
-            }
+        $owners = [];
+        $notAllowedArticleItems = [];
+        foreach ($content as $idx => $itm) {
+            $itm = (object)$itm;
+            if (!$itm->id || $itm->type == 'text') continue;
+            $notAllowedItem = array_flip(Variable::DATA_TYPES)[$itm->type]::where('id', $itm->id)->first();
+            if ($notAllowedItem && !in_array($notAllowedItem->owner_id, $owners))
+                $owners[] = $notAllowedItem->owner_id;
+            if (!$notAllowedItem || (!$isAdmin && $notAllowedItem->owner_id != $user->id) || ($isAdmin && count($owners) > 1) || $notAllowedItem->article_id != null || in_array($notAllowedItem->status, [null, 'reject', 'block', 'review']))
+                $notAllowedArticleItems[] = ['id' => $notAllowedItem->id, 'type' => $itm->type, 'data' => "( " . __($itm->type) . " | $itm->value" . " )"];
         }
+        if (count($notAllowedArticleItems) > 0) {
+            return back()->with(['flash_status' => 'danger', 'flash_message' => __($isAdmin ? 'article_items_cant_be_block_reject_review_other_article_multi_owner' : 'article_items_cant_be_block_reject_review_other_article') . ":  " . join("\n\r", array_map(function ($e) {
+                    return "<br>" . "<a class='text-danger hover:text-danger-400 cursor-pointer' target='_blank' href='" . route('panel.' . $e['type'] . '.edit', $e['id']) . "'>" . $e['data'] . "</a>";
+                }, $notAllowedArticleItems))]);
+        }
+        $price = Setting::getValue('article_register_price');
+        if (!$isAdmin && $price && $price > ($user->wallet ?? 0))
+            return back()->with(['flash_status' => 'danger', 'flash_message' => sprintf(__('wallet_insufficient'), "$price " . __('currency'))]);
+
         $content = count($content) == 0 ? null : json_encode($content);
 
         $request->merge([
@@ -280,13 +314,47 @@ class ArticleController extends Controller
 
             Util::createImage($request->img, Variable::IMAGE_FOLDERS[Article::class], $article->id);
 
+            if ($article->content != null) {
+                $content = json_decode($article->content);
+                foreach ($content as $idx => $item) {
+                    $item = (object)$item;
+                    if ($item->type && $item->type != 'text') {
+                        $tmp = array_flip(Variable::DATA_TYPES)[$itm->type]::find($item->id);
+                        if ($tmp) {
+                            $item->value = $tmp->name;
+                            $duration += $tmp->duration ?? 0;
+                            $tmp->update(['article_id' => $article->id,]);
+                        } else
+                            unset($content[$idx]);
+                    } elseif ($item->type == 'text') {
+                        $duration += Util::estimateReadingTime($item->value);
+                    } else  unset($content[$idx]);
+                }
+                $content = count($content) == 0 ? null : json_encode($content);
+                $article->update(['duration' => $duration, 'content' => $content]);
+            }
+
+            if (!$isAdmin) {
+                $user->wallet -= $price;
+                $user->save();
+                Setting::setWallet($price);
+                $transaction = Transaction::create([
+                    'source_id' => $article->id,
+                    'title' => __('register_article') . " $article->id",
+                    'type' => "create_article_$article->id",
+                    'amount' => -$price,
+                    'owner_id' => $article->owner_id,
+                    'coupon' => null,
+                ]);
+            }
 //            SMSHelper::deleteCode($phone);
             Telegram::log(null, 'article_created', $article);
         } else    $res = ['flash_status' => 'danger', 'flash_message' => __('response_error')];
         return to_route('panel.article.index')->with($res);
     }
 
-    public function searchPanel(Request $request)
+    public
+    function searchPanel(Request $request)
     {
         $user = $request->user();
         $search = $request->search;
@@ -306,32 +374,56 @@ class ArticleController extends Controller
         return $query->orderBy($orderBy, $dir)->paginate($paginate, ['*'], 'page', $page);
     }
 
-    public function search(Request $request)
+    public
+    function search(Request $request)
     {
+        //disable ONLY_FULL_GROUP_BY
+//        DB::statement("SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));");
+
 //        $user = auth()->user();
         $search = $request->search;
         $page = $request->page ?: 1;
         $orderBy = 'id';
         $dir = $request->dir ?: 'DESC';
         $paginate = $request->paginate ?: 24;
-        $query = Article::query();
-//        $seen = session()->get('site_views', []);
-        $query = $query->select('id', 'title', 'duration', 'author', 'view', 'view_fee', 'status', 'category_id', 'created_at',);
-//        $query = $query->select('charge', 'status', 'view_fee');
-        $query = $query
-            ->whereIn('status', ['active', 'need_charge'])
-            ->whereLang(app()->getLocale());
+        /*        $query = Article::query();
+                $query = $query->select('id', 'title', 'duration', 'author', 'view', 'view_fee', 'status', 'category_id', 'created_at',);
+                $query = $query
+                    ->whereIn('status', ['active', 'need_charge'])
+                    ->whereLang(app()->getLocale());
 
-        if ($search)
-            $query = $query->where('title', 'like', "%$search%");
+                if ($search)
+                    $query = $query->where('title', 'like', "%$search%");
 
-        $query = $query
-            ->orderBy('status', 'ASC')
-            ->orderByRaw("IF(charge >= view_fee, view_fee, id) DESC");
+                $query = $query
+                    ->orderBy('status', 'ASC')
+                    ->orderByRaw("IF(charge >= view_fee, view_fee, id) DESC");
+        */
+        return Category::with(['articles' => function ($query) use ($search, $paginate, $page) {
+            $query->select('id', 'title', 'duration', 'author', 'view', 'view_fee', 'status', 'category_id', 'created_at',)
+                ->whereIn('status', ['active', 'need_charge'])
+                ->whereLang(app()->getLocale())
+                ->orderBy('status', 'ASC')
+                ->orderByRaw("IF(charge >= view_fee, view_fee, id) DESC");
+            if ($search)
+                $query->where('title', 'like', "%$search%");
+
+        }])->get()->map(function ($e) use ($paginate) {
+            $e->setRelation('data', $e->articles->take($paginate));
+            unset  ($e->articles);
+            $e->total = $paginate;
+            $e->current_page = 1;
+            return $e;
+        });
+
+
+//        //re-enable ONLY_FULL_GROUP_BY
+//        DB::statement("SET sql_mode=(SELECT CONCAT(@@sql_mode, ',ONLY_FULL_GROUP_BY'));");
         return $query->paginate($paginate, ['*'], 'page', $page);
     }
 
-    public function view(Request $request, $article)
+    public
+    function view(Request $request, $article)
     {
         $message = null;
         $link = null;
@@ -342,7 +434,7 @@ class ArticleController extends Controller
             $message = __('no_results');
             $link = route('article.index');
             $data = ['name' => __('no_results'),];
-        } elseif(!$request->iframe) {
+        } elseif (!$request->iframe) {
             event(new Viewed($data, ArticleTransaction::class));
         }
 

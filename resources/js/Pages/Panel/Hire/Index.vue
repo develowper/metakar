@@ -12,13 +12,13 @@
           class="flex items-center justify-between px-4 py-2 text-primary-500 border-b md:py-4 dark:border-primary-darker">
         <div class="flex">
           <Bars2Icon class="h-7 w-7 mx-3"/>
-          <h1 class="text-2xl font-semibold">{{ __('podcasts_list') }}</h1>
+          <h1 class="text-2xl font-semibold">{{ __('hire_list') }}</h1>
         </div>
         <div>
-          <Link :href="route('panel.podcast.create')"
+          <Link v-if="false" :href="route('panel.admin.user.create')"
                 class="inline-flex items-center  justify-center px-4 py-2 bg-green-500 border border-transparent rounded-md font-semibold  transition-all duration-500 text-white     hover:bg-green-600 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150"
           >
-            {{ __('new_podcast') }}
+            {{ __('new_user') }}
           </Link>
         </div>
       </div>
@@ -119,40 +119,22 @@
               </th>
               <th scope="col"
                   class="px-2 py-3   cursor-pointer duration-300 hover:text-gray-500 hover:scale-[105%]"
-                  @click="params.order_by='name';params.dir=params.dir=='ASC'? 'DESC':'ASC'; params.page=1;getData()">
+                  @click="params.order_by='fullname';params.dir=params.dir=='ASC'? 'DESC':'ASC'; params.page=1;getData()">
                 <div class="flex items-center justify-center">
-                  <span class="px-2">  {{ __('name') }}</span>
+                  <span class="px-2">  {{ __('fullname') }}</span>
                   <ArrowsUpDownIcon class="w-4 h-4 "/>
                 </div>
               </th>
+
               <th scope="col"
                   class="px-2 py-3   cursor-pointer duration-300 hover:text-gray-500 hover:scale-[105%]"
-                  @click="params.order_by='article_id';params.dir=params.dir=='ASC'? 'DESC':'ASC'; params.page=1;getData()">
+                  @click="params.order_by='phone';params.dir=params.dir=='ASC'? 'DESC':'ASC'; params.page=1;getData()">
                 <div class="flex items-center justify-center">
-                  <span class="px-2">  {{ __('article') }}</span>
-                  <ArrowsUpDownIcon class="w-4 h-4 "/>
-                </div>
-              </th>
-              <th v-if="false" scope="col"
-                  class="px-2 py-3   cursor-pointer duration-300 hover:text-gray-500 hover:scale-[105%]"
-                  @click="params.order_by='view';params.dir=params.dir=='ASC'? 'DESC':'ASC'; params.page=1;getData()">
-                <div class="flex items-center justify-center">
-                  <span class="px-2">    {{ __('view') }} </span>
+                  <span class="px-2">    {{ __('phone') }} </span>
                   <ArrowsUpDownIcon class="w-4 h-4 "/>
                 </div>
               </th>
 
-              <th v-if="false && hasWallet()" scope="col"
-                  class="px-2 py-3   cursor-pointer duration-300 hover:text-gray-500 hover:scale-[105%]"
-                  @click="params.order_by='view_fee';params.dir=params.dir=='ASC'? 'DESC':'ASC'; params.page=1;getData()">
-                <div class="flex items-center justify-center">
-                  <Tooltip class="p-2 " :content="__('help_view_fee')">
-                    <span class="px-2">    {{ __('view_fee') }} </span>
-                  </Tooltip>
-                  <ArrowsUpDownIcon class="w-4 h-4 "/>
-
-                </div>
-              </th>
               <th scope="col"
                   class="px-2 py-3   cursor-pointer duration-300 hover:text-gray-500 hover:scale-[105%]"
                   @click="params.order_by='status';params.dir=params.dir=='ASC'? 'DESC':'ASC'; params.page=1;getData()">
@@ -161,32 +143,23 @@
                   <ArrowsUpDownIcon class="w-4 h-4 "/>
                 </div>
               </th>
-              <th scope="col" v-if="false && hasWallet()"
-                  class="px-2 py-3   cursor-pointer duration-300 hover:text-gray-500 hover:scale-[105%]"
-                  @click="params.order_by='charge';params.dir=params.dir=='ASC'? 'DESC':'ASC'; params.page=1;getData()">
-                <div class="flex items-center justify-center">
-                  <span class="px-2">    {{ __('charge') }}  </span>
-                  <ArrowsUpDownIcon class="w-4 h-4 "/>
-                </div>
-              </th>
-              <th v-if="false" scope="col"
-                  class="px-2 py-3   cursor-pointer duration-300 hover:text-gray-500 hover:scale-[105%]"
-                  @click="params.order_by='meta';params.dir=params.dir=='ASC'? 'DESC':'ASC'; params.page=1;getData()">
-                <div class="flex items-center justify-center">
-                  <span class="px-2">    {{ __('meta_charge') }}  </span>
-                  <ArrowsUpDownIcon class="w-4 h-4 "/>
-                </div>
-              </th>
-
-
               <th scope="col"
                   class="px-2 py-3   cursor-pointer duration-300 hover:text-gray-500 hover:scale-[105%]"
-                  @click="params.order_by='category_id';params.dir=params.dir=='ASC'? 'DESC':'ASC'; params.page=1;getData()">
+                  @click="params.order_by='access_request';params.dir=params.dir=='ASC'? 'DESC':'ASC'; params.page=1;getData()">
                 <div class="flex items-center justify-center">
-                  <span class="px-2">   {{ __('category') }}</span>
+                  <span class="px-2">    {{ __('request') }}  </span>
                   <ArrowsUpDownIcon class="w-4 h-4 "/>
                 </div>
               </th>
+              <th scope="col"
+                  class="px-2 py-3   cursor-pointer duration-300 hover:text-gray-500 hover:scale-[105%]"
+                  @click="params.order_by='access_result';params.dir=params.dir=='ASC'? 'DESC':'ASC'; params.page=1;getData()">
+                <div class="flex items-center justify-center">
+                  <span class="px-2">    {{ __('result') }}  </span>
+                  <ArrowsUpDownIcon class="w-4 h-4 "/>
+                </div>
+              </th>
+
 
               <th scope="col" class="px-2 py-3">
                 {{ __('actions') }}
@@ -255,65 +228,18 @@
               </td>
               <td
                   class="flex  items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                <Image class="w-10 h-10 rounded-full" :src="`${route('storage.podcasts')}/${d.id}.jpg`"
-                       :alt="cropText(d.name,5)"/>
-                <Link class="px-3 hover:text-gray-500" :href="route('panel.podcast.edit',d.id)">
-                  <div class="text-base font-semibold">{{ cropText(d.name, 40) }}</div>
+                <Image class="w-10 h-10 rounded-full" :src="`${route('storage.users')}/${d.id}.jpg`"
+                       :alt="cropText(d.fullname,5)"/>
+                <Link class="px-3 hover:text-gray-500" :href="route('panel.admin.user.edit',d.id)">
+                  <div class="text-base font-semibold">{{ cropText(d.fullname, 30) }}</div>
                   <div class="font-normal text-gray-500">{{ }}</div>
                 </Link>
               </td>
-              <td class="px-2 py-4">
-                <Link v-if="d.article_id" :href="route('article', d.article_id)">{{ d.article_id }}</Link>
-              </td>
-              <td v-if="false" class="px-2 py-4">
-                {{ d.view }}
+
+              <td class="px-8 py-4">
+                {{ d.phone }}
               </td>
 
-
-              <td v-if="false && hasWallet()"
-                  class="px-2 py-4    " data-te-dropdown-ref>
-                <button
-                    id="dropdownViewFee"
-                    data-te-dropdown-toggle-ref
-                    aria-expanded="false"
-                    data-te-ripple-init
-                    data-te-ripple-color="light"
-                    class="  min-w-[5rem] bg-gray-100 hover:bg-gray-200 px-1 cursor-pointer items-center text-center rounded-md py-[.2rem]"
-                    :class="`bg-primary-100 hover:bg-primary-200 text-primary-500`"
-                >
-                  {{ asPrice(d.view_fee) }}
-                </button>
-                <ul ref="dropdownViewFeeMenu" data-te-dropdown-menu-ref
-                    class="p-4  absolute z-[1000]    hidden   list-none overflow-hidden rounded-lg border-none bg-white bg-clip-padding text-center text-base shadow-lg dark:bg-neutral-700 [&[data-te-dropdown-show]]:block"
-                    tabindex="-1" role="menu" aria-orientation="vertical" aria-label="User menu"
-                    aria-labelledby="dropdownViewFee">
-                  <li v-if="d.status!='block'"
-                      class="   text-sm  ">
-                    <span class="text-xs py-2 text-danger-500">{{ __('help_view_fee') }}</span>
-                    <div class="flex items-center ">
-                      <input @keydown.enter="edit({'idx':idx,'id':d.id,'cmnd':'view-fee','view_fee':d.view_fee})"
-                             type="number" min="0" class="grow my-2  p-1 rounded-lg border-gray-400"
-                             v-model="d.view_fee">
-                      <span class="text-xs ms-1 font-light text-gray-400">{{ __('currency') }}</span>
-                    </div>
-                  </li>
-
-                  <li v-if="d.status!='block'">
-                    <button class="bg-success-100 text-success-700 p-2 rounded-lg  hover:bg-success-50 w-full"
-                            @click="edit({'idx':idx,'id':d.id,'cmnd':'view-fee','view_fee':d.view_fee})">
-                      {{ __('reg') }}
-                    </button>
-                  </li>
-                  <li v-if="  d.status=='block'  " role="menuitem"
-                      class="   cursor-pointer   text-sm text-gray-700 transition-colors hover:bg-gray-100 dark:text-light dark:hover:bg-primary">
-                    <div class="flex items-center  px-6 py-2 justify-between ">
-                      <span>{{ __('not_available') }}</span>
-                    </div>
-                    <hr class="border-gray-200 dark:border-gray-700 ">
-                  </li>
-
-                </ul>
-              </td>
               <td class="px-2 py-4    " data-te-dropdown-ref>
                 <button
                     id="dropdownStatusSetting"
@@ -322,146 +248,57 @@
                     data-te-ripple-init
                     data-te-ripple-color="light"
                     class="  min-w-[5rem]  px-1 cursor-pointer items-center text-center rounded-md py-[.2rem]"
-                    :class="`bg-${getStatus('article', d.status).color}-100 hover:bg-${getStatus('article', d.status).color}-200 text-${getStatus('article', d.status).color}-500`">
-                  {{ getStatus('article', d.status).name }}
+                    :class="`bg-${getStatus('hire', d.status).color}-100 hover:bg-${getStatus('hire', d.status).color}-200 text-${getStatus('hire', d.status).color}-500`">
+                  {{ getStatus('hire', d.status).name }}
                 </button>
                 <ul ref="statusMenu" data-te-dropdown-menu-ref
                     class="  absolute z-[1000]   m-0 hidden   list-none overflow-hidden rounded-lg border-none bg-white bg-clip-padding text-center text-base shadow-lg dark:bg-neutral-700 [&[data-te-dropdown-show]]:block"
                     tabindex="-1" role="menu" aria-orientation="vertical" aria-label="User menu"
                     aria-labelledby="dropdownStatusSetting">
 
-                  <li v-if="d.status=='active'  " role="menuitem"
-                      @click="edit({'idx':idx,'id':d.id,'cmnd':'inactive'})"
-                      class="   cursor-pointer   text-sm   transition-colors hover:bg-gray-100 dark:text-light dark:hover:bg-primary">
-                    <div class="flex items-center text-danger  px-6 py-2 justify-between ">
-                      <span class="bg-danger mx-1  animate-pulse px-1 py-1 rounded "></span>
-                      {{ __('inactive') }}
+                  <li v-if="d.status!='done'  " role="menuitem"
+                      @click="edit({'idx':idx,'id':d.id,'cmnd':'done'})"
+                      class="   cursor-pointer   text-sm   transition-colors hover:bg-success-100 dark:text-light dark:hover:bg-primary">
+                    <div class="flex items-center text-success  px-6 py-2 justify-between ">
+                      <span class="bg-success mx-1  animate-pulse px-1 py-1 rounded "></span>
+                      {{ __('done') }}
                     </div>
                     <hr class="border-gray-200 dark:border-gray-700 ">
                   </li>
-                  <li v-if="d.status=='review' || d.status=='block'  " role="menuitem"
-                      class="   cursor-pointer   text-sm text-gray-700 transition-colors hover:bg-gray-100 dark:text-light dark:hover:bg-primary">
-                    <div class="flex items-center  px-6 py-2 justify-between ">
-                      <span v-if="d.status=='review'">{{ __('active_after_review') }}</span>
-                      <span v-if="d.status=='block'">{{ __('not_available') }}</span>
-                    </div>
-                    <hr class="border-gray-200 dark:border-gray-700 ">
-                  </li>
-                  <li v-if="d.status=='inactive'  " role="menuitem"
-                      @click="edit({'idx':idx,'id':d.id,'cmnd':'activate'})"
+
+                  <li v-if="d.status!='review'  " role="menuitem"
+                      @click="edit({'idx':idx,'id':d.id,'cmnd':'review'})"
                       class="   cursor-pointer   text-sm text-primary-700 transition-colors hover:bg-gray-100 dark:text-light dark:hover:bg-primary">
                     <div class="flex items-center  px-6 py-2 justify-between ">
-                      {{ __('activate') }}
+                      {{ __('review') }}
                     </div>
                     <hr class="border-gray-200 dark:border-gray-700 ">
                   </li>
                 </ul>
               </td>
-              <td v-if="false && hasWallet()"
+              <td
                   class="px-2 py-4    " data-te-dropdown-ref>
-                <button
-                    id="dropdownViewCharge"
-                    data-te-dropdown-toggle-ref
-                    aria-expanded="false"
-                    data-te-ripple-init
-                    data-te-ripple-color="light"
-                    class="  min-w-[5rem]  bg-gray-100 hover:bg-gray-200  px-1 cursor-pointer items-center text-center rounded-md py-[.2rem]"
-                    :class="`bg-${getStatus('article', d.status).color}-100 hover:bg-${getStatus('article', d.status).color}-200 text-${getStatus('article', d.status).color}-500`"
-                >
-                  {{ asPrice(d.charge) }}
-                </button>
-                <ul ref="dropdownViewChargeMenu" data-te-dropdown-menu-ref
-                    class="  absolute z-[1000]   p-4  hidden   list-none overflow-hidden rounded-lg border-none bg-white bg-clip-padding text-center text-base shadow-lg dark:bg-neutral-700 [&[data-te-dropdown-show]]:block"
-                    tabindex="-1" role="menu" aria-orientation="vertical" aria-label="User menu"
-                    aria-labelledby="dropdownViewCharge">
-                  <li v-if="d.status!='block'"
-                      class="     text-sm flex flex-col">
-                    <span class="text-xs py-3 text-danger-500">{{ __('will_subtract_from_wallet') }}</span>
-                    <div class="flex items-center">
-                      <input @keydown.enter="edit({'idx':idx,'id':d.id,'cmnd':'charge','charge':d.charge})"
-                             type="number" min="0" class="grow my-2  p-1 rounded-lg border-gray-400" v-model="d.charge">
-                      <span class="text-xs ms-1 font-light text-gray-400">{{ __('currency') }}</span>
-                    </div>
-                  </li>
-
-                  <li v-if="d.status!='block'">
-                    <button class="bg-success-100 text-success-700 p-2 rounded-lg  hover:bg-success-50 w-full"
-                            @click="edit({'idx':idx,'id':d.id,'cmnd':'charge','charge':d.charge})">
-                      {{ __('charge') }}
-                    </button>
-                  </li>
-                  <li v-if="  d.status=='block'  " role="menuitem"
-                      class="   cursor-pointer   text-sm text-gray-700 transition-colors hover:bg-gray-100 dark:text-light dark:hover:bg-primary">
-                    <div class="flex items-center  px-6 py-2 justify-between ">
-                      <span>{{ __('not_available') }}</span>
-                    </div>
-                    <hr class="border-gray-200 dark:border-gray-700 ">
-                  </li>
-
-                </ul>
+                {{ d.access_request }}
               </td>
-              <td v-if="false"
+              <td
                   class="px-2 py-4    " data-te-dropdown-ref>
-                <button
-                    id="dropdownViewCharge"
-                    data-te-dropdown-toggle-ref
-                    aria-expanded="false"
-                    data-te-ripple-init
-                    data-te-ripple-color="light"
-                    class="  min-w-[5rem]  px-1 cursor-pointer items-center text-center rounded-md py-[.2rem]"
-                >
-                  {{ asPrice(d.meta) }}
-                </button>
-                <ul ref="dropdownViewChargeMenu" data-te-dropdown-menu-ref
-                    class="  absolute z-[1000]   p-4  hidden   list-none overflow-hidden rounded-lg border-none bg-white bg-clip-padding text-center text-base shadow-lg dark:bg-neutral-700 [&[data-te-dropdown-show]]:block"
-                    tabindex="-1" role="menu" aria-orientation="vertical" aria-label="User menu"
-                    aria-labelledby="dropdownViewCharge">
-                  <li v-if="d.status!='block'"
-                      class="     text-sm flex flex-col">
-                    <span class="text-xs py-3 text-danger-500">{{ __('will_subtract_from_meta') }}</span>
-                    <div class="flex items-center">
-                      <input @keydown.enter="edit({'idx':idx,'id':d.id,'cmnd':'meta','meta':d.meta})"
-                             type="number" min="0" class="grow my-2  p-1 rounded-lg border-gray-400" v-model="d.meta">
-
-                    </div>
-                  </li>
-
-                  <li v-if="d.status!='block'">
-                    <button class="bg-success-100 text-success-700 p-2 rounded-lg  hover:bg-success-50 w-full"
-                            @click="edit({'idx':idx,'id':d.id,'cmnd':'meta','meta':d.meta})">
-                      {{ __('charge') }}
-                    </button>
-                  </li>
-                  <li v-if="  d.status=='block'  " role="menuitem"
-                      class="   cursor-pointer   text-sm text-gray-700 transition-colors hover:bg-gray-100 dark:text-light dark:hover:bg-primary">
-                    <div class="flex items-center  px-6 py-2 justify-between ">
-                      <span>{{ __('not_available') }}</span>
-                    </div>
-                    <hr class="border-gray-200 dark:border-gray-700 ">
-                  </li>
-
-                </ul>
+                {{ d.access_result }}
               </td>
 
-
-              <td class="px-2 py-4 ">
-                <div>
-                  {{ getCategory(d.category_id) }}
-                </div>
-              </td>
 
               <td class="px-2 py-4">
                 <!-- Actions Group -->
                 <div
                     class=" inline-flex rounded-md shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
                     role="group">
-                  <Link
-                      type="button" :href="route('panel.podcast.edit',d.id)"
-                      class="inline-block rounded  bg-orange-500 text-white px-6  py-2 text-xs font-medium uppercase leading-normal text-white transition duration-150 ease-in-out hover:bg-orange-400   focus:outline-none focus:ring-0  "
-                      data-te-ripple-init
-                      data-te-ripple-color="light">
+                  <button @click="d.idx=idx;openModal(d)"
+                          class="inline-block rounded  bg-orange-500 text-white px-6  py-2 text-xs font-medium uppercase leading-normal text-white transition duration-150 ease-in-out hover:bg-orange-400   focus:outline-none focus:ring-0  "
+                          data-te-toggle="modal"
+                          data-te-target="#editSelectedModal"
+                          data-te-ripple-init
+                          data-te-ripple-color="light">
                     {{ __('edit') }}
-                  </Link>
+                  </button>
 
                   <!--                  <button -->
                   <!--                      type="button"-->
@@ -480,6 +317,216 @@
         </div>
 
       </div>
+
+      <!-- Modal -->
+      <div
+          data-te-modal-init
+          class="fixed left-0 top-0 backdrop-blur z-[1055] hidden h-full w-full overflow-y-auto overflow-x-hidden outline-none"
+          id="editSelectedModal"
+          tabindex="-1"
+          aria-labelledby="editSelectedModalLabel"
+          aria-hidden="true">
+        <div
+            data-te-modal-dialog-ref
+            class="pointer-events-none relative w-auto translate-y-[-50px] opacity-0 transition-all duration-300 ease-in-out min-[576px]:mx-auto min-[576px]:mt-7 px-2 sm:px-4 md:px8 min-[576px]:max-w-5xl">
+          <div
+              class="min-[576px]:shadow-[0_0.5rem_1rem_rgba(#000, 0.15)] pointer-events-auto relative flex w-full flex-col rounded-md border-none bg-white bg-clip-padding text-current shadow-lg outline-none dark:bg-neutral-600">
+            <div
+                class="flex flex-shrink-0 items-center justify-between rounded-t-md border-b-2 border-neutral-100 border-opacity-100 p-4 dark:border-opacity-50">
+              <!--Modal title-->
+              <h5
+                  class="text-xl font-medium leading-normal text-neutral-800 dark:text-neutral-200"
+                  id="editSelectedModalLabel">
+
+              </h5>
+              <!--Close button-->
+              <button
+                  :class="`text-danger`"
+                  type="button"
+                  class="box-content rounded-none border-none hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none"
+                  data-te-modal-dismiss
+                  aria-label="Close">
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    class="h-6 w-6">
+                  <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+              </button>
+            </div>
+
+            <!--Modal body-->
+            <div v-if="selected.id" class="relative flex-auto p-1" data-te-modal-body-ref>
+              <div
+                  class="flex items-center justify-start px-4 py-1 text-primary-500 border-b md:py-2 dark:border-primary-darker">
+
+                <h1 class="text-xl   mx-2">{{ selected.fullname }} _ {{ selected.phone }}</h1>
+
+              </div>
+
+
+              <div class="px-2  md:px-4">
+
+                <div
+                    class="    mx-auto md:max-w-3xl   mt-6 px-2 md:px-4 py-4 bg-white   overflow-hidden  rounded-lg  ">
+
+
+                  <div
+                      class="flex flex-col mx-2   col-span-2 w-full     px-2"
+                  >
+
+                    <form
+                        @submit.prevent="edit({id:selected.id,idx:selected.idx,accesses:selected.access_result,close:selected.close})">
+                      <div class="my-2">
+                        <div>{{ __('user_requests') }}</div>
+                        <div v-for="(access,idx) in $page.props.accesses" class="inline-flex items-center">
+                          <label
+                              class="relative flex items-center   opacity-50 p-3 rounded-full cursor-pointer "
+
+                              data-ripple-dark="true"
+                          >
+                            <input :value="access.role" disabled
+                                   :checked="(selected.access_request || []).indexOf(access.role)>-1"
+
+                                   type="checkbox"
+                                   class="before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-primary-500 checked:bg-primary-500 checked:before:bg-primary-500 hover:before:opacity-10"
+                            />
+                            <div
+                                class="absolute text-white transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100">
+                              <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  class="h-3.5 w-3.5"
+                                  viewBox="0 0 20 20"
+                                  fill="currentColor"
+                                  stroke="currentColor"
+                                  stroke-width="1"
+                              >
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                    clip-rule="evenodd"
+                                ></path>
+                              </svg>
+                            </div>
+                          </label>
+                          <label
+                              class="mt-px font-light text-sm text-gray-500 cursor-pointer select-none"
+
+                          >
+                            {{ __(access.name) }}
+                          </label>
+                        </div>
+                      </div>
+                      <div class="border-b"></div>
+                      <div class="my-2">
+                        <div>{{ __('user_approved_requests') }}</div>
+                        <div v-for="(access,idx) in $page.props.accesses" class="inline-flex items-center">
+                          <label
+                              class="relative flex items-center    p-3 rounded-full cursor-pointer "
+                              :for="`access${idx}`"
+                              data-ripple-dark="true"
+                          >
+                            <input :value="access.role" v-model="selected.access_result"
+                                   :checked="selected.access_result&&  selected.access_result.indexOf(access.role)>-1"
+                                   :id="`access${idx}`"
+                                   type="checkbox"
+                                   class="before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-primary-500 checked:bg-primary-500 checked:before:bg-primary-500 hover:before:opacity-10"
+                            />
+                            <div
+                                class="absolute text-white transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100">
+                              <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  class="h-3.5 w-3.5"
+                                  viewBox="0 0 20 20"
+                                  fill="currentColor"
+                                  stroke="currentColor"
+                                  stroke-width="1"
+                              >
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                    clip-rule="evenodd"
+                                ></path>
+                              </svg>
+                            </div>
+                          </label>
+                          <label
+                              class="mt-px font-light text-sm text-gray-500 cursor-pointer select-none"
+                              :for="`access${idx}`"
+                          >
+                            {{ __(access.name) }}
+                          </label>
+                        </div>
+                      </div>
+                      <div class="border-b"></div>
+                      <div class="  my-2 flex items-center">
+                        <label
+                            class="relative flex items-center    p-3 rounded-full cursor-pointer "
+                            for="close"
+                            data-ripple-dark="true"
+                        >
+                          <input v-model="selected.close"
+                                 id="close"
+                                 type="checkbox"
+                                 class="before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-primary-500 checked:bg-primary-500 checked:before:bg-primary-500 hover:before:opacity-10"
+                          />
+                          <div
+                              class="absolute text-white transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                class="h-3.5 w-3.5"
+                                viewBox="0 0 20 20"
+                                fill="currentColor"
+                                stroke="currentColor"
+                                stroke-width="1"
+                            >
+                              <path
+                                  fill-rule="evenodd"
+                                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                  clip-rule="evenodd"
+                              ></path>
+                            </svg>
+                          </div>
+                        </label>
+                        <label
+                            class="mt-px font-light text-sm text-gray-500 cursor-pointer select-none"
+                            for="close"
+                        >
+                          {{ __('final_accept') }}
+                        </label>
+                      </div>
+
+                      <InputError class="mt-1" :message=" errors.accesses"/>
+
+                      <div class="    mt-4">
+
+                        <PrimaryButton class="w-full  "
+                                       :class="{ 'opacity-25': loading }"
+                                       :disabled="loading">
+                          <LoadingIcon class="w-4 h-4 mx-3 " v-if=" loading"/>
+                          <span class=" text-lg  ">  {{ __('register_info') }}</span>
+                        </PrimaryButton>
+
+                      </div>
+
+                    </form>
+                  </div>
+
+
+                </div>
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+      </div>
     </template>
 
 
@@ -491,6 +538,7 @@ import Scaffold from "@/Layouts/Scaffold.vue";
 import Panel from "@/Layouts/Panel.vue";
 import {Head, Link, useForm} from "@inertiajs/vue3";
 import Pagination from "@/Components/Pagination.vue";
+import LoadingIcon from "@/Components/LoadingIcon.vue";
 import {
   Bars2Icon,
   MagnifyingGlassIcon,
@@ -501,11 +549,15 @@ import {
 
 } from "@heroicons/vue/24/outline";
 import Image from "@/Components/Image.vue"
-import Tooltip from "@/Components/Tooltip.vue";
+import Tooltip from "@/Components/Tooltip.vue"
+import {Modal} from "tw-elements";
+import PrimaryButton from "@/Components/PrimaryButton.vue";
+import InputError from "@/Components/InputError.vue";
 
 export default {
   data() {
     return {
+      modal: null,
       params: {
         page: 1,
         search: null,
@@ -518,9 +570,13 @@ export default {
       toggleSelect: false,
       loading: false,
       error: null,
+      selected: {},
+      errors: {},
     }
   },
   components: {
+    InputError,
+    PrimaryButton,
     Head,
     Link,
     HomeIcon,
@@ -533,49 +589,29 @@ export default {
     Pagination,
     ArrowsUpDownIcon,
     Tooltip,
+    LoadingIcon,
   },
   mounted() {
 
     this.getData();
-
+    const modalEl = document.getElementById('editSelectedModal');
+    this.modal = new Modal(modalEl);
     // this.showDialog('danger', 'message',()=>{});
     // this.isLoading(false);
   },
   methods: {
+    openModal(selected) {
+      this.selected = selected;
+      this.selected.access_result = this.selected.access_result ? this.selected.access_result.split(',') : [];
+      this.modal.show();
+    },
     getData() {
 
       this.loading = true;
       this.data = [];
-      window.axios.get(route('panel.podcast.search'), {
+      window.axios.get(route('panel.admin.hire.search'), {
         params: this.params
-      }, {
-        onUploadProgress: function (axiosProgressEvent) {
-          console.log(axiosProgressEvent);
-          /*{
-            loaded: number;
-            total?: number;
-            progress?: number; // in range [0..1]
-            bytes: number; // how many bytes have been transferred since the last trigger (delta)
-            estimated?: number; // estimated time in seconds
-            rate?: number; // upload speed in bytes
-            upload: true; // upload sign
-          }*/
-        },
-
-        onDownloadProgress: function (axiosProgressEvent) {
-          console.log(axiosProgressEvent);
-
-          /*{
-            loaded: number;
-            total?: number;
-            progress?: number;
-            bytes: number;
-            estimated?: number;
-            rate?: number; // download speed in bytes
-            download: true; // download sign
-          }*/
-        }
-      })
+      }, {})
           .then((response) => {
             this.data = response.data.data;
             this.data.forEach(el => {
@@ -583,6 +619,7 @@ export default {
             });
             delete response.data.data;
             this.pagination = response.data;
+
 
           })
 
@@ -622,56 +659,26 @@ export default {
       });
     },
     edit(params) {
+
       this.isLoading(true);
-      window.axios.patch(route('podcast.update'), params,
-          {
-            onUploadProgress: function (axiosProgressEvent) {
-              // console.log(axiosProgressEvent);
-              /*{
-                loaded: number;
-                total?: number;
-                progress?: number; // in range [0..1]
-                bytes: number; // how many bytes have been transferred since the last trigger (delta)
-                estimated?: number; // estimated time in seconds
-                rate?: number; // upload speed in bytes
-                upload: true; // upload sign
-              }*/
-            },
-
-            onDownloadProgress: function (axiosProgressEvent) {
-              // console.log(axiosProgressEvent);
-
-              /*{
-                loaded: number;
-                total?: number;
-                progress?: number;
-                bytes: number;
-                estimated?: number;
-                rate?: number; // download speed in bytes
-                download: true; // download sign
-              }*/
-            }
-          })
+      window.axios.patch(route('panel.admin.hire.update'), params,
+          {})
           .then((response) => {
             if (response.data && response.data.message) {
               this.showToast('success', response.data.message);
 
             }
-            if (response.data.charge) {
-              this.data[params.idx].charge = response.data.charge;
-              this.user.wallet = response.data.wallet;
+            if (response.data.access_request) {
+              this.data[params.idx].access_request = response.data.access_request;
             }
+            if (response.data.access_result != null) {
+              this.data[params.idx].access_result = response.data.access_result;
+            }
+
             if (response.data.status) {
               this.data[params.idx].status = response.data.status;
             }
-            if (response.data.view_fee) {
-              this.data[params.idx].view_fee = response.data.view_fee;
-            }
-            if (response.data.meta) {
-              this.data[params.idx].meta = response.data.meta;
-              this.user.meta_wallet = response.data.meta_wallet;
-            }
-
+            this.modal.hide();
           })
 
           .catch((error) => {
@@ -712,7 +719,7 @@ export default {
         }, [])
       };
 
-      window.axios.patch(route('podcast.update'), params,
+      window.axios.patch(route('hire.update'), params,
           {
             onUploadProgress: function (axiosProgressEvent) {
             },

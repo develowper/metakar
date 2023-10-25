@@ -8,6 +8,8 @@ use App\Http\Helpers\Util;
 use App\Http\Helpers\Variable;
 use App\Http\Requests\ProfileRequest;
 use App\Http\Requests\UserRequest;
+use App\Models\Hire;
+use App\Models\Notification;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -26,7 +28,7 @@ class UserController extends Controller
             'email_verified_at' => $request->email && $request->email_verified ? Carbon::now() : null,
             'is_active' => $request->status == 'active',
             'is_block' => $request->status == 'block',
-            'ref_id' => User::makeRefCode(),
+            'ref_id' => User::makeRefCode($request->phone),
         ]);
         $user = User::create($request->all());
         if ($user) {
@@ -69,7 +71,7 @@ class UserController extends Controller
         $paginate = $request->paginate ?: 24;
 
         $query = User::query();
-        $query->select('id', 'fullname', 'email', 'phone', 'is_active', 'is_block', 'role', 'wallet');
+        $query->select('id', 'fullname', 'email', 'phone', 'is_active', 'is_block', 'access', 'role', 'wallet');
 
         if ($search)
             $query = $query->where('fullname', 'like', "%$search%")->orWhere('phone', 'like', "%$search%");
@@ -111,6 +113,27 @@ class UserController extends Controller
                 $user->role = $cmnd == 'role-ad' ? 'ad' : ($cmnd == 'role-go' ? 'go' : 'us');
                 $user->save();
                 return response()->json(['message' => __('updated_successfully'), 'role' => $user->role], 200);
+
+            case 'access':
+
+                if (Hire::isEdited($user->access, $request->accesses)) {
+                    $user->access = join(',', $request->accesses ?? []) ?: null;
+                    $n = Notification::create(
+                        [
+                            'type' => 'access_change',
+                            'subject' => __('your_roles_changed'),
+                            'description' => null,
+                            'owner_id' => $user->id
+                        ],
+                    );
+                    if ($n)
+                        $user->notifications++;
+                    $user->save();
+                    Telegram::log(null, 'user_edited', $user);
+
+
+                }
+                return response()->json(['message' => __('updated_successfully'), 'access' => $user->access,], Variable::SUCCESS_STATUS);
 
 
         }

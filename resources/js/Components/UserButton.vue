@@ -23,40 +23,43 @@
         <ul v-if="  chevronShow" @mouseover="chevronRotate=true" @mouseleave="chevronRotate=false"
             class="flex-col    bg-white  border shadow-xl rounded-lg transform scale-0 group-hover:scale-100  absolute end-0 top-10
                     transition duration-200 ease-in-out origin-top overflow-hidden   ">
+          <li>
+            <Link href="#"
+                  class="flex px-6   py-4  justify-around      text-sm text-gray-600 transition-colors duration-200 transform dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white">
+              <Image classes=" flex-shrink-0  object-cover mx-1 rounded-full w-9 h-9"
+                     :src="route('storage.users')+`/${user.id}.jpg`"
+                     alt="jane avatar"
+                     type="user"/>
 
-          <Link href="#"
-                class="flex px-6   py-4  justify-around      text-sm text-gray-600 transition-colors duration-200 transform dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white">
-            <Image classes=" flex-shrink-0  object-cover mx-1 rounded-full w-9 h-9"
-                   :src="route('storage.users')+`/${user.id}.jpg`"
-                   alt="jane avatar"
-                   type="user"/>
-
-            <div class="flex-col  mx-1  ">
-              <h1 class="    text-sm font-semibold text-gray-700 dark:text-gray-200">
-                {{ user.fullname }}</h1>
-              <div class="   text-sm text-gray-500 dark:text-gray-400 ">{{ user.phone || user.email }}
+              <div class="flex-col  mx-1  ">
+                <h1 class="    text-sm font-semibold text-gray-700 dark:text-gray-200">
+                  {{ user.fullname }}</h1>
+                <div class="   text-sm text-gray-500 dark:text-gray-400 ">{{ user.phone || user.email }}
+                </div>
               </div>
-            </div>
-          </Link>
-
-          <hr class="border-gray-200 dark:border-gray-700  ">
-
-          <Link :href="route('panel.index')"
-                class="flex px-4 py-4 text-sm text-gray-600 capitalize transition-colors duration-200 transform dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white">
-            {{ __('dashboard') }}
-          </Link>
-
-
-          <hr class="border-gray-200 dark:border-gray-700 ">
-
-          <Link as="button" method="post" :href="route('logout')" class=" w-full flex ">
-            <div class="flex items-center justify-center  m-3 px-4 py-2  w-full  hover:scale-110 focus:outline-none      rounded font-bold cursor-pointer
+            </Link>
+          </li>
+          <li>
+            <hr class="border-gray-200 dark:border-gray-700  ">
+          </li>
+          <li>
+            <Link :href="route('panel.index')"
+                  class="flex px-4 py-4 text-sm text-gray-600 capitalize transition-colors duration-200 transform dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white">
+              {{ __('dashboard') }}
+            </Link>
+          </li>
+          <li>
+            <hr class="border-gray-200 dark:border-gray-700 ">
+          </li>
+          <li>
+            <Link as="button" method="post" :href="route('logout')" class=" w-full flex ">
+              <div class="flex items-center justify-center  m-3 px-4 py-2  w-full  hover:scale-110 focus:outline-none      rounded font-bold cursor-pointer
         hover:bg-red-700 hover:text-red-100  bg-red-100 text-red-500  border duration-200 ease-in-out border-red-600 transition">
-              {{ __('signout') }}
-              <ArrowRightOnRectangleIcon class="h-5 w-5 text-red-500  "/>
-            </div>
-          </Link>
-
+                {{ __('signout') }}
+                <ArrowRightOnRectangleIcon class="h-5 w-5 text-red-500  "/>
+              </div>
+            </Link>
+          </li>
         </ul>
       </div>
 

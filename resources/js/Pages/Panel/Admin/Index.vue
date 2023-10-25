@@ -132,6 +132,17 @@
                                    {{ __('review_queue') }}
                                         </span>
               </Link>
+              <Link :href="route(`panel.admin.hire.index`)"
+                    class="  flex flex-col   pt-6  pb-4 items-around justify-around hover:scale-[102%]     px-1  grow text-center hover:bg-gray-100  ">
+                                        <span
+                                            class=" text-teal-500 text-xl font-bold "> {{
+                                            queue.count
+                                          }}</span>
+                <span
+                    class="  bg-teal-100 text-teal-500 mx-1 px-2 py-1    text-xs  rounded-md">
+                                   {{ __('hire') }}
+                                        </span>
+              </Link>
             </div>
 
 

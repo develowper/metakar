@@ -164,6 +164,7 @@ class ItemController extends Controller
             $excludeType = $exclude['type'];
             $excludeId = $excludeId;
         }
+        /*
         $banners = Banner::select(array_merge(['id', 'name', 'owner_id', 'charge', 'view_fee', 'category_id', 'view', 'tags', 'viewer',], [DB::raw(" 'banner'" . ' as type '),]))
             ->where('status', 'active')
             ->where('view_fee', '>', 0)
@@ -197,7 +198,7 @@ class ItemController extends Controller
                 ->whereIntegerNotInRaw('id', VideoTransaction::where('owner_id', $user->id)->orWhere('ip', request()->ip())->pluck('data_id'));
         if ($excludeType == 'video')
             $videos->where('id', '!=', $excludeId);
-
+*/
         $articles = Article::select(array_merge(['id', DB::raw("title AS name"), 'owner_id', 'charge', 'view_fee', 'category_id', 'view', 'tags', 'viewer',], [DB::raw(" 'article'" . ' as type '),]))
             ->where('status', 'active')
             ->where('view_fee', '>', 0)
@@ -261,20 +262,23 @@ class ItemController extends Controller
         $dir = $request->dir ?? 'DESC';
         $paginate = $request->paginate ?: 24;
 
+        $banners = null;
+        $podcasts = null;
+        $videos = null;
 
         $user = auth()->user();
 
-        $banners = Banner::select(array_merge(['id', 'name', 'owner_id', 'charge', 'view_fee', 'category_id', 'view', 'status', 'viewer', 'created_at',], [DB::raw(" 'banner'" . ' as type '),]))
-            ->where('status', 'active');
-
-
-        $podcasts = Podcast::select(array_merge(['id', 'name', 'owner_id', 'charge', 'view_fee', 'category_id', 'view', 'status', 'viewer', 'created_at',], [DB::raw("'podcast'" . ' as type')]))
-            ->where('status', 'active');
-//                ->with('owner:id,fullname');
-
-
-        $videos = Video::select(array_merge(['id', 'name', 'owner_id', 'charge', 'view_fee', 'category_id', 'view', 'status', 'viewer', 'created_at',], [DB::raw("'video'" . ' as type'),]))
-            ->where('status', 'active');
+//        $banners = Banner::select(array_merge(['id', 'name', 'owner_id', 'charge', 'view_fee', 'category_id', 'view', 'status', 'viewer', 'created_at',], [DB::raw(" 'banner'" . ' as type '),]))
+//            ->where('status', 'active');
+//
+//
+//        $podcasts = Podcast::select(array_merge(['id', 'name', 'owner_id', 'charge', 'view_fee', 'category_id', 'view', 'status', 'viewer', 'created_at',], [DB::raw("'podcast'" . ' as type')]))
+//            ->where('status', 'active');
+////                ->with('owner:id,fullname');
+//
+//
+//        $videos = Video::select(array_merge(['id', 'name', 'owner_id', 'charge', 'view_fee', 'category_id', 'view', 'status', 'viewer', 'created_at',], [DB::raw("'video'" . ' as type'),]))
+//            ->where('status', 'active');
 
         $articles = Article::select(array_merge(['id', DB::raw("title AS name"), 'owner_id', 'charge', 'view_fee', 'category_id', 'view', 'status', 'viewer', 'created_at',], [DB::raw(" 'article'" . ' as type '),]))
             ->where('status', 'active');

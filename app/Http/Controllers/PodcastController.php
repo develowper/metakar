@@ -278,6 +278,29 @@ class PodcastController extends Controller
         $orderBy = 'created_at';
         $dir = $request->dir ?: 'DESC';
         $paginate = $request->paginate ?: 24;
+
+
+        $query = Podcast::join('articles', function ($join) {
+            $join->on('podcasts.article_id', '=', 'articles.id')
+                ->whereIn('articles.status', ['active', 'need_charge'])
+                ->where('articles.lang', app()->getLocale());
+
+        })->select('podcasts.id', 'articles.id as article_id', 'articles.status as status', 'articles.view as view', 'articles.viewer as viewer', 'articles.view_fee as view_fee', 'articles.category_id as category_id', 'title', 'podcasts.duration as duration', 'name')
+            ->orderBy('articles.status', 'ASC')
+            ->orderByRaw("IF(articles.charge >= articles.view_fee, articles.view_fee, articles.id) DESC");
+        if ($search)
+            $query->where('title', 'like', "%$search%");
+
+        return $query->get()
+            ->groupby('category_id')->map(function ($e, $idx) use ($paginate) {
+
+//                $e = new \stdClass();
+//                $e->data = $el;
+//                $e->total = $paginate;
+//                $e->current_page = 1;
+                return $e->take($paginate);
+            });
+
         $query = Podcast::query();
 //        $seen = session()->get('site_views', []);
         $query = $query->select('id', 'name', 'narrator', 'duration', 'view', 'view_fee', 'status', 'category_id', 'created_at',);
@@ -288,6 +311,9 @@ class PodcastController extends Controller
 
         if ($search)
             $query = $query->where('name', 'like', "%$search%");
+
+        $query = $query->whereNotNull('article_id');
+
 
         $query = $query
             ->orderBy('status', 'ASC')

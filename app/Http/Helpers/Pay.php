@@ -126,7 +126,7 @@ class Pay
                 $user->wallet += $payment->amount;
                 $user->save();
                 $transaction = Transaction::create([
-                    'payment_id' => $payment->id,
+                    'source_id' => $payment->id,
                     'title' => $payment->title,
                     'type' => $payment->type,
                     'amount' => $payment->amount,

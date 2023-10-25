@@ -11,6 +11,27 @@ class Category extends Model
 
     protected $fillable = ['name', 'slug', 'parent_id'];
 
+
+    public function articles()
+    {
+        return $this->hasMany(Article::class, 'category_id');
+    }
+
+    public function videos()
+    {
+        return $this->hasMany(Video::class, 'category_id');
+    }
+
+    public function podcasts()
+    {
+        return $this->hasMany(Podcast::class, 'category_id');
+    }
+
+    public function banners()
+    {
+        return $this->hasMany(Banner::class, 'category_id');
+    }
+
     public function children()
     {
         return $this->hasMany(\App\Models\Category::class, 'parent_id');

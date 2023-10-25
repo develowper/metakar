@@ -18,6 +18,7 @@ class Banner extends Model
         'slug',
         'owner_id',
         'category_id',
+        'article_id',
         'name',
         'designer',
         'description',
