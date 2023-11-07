@@ -107,7 +107,7 @@ class Variable
         "podcast_reject",
         "pay",
         "access_change",
-
+        "ticket_answer"
     ];
     const PROJECT_ITEMS = [
         ['name' => 'podcast', 'color' => 'sky',],
