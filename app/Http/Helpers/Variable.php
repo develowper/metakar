@@ -111,9 +111,9 @@ class Variable
     ];
     const PROJECT_ITEMS = [
         ['name' => 'podcast', 'color' => 'sky',],
-        ['name' => 'video','color' => 'purple',],
-        ['name' => 'banner','color' => 'orange',],
-        ['name' => 'text','color' => 'rose',]
+        ['name' => 'video', 'color' => 'purple',],
+        ['name' => 'banner', 'color' => 'orange',],
+        ['name' => 'text', 'color' => 'rose',]
 
     ];
     const DATA_TYPES = [
@@ -213,15 +213,15 @@ class Variable
     static function getSettings()
     {
         return [
-            ['key' => 'hero_main_page', 'value' => __('hero_main_page'), 'lang' => app()->getLocale(), "created_at" => \Carbon\Carbon::now(),],
-            ['key' => 'site_view_seconds', 'value' => 60, "created_at" => \Carbon\Carbon::now(), 'lang' => null],
-            ['key' => 'site_min_view_fee', 'value' => 100, "created_at" => \Carbon\Carbon::now(), 'lang' => null],
-            ['key' => 'iran_wallet', 'value' => 0, "created_at" => \Carbon\Carbon::now(), 'lang' => null],
-            ['key' => 'auction_price_step', 'value' => 50000, "created_at" => \Carbon\Carbon::now(), 'lang' => null],
-            ['key' => 'site_view_cp', 'value' => 20, "created_at" => \Carbon\Carbon::now(), 'lang' => null],
-            ['key' => 'sell_cp', 'value' => 20, "created_at" => \Carbon\Carbon::now(), 'lang' => null],
-            ['key' => 'register_c', 'value' => 2000, "created_at" => \Carbon\Carbon::now(), 'lang' => null],
-            ['key' => 'article_register_price', 'value' => 500000, "created_at" => \Carbon\Carbon::now(), 'lang' => null],
+            ['key' => 'hero_main_page', 'value' => __('hero_main_page'), "created_at" => \Carbon\Carbon::now(),],
+            ['key' => 'site_view_seconds', 'value' => 60, "created_at" => \Carbon\Carbon::now(),],
+            ['key' => 'site_min_view_fee', 'value' => 100, "created_at" => \Carbon\Carbon::now(),],
+            ['key' => 'iran_wallet', 'value' => 0, "created_at" => \Carbon\Carbon::now(),],
+            ['key' => 'auction_price_step', 'value' => 50000, "created_at" => \Carbon\Carbon::now(),],
+            ['key' => 'site_view_cp', 'value' => 20, "created_at" => \Carbon\Carbon::now(),],
+            ['key' => 'sell_cp', 'value' => 20, "created_at" => \Carbon\Carbon::now(),],
+            ['key' => 'register_c', 'value' => 2000, "created_at" => \Carbon\Carbon::now(),],
+            ['key' => 'article_register_price', 'value' => 500000, "created_at" => \Carbon\Carbon::now(),],
 
         ];
     }
