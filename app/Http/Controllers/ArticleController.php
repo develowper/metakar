@@ -233,6 +233,8 @@ class ArticleController extends Controller
                         $owner->save();
                     }
                 }
+            } else {
+                unset($request->owner_id);
             }
 
             $oldName = $data->title;

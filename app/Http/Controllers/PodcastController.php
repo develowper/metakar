@@ -28,7 +28,7 @@ class PodcastController extends Controller
     {
 
         $data = Podcast::with('category')->with('projectItem')->with('owner:id,fullname,phone')->find($id);
-        if (optional($data->projectItem)->operator_id)
+        if ($data && optional($data->projectItem)->operator_id)
             $data->projectItem->operator = User::select('id', 'fullname', 'phone')->find($data->projectItem->operator_id);
 
         $this->authorize('edit', [User::class, $data]);
@@ -180,6 +180,8 @@ class PodcastController extends Controller
                         $owner->save();
                     }
                 }
+            } else {
+                unset($request->owner_id);
             }
             $oldName = $data->name;
 //            $data->name = $request->tags;
