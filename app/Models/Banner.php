@@ -40,6 +40,11 @@ class Banner extends Model
         return $this->belongsTo(User::class, 'owner_id');
     }
 
+    public function projectItem()
+    {
+        return $this->hasOne(ProjectItem::class, 'item_id')->where('item_type', 'banner');
+    }
+
     public function category()
     {
         return $this->belongsTo(Category::class, 'category_id');
@@ -58,7 +63,10 @@ class Banner extends Model
     public static function getFileLink($id)
     {
         if (!$id) return null;
-        return route('storage.banners') . '/' . basename((File::glob(Storage::path("public/" . Variable::IMAGE_FOLDERS[Banner::class]) . "/1.*") ?? [])[0]);
+        $path = File::glob(Storage::path("public/" . Variable::IMAGE_FOLDERS[Banner::class]) . "/$id.*") ?? [];
+        if (count($path) > 0)
+            return route('storage.banners') . '/' . basename($path[0]);
+        return null;
 
 
     }

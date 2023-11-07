@@ -18,14 +18,19 @@ return new class extends Migration {
             $table->id();
             $table->unsignedBigInteger('owner_id')->nullable();
             $table->foreign('owner_id')->references('id')->on('users')->onDelete('no action');
-            $table->string('name', 200);
-            $table->json('operators')->default(null);
-            $table->string('description', 2048)->nullable();
-            $table->unsignedBigInteger('data_id')->nullable();
-            $table->enum('data_type', array_values(Variable::DATA_TYPES))->nullable();
+            $table->unsignedBigInteger('article_id')->nullable();
+            $table->foreign('article_id')->references('id')->on('articles')->onDelete('no action');
+//            $table->unsignedBigInteger('parent_id')->nullable();
+//            $table->foreign('parent_id')->references('id')->on('projects')->onDelete('no action');
+            $table->string('title', 200);
+            $table->json('operators')->nullable();
+            $table->json('info')->nullable();
+//            $table->json('items')->nullable();
+//            $table->unsignedBigInteger('data_id')->nullable();
+//            $table->enum('data_type', array_values(Variable::DATA_TYPES))->nullable();
             $table->unsignedInteger('price')->default(0);
             $table->enum('status', array_column(Variable::PROJECT_STATUSES, 'name'))->nullable();
-
+            $table->timestamp('payed_at')->nullable();
             $table->timestamps();
         });
     }

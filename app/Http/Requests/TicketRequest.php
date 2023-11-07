@@ -46,7 +46,7 @@ class TicketRequest extends FormRequest
 
         if ($this->cmnd == 'add-chat')
             $tmp = array_merge($tmp, [
-                'message' => ['required','min:1', 'max:65535'],
+                'message' => ['required', 'min:1', 'max:65535'],
                 'attachments' => ['nullable', 'array', 'max:5'],
                 'attachments.*' => ['mimes:' . implode(",", Variable::TICKET_ATTACHMENT_ALLOWED_MIMES)],
             ]);
@@ -59,11 +59,11 @@ class TicketRequest extends FormRequest
         return [
 
             'subject.required' => sprintf(__("validator.required"), __('subject')),
-            'subject.max' => sprintf(__("validator.max_len"), 100, mb_strlen($this->subject)),
+            'subject.max' => sprintf(__("validator.max_len"), __('subject'), 100, mb_strlen($this->subject)),
 
 
             'message.required' => sprintf(__("validator.required"), __('message')),
-            'message.max' => sprintf(__("validator.max_len"), 65535, mb_strlen($this->message)),
+            'message.max' => sprintf(__("validator.max_len"), __('message'), 65535, mb_strlen($this->message)),
 
             'attachments.max' => sprintf(__("validator.max_items"), __('attachments'), Variable::TICKET_ATTACHMENT_MAX_LEN),
             'attachments.*.mimes' => sprintf(__("validator.invalid_format"), __("attachment"), implode(",", Variable::TICKET_ATTACHMENT_ALLOWED_MIMES)),

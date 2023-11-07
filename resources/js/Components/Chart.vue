@@ -19,11 +19,11 @@
                             :before-selected="__('last_week')"
                             :items="[__('today'),__('yesterday'),__('last_week'),__('last_month')]"/>
                 <div class="  flex flex-wrap   gap-2  justify-center w-full">
-                  <date-picker class="rounded    fromdate" inputClass="" :editable="true"
+                  <date-picker :id="`from-${id}`" class="rounded    fromdate" inputClass="" :editable="true"
 
                                inputFormat="YYYY/MM/DD" :placeholder="__('from_date')" color="#00acc1"
                                v-model="params.dateFrom" @change="getData()"></date-picker>
-                  <date-picker class="rounded-2   todate" inputClass="" :editable="true"
+                  <date-picker :id="`to-${id}`" class="rounded-2   todate" inputClass="" :editable="true"
 
                                inputFormat="YYYY/MM/DD" :placeholder="__('to_date')" color="#dd77dd"
                                v-model="params.dateTo" @change="getData()"></date-picker>
@@ -100,8 +100,8 @@ export default {
     // for (let k in this.logTypes)
     //   this.types.push({'name': this.logTypes[k], 'checked': true});
 
-    document.querySelector('.fromdate label').append(this.__('from_date'));
-    document.querySelector('.todate label').append(this.__('to_date'));
+    document.querySelector(`#from-${this.id} label`).append(this.__('from_date'));
+    document.querySelector(`#to-${this.id} label`).append(this.__('to_date'));
 
     document.querySelectorAll('.vpd-input-group').forEach((el) => {
       el.classList.add('flex');

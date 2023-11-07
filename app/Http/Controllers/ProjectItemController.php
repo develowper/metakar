@@ -16,7 +16,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class ProjectController extends Controller
+class ProjectItemController extends Controller
 {
     public function new(Request $request)
     {
@@ -86,67 +86,12 @@ class ProjectController extends Controller
                 $projectItem->save();
                 return response()->json(['message' => __('added_to_operator_wallet_successfully'),], Variable::SUCCESS_STATUS);
 
-            case 'get-project':
-                if ($user->is_block || !$user->is_active) {
-                    return response()->json(['message' => __('your_account_inactive_or_blocked'),], Variable::ERROR_STATUS);
-                }
-                $projectItem = ProjectItem::find($request->project_id);
-                if (!$projectItem)
-                    return response()->json(['message' => __('item_not_found'),], Variable::ERROR_STATUS);
-                if ($data->status == 'cancel' || $data->status == 'done')
-                    return response()->json(['message' => __('project_done_or_cancel'),], Variable::ERROR_STATUS);
-                if (!$user->isAdmin() && ($data->owner_id == $user->id || $projectItem->operator_id == $user->id))
-                    return response()->json(['message' => __('project_is_yours'),], Variable::ERROR_STATUS);
-                $projectItem->operator_id = $user->id;
-                $projectItem->status = 'progress';
-                $projectItem->save();
-
-                return response()->json(['message' => __('project_owned_successfully_you_can_access_from_projects_working'), 'owned' => true], Variable::SUCCESS_STATUS);
-
-            case 'pay-project':
-                if ($user->is_block || !$user->is_active) {
-                    return response()->json(['message' => __('your_account_inactive_or_blocked'),], Variable::ERROR_STATUS);
-                }
-                if ($data->status != 'pay')
-                    return response()->json(['message' => __('project_must_be_pay_status'),], Variable::ERROR_STATUS);
-                if (!$user->isAdmin() && ($data->owner_id != $user->id))
-                    return response()->json(['message' => __('project_is_not_yours'),], Variable::ERROR_STATUS);
-                if (!is_numeric($data->price) || $data->price < 0)
-                    return response()->json(['errors' => ['price' => sprintf(__('validator.invalid'), __('price')),]], Variable::ERROR_STATUS);
-
-                $owner = User::find($data->owner_id);
-                if (!$owner)
-                    return response()->json(['message' => __('owner_not_found'),], Variable::ERROR_STATUS);
-
-                if (intval($owner->wallet) < $data->price)
-                    return response()->json(['message' => sprintf(__('wallet_insufficient'), "$data->price " . __('currency')),], Variable::ERROR_STATUS);
-
-                $owner->wallet -= $data->price;
-                if (!$owner->save())
-                    return response()->json(['message' => __('pay_failed'),], Variable::ERROR_STATUS);
-
-                $data->payed_at = Carbon::now();
-                $data->status = 'progress';
-                $data->save();
-                Transaction::create([
-                    'source_id' => $data->id,
-                    'title' => __('pay_project') . " $data->id",
-                    'type' => "project_pay_$data->id",
-                    'amount' => -intVal($data->price),
-                    'owner_id' => $data->owner_id,
-                    'coupon' => null,
-                ]);
-                Setting::setWallet($data->price);
-                return response()->json(['message' => __('project_payed_and_progress'),], Variable::SUCCESS_STATUS);
-
         }
-//        if (!$user->isAdmin())
-//            return response()->json(['message' => __('only_admin_can_do_this'),], Variable::ERROR_STATUS);
-
-        if (mb_strlen($request->title) > 200)
-            return response()->json(['errors' => ['title' => sprintf(__('validator.max_len'), __('title'), 200, mb_strlen($request->title)),]], Variable::ERROR_STATUS);
+        if (!$user->isAdmin())
+            return response()->json(['message' => __('only_admin_can_do_this'),], Variable::ERROR_STATUS);
 
         $request->price = intval($request->price);
+
         if ($request->price < 0)
             return response()->json(['errors' => ['price' => sprintf(__('validator.invalid'), __('price')),]], Variable::ERROR_STATUS);
 
@@ -154,18 +99,14 @@ class ProjectController extends Controller
             return response()->json(['errors' => ['status' => sprintf(__('validator.invalid'), __('status')),]], Variable::ERROR_STATUS);
 
         $items = $request->items;
-        $articleRows = [];
 //        dd($items);
         foreach ($items as $idx => &$item) {
             $item = (object)$item;
 
-            if (empty($item->item_id) && empty($item->new) && $item->status != 'cancel')
-                return response()->json(['errors' => ["item.$idx.type" => __('select_item_or_tick_new_item_or_cancel_item')]], Variable::ERROR_STATUS);
+            if ((empty($item->item_id) && empty($item->new)))
+                return response()->json(['errors' => ["item.$idx.type" => __('select_item_or_tick_new_item')]], Variable::ERROR_STATUS);
 
             $item->op = optional($item->op)['id'] ?? (!empty($item->op) ? $item->op : null);
-
-            if ($request->status == 'done' && !in_array($item->status, ['done', 'cancel']))
-                return response()->json(['errors' => ["item.$idx.status" => __('done_project_items_done_cancel')]], Variable::ERROR_STATUS);
 
             if ($item->status == 'order' && $item->op)
                 return response()->json(['errors' => ["item.$idx.op" => __('order_item_cant_have_operator')]], Variable::ERROR_STATUS);
@@ -197,9 +138,6 @@ class ProjectController extends Controller
             }
             if ($item->item_type == 'article')
                 return response()->json(['errors' => ["item.$idx.type" => __('article_cant_be_project_item')]], Variable::ERROR_STATUS);
-
-            if ($f = ProjectItem::where('project_id', '!=', $data->id)->whereItemId($item->item_id)->whereItemType($item->item_type)->where('status', '!=', 'cancel')->first())
-                return response()->json(['errors' => ["item.$idx.type" => __('item_is_in_another_project') . '<br>' . __('project') . " $f->project_id"]], Variable::ERROR_STATUS);
 
             unset($item->remainded_hours);
             unset($item->opText);
@@ -242,49 +180,15 @@ class ProjectController extends Controller
 
 
             }
-            $articleRows[] = ['id' => $projectItem->item_id, 'type' => $projectItem->item_type];
+
 
         }
-        //update article and update items owner if done
-        $typeClass = array_flip(Variable::DATA_TYPES);
-        if ($request->rewrite) {
-            $article = Article::find($data->article_id);
-            $content = collect(json_decode($article->content) ?? []);
-            $newContent = [];
-            foreach ($articleRows as $idx => $row) {
-                $item = $typeClass[$row['type']]::find($row['id']);
-                if ($item && $article) {
-                    $title = $item->name ?? $item->title ?? $data->title;
-                    $item->article_id = $article->id;
-                    if ($request->status == 'done') {
-                        $item->owner_id = $data->owner_id;
-                        $item->status = 'active';
-
-                    }
-                    $item->save();
-                    $newContent[] = ['id' => $row['id'], 'type' => $row['type'], 'value' => $title,];
-
-                }
-            }
-            $articleRows = collect($articleRows);
-            foreach ($content as $item) {
-                if (!$articleRows->where('id', $item->id)->where('type', $item->type)->first()) {
-                    $typeClass[$item['type']]::whereId($item->id)->update(['article_id', null]);
-                }
-            }
-            //remove old items
-            $article->content = json_encode($newContent);
-            if ($request->status == 'done')
-                $article->owner_id = $data->owner_id;
-            $article->save();
-        }
-
 //        dd($items);
         $data->update([
-            'title' => $request->title,
             'price' => $request->price,
             'status' => $request->status,
-            'info' => json_encode(['description' => $request->description, 'items' => $request->requests]),
+            'info' => json_encode($request->info),
+
         ]);
         return response()->json(['message' => __('done_successfully'),], Variable::SUCCESS_STATUS);
 
@@ -294,13 +198,12 @@ class ProjectController extends Controller
     {
 
         $data = Project::with('items')->find($id);
-        $this->authorize('edit', [User::class, $data,]);
+        $this->authorize('edit', [User::class, $data]);
         $users = array_merge($data->items->pluck('operator_id')->toArray(), [$data->owner_id]);
         $users = User::select('id', 'phone', 'fullname')->whereIn('id', $users)->get();
         $data->owner = $users->where('id', $data->owner_id)->first();
         $data->info = $data->info ? json_decode($data->info) : [];
-        $data->description = optional($data->info)->description;
-        $data->requests = optional($data->info)->items;
+
         if ($data->items)
             foreach ($data->items as $item) {
                 $item->op = $users->where('id', $item->operator_id)->first();
@@ -325,11 +228,23 @@ class ProjectController extends Controller
         $orderBy = $request->order_by ?: 'id';
         $dir = $request->dir ?: 'DESC';
         $paginate = $request->paginate ?: 24;
+        $cmnd = $request->cmnd;
 
-        $query = Project::query();
-        $query = $query->select();
-        if ($user->role == 'us')
-            $query->where('owner_id', $user->id);
+        $query = ProjectItem::query();
+        $query = $query->select('id', 'project_id', 'status', 'operator_id', 'price', 'item_id', 'chats', 'item_type', 'created_at');
+        if ($user->role == 'us') {
+            $access = collect(Variable::ACCESS)->whereIn('role', explode(',', $user->access))->pluck('access')->toArray();
+            $query->whereIn('item_type', $access);
+            if (!$cmnd) {
+                $query->whereOperatorId($user->id);
+//                $query = $query->orWhere(function ($q) use ($user) {
+//                    $q->whereNull('operator_id',)->whereStatus('order');
+//                });
+            }
+        }
+        if ($cmnd == 'available-orders') {
+            $query->whereStatus('order')->whereNull('operator_id');
+        }
 
         if ($search)
             $query = $query->where(function ($q) use ($search) {

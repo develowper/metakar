@@ -47,6 +47,7 @@ class RegisteredUserController extends Controller
         $user = User::create([
             'fullname' => $request->fullname,
             'phone' => $request->phone,
+            'phone_verified' => true,
             'ref_id' => User::makeRefCode($request->phone),
             'password' => Hash::make($request->password),
         ]);

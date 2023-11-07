@@ -22,11 +22,17 @@
         <ul id="scrollContainer" class="relative m-0 list-none    text-primary-500"
             data-te-sidenav-menu-ref>
           <li class="relative">
-            <Link :href="isAdmin()?route('panel.admin.index'):route('panel.index')"
+            <Link v-if="isAdmin()" :href="route('panel.admin.index')"
                   class="pt-2 pb-2 flex  px-3 outline-none transition duration-300 ease-linear hover:bg-slate-200 hover:text-inherit hover:outline-none focus:bg-slate-50 focus:text-inherit focus:outline-none active:bg-slate-50 active:text-inherit active:outline-none data-[te-sidenav-state-active]:text-inherit data-[te-sidenav-state-focus]:outline-none motion-reduce:transition-none dark:text-gray-300 dark:hover:bg-white/10 dark:focus:bg-white/10 dark:active:bg-white/10"
-                  :class="{'  text-primary-500':menuIsActive ( 'panel.index' )}"
+                  :class="{' bg-primary-100 text-primary':menuIsActive ( 'panel.admin.index' )}"
             >
-              <span class="w-full text-gray-500"> {{ isAdmin() ? __('admin_dashboard') : __('dashboard') }}</span>
+              <span class="w-full text-gray-500"> {{ __('admin_dashboard') }}</span>
+            </Link>
+            <Link :href="route('panel.index')"
+                  class="pt-2 pb-2 flex  px-3 outline-none transition duration-300 ease-linear hover:bg-slate-200 hover:text-inherit hover:outline-none focus:bg-slate-50 focus:text-inherit focus:outline-none active:bg-slate-50 active:text-inherit active:outline-none data-[te-sidenav-state-active]:text-inherit data-[te-sidenav-state-focus]:outline-none motion-reduce:transition-none dark:text-gray-300 dark:hover:bg-white/10 dark:focus:bg-white/10 dark:active:bg-white/10"
+                  :class="{'bg-primary-100  text-primary':menuIsActive ( 'panel.index' )}"
+            >
+              <span class="w-full text-gray-500"> {{ __('dashboard') }}</span>
             </Link>
             <hr class="border-gray-200 dark:border-gray-700 py-2 mx-4">
 
@@ -126,6 +132,49 @@
 
             </ul>
           </li>
+          <!-- Project links -->
+          <li class="relative ">
+            <a :class="{'bg-primary-50 text-primary-500':menuIsActive ( 'panel.project.*' )   || menuIsActive ( 'panel.project_item.*' )}"
+               class="flex   cursor-pointer items-center truncate   px-3 py-4 text-[0.875rem] text-gray-600 outline-none transition duration-300 ease-linear hover:bg-primary-100 hover:text-inherit hover:outline-none focus:bg-slate-50 focus:text-inherit focus:outline-none active:bg-slate-50 active:text-inherit active:outline-none data-[te-sidenav-state-active]:text-inherit data-[te-sidenav-state-focus]:outline-none motion-reduce:transition-none dark:text-gray-300 dark:hover:bg-white/10 dark:focus:bg-white/10 dark:active:bg-white/10"
+               data-te-sidenav-link-ref>
+              <BriefcaseIcon class="w-5 h-5  "/>
+              <span class="mx-2 text-sm "> {{ __('projects') }} </span>
+              <span
+                  class="  right-0 ml-auto mr-[0.8rem] transition-transform duration-300 ease-linear motion-reduce:transition-none [&>svg]:text-gray-600 dark:[&>svg]:text-gray-300"
+                  data-te-sidenav-rotate-icon-ref>
+                                             <ChevronDownIcon class="h-5 w-5"/>
+                                             </span>
+            </a>
+            <ul
+                class="  !visible relative m-0 hidden list-none   data-[te-collapse-show]:block "
+                v-bind="{ 'data-te-collapse-show':menuIsActive ( 'panel.project.*' ) || menuIsActive ( 'panel.project_item.*' )  ?true:null }"
+                data-te-collapse-item
+                data-te-sidenav-collapse-ref>
+              <li class="relative ps-7 ">
+
+                <Link :href="route('panel.project.index')" role="menuitem"
+                      :class="subMenuIsActive( 'panel.project.index' )"
+                      class="flex   border-s-2 hover:border-primary-500  items-center p-2   text-sm  transition-all duration-200   dark:text-light dark:hover:text-light hover:text-primary-700 hover:bg-primary-50">
+                  <Bars2Icon class="w-5 h-5 mx-1"/>
+                  {{ isAdmin() ? __('projects') : __('your_orders') }}
+                </Link>
+                <Link :href="route('panel.project_item.index')" role="menuitem"
+                      :class="subMenuIsActive ( 'panel.project_item.index' )"
+                      class="flex   border-s-2 hover:border-primary-500  items-center p-2   text-sm  transition-all duration-200   dark:text-light dark:hover:text-light hover:text-primary-700 hover:bg-primary-50">
+                  <Bars2Icon class="w-5 h-5 mx-1"/>
+                  {{ __('working_projects') }}
+                </Link>
+                <Link :href="route('panel.project_item.available')" role="menuitem"
+                      :class="subMenuIsActive ( 'panel.project_item.available' )"
+                      class="flex   border-s-2 hover:border-primary-500  items-center p-2   text-sm  transition-all duration-200   dark:text-light dark:hover:text-light hover:text-primary-700 hover:bg-primary-50">
+                  <Bars2Icon class="w-5 h-5 mx-1"/>
+                  {{ __('available_projects') }}
+                </Link>
+              </li>
+
+            </ul>
+          </li>
+
           <!-- Business links -->
           <li class="relative ">
             <a :class="{'bg-primary-50 text-primary-500':menuIsActive ( 'panel.business.*' )}"
@@ -236,7 +285,7 @@
           </li>
 
           <!-- Text links -->
-          <li v-if="false" class="relative  ">
+          <li v-if="hasAccess('t')" class="relative  ">
             <a :class="{'bg-primary-50 text-primary-500':menuIsActive ( 'panel.text.*' )}"
                class="flex   cursor-pointer items-center truncate   px-3 py-4 text-[0.875rem] text-gray-600 outline-none transition duration-300 ease-linear hover:bg-primary-100 hover:text-inherit hover:outline-none focus:bg-slate-50 focus:text-inherit focus:outline-none active:bg-slate-50 active:text-inherit active:outline-none data-[te-sidenav-state-active]:text-inherit data-[te-sidenav-state-focus]:outline-none motion-reduce:transition-none dark:text-gray-300 dark:hover:bg-white/10 dark:focus:bg-white/10 dark:active:bg-white/10"
                data-te-sidenav-link-ref>
@@ -563,6 +612,7 @@ import {
   ArrowRightOnRectangleIcon,
   WrenchScrewdriverIcon,
   ArrowsRightLeftIcon,
+  BriefcaseIcon,
 } from "@heroicons/vue/24/outline";
 import {
   QuestionMarkCircleIcon
@@ -648,6 +698,7 @@ export default {
     QuestionMarkCircleIcon,
     WrenchScrewdriverIcon,
     ArrowsRightLeftIcon,
+    BriefcaseIcon,
   },
   methods: {
     delay(time) {

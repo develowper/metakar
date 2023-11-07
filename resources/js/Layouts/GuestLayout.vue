@@ -10,6 +10,7 @@ import LoadingIcon from "@/Components/LoadingIcon.vue";
 export const emitter = mitt()
 
 export default {
+  // emits: ['showToast'],
   components: {
     Head, Link, ApplicationLogo, Alert, Dialog, Toast, LoadingIcon,
   },
@@ -26,7 +27,7 @@ export default {
     });
 
     this.emitter.on('showDialog', (e) => {
-      this.log(e);
+
       if (this.$refs.modal)
         this.$refs.modal.show(e.type, e.message, e.button, e.action, e.items);
     });
@@ -42,6 +43,7 @@ export default {
 <template>
   <div>
     <Alert ref="alert"/>
+    <Toast ref="toast"/>
 
     <div class="px-2 min-h-screen flex flex-col sm:justify-center items-center   pt-2 bg-gray-100">
       <div>

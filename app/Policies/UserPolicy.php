@@ -2,12 +2,16 @@
 
 namespace App\Policies;
 
+use App\Http\Helpers\Variable;
 use App\Models\Article;
 use App\Models\Banner;
 use App\Models\Business;
 use App\Models\Notification;
 use App\Models\Podcast;
+use App\Models\Project;
+use App\Models\ProjectItem;
 use App\Models\Site;
+use App\Models\Text;
 use App\Models\Ticket;
 use App\Models\Transfer;
 use App\Models\User;
@@ -88,8 +92,7 @@ class UserPolicy
         switch ($item) {
             case User::class  :
             case Notification::class  :
-                if (in_array($user->role, ['ad',]))
-                    return true;
+                $res = in_array($user->role, ['ad',]);
                 break;
             case Site::class  :
             case Business::class  :
@@ -98,14 +101,17 @@ class UserPolicy
             case Banner::class  :
             case Article::class  :
             case Transfer::class  :
-                if (in_array($user->role, ['us', 'ad',]))
-                    return true;
+            case Text::class  :
+                $res = in_array($user->role, ['us', 'ad',]);
+
                 break;
         }
 
-        if ($abort)
+        if ($abort && empty($res))
             return abort(403, __("access_denied"));
-        else return false;
+        if (!empty($res))
+            return true;
+        return false;
     }
 
     public function edit(User $user, $item, $abort = true, $data = null)
@@ -123,21 +129,28 @@ class UserPolicy
                 if (in_array($user->role, ['ad',]))
                     return true;
                 break;
-            case $item instanceof Site :
-            case $item instanceof Business :
             case $item instanceof Podcast :
             case $item instanceof Video :
             case $item instanceof Banner :
+            case $item instanceof Text :
+                $res = in_array($user->role, ['ad',]) || $user->role == 'us' && (optional($item)->owner_id == $user->id || optional($item->projectItem)->operator_id == $user->id);
+            case $item instanceof Site :
+            case $item instanceof Business :
             case $item instanceof Article :
             case $item instanceof Notification :
             case $item instanceof Ticket :
             case $item instanceof Transfer :
-                return $user->role == 'us' && optional($item)->owner_id == $user->id || in_array($user->role, ['ad',]);
+                $res = in_array($user->role, ['ad',]) || $user->role == 'us' && optional($item)->owner_id == $user->id;
+                break;
+            case $item instanceof Project :
+                $res = $user->role == 'us' && (optional($item)->owner_id == $user->id) || in_array($user->role, ['ad',]);
                 break;
         }
-        if ($abort)
+        if ($abort && empty($res))
             return abort(403, __("access_denied"));
-        else return false;
+        if (!empty($res))
+            return true;
+        return false;
     }
 
     public function update(User $user, $item, $abort = true, $data = null)
@@ -155,24 +168,28 @@ class UserPolicy
         }
         switch ($item) {
             case $item instanceof User  :
-                if (in_array($user->role, ['ad',]))
-                    return true;
+                $res = in_array($user->role, ['ad',]);
+                break;
+            case $item instanceof Text  :
+            case $item instanceof Video  :
+            case $item instanceof Podcast  :
+            case $item instanceof Banner  :
+                $res = $user->role == 'us' && optional($item)->owner_id == $user->id || in_array($user->role, ['ad',]) || optional($item->projectItem)->operator_id == $user->id;
                 break;
             case $item instanceof Site  :
             case $item instanceof Business  :
-            case $item instanceof Podcast  :
-            case $item instanceof Video  :
-            case $item instanceof Banner  :
             case $item instanceof Article  :
             case $item instanceof Notification  :
             case $item instanceof Ticket  :
             case $item instanceof Transfer  :
-                return $user->role == 'us' && optional($item)->owner_id == $user->id || in_array($user->role, ['ad',]);
+                 $res= $user->role == 'us' && optional($item)->owner_id == $user->id || in_array($user->role, ['ad',]);
                 break;
         }
-        if ($abort)
+        if ($abort && empty($res))
             return abort(403, __("access_denied"));
-        else return false;
+        if (!empty($res))
+            return true;
+        return false;
     }
 
 

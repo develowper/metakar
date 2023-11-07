@@ -1,7 +1,7 @@
 <template>
 
   <div class="" @click="  Modal.show();">
-    <slot name="selector" :selectedText="selectedText" :clear="clear">
+    <slot name="selector" :selectedText="selectedText" :link="link" :clear="clear">
 
     </slot>
   </div>
@@ -9,7 +9,7 @@
   <div
       data-te-modal-init
       class="fixed left-0 top-0 backdrop-blur z-[1055] hidden h-full w-full overflow-y-auto overflow-x-hidden outline-none"
-      id="modalItems"
+      :id="`modalItems-${id}`"
       tabindex="-1"
       aria-labelledby="exampleModalLabel"
       aria-hidden="true">
@@ -212,8 +212,8 @@ import {
 import {Modal} from "tw-elements";
 
 export default {
-  name: "UserSElector",
-  props: ['mode', 'item', 'paginate', 'selected', 'placeholder', 'error'],
+  name: "ItemSElector",
+  props: ['id', 'mode', 'beforeText', 'item', 'paginate', 'selected', 'placeholder', 'error'],
   components: {
     ChevronDownIcon,
     MagnifyingGlassIcon,
@@ -241,19 +241,22 @@ export default {
       removing: false,
       uploading: false,
       selectingForIndex: null,
-      selectedText: this.__('click_for_select_item'),
+      selectedText: null,
       selectedItem: null,
+      link: null,
 
     }
   },
   emits: ['update:selected'],
   mounted() {
-    const modalEl = document.getElementById('modalItems');
+    const modalEl = document.getElementById(`modalItems-${this.id}`);
     this.Modal = new Modal(modalEl);
-    if (this.item) {
+    if (this.item && this.item.id) {
       this.selectedItem = this.item.id;
       this.selectedText = `${this.__(this.item.type)} | ${this.item.name}`;
       this.params.owner_id = this.item.owner_id;
+      if (this.item.type && this.item.id)
+        this.link = route(`panel.${this.item.type}.edit`, this.item.id);
     }
     this.getData();
   },
@@ -261,10 +264,14 @@ export default {
     clear() {
       this.selectedItem = null;
       this.selectedText = null;
+      this.$emit('update:selected', this.selectedItem);
+
     },
     selectItem(item) {
       this.selectedItem = item;
       this.selectedText = `${this.__(item.type)} | ${item.name}`;
+      if (item.type && item.id)
+        this.link = route(`panel.${item.type}.edit`, item.id);
       this.$emit('update:selected', this.selectedItem);
       this.Modal.hide();
     },

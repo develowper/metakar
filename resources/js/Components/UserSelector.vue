@@ -2,14 +2,13 @@
 
   <div class="" @click="  Modal.show();">
     <slot name="selector" :selectedText="selectedText" :clear="clear">
-
     </slot>
   </div>
   <!-- Users Modal  -->
   <div
       data-te-modal-init
       class="fixed left-0 top-0 backdrop-blur z-[1055] hidden h-full w-full overflow-y-auto overflow-x-hidden outline-none"
-      id="modalItems"
+      :id="`modalUsers-${id}`"
       tabindex="-1"
       aria-labelledby="exampleModalLabel"
       aria-hidden="true">
@@ -213,7 +212,7 @@ import {Modal} from "tw-elements";
 
 export default {
   name: "UserSElector",
-  props: ['mode', 'owner', 'paginate', 'selected', 'placeholder', 'error'],
+  props: ['id', 'mode', 'text', 'owner', 'paginate', 'selected', 'placeholder', 'error'],
   components: {
     ChevronDownIcon,
     MagnifyingGlassIcon,
@@ -241,28 +240,33 @@ export default {
       selectingForIndex: null,
       selectedText: null,
       selectedItem: null,
-
+      errors: null,
     }
   },
-  emits: ['update:selected'],
+  emits: ['update:selected', 'update:text'],
   mounted() {
-    const modalEl = document.getElementById('modalItems');
+    const modalEl = document.getElementById(`modalUsers-${this.id}`);
     this.Modal = new Modal(modalEl);
     this.getData();
-    if (this.owner) {
+    if (this.owner && this.owner.id) {
       this.selectedItem = this.owner.id;
       this.selectedText = `${this.owner.fullname} | ${this.owner.phone}`;
+      this.$emit('update:text', this.selectedText);
+
     }
   },
   methods: {
     clear() {
       this.selectedItem = null;
       this.selectedText = null;
+      this.$emit('update:selected', null);
+
     },
     selectItem(item) {
       this.selectedItem = item.id;
       this.selectedText = `${item.fullname} | ${item.phone}`;
       this.$emit('update:selected', this.selectedItem);
+      this.$emit('update:text', this.selectedText);
       this.Modal.hide();
     },
     getData() {
@@ -281,20 +285,20 @@ export default {
 
           .catch((error) => {
             if (error.response) {
-              console.log(error.response.data);
-              console.log(error.response.status);
-              console.log(error.response.headers);
-              this.error = error.response.data;
+              // console.log(error.response.data);
+              // console.log(error.response.status);
+              // console.log(error.response.headers);
+              this.errors = error.response.data;
 
             } else if (error.request) {
-              console.log(error.request);
-              this.error = error.request;
+              // console.log(error.request);
+              this.errors = error.request;
             } else {
-              console.log('Error', error.message);
-              this.error = error.message;
+              // console.log('Error', error.message);
+              this.errors = error.message;
             }
-            console.log(error.config);
-            this.showToast('danger', error)
+            // console.log(error.config);
+            // this.showToast('danger', error)
           })
           .finally(() => {
             this.loading = false;

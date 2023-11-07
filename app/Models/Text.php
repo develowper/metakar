@@ -5,21 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Podcast extends Model
+class Text extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'id',
         'lang',
-        'slug',
+//        'slug',
         'owner_id',
         'category_id',
-        'article_id',
-        'name',
-        'narrator',
-        'duration',
-        'description',
+        'author',
+        'title',
+        'content',
+        'summary',
         'tags',
         'view',
         'viewer',
@@ -27,13 +26,11 @@ class Podcast extends Model
         'view_fee',
         'meta',
         'status',
+        'duration',
         'created_at',
         'updated_at',
     ];
-    protected $casts = [
-//        'province_id' => 'string',
-//        'county_id' => 'string',
-    ];
+
 
     public function owner()
     {
@@ -42,7 +39,7 @@ class Podcast extends Model
 
     public function projectItem()
     {
-        return $this->hasOne(ProjectItem::class, 'item_id')->where('item_type', 'podcast');
+        return $this->hasOne(ProjectItem::class, 'item_id')->where('item_type', 'text');
     }
 
     public function category()

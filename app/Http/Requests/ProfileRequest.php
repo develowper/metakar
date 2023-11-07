@@ -91,7 +91,7 @@ class ProfileRequest extends FormRequest
 
 
             'fullname.required' => sprintf(__("validator.required"), __('fullname')),
-            'fullname.max' => sprintf(__("validator.max_len"), 100, mb_strlen($this->fullname)),
+            'fullname.max' => sprintf(__("validator.max_len"), __('fullname'), 100, mb_strlen($this->fullname)),
             'fullname.min' => sprintf(__("validator.min_len"), 3, mb_strlen($this->fullname)),
 
             'phone.required' => sprintf(__("validator.required"), __('phone')),

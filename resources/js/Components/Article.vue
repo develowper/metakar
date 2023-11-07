@@ -12,7 +12,7 @@
         <div class="grow">
           <div v-if="  d.type==null"
                class="h-24 border border-dashed border-gray-400 border-2 rounded flex flex-wrap">
-            <div @click="d.type='text';d.id= Date.now()"
+            <div @click="d.type='content';d.id= Date.now()"
                  class="grow hover:bg-gray-200 cursor-pointer flex flex-col items-center justify-center">
               <div>{{ __('text') }}</div>
             </div>
@@ -26,9 +26,14 @@
 
             </div>
           </div>
-          <div v-if="d.type=='text'">
+          <div v-if="  d.type=='content'">
             <TextEditor mode="create" :preload="d.value" :lang="$page.props.locale" :id="`editor-${d.id}`"
                         :ref="`text-${d.id}`"/>
+          </div>
+          <div v-if="d.type=='text'   " class="flex   h-full  ">
+
+            <div class="border border-gray-400 rounded p-2 text-gray-500  w-full  " v-html="d.value"></div>
+
           </div>
           <div v-if="d.type=='podcast'" class="flex items-center justify-center h-full">
             <Podcast classes="  rounded  " :for-id="idx"
@@ -243,7 +248,8 @@
 
                     <td
                         class="flex  items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                      <Image class="w-10 h-10 rounded-full" :src="`${route(`storage.${d.type}s`)}/${d.id}.jpg`"
+                      <Image class="w-10 h-10 rounded-full"
+                             :src="d.type !='text'?`${ route(`storage.${d.type}s`)}/${d.id}.jpg`:``"
                              :alt="cropText(d.name,5)"/>
                       <div class="text-base font-semibold">{{ cropText(d.name, 40) }}</div>
                       <div class="font-normal text-gray-500">{{ }}</div>
@@ -280,7 +286,7 @@
         <div class="grow">
           <div v-if="mode=='create' && d.type==null"
                class="h-24 border border-dashed border-gray-400 border-2 rounded flex flex-wrap">
-            <div @click="d.type='text';d.id= Date.now()"
+            <div @click="d.type='content';d.id= Date.now()"
                  class="grow hover:bg-gray-200 cursor-pointer flex flex-col items-center justify-center">
               <div>{{ __('text') }}</div>
             </div>
@@ -294,7 +300,7 @@
 
             </div>
           </div>
-          <div v-if="d.type=='text'">
+          <div v-if="d.type=='text' || d.type=='content'">
             <div v-html="d.value"></div>
           </div>
           <div v-if="d.type=='podcast'" class="flex items-center justify-center h-full">
@@ -485,7 +491,7 @@ export default {
       let res = [];
       for (let i in this.cells) {
         res.push({id: this.cells[i].id, type: this.cells[i].type, value: this.cells[i].value,});
-        if (res[i].type == 'text') {
+        if (res[i].type == 'content') {
           res[i].value = this.$refs[`text-${res[i].id}`][0].getData();
         }
       }
@@ -500,7 +506,7 @@ export default {
         this.cells.push({key: Date.now() + i, id: data[i].id, type: data[i].type, value: data[i].value,});
         this.$nextTick(() => {
 
-          if (data[i].type == 'text') {
+          if (data[i].type == 'content') {
           }
         });
       }

@@ -186,8 +186,7 @@ class Util
     static function estimateReadingTime($content = '', $wpm = 250)
     {
         $clean_content = strip_tags($content);
-        $word_count = str_word_count($clean_content);
-
+        $word_count = str_word_count($clean_content, 0, 'ابپتثجچ‌حخدذرز‌ژس‌شصضطظعغفقکگلمنوهیءآاًهٔه');
         $time = ceil($word_count / $wpm);
         return $time;
     }

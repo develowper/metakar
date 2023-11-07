@@ -2,6 +2,7 @@
   <main :dir="dir()" class="min-h-screen panel   " :class="{'dark':isDark}">
     <Head>
       <slot name="header"/>
+      <link rel="shortcut icon" type="image/x-icon" :href="favicon"/>
     </Head>
     <Alert ref="alert"/>
     <Dialog ref="modal"/>
@@ -20,7 +21,7 @@
       </div>
       <!--      Dynamic Colors need to be added statically-->
       <div
-          class="hidden border-success-200 border-success-300 border-danger-200 border-danger-300 border-warning-200 border-warning-300 border-orange-200 border-orange-300 border-primary-200 text-danger-500 text-success-500 text-danger-700 text-success-700 text-danger bg-success-100 bg-orange-100 bg-danger-200 bg-danger-100  hover:bg-orange-200 hover:bg-danger hover:bg-danger-200 hover:bg-success-200    text-orange-500"></div>
+          class="hidden border-success-200 border-success-300 border-danger-200 border-danger-300 border-warning-200 border-warning-300 border-orange-200 border-orange-300 border-primary-200 text-danger-500 text-success-500 text-danger-700 text-success-700 text-danger bg-success-100 bg-orange-100 bg-danger-200 bg-danger-100  hover:bg-orange-200 hover:bg-danger hover:bg-danger-200 hover:bg-success-200    text-orange-500 text-purple-500 bg-purple-100 text-sky-500 bg-sky-100 text-rose-500 bg-rose-100 bg-orange-50 bg-purple-50 "></div>
 
       <!-- Sidebar -->
       <aside class="  overflow-x-hidden  ">
@@ -207,6 +208,7 @@ import Alert from "@/Components/Alert.vue";
 import LoadingIcon from "@/Components/LoadingIcon.vue";
 import NotificaionButton from "@/Components/NotificaionButton.vue";
 import WalletCharge from "@/Components/WalletCharge.vue";
+import favicon from "@/../images/logo.png";
 
 export const emitter = mitt()
 
@@ -229,6 +231,7 @@ export default {
       percentage: null,
       toast: null,
       showSidenav: false,
+      favicon: favicon,
     }
   },
   // watch: {

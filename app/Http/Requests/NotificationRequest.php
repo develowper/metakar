@@ -60,17 +60,17 @@ class NotificationRequest extends FormRequest
             'lang.in' => sprintf(__("validator.invalid"), __('lang')),
 
             'subject.required' => sprintf(__("validator.required"), __('subject')),
-            'subject.max' => sprintf(__("validator.max_len"), 100, mb_strlen($this->subject)),
+            'subject.max' => sprintf(__("validator.max_len"), __('subject'), 100, mb_strlen($this->subject)),
 
 
             'link.required' => sprintf(__("validator.required"), __('link')),
-            'link.max' => sprintf(__("validator.max_len"), 512, mb_strlen($this->link)),
+            'link.max' => sprintf(__("validator.max_len"), __('link'), 512, mb_strlen($this->link)),
             'link.url' => sprintf(__("validator.invalid"), __('link')),
             'link.starts_with' => sprintf(__("validator.starts_with"), __('link'), "http://"),
 
 
             'description.required' => sprintf(__("validator.required"), __('message')),
-            'description.max' => sprintf(__("validator.max_len"), 65535, mb_strlen($this->description)),
+            'description.max' => sprintf(__("validator.max_len"), __('description'), 65535, mb_strlen($this->description)),
 
 
         ];

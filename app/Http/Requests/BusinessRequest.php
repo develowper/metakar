@@ -78,7 +78,7 @@ class BusinessRequest extends FormRequest
             'lang.in' => sprintf(__("validator.invalid"), __('lang')),
 
             'name.required' => sprintf(__("validator.required"), __('title')),
-            'name.max' => sprintf(__("validator.max_len"), 2048, mb_strlen($this->name)),
+            'name.max' => sprintf(__("validator.max_len"), __('name'), 2048, mb_strlen($this->name)),
 
             'phone.required' => sprintf(__("validator.required"), __('phone')),
             'phone.unique' => sprintf(__("validator.unique"), __('phone')),
@@ -87,7 +87,7 @@ class BusinessRequest extends FormRequest
 
 
             'link.required' => sprintf(__("validator.required"), __('link')),
-            'link.max' => sprintf(__("validator.max_len"), 1024, mb_strlen($this->link)),
+            'link.max' => sprintf(__("validator.max_len"), __('link'), 1024, mb_strlen($this->link)),
             'link.url' => sprintf(__("validator.invalid"), __('link')),
             'link.starts_with' => sprintf(__("validator.starts_with"), __('link'), "https://"),
 
@@ -100,9 +100,9 @@ class BusinessRequest extends FormRequest
             'county_id.required' => sprintf(__("validator.required"), __('county')),
             'county_id.in' => sprintf(__("validator.invalid"), __('county')),
 
-            'tags.max' => sprintf(__("validator.max_len"), 1024, mb_strlen($this->tags)),
+            'tags.max' => sprintf(__("validator.max_len"), __('tags'), 1024, mb_strlen($this->tags)),
 
-            'description.max' => sprintf(__("validator.max_len"), 2048, mb_strlen($this->description)),
+            'description.max' => sprintf(__("validator.max_len"), __('description'), 2048, mb_strlen($this->description)),
 
 
             'images.max' => sprintf(__("validator.max_images"), Variable::BUSINESS_IMAGE_LIMIT),

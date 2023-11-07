@@ -13,23 +13,26 @@ return new class extends Migration {
      */
     public function up()
     {
-        Schema::create('articles', function (Blueprint $table) {
+        Schema::create('texts', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('owner_id')->nullable();
             $table->foreign('owner_id')->references('id')->on('users')->onDelete('no action');
             $table->unsignedInteger('category_id')->nullable();
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('no action');
+            $table->unsignedBigInteger('article_id')->nullable();
+            $table->foreign('article_id')->references('id')->on('articles')->onDelete('no action');
+
             $table->string('author', 200)->nullable();
             $table->string('title', 1024);
             $table->string('summary', 2048)->nullable();
-            $table->string('slug', 2048)->nullable();
+//            $table->string('slug', 2048)->nullable();
             $table->unsignedInteger('view')->default(0);
             $table->unsignedInteger('viewer')->default(0);
             $table->unsignedInteger('charge',)->default(0);
             $table->unsignedInteger('view_fee')->default(Variable::MIN_VIEW_FEE('article'))->nullable();
             $table->unsignedInteger('meta')->default(0);
-            $table->unsignedInteger('duration')->default(0);
             $table->string('tags', 200)->nullable();
+            $table->unsignedInteger('duration')->default(0);
             $table->json('content')->nullable();
             $table->enum('status', array_column(Variable::STATUSES, 'name'))->nullable();
             $table->string('lang', 2)->nullable();
@@ -45,6 +48,6 @@ return new class extends Migration {
      */
     public function down()
     {
-        Schema::dropIfExists('articles');
+        Schema::dropIfExists('texts');
     }
 };

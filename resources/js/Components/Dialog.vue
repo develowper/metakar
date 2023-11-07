@@ -55,8 +55,8 @@
         </div>
 
         <!--Modal body-->
-        <div class="relative flex-auto p-4" :class="`text-${status}`" data-te-modal-body-ref>
-          {{ message }}
+        <div class="relative flex-auto p-4" v-html="message" :class="`text-${status}`" data-te-modal-body-ref>
+
         </div>
 
         <!--Modal footer-->

@@ -21,6 +21,8 @@
 
         <div
             class="lg:grid      lg:grid-cols-3  mx-auto md:max-w-5xl   mt-6 px-2 md:px-4 py-4 bg-white shadow-md overflow-hidden  rounded-lg  ">
+
+          <!--        admin section-->
           <div v-if="isAdmin()" class="border bg-sky-50 border-dashed rounded p-4 col-span-3">
             <p class="border-b text-md w-fit flex mx-auto mb-2 text-primary font-bold ">{{ __('admin_section') }}</p>
             <div class="flex items-center">
@@ -39,10 +41,79 @@
                           :ref="`editor`"/>
             </div>
           </div>
+          <!--          user messages section-->
           <div v-else-if="!isAdmin() && form.message" v-html="form.message"
                class="border text-sm text-rose-400 bg-rose-50 border-dashed rounded p-4">
+          </div>
 
 
+          <!--          project section-->
+          <div v-if="form.project_item" class="my-2 border bg-indigo-50 border-dashed rounded p-4 col-span-3">
+            <p class="border-b text-md w-fit flex mx-auto mb-2 text-primary font-bold ">{{ __('project_info') }}</p>
+
+            <div class="flex flex-col text-primary text-sm space-y-1">
+              <div class="flex items-center">
+                <a v-if="isAdmin() " class="hover:text-gray-700"
+                   :href="route('panel.project.edit',form.project_item.project_id)">{{ __('project') }}
+                  {{ form.project_item.id }}</a>
+                <div v-else>{{ __('project') }} {{ form.project_item.id }}</div>
+              </div>
+              <div class="flex items-center border-b py-1">
+                <div class="text-gray-500">{{ __('operator') }}:</div>
+                <div v-if="form.project_item.operator" class="mx-1">{{
+                    form.project_item.operator.fullname
+                  }} _{{ form.project_item.operator.phone }}
+                </div>
+              </div>
+              <div class="flex items-center  border-b py-1">
+                <div class="text-gray-500">{{ __('status') }}:</div>
+                <div class="  min-w-[5rem]  px-1   items-center text-center rounded-md py-[.2rem]"
+                     :class="`bg-${getStatus('project_statuses', form.project_item.status).color}-100   text-${getStatus('project_statuses', form.project_item.status).color}-500`">
+                  {{ getStatus('project_statuses', form.project_item.status).name }}
+                </div>
+              </div>
+              <div class="flex items-center  border-b py-1">
+                <div class="text-gray-500">{{ __('commission') }}:</div>
+                <div v-if="form.project_item.price" class="mx-1">
+                  {{
+                    asPrice(form.project_item.price)
+                  }} {{ __('currency') }}
+                </div>
+              </div>
+              <div class="flex items-center  border-b py-1">
+                <div class="text-gray-500">{{ __('expire') }}:</div>
+                <div v-if="form.project_item.expires_at" class="mx-1 text-red-600">
+                  {{
+                    toShamsi(form.project_item.expires_at, true)
+                  }}
+                </div>
+              </div>
+              <div class="flex items-center  border-b py-1">
+                <div class="text-gray-500">{{ __('payed_at') }}:</div>
+                <div v-if="form.project_item.payed_at" class="mx-1 text-green-600">
+                  {{
+                    toShamsi(form.project_item.payed_at, true)
+                  }}
+                </div>
+              </div>
+              <div class="flex items-center    py-1">
+                <div v-if="form.project_item.chats"
+                     class="mx-1 w-full text-gray-500 whitespace-pre-line   px-2 rounded">
+                  <div v-for="(chat,idx) in JSON.parse(form.project_item.chats)">
+                    <div v-if="idx==0">{{ chat.text }}</div>
+                  </div>
+                </div>
+              </div>
+              <button
+                  @click="showDialog('danger',__('complete_project_and_pay_after_admin_review?') + `<br>${asPrice(form.project_item.price)} ${__('currency')}<br>${__('user')} ${ form.project_item.operator? `${form.project_item.operator.fullname} | ${form.project_item.operator.phone} ` :'?' } `,__('final_accept')  , submit,{cmnd:'operator-finish'   })"
+                  :disabled="!isAdmin() &&  form.project_item.status!='progress'  "
+                  :class="{'opacity-50':form.project_item.payed_at || form.project_item.status!='progress'}"
+                  class="rounded py-2 text-white cursor-pointer bg-success hover:bg-success-400">
+                {{
+                  form.project_item.payed_at ? __('payed_at') + ` ${toShamsi(form.project_item.payed_at)} ` : __('finish_and_request_pay')
+                }}
+              </button>
+            </div>
           </div>
 
           <div
@@ -80,6 +151,25 @@
                   <QuestionMarkCircleIcon class="text-gray-500 hover:bg-gray-50 w-4 h-4"/>
                 </Tooltip>
                 <RadioGroup ref="langSelector" class="grow" name="lang" :items="$page.props.langs"/>
+              </div>
+              <div class="my-2" v-if="isAdmin() && data">
+
+                <UserSelector :id="'user'" v-model:selected="form.owner_id" :owner="data.owner"
+                >
+                  <template v-slot:selector="props">
+                    <div :class="props.selectedText?'py-2':'py-2'"
+                         class=" px-4 border rounded hover:bg-gray-100 cursor-pointer flex items-center ">
+                      <div class="grow">
+                        {{ props.selectedText ?? __('select_owner') }}
+                      </div>
+                      <div v-if="props.selectedText"
+                           class="bg-danger rounded p-2   cursor-pointer text-white hover:bg-danger-400"
+                           @click.stop="props.clear()">
+                        <XMarkIcon class="w-5 h-5"/>
+                      </div>
+                    </div>
+                  </template>
+                </UserSelector>
               </div>
               <div class="my-2">
                 <TextInput
@@ -211,7 +301,7 @@ import {
   ChatBubbleBottomCenterTextIcon,
   Squares2X2Icon,
   PencilSquareIcon,
-  PaintBrushIcon,
+  PaintBrushIcon, XMarkIcon,
 
 } from "@heroicons/vue/24/outline";
 import {QuestionMarkCircleIcon,} from "@heroicons/vue/24/solid";
@@ -233,6 +323,7 @@ import PhoneFields from "@/Components/PhoneFields.vue";
 import SocialFields from "@/Components/SocialFields.vue";
 import Banner from "@/Components/Banner.vue";
 import TextEditor from "@/Components/TextEditor.vue";
+import UserSelector from "@/Components/UserSelector.vue";
 
 export default {
 
@@ -241,6 +332,8 @@ export default {
       data: this.$page.props.data || {},
       form: useForm({
         id: this.$page.props.data.id,
+        owner_id: null,
+        owner: null,
         designer: null,
         phone: null,
         phone_verify: null,
@@ -255,6 +348,7 @@ export default {
         status: this.$page.props.data.status,
 
       }),
+      cmnd: null,
       img: null,
       banner: null,
     }
@@ -291,7 +385,8 @@ export default {
     PencilSquareIcon,
     Banner,
     PaintBrushIcon,
-
+    UserSelector,
+    XMarkIcon,
   },
   created() {
 
@@ -309,10 +404,13 @@ export default {
     this.form.description = this.data.description;
     this.$refs.langSelector.selected = this.data.lang;
     this.form.message = this.data.message;
+    this.form.owner = this.data.owner;
+    this.form.owner_id = this.data.owner_id;
+    this.form.project_item = this.data.project_item;
 
   },
   methods: {
-    submit() {
+    submit(params) {
 
       if (this.$refs.editor)
         this.form.message = this.$refs.editor.getData();
@@ -327,19 +425,27 @@ export default {
       //   let tmp = this.$refs.imageCropper[i].getCroppedData();
       //   if (tmp) this.images.push(tmp);
       // }
-      this.form.patch(route('banner.update'), {
+      this.form.transform((data) => ({
+        ...data,
+        ...params || {},
+      })).patch(route('banner.update'), {
         preserveScroll: false,
 
         onSuccess: (data) => {
-          if (this.$page.props.flash.status)
-            this.showAlert(this.$page.props.flash.status, this.$page.props.flash.message);
+          // if (this.$page.props.flash.status)
+          //   this.showAlert(this.$page.props.flash.status, this.$page.props.flash.message);
 
         },
         onError: () => {
           this.showToast('danger', Object.values(this.form.errors).join("<br/>"));
         },
         onFinish: (data) => {
+          // this.log(this.$page.props.extra);
           // this.isLoading(false,);
+          if (this.$page.props.extra) {
+            if (this.$page.props.extra.project_status)
+              this.form.project_item.status = this.$page.props.extra.project_status;
+          }
           if (this.$page.props.flash.status)
             this.showAlert(this.$page.props.flash.status, this.$page.props.flash.message);
         },

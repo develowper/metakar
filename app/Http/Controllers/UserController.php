@@ -26,6 +26,7 @@ class UserController extends Controller
 
         $request->merge([
             'email_verified_at' => $request->email && $request->email_verified ? Carbon::now() : null,
+            'phone_verified' => true,
             'is_active' => $request->status == 'active',
             'is_block' => $request->status == 'block',
             'ref_id' => User::makeRefCode($request->phone),
@@ -134,6 +135,12 @@ class UserController extends Controller
 
                 }
                 return response()->json(['message' => __('updated_successfully'), 'access' => $user->access,], Variable::SUCCESS_STATUS);
+
+            case 'wallet':
+
+                $user->wallet = $request->wallet;
+                $user->save();
+                return response()->json(['message' => __('updated_successfully'), 'wallet' => $user->wallet,], Variable::SUCCESS_STATUS);
 
 
         }

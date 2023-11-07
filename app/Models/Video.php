@@ -40,6 +40,11 @@ class Video extends Model
         return $this->belongsTo(User::class, 'owner_id');
     }
 
+    public function projectItem()
+    {
+        return $this->hasOne(ProjectItem::class, 'item_id')->where('item_type', 'video');
+    }
+
     public function category()
     {
         return $this->belongsTo(Category::class, 'category_id');

@@ -16,8 +16,10 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PodcastController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\ProjectItemController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\SiteController;
+use App\Http\Controllers\TextController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\TransferController;
@@ -38,6 +40,7 @@ use App\Models\Podcast;
 use App\Models\Province;
 use App\Models\Setting;
 use App\Models\Site;
+use App\Models\Text;
 use App\Models\User;
 use App\Models\Video;
 use Illuminate\Foundation\Application;
@@ -141,9 +144,18 @@ Route::middleware(['auth', 'verified'])->prefix('panel')->group(function ($route
         'categories' => Site::categories('parents'),
         'statuses' => Variable::SITE_STATUSES]);
     PanelController::makeInertiaRoute('get', 'site/create', 'panel.site.create', 'Panel/Site/Create', [
-        'categories' => Site::categories('parents'),]);
-    PanelController::makeInertiaRoute('get', 'text/index', 'panel.text.index', 'Panel/Text/Index');
-    PanelController::makeInertiaRoute('get', 'text/create', 'panel.text.create', 'Panel/Text/Create');
+        'categories' => Site::categories('parents'),
+    ]);
+    PanelController::makeInertiaRoute('get', 'text/index', 'panel.text.index', 'Panel/Text/Index',
+        [
+            'categories' => Text::categories('parents'),
+            'statuses' => Variable::STATUSES,
+        ]);
+    PanelController::makeInertiaRoute('get', 'text/create', 'panel.text.create', 'Panel/Text/Create',
+        [
+            'categories' => Text::categories('parents'),
+            'statuses' => Variable::STATUSES,
+        ]);
     PanelController::makeInertiaRoute('get', 'banner/index', 'panel.banner.index', 'Panel/Banner/Index',
         [
             'categories' => Banner::categories('parents'),
@@ -224,6 +236,28 @@ Route::middleware(['auth', 'verified'])->prefix('panel')->group(function ($route
         ]
     );
 
+    PanelController::makeInertiaRoute('get', 'project/index', 'panel.project.index', 'Panel/Project/Index', [
+        'statuses' => Variable::PROJECT_STATUSES
+
+    ]);
+    PanelController::makeInertiaRoute('get', 'project/create', 'panel.project.create', 'Panel/Project/Create', [
+        'statuses' => Variable::PROJECT_STATUSES
+
+    ]);
+
+
+    PanelController::makeInertiaRoute('get', 'project_item/available', 'panel.project_item.available', 'Panel/ProjectItem/Availables', [
+        'statuses' => Variable::PROJECT_STATUSES
+
+    ]);
+    PanelController::makeInertiaRoute('get', 'project_item/index', 'panel.project_item.index', 'Panel/ProjectItem/Index', [
+        'statuses' => Variable::PROJECT_STATUSES
+
+    ]);
+    PanelController::makeInertiaRoute('get', 'project_item/create', 'panel.project_item.create', 'Panel/ProjectItem/Create', [
+        'statuses' => Variable::PROJECT_STATUSES
+
+    ]);
 
     /**  Admin Panel **/
     Route::middleware(['can:create,App\Models\User,App\Models\User,""',])->prefix('admin')->group(function ($route) {
@@ -306,6 +340,8 @@ Route::post('ticket/create', [TicketController::class, 'create'])->name('ticket.
 
 Route::post('transfer/create', [TransferController::class, 'create'])->name('transfer.create')->middleware('can:create,App\Models\User,App\Models\Transfer,""');
 
+Route::post('text/create', [TextController::class, 'create'])->name('text.create')->middleware('can:create,App\Models\User,App\Models\Text,""');
+
 
 Route::middleware('throttle:6,1')->group(function () {
     Route::post('sms/send', [MainController::class, 'sendSms'])->name('sms.send.verification');
@@ -329,6 +365,9 @@ Route::middleware('auth')->group(function () {
     Route::get('panel/ticket/search', [TicketController::class, 'searchPanel'])->name('panel.ticket.search');
     Route::get('panel/merged/search', [PanelController::class, 'searchMergedItems'])->name('panel.merged.search');
     Route::get('panel/transfer/search', [TransferController::class, 'searchPanel'])->name('panel.transfer.search');
+    Route::get('panel/project/search', [ProjectController::class, 'searchPanel'])->name('panel.project.search');
+    Route::get('panel/project_item/search', [ProjectItemController::class, 'searchPanel'])->name('panel.project_item.search');
+    Route::get('panel/text/search', [TextController::class, 'searchPanel'])->name('panel.text.search');
 
 
     Route::get('site/edit/{site}', [SiteController::class, 'edit'])->name('panel.site.edit');
@@ -365,6 +404,12 @@ Route::middleware('auth')->group(function () {
     Route::get('transfer/edit/{transfer}', [TransferController::class, 'edit'])->name('panel.transfer.edit');
     Route::patch('transfer/update', [TransferController::class, 'update'])->name('transfer.update');
     Route::post('transfer/transfer', [TransferController::class, 'transfer'])->name('transfer.transfer');
+
+    Route::get('project/edit/{project}', [ProjectController::class, 'edit'])->name('panel.project.edit');
+    Route::patch('project/update', [ProjectController::class, 'update'])->name('project.update');
+
+    Route::get('text/edit/{article}', [TextController::class, 'edit'])->name('panel.text.edit');
+    Route::patch('text/update', [TextController::class, 'update'])->name('text.update');
 
 });
 Route::post('transaction/storesite', [\App\Http\Controllers\TransactionController::class, 'storeSite'])->name('transaction.site.view');
@@ -412,6 +457,7 @@ Route::get('item/{type}/{id}', [ItemController::class, 'view'])->name('item');
 Route::post('transaction/storeitem', [TransactionController::class, 'storeItem'])->name('transaction.item.view');
 
 Route::get('/project/create', [ProjectController::class, 'new'])->name('page.project.create');
+Route::post('/project/create', [ProjectController::class, 'create'])->name('project.create');
 
 
 Route::get('language/{language}', function ($language) {

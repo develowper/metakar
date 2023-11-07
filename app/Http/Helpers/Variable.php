@@ -13,6 +13,7 @@ use App\Models\PodcastTransaction;
 use App\Models\Setting;
 use App\Models\Site;
 use App\Models\SiteTransaction;
+use App\Models\Text;
 use App\Models\Ticket;
 use App\Models\User;
 use App\Models\Video;
@@ -58,6 +59,7 @@ class Variable
         ['name' => 'podcast_narrator', 'role' => 'p', 'access' => 'podcast'],
         ['name' => 'banner_designer', 'role' => 'b', 'access' => 'banner'],
         ['name' => 'article_creator', 'role' => 'a', 'access' => 'article'],
+        ['name' => 'text_creator', 'role' => 't', 'access' => 'text'],
     ];
     const SUCCESS_STATUS = 200;
     const ERROR_STATUS = 422;
@@ -93,6 +95,8 @@ class Variable
         "business_reject",
         "site_approve",
         "site_reject",
+        "text_approve",
+        "text_reject",
         "article_approve",
         "article_reject",
         "banner_approve",
@@ -106,10 +110,10 @@ class Variable
 
     ];
     const PROJECT_ITEMS = [
-        'podcast',
-        'video',
-        'banner',
-        'text',
+        ['name' => 'podcast', 'color' => 'sky',],
+        ['name' => 'video','color' => 'purple',],
+        ['name' => 'banner','color' => 'orange',],
+        ['name' => 'text','color' => 'rose',]
 
     ];
     const DATA_TYPES = [
@@ -119,6 +123,7 @@ class Variable
         Video::class => 'video',
         Banner::class => 'banner',
         Article::class => 'article',
+        Text::class => 'text',
 
     ];
     const TRANSACTION_TYPES = [
@@ -150,10 +155,12 @@ class Variable
 
     ];
     const PROJECT_STATUSES = [
-        ["name" => 'done', "color" => 'success'],
-        ["name" => 'progress', "color" => 'primary'],
+        ["name" => 'order', "color" => 'success'],
         ["name" => 'review', "color" => 'danger'],
-        ["name" => 'cancel', "color" => 'danger'],
+        ["name" => 'progress', "color" => 'primary'],
+        ["name" => 'pay', "color" => 'danger'],
+        ["name" => 'cancel', "color" => 'gray'],
+        ["name" => 'done', "color" => 'gray'],
 
     ];
     const OPERATOR_STATUSES = [
@@ -161,6 +168,7 @@ class Variable
         ["name" => 'progress', "color" => 'primary'],
         ["name" => 'review', "color" => 'danger'],
         ["name" => 'cancel', "color" => 'danger'],
+        ["name" => 'pay', "color" => 'danger'],
 
     ];
     const SITE_STATUSES = [

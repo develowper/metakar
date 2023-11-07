@@ -61,7 +61,7 @@ class UserRequest extends FormRequest
         return [
 
             'fullname.required' => sprintf(__("validator.required"), __('fullname')),
-            'fullname.max' => sprintf(__("validator.max_len"), 100, mb_strlen($this->fullname)),
+            'fullname.max' => sprintf(__("validator.max_len"), __('fullname'), 100, mb_strlen($this->fullname)),
             'fullname.unique' => sprintf(__("validator.unique"), __('fullname')),
 
             'phone.required' => sprintf(__("validator.required"), __('phone')),

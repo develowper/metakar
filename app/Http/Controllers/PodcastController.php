@@ -12,6 +12,7 @@ use App\Models\County;
 use App\Models\Notification;
 use App\Models\Podcast;
 use App\Models\PodcastTransaction;
+use App\Models\Project;
 use App\Models\Province;
 use App\Models\Transfer;
 use App\Models\User;
@@ -23,10 +24,12 @@ use Inertia\Inertia;
 
 class PodcastController extends Controller
 {
-    public function edit(Request $request, $site)
+    public function edit(Request $request, $id)
     {
 
-        $data = Podcast::with('category')->find($site);
+        $data = Podcast::with('category')->with('projectItem')->with('owner:id,fullname,phone')->find($id);
+        if (optional($data->projectItem)->operator_id)
+            $data->projectItem->operator = User::select('id', 'fullname', 'phone')->find($data->projectItem->operator_id);
 
         $this->authorize('edit', [User::class, $data]);
         $data->message = optional(Notification::firstWhere([
@@ -37,6 +40,7 @@ class PodcastController extends Controller
         return Inertia::render('Panel/Podcast/Edit', [
             'categories' => Podcast::categories(),
             'statuses' => Variable::STATUSES,
+            'project_statuses' => Variable::PROJECT_STATUSES,
             'data' => $data,
             'max_images_limit' => 1,
         ]);
@@ -52,7 +56,7 @@ class PodcastController extends Controller
         $charge = $request->charge;
         $id = $request->id;
         $cmnd = $request->cmnd;
-        $data = Podcast::find($id);
+        $data = Podcast::with('projectItem:id,item_id,item_type,project_id,status,operator_id')->find($id);
         if (!starts_with($cmnd, 'bulk'))
             $this->authorize('update', [User::class, $data]);
 
@@ -126,9 +130,13 @@ class PodcastController extends Controller
                     }
                     return response()->json(['message' => __('updated_successfully_and_active_after_review')], $successStatus);
 
+                case 'operator-finish':
+                    return Project::operatorFinish($data->projectItem);
+
+                    return back()->with(['flash_status' => 'danger', 'flash_message' => __('response_error')]);
+
             }
         } elseif ($data) {
-
 
             $request->merge([
                 'status' => $user->isAdmin() ? $request->status : 'review',
@@ -137,6 +145,8 @@ class PodcastController extends Controller
             ]);
 
             if ($user->isAdmin()) {
+                $data->owner_id = $request->owner_id;
+
                 $newStatus = $request->status;
                 $oldStatus = $data->status;
                 switch ($newStatus) {
@@ -151,12 +161,12 @@ class PodcastController extends Controller
                             'data_id' => $data->id,],
                             ['type' => 'podcast_approve', 'subject' => __('podcast_approved'), 'description' => null, 'owner_id' => $data->owner_id]
                         );
-                        if ($data->view_fee > $data->charge) {
-                            $request->status = 'need_charge';
-                            $request->merge([
-                                'status' => 'need_charge',
-                            ]);
-                        }
+//                        if ($data->view_fee > $data->charge) {
+//                            $request->status = 'need_charge';
+//                            $request->merge([
+//                                'status' => 'need_charge',
+//                            ]);
+//                        }
 
                         break;
                     case 'review':

@@ -75,7 +75,73 @@
             <div class="flex">
               <TicketIcon class="w-12 h-12 text-primary-300 dark:text-pink-50 "/>
             </div>
+          </Link>
+          <!-- project card -->
+          <Link :href="route('panel.project.index')" :class="cardShadow"
+                class="flex hover:scale-[101%] transition duration-300 cursor-pointer   items-center justify-around   p-4 bg-white  rounded-lg dark:bg-darker">
+            <div class="flex flex-col grow">
+              <h6 class="text-xs font-bold   py-2 tracking-wider text-gray-500 uppercase dark:text-primary-light">
+                {{ __('projects') }}
+              </h6>
 
+              <div class="justify-around flex  ">
+                                <span v-for="(p,idx) in projects" class="align-middle flex  flex-col text-center  ">
+                                        <span
+                                            :class="`text-${p.color}-500`"
+                                            class="  text-xl font-semibold "> {{ p.value }}</span>
+                                        <span
+                                            :class="`text-${p.color}-500 bg-${p.color}-100` "
+                                            class="   mx-1 px-2 py-1    text-xs  rounded-md">
+                                   {{ __(p.title) }}
+                                        </span>
+                                </span>
+              </div>
+
+            </div>
+            <div class="flex">
+              <BriefcaseIcon class="w-12 h-12 text-primary-300 dark:text-pink-50 "/>
+            </div>
+          </Link>
+          <!-- projectItems card -->
+          <Link :href="route('panel.project_item.index')" :class="cardShadow"
+                class="flex hover:scale-[101%] transition duration-300 cursor-pointer   items-center justify-around   p-4 bg-white  rounded-lg dark:bg-darker">
+            <div class="flex flex-col overflow-x-auto grow">
+              <h6 class="text-xs font-bold   py-2 tracking-wider text-gray-500 uppercase dark:text-primary-light">
+                {{ __('works') }}
+              </h6>
+
+              <table class="table-auto">
+                <thead>
+                <tr>
+                  <th class="text-gray-500  "></th>
+                  <th class="text-sm font-semibold border-b text-gray-500" scope="col"
+                      v-for="(h,idx) in Object.keys(projectItemsTable)">
+                    {{ __(h) }}
+                  </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="(type,ix) in  itemTypes">
+                  <td class="text-center "
+                      :class="`text-${projectItemsTable[Object.keys(projectItemsTable)[0]][type].color}-500`">{{
+                      __(type)
+                    }}
+                  </td>
+                  <td class="text-center"
+                      :class="`bg-${projectItemsTable[col][type].color}-50 text-${projectItemsTable[col][type].color}-500`"
+                      v-for="(col,idx) in Object.keys(projectItemsTable) ">{{
+                      projectItemsTable[col][type].count
+                    }}
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+
+
+            </div>
+            <div class="flex">
+              <BriefcaseIcon class="w-12 h-12 text-primary-300 dark:text-pink-50 "/>
+            </div>
           </Link>
           <!-- users card -->
           <Link :href="route('panel.admin.user.index')" :class="cardShadow"
@@ -277,6 +343,7 @@ import {
   Cog6ToothIcon,
   TicketIcon,
   UserIcon,
+  BriefcaseIcon
 } from "@heroicons/vue/24/outline";
 import {inject, watchEffect} from "vue";
 import Chart from "@/Components/Chart.vue";
@@ -298,8 +365,12 @@ export default {
       isOn: false,
       user: this.$page.props.auth.user,
       tickets: this.$page.props.tickets,
+      projects: this.$page.props.projects,
+      projectItems: this.$page.props.projectItems,
+      projectItemsTable: this.$page.props.projectItemsTable,
       users: this.$page.props.users,
       items: this.$page.props.items,
+      itemTypes: this.$page.props.itemTypes,
       notifications: this.$page.props.notifications,
       queue: this.$page.props.queue,
       adminBalance: this.$page.props.adminBalance,
@@ -316,6 +387,7 @@ export default {
     Link,
     Cog6ToothIcon,
     UserIcon,
+    BriefcaseIcon,
   },
   mounted() {
     // console.log(this.$emit('showToast'))

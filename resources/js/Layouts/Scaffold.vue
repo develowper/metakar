@@ -5,6 +5,7 @@
   <main :dir="dir()" class="min-h-screen ">
     <Head>
       <meta name="author" :content="__('app_name')">
+      <link rel="shortcut icon" type="image/x-icon" :href="favicon"/>
 
       <slot name="header"/>
     </head>
@@ -71,12 +72,14 @@ import Dialog from "@/Components/Dialog.vue";
 import Alert from "@/Components/Alert.vue";
 import LoadingIcon from "@/Components/LoadingIcon.vue";
 import mitt from 'mitt'
+import favicon from "@/../images/logo.png";
 
 export const emitter = mitt()
 export default {
   data() {
     return {
       loading: false,
+      favicon: favicon,
     }
   },
   props: ['navbarTheme'],

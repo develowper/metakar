@@ -224,7 +224,7 @@ class BusinessController extends Controller
             //find user or create new user
             $user = User::where('phone', $phone)->first();
             if (!$user)
-                $user = User::create(['fullname' => $fullname, 'phone' => $phone, 'password' => Hash::make($request->password), 'ref_id' => User::makeRefCode($phone)]);
+                $user = User::create(['fullname' => $fullname, 'phone' => $phone, 'phone_verified' => true, 'password' => Hash::make($request->password), 'ref_id' => User::makeRefCode($phone)]);
 
         }
         if (!$user) {

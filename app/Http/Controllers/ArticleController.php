@@ -14,6 +14,7 @@ use App\Models\Article;
 use App\Models\Notification;
 use App\Models\Province;
 use App\Models\Setting;
+use App\Models\Text;
 use App\Models\Transaction;
 use App\Models\Transfer;
 use App\Models\User;
@@ -30,13 +31,25 @@ class ArticleController extends Controller
     public function edit(Request $request, $site)
     {
 
-        $data = Article::with('category')->find($site);
+        $data = Article::with('category')->with('owner:id,fullname,phone')->find($site);
         $this->authorize('edit', [User::class, $data]);
         $data->message = optional(Notification::firstWhere([
                 'data_id' => $data->id, 'type' => 'article_reject',]
         ))->description;
         if ($data->message)
             $data->message = json_decode($data->message);
+        if ($data->content) {
+            $content = json_decode($data->content);
+            foreach ($content as &$item) {
+                if ($item->type == 'text') {
+                    $c = optional(Text::find($item->id))->content;
+                    if (!$c) continue;
+                    $item->value = json_decode($c);
+
+                }
+            }
+            $data->content = json_encode($content);
+        }
         return Inertia::render('Panel/Article/Edit', [
             'categories' => Article::categories(),
             'statuses' => Variable::STATUSES,
@@ -139,17 +152,19 @@ class ArticleController extends Controller
 
             $owners = [];
             $notAllowedArticleItems = [];
-            foreach ($content as $idx => $itm) {
-                $itm = (object)$itm;
-                if (!$itm->id || $itm->type == 'text') continue;
-                $notAllowedItem = array_flip(Variable::DATA_TYPES)[$itm->type]::where('id', $itm->id)->first();
-                if ($notAllowedItem && !in_array($notAllowedItem->owner_id, $owners))
-                    $owners[] = $notAllowedItem->owner_id;
-                if (!$notAllowedItem || (!$isAdmin && $notAllowedItem->owner_id != $user->id) || ($isAdmin && count($owners) > 1) || $notAllowedItem->article_id != null || in_array($notAllowedItem->status, [null, 'reject', 'block', 'review']))
-                    $notAllowedArticleItems[] = ['id' => $notAllowedItem->id, 'type' => $itm->type, 'data' => "( " . __($itm->type) . " | $itm->value" . " )"];
-            }
+            if (!$isAdmin)
+                foreach ($content as $idx => $itm) {
+                    $itm = (object)$itm;
+                    if (!$itm->id || $itm->type == 'content') continue;
+                    $notAllowedItem = array_flip(Variable::DATA_TYPES)[$itm->type]::where('id', $itm->id)->first();
+                    if ($notAllowedItem && !in_array($notAllowedItem->owner_id, $owners))
+                        $owners[] = $notAllowedItem->owner_id;
+
+                    if (!$notAllowedItem || (!$isAdmin && $notAllowedItem->owner_id != $user->id) || ($isAdmin && count($owners) > 1) || in_array($notAllowedItem->status, [null, 'reject', 'block', 'review']))
+                        $notAllowedArticleItems[] = ['id' => $notAllowedItem->id, 'type' => $itm->type, 'data' => "( " . __($itm->type) . " | $itm->value" . " )"];
+                }
             if (count($notAllowedArticleItems) > 0) {
-                return response()->json(['message' => __($isAdmin ? 'article_items_cant_be_block_reject_review_other_article_multi_owner' : 'article_items_cant_be_block_reject_review_other_article') . ":  " . join("\n\r", array_map(function ($e) {
+                return back()->withErrors(['message' => __($isAdmin ? 'article_items_cant_be_block_reject_review_other_article_multi_owner' : 'article_items_cant_be_block_reject_review_other_article') . ":  " . join("\n\r", array_map(function ($e) {
                         return "<br>" . "<a class='text-danger hover:text-danger-400 cursor-pointer' target='_blank' href='" . route('panel.' . $e['type'] . '.edit', $e['id']) . "'>" . $e['data'] . "</a>";
                     }, $notAllowedArticleItems))]);
             }
@@ -157,20 +172,22 @@ class ArticleController extends Controller
             foreach ($content as $idx => $item) {
                 $item = (object)$item;
 
-                if ($item->id && $item->type && $item->type != 'text') {
-                    $tmp = array_flip(Variable::DATA_TYPES)[$item->type]::where('owner_id', $data->owner_id)->find($item->id);
+                if ($item->id && $item->type && $item->type != 'content') {
+                    $tmp = array_flip(Variable::DATA_TYPES)[$item->type]::find($item->id);
                     if ($tmp) {
                         $content[$idx]['value'] = $tmp->name;
                         $duration += $tmp->duration ?? 0;
-                        $tmp->update(['article_id' => $data->id]);
+                        $tmp->article_id = $data->id;
+                        if ($isAdmin)
+                            $tmp->owner_id = $request->owner_id;
+                        $tmp->save();
                     } else
                         unset($content[$idx]);
-                } elseif ($item->type == 'text') {
+                } elseif ($item->type == 'content') {
                     $duration += Util::estimateReadingTime($item->value);
                 } else
                     unset($content[$idx]);
             }
-
             $content = count($content) == 0 ? null : json_encode($content);
             $request->merge([
                 'status' => $user->isAdmin() ? $request->status : 'review',
@@ -180,7 +197,9 @@ class ArticleController extends Controller
                 'slug' => str_slug($request->title),
             ]);
 
-            if ($user->isAdmin()) {
+            if ($isAdmin) {
+
+
                 $newStatus = $request->status;
                 $oldStatus = $data->status;
                 switch ($newStatus) {

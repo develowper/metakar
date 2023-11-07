@@ -92,25 +92,25 @@ class SiteRequest extends FormRequest
             'lang.in' => sprintf(__("validator.invalid"), __('lang')),
 
             'fullname.required' => sprintf(__("validator.required"), __('fullname')),
-            'fullname.max' => sprintf(__("validator.max_len"), 100, mb_strlen($this->fullname)),
+            'fullname.max' => sprintf(__("validator.max_len"), __('fullname'), 100, mb_strlen($this->fullname)),
             'fullname.min' => sprintf(__("validator.min_len"), 3, mb_strlen($this->fullname)),
 
             'name.required' => sprintf(__("validator.required"), __('name')),
-            'name.max' => sprintf(__("validator.max_len"), 100, mb_strlen($this->name)),
+            'name.max' => sprintf(__("validator.max_len"), __('name'), 100, mb_strlen($this->name)),
             'name.min' => sprintf(__("validator.min_len"), 3, mb_strlen($this->name)),
             'name.unique' => sprintf(__("validator.unique"), __('name')),
 
             'link.required' => sprintf(__("validator.required"), __('link')),
-            'link.max' => sprintf(__("validator.max_len"), 1024, mb_strlen($this->link)),
+            'link.max' => sprintf(__("validator.max_len"), __('link'), 1024, mb_strlen($this->link)),
             'link.url' => sprintf(__("validator.invalid"), __('link')),
             'link.starts_with' => sprintf(__("validator.starts_with"), __('link'), "https://"),
             'link.unique' => sprintf(__("validator.unique"), __('link')),
 
             'category.in' => sprintf(__("validator.invalid"), __('lang')),
 
-            'tags.max' => sprintf(__("validator.max_len"), 1024, mb_strlen($this->tags)),
+            'tags.max' => sprintf(__("validator.max_len"), __('tags'), 1024, mb_strlen($this->tags)),
 
-            'description.max' => sprintf(__("validator.max_len"), 2048, mb_strlen($this->description)),
+            'description.max' => sprintf(__("validator.max_len"), __('description'), 2048, mb_strlen($this->description)),
 
             'img.required' => sprintf(__("validator.required"), __('image')),
             'img.base64_image_size' => sprintf(__("validator.max_size"), __("image"), Variable::SITE_IMAGE_LIMIT_MB),

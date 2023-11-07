@@ -141,7 +141,7 @@
                     <div :class="props.selectedText?'py-2':'py-5'"
                          class=" px-4 border rounded hover:bg-gray-100 cursor-pointer flex items-center ">
                       <div class="grow">
-                        {{ props.selectedText }}
+                        {{ props.selectedText ?? __('click_for_select_item') }}
                       </div>
                       <div v-if="props.selectedText"
                            class="bg-danger rounded p-2   cursor-pointer text-white hover:bg-danger-400"

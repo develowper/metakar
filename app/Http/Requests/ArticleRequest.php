@@ -41,7 +41,7 @@ class ArticleRequest extends FormRequest
             $tmp = array_merge($tmp, [
                 'lang' => ['required', Rule::in(Variable::LANGS)],
                 'author' => ['required', 'max:200',],
-                'title' => ['required', 'max:1024', Rule::unique('articles', 'title')->ignore($this->id)],
+                'title' => ['required', 'max:1024',/* Rule::unique('articles', 'title')->ignore($this->id)*/],
                 'tags' => ['nullable', 'max:1024'],
                 'content' => ['nullable', 'array'],
                 'category_id' => ['nullable', Rule::in($types)],
@@ -70,10 +70,10 @@ class ArticleRequest extends FormRequest
             'lang.in' => sprintf(__("validator.invalid"), __('lang')),
 
             'title.required' => sprintf(__("validator.required"), __('title')),
-            'title.max' => sprintf(__("validator.max_len"), 1024, mb_strlen($this->title)),
+            'title.max' => sprintf(__("validator.max_len"), __('title'), 1024, mb_strlen($this->title)),
 
             'author.required' => sprintf(__("validator.required"), __('author')),
-            'author.max' => sprintf(__("validator.max_len"), 200, mb_strlen($this->author)),
+            'author.max' => sprintf(__("validator.max_len"), __('author'), 200, mb_strlen($this->author)),
 
             'phone.required' => sprintf(__("validator.required"), __('phone')),
             'phone.unique' => sprintf(__("validator.unique"), __('phone')),
@@ -82,7 +82,7 @@ class ArticleRequest extends FormRequest
 
 
             'link.required' => sprintf(__("validator.required"), __('link')),
-            'link.max' => sprintf(__("validator.max_len"), 1024, mb_strlen($this->link)),
+            'link.max' => sprintf(__("validator.max_len"), __('link'), 1024, mb_strlen($this->link)),
             'link.url' => sprintf(__("validator.invalid"), __('link')),
             'link.starts_with' => sprintf(__("validator.starts_with"), __('link'), "https://"),
 
@@ -95,9 +95,9 @@ class ArticleRequest extends FormRequest
             'county_id.required' => sprintf(__("validator.required"), __('county')),
             'county_id.in' => sprintf(__("validator.invalid"), __('county')),
 
-            'tags.max' => sprintf(__("validator.max_len"), 1024, mb_strlen($this->tags)),
+            'tags.max' => sprintf(__("validator.max_len"), __('tags'), 1024, mb_strlen($this->tags)),
 
-            'description.max' => sprintf(__("validator.max_len"), 2048, mb_strlen($this->description)),
+            'description.max' => sprintf(__("validator.max_len"), __('description'), 2048, mb_strlen($this->description)),
 
             'img.required' => sprintf(__("validator.required"), __('image')),
             'img.base64_image_size' => sprintf(__("validator.max_size"), __("image"), Variable::SITE_IMAGE_LIMIT_MB),

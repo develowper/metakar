@@ -17,23 +17,46 @@
       <!-- Content -->
       <div class="mt-2">
         <!-- State cards -->
-        <div class="grid   gap-4 p-4 grid-cols-1 lg:grid-cols-2 xl:grid-cols-3  ">
+        <div class="grid   gap-2 p-4 grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3  ">
 
-          <!-- wallet card -->
-          <div :class="cardShadow"
-               class="flex   items-center justify-between p-4 bg-white  rounded-lg dark:bg-darker ">
-            <div>
-              <h6 class="text-xs font-bold   py-2 tracking-wider text-gray-500 uppercase dark:text-primary-light">
-                {{ __('wallet') }}
-              </h6>
-              <span class="text-xl font-semibold"> {{ asPrice(user.wallet) }} {{ __('currency') }}</span>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:col-span-2 gap-2">
+            <!-- user card -->
+            <div :class="cardShadow"
+                 class="flex   items-center justify-between p-4 bg-white  rounded-lg dark:bg-darker ">
+              <div>
+                <div class="flex text-sm text-gray-500">
+                  <div>{{ __('id') }}:</div>
+                  <div class="mx-1 font-semibold">{{ $page.props.auth.user.id }}</div>
+                </div>
+                <div class="flex text-sm text-primary-500">
+                  <div>{{ __('name') }}:</div>
+                  <div class="mx-1 font-semibold">{{ $page.props.auth.user.fullname }}</div>
+                </div>
+
+              </div>
+
+              <div>
+                <UserIcon class="w-12 h-12 text-primary-300 dark:text-pink-50 "/>
+              </div>
 
             </div>
 
-            <div>
-              <CurrencyDollarIcon class="w-12 h-12 text-primary-300 dark:text-pink-50 "/>
-            </div>
+            <!-- wallet card -->
+            <div :class="cardShadow"
+                 class="flex   items-center justify-between p-4 bg-white  rounded-lg dark:bg-darker ">
+              <div>
+                <h6 class="text-xs font-bold   py-2 tracking-wider text-gray-500 uppercase dark:text-primary-light">
+                  {{ __('wallet') }}
+                </h6>
+                <span class="text-xl font-semibold"> {{ asPrice(user.wallet) }} {{ __('currency') }}</span>
 
+              </div>
+
+              <div>
+                <CurrencyDollarIcon class="w-12 h-12 text-primary-300 dark:text-pink-50 "/>
+              </div>
+
+            </div>
           </div>
           <!-- ticket card -->
           <Link :href="route('panel.ticket.index')" :class="cardShadow"
@@ -64,15 +87,15 @@
           </Link>
           <!-- items card -->
           <div :class="cardShadow"
-               class="flex lg:col-span-2 xl:col-span-1 cursor-pointer   items-center justify-around   bg-white  rounded-lg dark:bg-darker">
+               class="flex   cursor-pointer   items-center justify-around   bg-white  rounded-lg dark:bg-darker">
             <div class="flex flex-col grow">
-              <h6 class="text-xs font-bold    tracking-wider text-gray-500 uppercase dark:text-primary-light">
-                {{ }}
+              <h6 class="text-xs font-bold   p-4 tracking-wider text-gray-500 uppercase dark:text-primary-light">
+                {{ __('items') }}
               </h6>
 
               <div class="    flex items-stretch  ">
                 <Link v-for="(i,idx) in items" :href="route(`panel.${i.type}.index`)"
-                      class="  flex flex-col  py-6 xl:pt-6 xl:pb-2 items-around justify-around hover:scale-[102%]     px-1  grow text-center hover:bg-gray-100  ">
+                      class="  flex flex-col  pb-6 xl:pt-6 xl:pb-2 items-around justify-around hover:scale-[102%]     px-1  grow text-center hover:bg-gray-100  ">
                                         <span
                                             :class="idx==0?'text-pink-500':idx==1?'text-teal-500':idx==2?'text-fuchsia-500':'text-amber-500'"
                                             class="  text-xl font-semibold "> {{ i.count }}</span>
@@ -88,9 +111,92 @@
 
 
           </div>
+          <!-- available projects card -->
+          <Link :href="route('panel.project_item.available'  )" :class="cardShadow"
+                class="flex lg:col-span-1 hover:scale-[101%] transition duration-300 cursor-pointer   items-center justify-around   p-4 bg-success-50  rounded-lg dark:bg-darker">
+            <div class="flex flex-col grow">
+              <h6 class="text-xs font-bold   py-2 tracking-wider text-gray-500 uppercase dark:text-primary-light">
+                {{ __('available_projects') }}
+              </h6>
+
+              <div class="justify-around flex  ">
+                  <span v-for="(p,idx) in availableOrders" class="align-middle flex  flex-col text-center  ">
+                          <span
+                              :class="`text-${p.color}-500`"
+                              class="  text-xl font-semibold "> {{ p.value }}</span>
+                          <span
+                              :class="`text-${p.color}-500 bg-${p.color}-100` "
+                              class="   mx-1 px-2 py-1    text-xs  rounded-md">
+                     {{ __(p.title) }}
+                          </span>
+                  </span>
+              </div>
+
+            </div>
+            <div class="flex">
+              <BellAlertIcon class="w-12 h-12 text-green-300 dark:text-pink-50 "/>
+            </div>
+          </Link>
+
+          <div class="grid lg:col-span-2  gap-2 grid-cols-1 lg:grid-cols-2 ">
+            <!-- my orders card -->
+            <Link :href="route('panel.project.index')" :class="cardShadow"
+                  class="flex lg:col-span-1 hover:scale-[101%] transition duration-300 cursor-pointer   items-center justify-around   p-4 bg-white  rounded-lg dark:bg-darker">
+              <div class="flex flex-col grow">
+                <h6 class="text-xs font-bold   py-2 tracking-wider text-gray-500 uppercase dark:text-primary-light">
+                  {{ __('your_orders') }}
+                </h6>
+
+                <div class="justify-around flex  ">
+                  <span v-for="(p,idx) in myOrders" class="align-middle flex  flex-col text-center  ">
+                          <span
+                              :class="`text-${p.color}-500`"
+                              class="  text-xl font-semibold "> {{ p.value }}</span>
+                          <span
+                              :class="`text-${p.color}-500 bg-${p.color}-100` "
+                              class="   mx-1 px-2 py-1    text-xs  rounded-md">
+                     {{ __(p.title) }}
+                          </span>
+                  </span>
+                </div>
+
+              </div>
+              <div class="flex">
+                <ShoppingBagIcon class="w-12 h-12 text-primary-300 dark:text-pink-50 "/>
+              </div>
+            </Link>
 
 
+            <!-- working projects card -->
+            <Link :href="route('panel.project.index')" :class="cardShadow"
+                  class="flex lg:col-span-1 hover:scale-[101%] transition duration-300 cursor-pointer   items-center justify-around   p-4 bg-white  rounded-lg dark:bg-darker">
+              <div class="flex flex-col grow">
+                <h6 class="text-xs font-bold   py-2 tracking-wider text-gray-500 uppercase dark:text-primary-light">
+                  {{ __('working_projects') }}
+                </h6>
+
+                <div class="justify-around flex  ">
+                  <span v-for="(p,idx) in myWorkingProjects" class="align-middle flex  flex-col text-center  ">
+                          <span
+                              :class="`text-${p.color}-500`"
+                              class="  text-xl font-semibold "> {{ p.value }}</span>
+                          <span
+                              :class="`text-${p.color}-500 bg-${p.color}-100` "
+                              class="   mx-1 px-2 py-1    text-xs  rounded-md">
+                     {{ __(p.title) }}
+                          </span>
+                  </span>
+                </div>
+
+              </div>
+              <div class="flex">
+                <BriefcaseIcon class="w-12 h-12 text-primary-300 dark:text-pink-50 "/>
+              </div>
+            </Link>
+
+          </div>
         </div>
+
 
         <!-- Charts -->
         <div class="grid-cols-1  px-4 space-y-2 gap-2     xl:grid-cols-2">
@@ -122,7 +228,7 @@
                   <div class=""></div>
                 </div>
               </div>
-              <Chart id="advertises" :units="[__('view'),__('currency'),__('meta')]"
+              <Chart key="advertises" id="advertises" :units="[__('view'),__('currency'),__('meta')]"
                      :log-link="route('transaction.chart')"
                      :parent-params="{user_id:user.id,type:'data'}"
               />
@@ -156,7 +262,7 @@
                   <div class=""></div>
                 </div>
               </div>
-              <Chart id="transactions" :units="[__('view'),__('currency'),__('meta')]"
+              <Chart key="transactions" id="transactions" :units="[__('view'),__('currency'),__('meta')]"
                      :log-link="route('transaction.chart')"
                      :parent-params="{user_id:user.id,type:'user'}"
               />
@@ -197,6 +303,9 @@ import {
   BellAlertIcon,
   Cog6ToothIcon,
   TicketIcon,
+  BriefcaseIcon,
+  UserIcon,
+  ShoppingBagIcon,
 } from "@heroicons/vue/24/outline";
 import {inject, watchEffect} from "vue";
 import Chart from "@/Components/Chart.vue";
@@ -218,12 +327,26 @@ export default {
       isOn: false,
       user: this.$page.props.auth.user,
       tickets: this.$page.props.tickets,
+      availableOrders: this.$page.props.availableOrders,
+      myOrders: this.$page.props.myOrders,
+      myWorkingProjects: this.$page.props.myWorkingProjects,
       items: this.$page.props.items,
       cardShadow: 'shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)]',
     }
   },
   // emits: ['showToast'],
-  components: {Chart, Panel, CurrencyDollarIcon, TicketIcon, Head, Link},
+  components: {
+    Chart,
+    Panel,
+    CurrencyDollarIcon,
+    TicketIcon,
+    Head,
+    Link,
+    BriefcaseIcon,
+    UserIcon,
+    ShoppingBagIcon,
+    BellAlertIcon
+  },
   mounted() {
     // console.log(this.$emit('showToast'))
 

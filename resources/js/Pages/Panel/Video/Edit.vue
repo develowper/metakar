@@ -44,6 +44,76 @@
                class="border text-sm text-rose-400 bg-rose-50 border-dashed rounded p-4 ">
           </div>
 
+          <!--          project section-->
+          <div v-if="form.project_item" class="my-2 border bg-indigo-50 border-dashed rounded p-4 col-span-3">
+            <p class="border-b text-md w-fit flex mx-auto mb-2 text-primary font-bold ">{{ __('project_info') }}</p>
+
+            <div class="flex flex-col text-primary text-sm space-y-1">
+              <div class="flex items-center">
+                <a v-if="isAdmin() " class="hover:text-gray-700"
+                   :href="route('panel.project.edit',form.project_item.project_id)">{{ __('project') }}
+                  {{ form.project_item.id }}</a>
+                <div v-else>{{ __('project') }} {{ form.project_item.id }}</div>
+              </div>
+              <div class="flex items-center border-b py-1">
+                <div class="text-gray-500">{{ __('operator') }}:</div>
+                <div v-if="form.project_item.operator" class="mx-1">{{
+                    form.project_item.operator.fullname
+                  }} _{{ form.project_item.operator.phone }}
+                </div>
+              </div>
+              <div class="flex items-center  border-b py-1">
+                <div class="text-gray-500">{{ __('status') }}:</div>
+                <div class="  min-w-[5rem]  px-1   items-center text-center rounded-md py-[.2rem]"
+                     :class="`bg-${getStatus('project_statuses', form.project_item.status).color}-100   text-${getStatus('project_statuses', form.project_item.status).color}-500`">
+                  {{ getStatus('project_statuses', form.project_item.status).name }}
+                </div>
+              </div>
+              <div class="flex items-center  border-b py-1">
+                <div class="text-gray-500">{{ __('commission') }}:</div>
+                <div v-if="form.project_item.price" class="mx-1">
+                  {{
+                    asPrice(form.project_item.price)
+                  }} {{ __('currency') }}
+                </div>
+              </div>
+              <div class="flex items-center  border-b py-1">
+                <div class="text-gray-500">{{ __('expire') }}:</div>
+                <div v-if="form.project_item.expires_at" class="mx-1 text-red-600">
+                  {{
+                    toShamsi(form.project_item.expires_at, true)
+                  }}
+                </div>
+              </div>
+              <div class="flex items-center  border-b py-1">
+                <div class="text-gray-500">{{ __('payed_at') }}:</div>
+                <div v-if="form.project_item.payed_at" class="mx-1 text-green-600">
+                  {{
+                    toShamsi(form.project_item.payed_at, true)
+                  }}
+                </div>
+              </div>
+              <div class="flex items-center    py-1">
+                <div v-if="form.project_item.chats"
+                     class="mx-1 w-full text-gray-500 whitespace-pre-line   px-2 rounded">
+                  <div v-for="(chat,idx) in JSON.parse(form.project_item.chats)">
+                    <div v-if="idx==0">{{ chat.text }}</div>
+                  </div>
+                </div>
+              </div>
+              <button
+                  @click="showDialog('danger',__('complete_project_and_pay_after_admin_review?') + `<br>${asPrice(form.project_item.price)} ${__('currency')}<br>${__('user')} ${ form.project_item.operator? `${form.project_item.operator.fullname} | ${form.project_item.operator.phone} ` :'?' } `,__('final_accept')  , submit,{cmnd:'operator-finish'   })"
+                  :disabled="!isAdmin() &&  form.project_item.status!='progress'  "
+                  :class="{'opacity-50':form.project_item.payed_at || form.project_item.status!='progress'}"
+                  class="rounded py-2 text-white cursor-pointer bg-success hover:bg-success-400">
+                {{
+                  form.project_item.payed_at ? __('payed_at') + ` ${toShamsi(form.project_item.payed_at)} ` : __('finish_and_request_pay')
+                }}
+              </button>
+            </div>
+          </div>
+
+
           <div
               class="lg:flex-col  flex flex-wrap   self-center  md:m-2  lg:mx-2 md:items-center lg:items-stretch rounded-lg    ">
             <!--            <InputLabel class="m-2 w-full md:text-start lg:text-center"-->
@@ -80,6 +150,25 @@
                   <QuestionMarkCircleIcon class="text-gray-500 hover:bg-gray-50 w-4 h-4"/>
                 </Tooltip>
                 <RadioGroup ref="langSelector" class="grow" name="lang" :items="$page.props.langs"/>
+              </div>
+              <div class="my-2" v-if="isAdmin() && data">
+
+                <UserSelector :id="'user'" v-model:selected="form.owner_id" :owner="data.owner"
+                >
+                  <template v-slot:selector="props">
+                    <div :class="props.selectedText?'py-2':'py-2'"
+                         class=" px-4 border rounded hover:bg-gray-100 cursor-pointer flex items-center ">
+                      <div class="grow">
+                        {{ props.selectedText ?? __('select_owner') }}
+                      </div>
+                      <div v-if="props.selectedText"
+                           class="bg-danger rounded p-2   cursor-pointer text-white hover:bg-danger-400"
+                           @click.stop="props.clear()">
+                        <XMarkIcon class="w-5 h-5"/>
+                      </div>
+                    </div>
+                  </template>
+                </UserSelector>
               </div>
               <div class="my-2">
                 <TextInput
@@ -190,7 +279,7 @@ import {
   ChatBubbleBottomCenterTextIcon,
   Squares2X2Icon,
   PencilSquareIcon,
-  SignalIcon,
+  SignalIcon, XMarkIcon,
 
 } from "@heroicons/vue/24/outline";
 import {QuestionMarkCircleIcon,} from "@heroicons/vue/24/solid";
@@ -212,6 +301,7 @@ import PhoneFields from "@/Components/PhoneFields.vue";
 import SocialFields from "@/Components/SocialFields.vue";
 import Video from "@/Components/Video.vue";
 import TextEditor from "@/Components/TextEditor.vue";
+import UserSelector from "@/Components/UserSelector.vue";
 
 export default {
 
@@ -220,6 +310,8 @@ export default {
       data: this.$page.props.data || {},
       form: useForm({
         id: this.$page.props.data.id,
+        owner_id: null,
+        owner: null,
         phone: null,
         phone_verify: null,
         lang: null,
@@ -234,6 +326,8 @@ export default {
       }),
       img: null,
       video: null,
+      cmnd: null,
+
     }
   },
   components: {
@@ -268,7 +362,8 @@ export default {
     PencilSquareIcon,
     Video,
     SignalIcon,
-
+    UserSelector,
+    XMarkIcon,
   },
   created() {
 
@@ -286,9 +381,12 @@ export default {
     this.form.message = this.data.message;
 
     this.$refs.langSelector.selected = this.data.lang;
+    this.form.project_item = this.data.project_item;
+    this.form.owner = this.data.owner;
+    this.form.owner_id = this.data.owner_id;
   },
   methods: {
-    submit() {
+    submit(params) {
 
       if (this.$refs.editor)
         this.form.message = this.$refs.editor.getData();
@@ -303,12 +401,15 @@ export default {
       //   let tmp = this.$refs.imageCropper[i].getCroppedData();
       //   if (tmp) this.images.push(tmp);
       // }
-      this.form.patch(route('video.update'), {
+      this.form.transform((data) => ({
+        ...data,
+        ...params || {},
+      })).patch(route('video.update'), {
         preserveScroll: false,
 
         onSuccess: (data) => {
-          if (this.$page.props.flash.status)
-            this.showAlert(this.$page.props.flash.status, this.$page.props.flash.message);
+          // if (this.$page.props.flash.status)
+          //   this.showAlert(this.$page.props.flash.status, this.$page.props.flash.message);
 
         },
         onError: () => {
@@ -316,6 +417,10 @@ export default {
         },
         onFinish: (data) => {
           // this.isLoading(false,);
+          if (this.$page.props.extra) {
+            if (this.$page.props.extra.project_status)
+              this.form.project_item.status = this.$page.props.extra.project_status;
+          }
           if (this.$page.props.flash.status)
             this.showAlert(this.$page.props.flash.status, this.$page.props.flash.message);
         },

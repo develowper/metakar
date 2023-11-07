@@ -11,6 +11,7 @@ use App\Http\Requests\VideoRequest;
 use App\Models\Article;
 use App\Models\Category;
 use App\Models\Notification;
+use App\Models\Project;
 use App\Models\Transfer;
 use App\Models\User;
 use App\Models\Video;
@@ -23,10 +24,13 @@ class VideoController extends Controller
 {
 
 
-    public function edit(Request $request, $site)
+    public function edit(Request $request, $id)
     {
 
-        $data = Video::with('category')->find($site);
+        $data = Video::with('category')->with('projectItem')->with('owner:id,fullname,phone')->find($id);
+        if (optional($data->projectItem)->operator_id)
+            $data->projectItem->operator = User::select('id', 'fullname', 'phone')->find($data->projectItem->operator_id);
+
 
         $this->authorize('edit', [User::class, $data]);
         $data->message = optional(Notification::firstWhere([
@@ -37,6 +41,7 @@ class VideoController extends Controller
         return Inertia::render('Panel/Video/Edit', [
             'categories' => Video::categories(),
             'statuses' => Variable::STATUSES,
+            'project_statuses' => Variable::PROJECT_STATUSES,
             'data' => $data,
             'max_images_limit' => 1,
         ]);
@@ -52,7 +57,7 @@ class VideoController extends Controller
         $charge = $request->charge;
         $id = $request->id;
         $cmnd = $request->cmnd;
-        $data = Video::find($id);
+        $data = Video::with('projectItem:id,item_id,item_type,project_id,status,operator_id')->find($id);
         if (!starts_with($cmnd, 'bulk'))
             $this->authorize('update', [User::class, $data]);
 
@@ -127,6 +132,11 @@ class VideoController extends Controller
                     }
                     return response()->json(['message' => __('updated_successfully_and_active_after_review')], $successStatus);
 
+                case 'operator-finish':
+                    return Project::operatorFinish($data->projectItem);
+
+                    return back()->with(['flash_status' => 'danger', 'flash_message' => __('response_error')]);
+
             }
         } elseif ($data) {
 
@@ -141,6 +151,7 @@ class VideoController extends Controller
 //            dd($request->tags);
 
             if ($user->isAdmin()) {
+                $data->owner_id = $request->owner_id;
                 $newStatus = $request->status;
                 $oldStatus = $data->status;
                 switch ($newStatus) {
@@ -155,12 +166,12 @@ class VideoController extends Controller
                             'data_id' => $data->id,],
                             ['type' => 'video_approve', 'subject' => __('video_approved'), 'description' => null, 'owner_id' => $data->owner_id]
                         );
-                        if ($data->view_fee > $data->charge) {
-                            $request->status = 'need_charge';
-                            $request->merge([
-                                'status' => 'need_charge',
-                            ]);
-                        }
+//                        if ($data->view_fee > $data->charge) {
+//                            $request->status = 'need_charge';
+//                            $request->merge([
+//                                'status' => 'need_charge',
+//                            ]);
+//                        }
 
                         break;
                     case 'review':

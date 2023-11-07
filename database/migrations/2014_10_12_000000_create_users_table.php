@@ -20,7 +20,7 @@ return new class extends Migration {
             $table->timestamp('email_verified_at')->nullable();
             $table->string('phone', 20)->nullable();
             $table->boolean('phone_verified')->default(false);
-            $table->string('password', 200);
+            $table->string('password', 200)->nullable();
             $table->string('telegram_id', 50)->nullable();
             $table->string('eitaa_id', 50)->nullable();
             $table->string('bale_id', 50)->nullable();

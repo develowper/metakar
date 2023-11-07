@@ -12,7 +12,7 @@ use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class VideoRequest extends FormRequest
+class TextRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -31,6 +31,7 @@ class VideoRequest extends FormRequest
      */
     public function rules()
     {
+
         $user = auth()->user();
         $types = Category::pluck('id');
         $editMode = (bool)$this->id;
@@ -39,8 +40,10 @@ class VideoRequest extends FormRequest
         if (!$this->cmnd)
             $tmp = array_merge($tmp, [
                 'lang' => ['required', Rule::in(Variable::LANGS)],
-                'name' => ['required', 'max:100', Rule::unique('videos', 'name')->ignore($this->id)],
+                'author' => ['required', 'max:200',],
+                'title' => ['required', 'max:1024',/* Rule::unique('articles', 'title')->ignore($this->id)*/],
                 'tags' => ['nullable', 'max:1024'],
+                'content' => ['nullable'],
                 'category_id' => ['nullable', Rule::in($types)],
                 'description' => ['nullable', 'max:2048'],
             ]);
@@ -48,19 +51,13 @@ class VideoRequest extends FormRequest
         if ($request->uploading)
             $tmp = array_merge($tmp, [
                 'img' => ['required', 'base64_image_size:' . Variable::SITE_IMAGE_LIMIT_MB * 1024, 'base64_image_mime:' . implode(",", Variable::SITE_ALLOWED_MIMES)],
-                'video' => ['required', 'mimes:' . implode(",", Variable::VIDEO_ALLOWED_MIMES)],
-                'duration' => ['nullable', 'integer', 'min:0'],
 
             ]);
         if ($this->cmnd)
             $tmp = array_merge($tmp, [
                 'img' => ['sometimes', 'base64_image_size:' . Variable::SITE_IMAGE_LIMIT_MB * 1024, 'base64_image_mime:' . implode(",", Variable::SITE_ALLOWED_MIMES)],
-                'video' => ['sometimes',/* File::types(['mp3', 'wav']) ->min(1024) ->max(12 * 1024),*/
-                    'mimes:' . implode(",", Variable::VIDEO_ALLOWED_MIMES)],
-                'duration' => ['sometimes', 'integer', 'min:0'],
                 'charge' => ['required_if:cmnd,charge', 'numeric', 'gt:0'],
                 'view_fee' => ['required_if:cmnd,view-fee', 'numeric', 'gt:0'],
-
             ]);
         return $tmp;
     }
@@ -72,11 +69,11 @@ class VideoRequest extends FormRequest
             'lang.required' => sprintf(__("validator.required"), __('lang')),
             'lang.in' => sprintf(__("validator.invalid"), __('lang')),
 
-            'name.required' => sprintf(__("validator.required"), __('title')),
-            'name.max' => sprintf(__("validator.max_len"), __('name'), 2048, mb_strlen($this->name)),
+            'title.required' => sprintf(__("validator.required"), __('title')),
+            'title.max' => sprintf(__("validator.max_len"), __('title'), 1024, mb_strlen($this->title)),
 
-            'narrator.required' => sprintf(__("validator.required"), __('narrator')),
-            'narrator.max' => sprintf(__("validator.max_len"), __('narrator'), 2048, mb_strlen($this->narrator)),
+            'author.required' => sprintf(__("validator.required"), __('author')),
+            'author.max' => sprintf(__("validator.max_len"), __('author'), 200, mb_strlen($this->author)),
 
             'phone.required' => sprintf(__("validator.required"), __('phone')),
             'phone.unique' => sprintf(__("validator.unique"), __('phone')),
@@ -100,16 +97,11 @@ class VideoRequest extends FormRequest
 
             'tags.max' => sprintf(__("validator.max_len"), __('tags'), 1024, mb_strlen($this->tags)),
 
-            'description.max' => sprintf(__("validator.max_len"), __('description'), 2048, mb_strlen($this->description)),
+            'description.max' => sprintf(__("validator.max_len"),__('description'), 2048, mb_strlen($this->description)),
 
             'img.required' => sprintf(__("validator.required"), __('image')),
             'img.base64_image_size' => sprintf(__("validator.max_size"), __("image"), Variable::SITE_IMAGE_LIMIT_MB),
             'img.base64_image_mime' => sprintf(__("validator.invalid_format"), __("image"), implode(",", Variable::SITE_ALLOWED_MIMES)),
-
-            'video.required' => sprintf(__("validator.required"), __('video_file')),
-            'video.mimes' => sprintf(__("validator.invalid_format"), __("video_file"), implode(",", Variable::VIDEO_ALLOWED_MIMES)),
-            'duration.integer' => sprintf(__("validator.invalid"), __('file_duration')),
-            'duration.min' => sprintf(__("validator.invalid"), __('file_duration')),
 
             'charge.numeric' => sprintf(__("validator.invalid"), __('charge_amount')),
             'charge.gt' => sprintf(__("validator.invalid"), __('charge_amount')),
