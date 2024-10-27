@@ -21,6 +21,7 @@
     "terser": "^5.19.2",
     "vite": "^4.0.0",
     "vite-plugin-manifest-sri": "^0.1.0",
+    "vite-plugin-pwa": "^0.17.2",
     "vue": "^3.2.41"
   },
   "dependencies": {

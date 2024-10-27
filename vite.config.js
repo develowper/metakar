@@ -4,11 +4,18 @@ import vue from '@vitejs/plugin-vue';
 import manifestSRI from 'vite-plugin-manifest-sri';
 import legacy from '@vitejs/plugin-legacy'
 import ckeditor5 from '@ckeditor/vite-plugin-ckeditor5';
+import {VitePWA} from 'vite-plugin-pwa'
 
 export default defineConfig({
 
     plugins: [
         // manifestSRI(),
+        VitePWA({
+            registerType: 'autoUpdate',
+            devOptions: {
+                enabled: true
+            }
+        }),
         laravel({
             input: 'resources/js/app.js',
             ssr: 'resources/js/ssr.js',

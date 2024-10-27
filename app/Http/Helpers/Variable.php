@@ -109,6 +109,7 @@ class Variable
         "access_change",
         "ticket_answer"
     ];
+
     const PROJECT_ITEMS = [
         ['name' => 'podcast', 'color' => 'sky',],
         ['name' => 'video', 'color' => 'purple',],

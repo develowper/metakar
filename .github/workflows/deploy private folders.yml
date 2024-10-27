@@ -10,7 +10,7 @@ jobs:
       - name: Sync files
         uses: SamKirkland/FTP-Deploy-Action@4.3.3
         with:
-          server: ftp.metakar.ir
+          server: 195.214.235.148
           #          server: 195.214.235.12
           protocol: ftp
           port: 21
@@ -28,3 +28,4 @@ jobs:
             **/.**
             public/build/**
             public/hot
+            resources/**
