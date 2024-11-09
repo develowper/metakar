@@ -135,9 +135,9 @@
             </svg>
             + 01 234 567 89
           </p>
-
-          <a referrerpolicy='origin' target='_blank' href='https://trustseal.enamad.ir/?id=545129&Code=tTfNSMO1AeCjHDyP9RrRmPGUyhWctfrz'><img referrerpolicy='origin' src='https://trustseal.enamad.ir/logo.aspx?id=545129&Code=tTfNSMO1AeCjHDyP9RrRmPGUyhWctfrz' alt='' style='cursor:pointer' code='tTfNSMO1AeCjHDyP9RrRmPGUyhWctfrz'></a>
-
+<div class=" ">
+          <a  referrerpolicy='origin' target='_blank' href='https://trustseal.enamad.ir/?id=545129&Code=tTfNSMO1AeCjHDyP9RrRmPGUyhWctfrz'><img referrerpolicy='origin' src='https://trustseal.enamad.ir/logo.aspx?id=545129&Code=tTfNSMO1AeCjHDyP9RrRmPGUyhWctfrz' alt='' style='cursor:pointer' code='tTfNSMO1AeCjHDyP9RrRmPGUyhWctfrz'></a>
+</div>
         </div>
 
 
